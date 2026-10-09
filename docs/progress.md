@@ -44,7 +44,7 @@ Selected real Twitch checks passed: 5 automated live tests on each target framew
 
 - **Broader live Twitch API coverage**: restricted APIs, further OAuth/OIDC flows, refresh rotation, IRC, public webhooks, conduits and reconnect/revocation scenarios remain. CLI mocks lag behind some fields, scopes and versions.
 - **Interactive chat sample**: builds; its new end-to-end onboarding has not been separately live tested. The underlying device login and chat operations were verified by a local harness.
-- **NuGet publication**: package IDs are not reserved and packages are not published on nuget.org. GitHub release assets can be used as a local package feed.
+- **NuGet publication**: package IDs are not reserved and packages are not published on nuget.org. The release workflow contains an opt-in trusted-publishing job ([setup](releases.md#nugetorg-publication)); GitHub release assets, including a zip bundle, can be used as a local package feed.
 
 ## Known limitations
 

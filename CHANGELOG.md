@@ -11,7 +11,7 @@ First public release candidate under the TwitchDock.NET name. Every Helix endpoi
 - Renamed packages, namespaces, projects and `AddTwitchSdk` from the unpublished `TwitchSdk` name to `TwitchDock` / `AddTwitchDock`. Live-test and API-snapshot environment variables now use the `TWITCHDOCK_` prefix.
 - English and German READMEs, step-by-step tutorials and release notes; repository metadata and private security reporting links.
 - The chat sample supports interactive device login without a pre-supplied token, defaults to the user's own channel, and accepts `!ping` from that account for a single-account test.
-- GitHub releases attach all six NuGet-format packages and SHA-256 checksums after the full CI checks succeed. Publishing to nuget.org remains a separate action.
+- GitHub releases attach all six NuGet packages, a zip bundle of them and SHA-256 checksums after the full CI checks succeed. An opt-in release job publishes the same packages to nuget.org through trusted publishing after maintainer approval; it stays disabled until configured.
 - CLI webhook integration tests explicitly bind IPv4 loopback so the Linux listener matches the Twitch CLI's IPv4 connection.
 
 ### Breaking changes since 0.1.0-alpha.1

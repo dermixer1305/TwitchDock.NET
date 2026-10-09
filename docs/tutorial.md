@@ -103,7 +103,7 @@ dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
 dotnet nuget add source "$PWD/artifacts/packages" --name twitchdock-local
 ```
 
-Alternatively, download all six `.nupkg` assets from the [GitHub release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) into a directory and register its absolute path instead. All six packages use the same version. Keep nuget.org enabled for Microsoft dependencies. If the source name already exists, use `dotnet nuget update source twitchdock-local --source <absolute-folder>`.
+Without building: download `TwitchDock.NET-1.0.0-rc.1-packages.zip` from the [GitHub release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1), extract it into a directory and register that directory's absolute path instead. All six packages use the same version. Keep nuget.org enabled for Microsoft dependencies. If the source name already exists, use `dotnet nuget update source twitchdock-local --source <absolute-folder>`.
 
 Create a separate application:
 

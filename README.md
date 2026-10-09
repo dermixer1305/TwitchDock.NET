@@ -18,7 +18,7 @@ This is an independent community project, written from scratch. It is not affili
 - **Pinned API coverage:** 149 Helix endpoints and 83 EventSub type/version combinations from the official documentation snapshot of 2026-10-09 have typed models, authorization rules, tests and documentation. Beta and deprecated APIs are explicitly marked. See the [coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md).
 - **Automated validation:** 878 unit and contract tests per target framework, Twitch CLI integration tests, public API snapshots and package/native AOT smoke checks.
 - **Live verification:** app-token acquisition, validation and revocation; real Helix reads; device authorization and user-token validation; EventSub chat subscription, receipt of a real message and successful Helix chat send. See the [live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md).
-- **Still pending:** broader live coverage, including IRC, public webhooks, reconnect scenarios, refresh rotation and restricted APIs. Packages are **not published on nuget.org**; use GitHub release assets or a local build.
+- **Still pending:** broader live coverage, including IRC, public webhooks, reconnect scenarios, refresh rotation and restricted APIs. Packages are **not on nuget.org yet**; every GitHub release contains ready-to-use packages.
 
 ## Packages
 
@@ -64,7 +64,7 @@ Follow the **[English tutorial](https://github.com/dermixer1305/TwitchDock.NET/b
 
 ## Install into your own project
 
-Download all six `.nupkg` files from the [release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) into a local package folder, or build them:
+Download `TwitchDock.NET-1.0.0-rc.1-packages.zip` from the [release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) and extract it into a local package folder. It contains all six packages, so nothing has to be built. Alternatively, build them yourself:
 
 ```sh
 dotnet pack TwitchDock.slnx -c Release -o artifacts/packages

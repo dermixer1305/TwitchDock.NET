@@ -1,6 +1,6 @@
 # Releases and maintenance
 
-Current version: **1.0.0-rc.1**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). GitHub release assets are NuGet-format packages for a local feed; **they are not published on nuget.org**.
+Current version: **1.0.0-rc.1**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). Every GitHub release carries the six NuGet packages, a zip bundle of them and SHA-256 checksums for use as a local feed. Publishing to nuget.org is prepared in the release workflow but **disabled until a maintainer enables it** ([setup](#nugetorg-publication)).
 
 ## Versioning
 
@@ -28,10 +28,10 @@ Twitch deprecations are marked `[Obsolete]` in a minor release and removed only 
    git push origin v1.0.0-rc.1
    ```
 
-5. The [release workflow](../.github/workflows/release.yml) runs the full reusable CI workflow: Windows/Linux tests on both frameworks, coverage gate, Twitch CLI integration tests, package smoke tests and native AOT. Only after all required jobs succeed does it check the tag/version match, pack the SDK, generate SHA-256 checksums and create the GitHub release.
-6. Verify that the release is marked **prerelease**, contains all six `.nupkg` assets and `SHA256SUMS.txt`, and has working tutorial links. Install the release packages into a clean consumer project.
+5. The [release workflow](../.github/workflows/release.yml) runs the full reusable CI workflow: Windows/Linux tests on both frameworks, coverage gate, Twitch CLI integration tests, package smoke tests and native AOT. Only after all required jobs succeed does it check the tag/version match, pack the SDK, bundle the six packages into `TwitchDock.NET-<version>-packages.zip`, generate SHA-256 checksums and create the GitHub release. If nuget.org publication is enabled, the `nuget` job then waits for approval and pushes the same packages.
+6. Verify that the release is marked **prerelease**, contains all six `.nupkg` assets, the zip bundle and `SHA256SUMS.txt`, and has working tutorial links. Install the release packages into a clean consumer project.
 
-The workflow uses GitHub's per-run token with `contents: write` only in the publication job. It needs no NuGet secret and does not push anything to nuget.org. The GitHub release contains the version-specific bilingual notes, not the complete historical changelog.
+The workflow uses GitHub's per-run token with `contents: write` only in the GitHub release job. It stores no NuGet secret; the optional nuget.org job obtains a short-lived key through trusted publishing. The GitHub release contains the version-specific bilingual notes, not the complete historical changelog.
 
 Do not replace an already published version with different packages. Fix the problem and publish the next release candidate.
 
@@ -45,14 +45,25 @@ Do not replace an already published version with different packages. Fix the pro
 - [ ] Collect release-candidate feedback and resolve issues.
 - [ ] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report.
 - [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
-- [ ] Check NuGet package name availability/ownership and configure publishing if distribution through nuget.org is desired.
+- [ ] Check NuGet package name availability/ownership and complete the [nuget.org setup](#nugetorg-publication) if distribution through nuget.org is desired.
 - [ ] Set `1.0.0`, date the changelog and publish using the same verified release procedure.
 
-## Optional future NuGet publication
+## nuget.org publication
 
-NuGet publication is separate from this GitHub-only release. Before enabling it, check the availability and ownership of all `TwitchDock.*` package IDs; do not assume a prefix is reserved. Review package contents, metadata, dependency versions and README links. Configure an appropriately scoped publishing credential and a protected environment before adding an automated publishing job.
+The `nuget` job in the [release workflow](../.github/workflows/release.yml) pushes the packages of a GitHub release to nuget.org. It is skipped until it is configured, so tag releases keep working without it. It downloads the release assets, verifies them against `SHA256SUMS.txt` and pushes exactly those files; it never repacks. It uses [NuGet trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing): GitHub's OIDC token is exchanged for an API key that is valid for about an hour, so no NuGet key is stored in the repository.
 
-Never commit NuGet keys or Twitch credentials. A GitHub release does not require either.
+One-time setup by the maintainer:
+
+1. Sign in to [nuget.org](https://www.nuget.org/) and confirm that all six `TwitchDock.*` package IDs are free or owned by you. Do not assume a prefix is reserved; an ID prefix reservation can be requested separately.
+2. On nuget.org open **Trusted Publishing** and add a GitHub Actions policy: owner `dermixer1305`, repository `TwitchDock.NET`, workflow file `release.yml`, environment `nuget`.
+3. In the GitHub repository open **Settings → Environments**, create `nuget`, add yourself as a required reviewer and limit deployments to tags matching `v*`.
+4. Under **Settings → Secrets and variables → Actions → Variables** add `NUGET_USER` (your nuget.org user name, not your e-mail address) and `NUGET_PUBLISH` with the value `true`.
+
+From then on each version tag creates the GitHub release first; the `nuget` job then waits for your approval in the workflow run and pushes the packages. To publish an earlier GitHub release (for example `v1.0.0-rc.1`), run the **Release** workflow manually under **Actions** and enter the tag. Reruns are safe because versions that already exist are skipped.
+
+Before the first push, review package contents, metadata, dependency versions and README links (`dotnet pack` output or the release assets). A version on nuget.org can be unlisted but never replaced; publish fixes as a new version. Set `NUGET_PUBLISH` to anything other than `true` to stop publishing.
+
+Never commit NuGet keys or Twitch credentials.
 
 ## Maintenance
 

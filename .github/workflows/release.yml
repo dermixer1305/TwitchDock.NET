@@ -1,17 +1,28 @@
 name: Release
-# A tag creates a GitHub release only. NuGet publication is a separate maintainer action.
+# A version tag creates the GitHub release with all packages (single .nupkg files, a zip bundle and checksums).
+# nuget.org publication is opt-in: it runs only when the repository variable NUGET_PUBLISH is 'true', waits for the
+# protected 'nuget' environment and uses NuGet trusted publishing (OIDC), so no long-lived API key is stored.
+# workflow_dispatch pushes the assets of an existing GitHub release to nuget.org (for example after enabling it later).
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag whose packages are pushed to nuget.org, e.g. v1.0.0-rc.1'
+        required: true
+        type: string
 permissions:
   contents: read
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 jobs:
   checks:
+    if: github.event_name == 'push'
     uses: ./.github/workflows/ci.yml
   release:
+    if: github.event_name == 'push'
     needs: checks
     runs-on: ubuntu-latest
     permissions:
@@ -34,9 +45,17 @@ jobs:
           if [ "v${version}" != "$RELEASE_TAG" ]; then echo "Tag does not match package version $version"; exit 1; fi
           test -s "docs/release-notes/${version}.md"
       - run: dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-      - name: Generate package checksums
+      - name: Bundle packages and generate checksums
         working-directory: artifacts/packages
-        run: sha256sum *.nupkg > SHA256SUMS.txt
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          count="$(find . -maxdepth 1 -name '*.nupkg' | wc -l)"
+          if [ "$count" -ne 6 ]; then echo "Expected 6 packages, found $count"; exit 1; fi
+          # One download for users: unzip into a folder and register it as a local NuGet source.
+          zip -j "TwitchDock.NET-${RELEASE_TAG#v}-packages.zip" *.nupkg
+          sha256sum *.nupkg *.zip > SHA256SUMS.txt
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -45,6 +64,49 @@ jobs:
           set -euo pipefail
           flags=()
           case "$RELEASE_TAG" in *-*) flags+=(--prerelease --latest=false) ;; esac
-          gh release create "$RELEASE_TAG" artifacts/packages/*.nupkg artifacts/packages/SHA256SUMS.txt \
+          gh release create "$RELEASE_TAG" artifacts/packages/*.nupkg artifacts/packages/*.zip artifacts/packages/SHA256SUMS.txt \
             --verify-tag --title "TwitchDock.NET ${RELEASE_TAG#v}" \
             --notes-file "docs/release-notes/${RELEASE_TAG#v}.md" "${flags[@]}"
+  nuget:
+    # Runs after a successful tag release, or alone for workflow_dispatch; skipped unless NUGET_PUBLISH is 'true'.
+    needs: release
+    if: ${{ !cancelled() && vars.NUGET_PUBLISH == 'true' && (needs.release.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    runs-on: ubuntu-latest
+    # Protect this environment with required reviewers so every nuget.org push needs a maintainer's approval.
+    environment: nuget
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+      # Pushes exactly the files attached to the GitHub release, verified against its checksums, instead of repacking.
+      - name: Download and verify release packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          mkdir -p packages
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --dir packages --pattern '*.nupkg' --pattern SHA256SUMS.txt
+          cd packages
+          count="$(find . -maxdepth 1 -name '*.nupkg' | wc -l)"
+          if [ "$count" -ne 6 ]; then echo "Expected 6 packages, found $count"; exit 1; fi
+          sha256sum -c --ignore-missing SHA256SUMS.txt
+          for package in *.nupkg; do
+            case "$package" in *".${RELEASE_TAG#v}.nupkg") ;; *) echo "$package does not match $RELEASE_TAG"; exit 1 ;; esac
+          done
+      - name: Log in to nuget.org (trusted publishing)
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: ${{ vars.NUGET_USER }}
+      - name: Push to nuget.org
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          set -euo pipefail
+          # --skip-duplicate makes a rerun safe after a partially completed push; nuget.org never replaces a version.
+          dotnet nuget push "packages/*.nupkg" --api-key "$NUGET_API_KEY" \
+            --source https://api.nuget.org/v3/index.json --skip-duplicate

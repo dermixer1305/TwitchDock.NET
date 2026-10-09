@@ -19,7 +19,7 @@ Das Projekt wurde eigenständig neu entwickelt. Es ist weder ein offizielles Twi
 - **Live getestet:** App-Token abrufen, prüfen und widerrufen; echte API-Daten lesen; Benutzeranmeldung per Gerätecode; EventSub-Chat abonnieren; eine echte Nachricht empfangen und eine Nachricht erfolgreich senden. [Testbericht](docs/live-verification.md)
 - **Noch offen:** unter anderem umfassende Tests von IRC, öffentlichen Webhooks, Wiederverbindungen, Token-Erneuerung und APIs mit besonderen Zugriffsrechten.
 
-Die Pakete sind **noch nicht auf nuget.org veröffentlicht**. Nutze die GitHub-Release-Pakete oder einen lokalen Build.
+Die Pakete sind **noch nicht auf nuget.org veröffentlicht**. Jedes GitHub-Release enthält aber fertig gebaute Pakete.
 
 ## Pakete
 
@@ -55,7 +55,7 @@ Das **[deutsche Tutorial](docs/tutorial.de.md)** erklärt Registrierung, ersten 
 
 ## In einem eigenen Projekt verwenden
 
-Lade alle sechs `.nupkg`-Dateien aus dem [Release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) in einen lokalen Paketordner. Alternativ:
+Lade `TwitchDock.NET-1.0.0-rc.1-packages.zip` aus dem [Release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) herunter und entpacke die Datei in einen lokalen Paketordner. Sie enthält alle sechs Pakete; du musst nichts selbst bauen. Alternativ baust du sie selbst:
 
 ```sh
 dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
