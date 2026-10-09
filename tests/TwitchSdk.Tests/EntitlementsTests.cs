@@ -141,7 +141,6 @@ public sealed class EntitlementsTests
             () => client.GetDropsEntitlementsAsync(new() { FulfillmentStatus = "claimed" }),
             () => client.GetDropsEntitlementsAsync(new() { UserId = "" }),
             () => client.GetDropsEntitlementsAsync(new() { GameId = " " }),
-            () => client.GetDropsEntitlementsAsync(new() { Ids = null! }),
             () => client.UpdateDropsEntitlementsAsync(new() { EntitlementIds = [.. ids, "extra"] }),
             () => client.UpdateDropsEntitlementsAsync(new() { EntitlementIds = [""] }),
             () => client.UpdateDropsEntitlementsAsync(new() { FulfillmentStatus = "GRANTED" }),

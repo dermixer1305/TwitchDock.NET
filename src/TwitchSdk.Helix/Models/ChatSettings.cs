@@ -68,7 +68,7 @@ public sealed class PinnedChatMessage
 public sealed class PinnedChatMessageContent
 {
     public required string Text { get; init; }
-    public IReadOnlyList<PinnedChatFragment> Fragments { get; init; } = [];
+    public IReadOnlyList<PinnedChatFragment> Fragments { get; init => field = value ?? []; } = [];
 }
 
 public sealed class PinnedChatFragment
@@ -94,7 +94,7 @@ public sealed class PinnedChatEmoticon
     public required string Id { get; init; }
     public required string EmoteSetId { get; init; }
     public required string OwnerId { get; init; }
-    public IReadOnlyList<string> Format { get; init; } = [];
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
 }
 
 public sealed class PinnedChatMention
@@ -110,14 +110,14 @@ public sealed class UserChatColor
     public required string UserLogin { get; init; }
     public required string UserName { get; init; }
     /// <summary>Hex color code such as #9146FF; empty when the user has not chosen a color.</summary>
-    public string Color { get; init; } = "";
+    public string Color { get; init => field = value ?? ""; } = "";
 }
 
 public sealed class SharedChatSession
 {
     public required string SessionId { get; init; }
     public required string HostBroadcasterId { get; init; }
-    public IReadOnlyList<SharedChatParticipant> Participants { get; init; } = [];
+    public IReadOnlyList<SharedChatParticipant> Participants { get; init => field = value ?? []; } = [];
     public DateTimeOffset CreatedAt { get; init; }
     public DateTimeOffset UpdatedAt { get; init; }
 }

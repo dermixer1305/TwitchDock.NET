@@ -11,7 +11,7 @@ public sealed class TwitchOAuthCallbackException(string message, string? error =
 public sealed class AuthorizationCodeCallback
 {
     public required string Code { get; init; }
-    public IReadOnlyList<string> Scopes { get; init; } = [];
+    public IReadOnlyList<string> Scopes { get; init => field = value ?? []; } = [];
     public override string ToString() => "AuthorizationCodeCallback [redacted]";
 }
 
@@ -20,8 +20,8 @@ public sealed class ImplicitGrantCallback
     public required string AccessToken { get; init; }
     /// <summary>Present when the openid scope was requested with an id_token response type.</summary>
     public string? IdToken { get; init; }
-    public IReadOnlyList<string> Scopes { get; init; } = [];
-    public string TokenType { get; init; } = "bearer";
+    public IReadOnlyList<string> Scopes { get; init => field = value ?? []; } = [];
+    public string TokenType { get; init => field = value ?? "bearer"; } = "bearer";
     public override string ToString() => "ImplicitGrantCallback [redacted]";
 }
 

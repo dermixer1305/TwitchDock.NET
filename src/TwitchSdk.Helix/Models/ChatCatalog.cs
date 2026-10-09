@@ -34,7 +34,7 @@ public sealed class EmoteImages
 /// <summary>Emote list with the CDN URL template that applies to every emote in it.</summary>
 public sealed class ChatEmotesResponse<TEmote>
 {
-    public IReadOnlyList<TEmote> Data { get; init; } = [];
+    public IReadOnlyList<TEmote> Data { get; init => field = value ?? []; } = [];
     /// <summary>Replace {{id}}, {{format}}, {{theme_mode}} and {{scale}} to build a CDN URL.</summary>
     public required string Template { get; init; }
 }
@@ -45,16 +45,16 @@ public sealed class ChannelEmote
     public required string Name { get; init; }
     public required EmoteImages Images { get; init; }
     /// <summary>Subscriber tier for subscriptions emotes; otherwise an empty string.</summary>
-    public string Tier { get; init; } = "";
+    public string Tier { get; init => field = value ?? ""; } = "";
     /// <summary>bitstier, follower or subscriptions.</summary>
     public required string EmoteType { get; init; }
     public required string EmoteSetId { get; init; }
     /// <summary>animated and/or static.</summary>
-    public IReadOnlyList<string> Format { get; init; } = [];
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
     /// <summary>1.0, 2.0 and/or 3.0.</summary>
-    public IReadOnlyList<string> Scale { get; init; } = [];
+    public IReadOnlyList<string> Scale { get; init => field = value ?? []; } = [];
     /// <summary>dark and/or light.</summary>
-    public IReadOnlyList<string> ThemeMode { get; init; } = [];
+    public IReadOnlyList<string> ThemeMode { get; init => field = value ?? []; } = [];
 }
 
 public sealed class GlobalEmote
@@ -62,9 +62,9 @@ public sealed class GlobalEmote
     public required string Id { get; init; }
     public required string Name { get; init; }
     public required EmoteImages Images { get; init; }
-    public IReadOnlyList<string> Format { get; init; } = [];
-    public IReadOnlyList<string> Scale { get; init; } = [];
-    public IReadOnlyList<string> ThemeMode { get; init; } = [];
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Scale { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> ThemeMode { get; init => field = value ?? []; } = [];
 }
 
 public sealed class EmoteSetEmote
@@ -75,9 +75,9 @@ public sealed class EmoteSetEmote
     public required string EmoteType { get; init; }
     public required string EmoteSetId { get; init; }
     public required string OwnerId { get; init; }
-    public IReadOnlyList<string> Format { get; init; } = [];
-    public IReadOnlyList<string> Scale { get; init; } = [];
-    public IReadOnlyList<string> ThemeMode { get; init; } = [];
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Scale { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> ThemeMode { get; init => field = value ?? []; } = [];
 }
 
 public sealed record GetUserEmotesRequest
@@ -91,7 +91,7 @@ public sealed record GetUserEmotesRequest
 
 public sealed class UserEmotesResponse
 {
-    public IReadOnlyList<UserEmote> Data { get; init; } = [];
+    public IReadOnlyList<UserEmote> Data { get; init => field = value ?? []; } = [];
     public required string Template { get; init; }
     public Pagination? Pagination { get; init; }
 }
@@ -104,18 +104,18 @@ public sealed class UserEmote
     /// <summary>Evolving discriminator such as none, bitstier, follower, subscriptions, channelpoints, rewards, hypetrain, prime, turbo, smilies, globals, owl2019, twofactor or limitedtime.</summary>
     public required string EmoteType { get; init; }
     /// <summary>Empty when the emote does not belong to a set.</summary>
-    public string EmoteSetId { get; init; } = "";
+    public string EmoteSetId { get; init => field = value ?? ""; } = "";
     /// <summary>Empty when the emote has no owner.</summary>
-    public string OwnerId { get; init; } = "";
-    public IReadOnlyList<string> Format { get; init; } = [];
-    public IReadOnlyList<string> Scale { get; init; } = [];
-    public IReadOnlyList<string> ThemeMode { get; init; } = [];
+    public string OwnerId { get; init => field = value ?? ""; } = "";
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Scale { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> ThemeMode { get; init => field = value ?? []; } = [];
 }
 
 public sealed class ChatBadgeSet
 {
     public required string SetId { get; init; }
-    public IReadOnlyList<ChatBadgeVersion> Versions { get; init; } = [];
+    public IReadOnlyList<ChatBadgeVersion> Versions { get; init => field = value ?? []; } = [];
 }
 
 public sealed class ChatBadgeVersion

@@ -164,7 +164,7 @@ public sealed class ChannelHypeTrainBeginEvent
     public long Progress { get; init; }
     /// <summary>Points required to reach the next level.</summary>
     public long Goal { get; init; }
-    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init; } = [];
+    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init => field = value ?? []; } = [];
     public int Level { get; init; }
     /// <summary>All-time high level for this type of Hype Train on this channel.</summary>
     public int AllTimeHighLevel { get; init; }
@@ -191,7 +191,7 @@ public sealed class ChannelHypeTrainProgressEvent
     public long Progress { get; init; }
     /// <summary>Points required to reach the next level.</summary>
     public long Goal { get; init; }
-    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init; } = [];
+    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init => field = value ?? []; } = [];
     public int Level { get; init; }
     /// <summary>Broadcasters in a shared Hype Train; null when the train is not shared.</summary>
     public IReadOnlyList<HypeTrainEventParticipant>? SharedTrainParticipants { get; init; }
@@ -210,7 +210,7 @@ public sealed class ChannelHypeTrainEndEvent
     public required string BroadcasterUserLogin { get; init; }
     public required string BroadcasterUserName { get; init; }
     public long Total { get; init; }
-    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init; } = [];
+    public IReadOnlyList<HypeTrainEventContribution> TopContributions { get; init => field = value ?? []; } = [];
     public int Level { get; init; }
     /// <summary>Broadcasters in a shared Hype Train; null when the train is not shared.</summary>
     public IReadOnlyList<HypeTrainEventParticipant>? SharedTrainParticipants { get; init; }

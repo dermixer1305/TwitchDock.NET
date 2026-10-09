@@ -32,19 +32,19 @@ public sealed class InstalledUserExtension
     public required string Version { get; init; }
     public required string Name { get; init; }
     public bool CanActivate { get; init; }
-    public IReadOnlyList<string> Type { get; init; } = [];
+    public IReadOnlyList<string> Type { get; init => field = value ?? []; } = [];
 }
 
 public sealed class UserActiveExtensionsResponse
 {
-    public UserActiveExtensions Data { get; init; } = new();
+    public UserActiveExtensions Data { get; init => field = value ?? new(); } = new();
 }
 
 public sealed class UserActiveExtensions
 {
-    public IReadOnlyDictionary<string, ActiveUserExtension> Panel { get; init; } = new Dictionary<string, ActiveUserExtension>();
-    public IReadOnlyDictionary<string, ActiveUserExtension> Overlay { get; init; } = new Dictionary<string, ActiveUserExtension>();
-    public IReadOnlyDictionary<string, ActiveUserComponentExtension> Component { get; init; } = new Dictionary<string, ActiveUserComponentExtension>();
+    public IReadOnlyDictionary<string, ActiveUserExtension> Panel { get; init => field = value ?? new Dictionary<string, ActiveUserExtension>(); } = new Dictionary<string, ActiveUserExtension>();
+    public IReadOnlyDictionary<string, ActiveUserExtension> Overlay { get; init => field = value ?? new Dictionary<string, ActiveUserExtension>(); } = new Dictionary<string, ActiveUserExtension>();
+    public IReadOnlyDictionary<string, ActiveUserComponentExtension> Component { get; init => field = value ?? new Dictionary<string, ActiveUserComponentExtension>(); } = new Dictionary<string, ActiveUserComponentExtension>();
 }
 
 public class ActiveUserExtension
@@ -88,8 +88,8 @@ public sealed class UserComponentExtensionActivation : UserExtensionActivation
 
 public sealed record GetUsersRequest
 {
-    public IReadOnlyList<string> Ids { get; init; } = [];
-    public IReadOnlyList<string> Logins { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Logins { get; init => field = value ?? []; } = [];
 }
 
 public sealed class TwitchUser
@@ -97,11 +97,11 @@ public sealed class TwitchUser
     public required string Id { get; init; }
     public required string Login { get; init; }
     public required string DisplayName { get; init; }
-    public string Type { get; init; } = "";
-    public string BroadcasterType { get; init; } = "";
-    public string Description { get; init; } = "";
-    public string ProfileImageUrl { get; init; } = "";
-    public string OfflineImageUrl { get; init; } = "";
+    public string Type { get; init => field = value ?? ""; } = "";
+    public string BroadcasterType { get; init => field = value ?? ""; } = "";
+    public string Description { get; init => field = value ?? ""; } = "";
+    public string ProfileImageUrl { get; init => field = value ?? ""; } = "";
+    public string OfflineImageUrl { get; init => field = value ?? ""; } = "";
     /// <summary>Deprecated by Twitch; its value is not valid and must not be used.</summary>
     public long ViewCount { get; init; }
     public string? Email { get; init; }

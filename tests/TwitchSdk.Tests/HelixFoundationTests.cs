@@ -77,7 +77,8 @@ public sealed class HelixFoundationTests
         await client.GetUsersAsync(new() { Ids = hundred[..50], Logins = hundred[50..] });
         await client.GetChannelInformationAsync(hundred);
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetUsersAsync(new() { Ids = hundred, Logins = ["extra"] }));
-        await Assert.ThrowsAsync<ArgumentNullException>(() => client.GetUsersAsync(new() { Ids = null! }));
+        // A null list on a request object normalizes to empty (no filter) instead of failing.
+        await client.GetUsersAsync(new() { Ids = null! });
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetChannelInformationAsync([]));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetChannelInformationAsync([.. hundred, "extra"]));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamsAsync(new() { UserIds = [.. hundred, "extra"] }));
@@ -85,7 +86,7 @@ public sealed class HelixFoundationTests
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetStreamsAsync(new() { First = 101 }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamsAsync(new() { Type = "invalid" }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamsAsync(new() { Before = "a", After = "b" }));
-        Assert.Equal(2, calls);
+        Assert.Equal(3, calls);
     }
 
     [Fact]

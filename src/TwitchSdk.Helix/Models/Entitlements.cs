@@ -27,7 +27,7 @@ public static class DropsEntitlementUpdateStatuses
 public sealed record GetDropsEntitlementsRequest
 {
     /// <summary>Up to 100 entitlement IDs.</summary>
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public string? UserId { get; init; }
     public string? GameId { get; init; }
     /// <summary>CLAIMED or FULFILLED.</summary>
@@ -64,5 +64,5 @@ public sealed class DropsEntitlementUpdate
 {
     /// <summary>See <see cref="DropsEntitlementUpdateStatuses"/>.</summary>
     public required string Status { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
 }

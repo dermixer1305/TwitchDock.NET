@@ -3,7 +3,7 @@ namespace TwitchSdk.Helix.Models;
 public sealed record GetPredictionsRequest
 {
     public required string BroadcasterId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }
@@ -37,7 +37,7 @@ public sealed class TwitchPrediction
     public required string BroadcasterLogin { get; init; }
     public required string Title { get; init; }
     public string? WinningOutcomeId { get; init; }
-    public IReadOnlyList<PredictionOutcome> Outcomes { get; init; } = [];
+    public IReadOnlyList<PredictionOutcome> Outcomes { get; init => field = value ?? []; } = [];
     public int PredictionWindow { get; init; }
     public required string Status { get; init; }
     public DateTimeOffset CreatedAt { get; init; }

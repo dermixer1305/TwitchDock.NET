@@ -17,7 +17,7 @@ public sealed class CurrentHypeTrain
     public long Total { get; init; }
     public long Progress { get; init; }
     public long Goal { get; init; }
-    public IReadOnlyList<HypeTrainContribution> TopContributions { get; init; } = [];
+    public IReadOnlyList<HypeTrainContribution> TopContributions { get; init => field = value ?? []; } = [];
     public IReadOnlyList<HypeTrainParticipant>? SharedTrainParticipants { get; init; }
     public DateTimeOffset StartedAt { get; init; }
     public DateTimeOffset ExpiresAt { get; init; }

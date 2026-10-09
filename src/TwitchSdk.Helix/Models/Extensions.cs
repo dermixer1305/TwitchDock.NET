@@ -17,7 +17,7 @@ public sealed class GetExtensionConfigurationSegmentsRequest
 {
     public required string ExtensionId { get; init; }
     /// <summary>One or more of broadcaster, developer and global. Twitch ignores duplicates and answers in request order.</summary>
-    public IReadOnlyList<string> Segments { get; init; } = [];
+    public IReadOnlyList<string> Segments { get; init => field = value ?? []; } = [];
     /// <summary>Required when broadcaster or developer is requested; omitted when only global is requested.</summary>
     public string? BroadcasterId { get; init; }
 }
@@ -28,8 +28,8 @@ public sealed class ExtensionConfigurationSegment
     /// <summary>Present only for broadcaster and developer segments.</summary>
     public string? BroadcasterId { get; init; }
     /// <summary>Plain text or a string-encoded JSON object.</summary>
-    public string Content { get; init; } = "";
-    public string Version { get; init; } = "";
+    public string Content { get; init => field = value ?? ""; } = "";
+    public string Version { get; init => field = value ?? ""; } = "";
 }
 
 /// <summary>Null fields are omitted. Content is limited to 5 KB of UTF-8.</summary>
@@ -67,7 +67,7 @@ public static class ExtensionPubSubTargets
 public sealed class SendExtensionPubSubMessageRequest
 {
     /// <summary>broadcast, global or whisper-&lt;user-id&gt;. broadcast and global are mutually exclusive; global requires IsGlobalBroadcast.</summary>
-    public IReadOnlyList<string> Target { get; init; } = [];
+    public IReadOnlyList<string> Target { get; init => field = value ?? []; } = [];
     /// <summary>Required unless IsGlobalBroadcast is true, in which case it must be null.</summary>
     public string? BroadcasterId { get; init; }
     /// <summary>Null omits the field; Twitch defaults to false.</summary>
@@ -86,7 +86,7 @@ public sealed record GetExtensionLiveChannelsRequest
 /// <summary>Unlike most Helix lists, pagination is documented as a bare cursor string. An empty or missing cursor means no more pages.</summary>
 public sealed class ExtensionLiveChannelsResponse
 {
-    public IReadOnlyList<ExtensionLiveChannel> Data { get; init; } = [];
+    public IReadOnlyList<ExtensionLiveChannel> Data { get; init => field = value ?? []; } = [];
     [JsonConverter(typeof(CursorStringConverter))]
     public string? Pagination { get; init; }
 }
@@ -95,16 +95,16 @@ public sealed class ExtensionLiveChannel
 {
     public required string BroadcasterId { get; init; }
     public required string BroadcasterName { get; init; }
-    public string GameName { get; init; } = "";
-    public string GameId { get; init; } = "";
+    public string GameName { get; init => field = value ?? ""; } = "";
+    public string GameId { get; init => field = value ?? ""; } = "";
     /// <summary>May be empty.</summary>
-    public string Title { get; init; } = "";
+    public string Title { get; init => field = value ?? ""; } = "";
 }
 
 public sealed class ExtensionSecretSet
 {
     public int FormatVersion { get; init; }
-    public IReadOnlyList<ExtensionSharedSecret> Secrets { get; init; } = [];
+    public IReadOnlyList<ExtensionSharedSecret> Secrets { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>A shared signing secret. <see cref="Content"/> is a credential and is redacted from <see cref="ToString"/>.</summary>
@@ -135,28 +135,28 @@ public sealed class TwitchExtension
     public bool CanInstall { get; init; }
     /// <summary>hosted, custom or none.</summary>
     public required string ConfigurationLocation { get; init; }
-    public string Description { get; init; } = "";
-    public string EulaTosUrl { get; init; } = "";
+    public string Description { get; init => field = value ?? ""; } = "";
+    public string EulaTosUrl { get; init => field = value ?? ""; } = "";
     public bool HasChatSupport { get; init; }
-    public string IconUrl { get; init; } = "";
+    public string IconUrl { get; init => field = value ?? ""; } = "";
     /// <summary>Icon URLs keyed by size, for example 24x24.</summary>
-    public IReadOnlyDictionary<string, string> IconUrls { get; init; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> IconUrls { get; init => field = value ?? new Dictionary<string, string>(); } = new Dictionary<string, string>();
     public required string Id { get; init; }
     public required string Name { get; init; }
-    public string PrivacyPolicyUrl { get; init; } = "";
+    public string PrivacyPolicyUrl { get; init => field = value ?? ""; } = "";
     public bool RequestIdentityLink { get; init; }
-    public IReadOnlyList<string> ScreenshotUrls { get; init; } = [];
+    public IReadOnlyList<string> ScreenshotUrls { get; init => field = value ?? []; } = [];
     /// <summary>Approved, AssetsUploaded, Deleted, Deprecated, InReview, InTest, PendingAction, Rejected or Released.</summary>
     public required string State { get; init; }
     /// <summary>none or optional.</summary>
     public required string SubscriptionsSupportLevel { get; init; }
-    public string Summary { get; init; } = "";
-    public string SupportEmail { get; init; } = "";
+    public string Summary { get; init => field = value ?? ""; } = "";
+    public string SupportEmail { get; init => field = value ?? ""; } = "";
     public required string Version { get; init; }
-    public string ViewerSummary { get; init; } = "";
-    public ExtensionViews Views { get; init; } = new();
-    public IReadOnlyList<string> AllowlistedConfigUrls { get; init; } = [];
-    public IReadOnlyList<string> AllowlistedPanelUrls { get; init; } = [];
+    public string ViewerSummary { get; init => field = value ?? ""; } = "";
+    public ExtensionViews Views { get; init => field = value ?? new(); } = new();
+    public IReadOnlyList<string> AllowlistedConfigUrls { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> AllowlistedPanelUrls { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>View definitions. A view is null when the extension does not define it.</summary>
@@ -171,25 +171,25 @@ public sealed class ExtensionViews
 
 public sealed class ExtensionMobileView
 {
-    public string ViewerUrl { get; init; } = "";
+    public string ViewerUrl { get; init => field = value ?? ""; } = "";
 }
 
 public sealed class ExtensionPanelView
 {
-    public string ViewerUrl { get; init; } = "";
+    public string ViewerUrl { get; init => field = value ?? ""; } = "";
     public int Height { get; init; }
     public bool CanLinkExternalContent { get; init; }
 }
 
 public sealed class ExtensionVideoOverlayView
 {
-    public string ViewerUrl { get; init; } = "";
+    public string ViewerUrl { get; init => field = value ?? ""; } = "";
     public bool CanLinkExternalContent { get; init; }
 }
 
 public sealed class ExtensionComponentView
 {
-    public string ViewerUrl { get; init; } = "";
+    public string ViewerUrl { get; init => field = value ?? ""; } = "";
     public int AspectRatioX { get; init; }
     public int AspectRatioY { get; init; }
     public bool Autoscale { get; init; }
@@ -202,7 +202,7 @@ public sealed class ExtensionComponentView
 
 public sealed class ExtensionConfigView
 {
-    public string ViewerUrl { get; init; } = "";
+    public string ViewerUrl { get; init => field = value ?? ""; } = "";
     public bool CanLinkExternalContent { get; init; }
 }
 
@@ -237,7 +237,7 @@ public sealed class ExtensionBitsProductCost
     /// <summary>1–10000 Bits.</summary>
     public required int Amount { get; init; }
     /// <summary>The currency; Twitch only accepts bits.</summary>
-    public string Type { get; init; } = "bits";
+    public string Type { get; init => field = value ?? "bits"; } = "bits";
 }
 
 /// <summary>Reads a cursor sent as a bare string (as documented) or as a standard <c>{"cursor": ...}</c> object, and writes a string.</summary>

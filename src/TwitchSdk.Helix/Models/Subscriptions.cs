@@ -5,7 +5,7 @@ namespace TwitchSdk.Helix.Models;
 public sealed record GetBroadcasterSubscriptionsRequest
 {
     public required string BroadcasterId { get; init; }
-    public IReadOnlyList<string> UserIds { get; init; } = [];
+    public IReadOnlyList<string> UserIds { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
     public string? Before { get; init; }
@@ -13,7 +13,7 @@ public sealed record GetBroadcasterSubscriptionsRequest
 
 public sealed class BroadcasterSubscriptionsResponse
 {
-    public IReadOnlyList<BroadcasterSubscription> Data { get; init; } = [];
+    public IReadOnlyList<BroadcasterSubscription> Data { get; init => field = value ?? []; } = [];
     public Pagination? Pagination { get; init; }
     public int? Points { get; init; }
     public int? Total { get; init; }
@@ -24,9 +24,9 @@ public sealed class BroadcasterSubscription
     public required string BroadcasterId { get; init; }
     public required string BroadcasterLogin { get; init; }
     public required string BroadcasterName { get; init; }
-    public string GifterId { get; init; } = "";
-    public string GifterLogin { get; init; } = "";
-    public string GifterName { get; init; } = "";
+    public string GifterId { get; init => field = value ?? ""; } = "";
+    public string GifterLogin { get; init => field = value ?? ""; } = "";
+    public string GifterName { get; init => field = value ?? ""; } = "";
     public bool IsGift { get; init; }
     public required string PlanName { get; init; }
     public required string Tier { get; init; }

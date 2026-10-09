@@ -66,8 +66,8 @@ public sealed class ConduitShardTransportRequest
 /// <summary>HTTP 202 may contain both successful updates and individual shard errors. Always inspect Errors.</summary>
 public sealed class UpdateConduitShardsResponse
 {
-    public IReadOnlyList<ConduitShard> Data { get; init; } = [];
-    public IReadOnlyList<ConduitShardError> Errors { get; init; } = [];
+    public IReadOnlyList<ConduitShard> Data { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<ConduitShardError> Errors { get; init => field = value ?? []; } = [];
 }
 
 public sealed class ConduitShardError

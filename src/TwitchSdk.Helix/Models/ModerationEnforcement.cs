@@ -7,9 +7,9 @@ namespace TwitchSdk.Helix.Models;
 public sealed class CheckAutoModStatusRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     /// <summary>1–100 messages to check.</summary>
-    public IReadOnlyList<AutoModCheckMessage> Data { get; init; } = [];
+    public IReadOnlyList<AutoModCheckMessage> Data { get; init => field = value ?? []; } = [];
 }
 
 public sealed class AutoModCheckMessage
@@ -57,9 +57,9 @@ public sealed class AutoModSettings
 public sealed class UpdateAutoModSettingsRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     [JsonIgnore]
-    public string ModeratorId { get; init; } = "";
+    public string ModeratorId { get; init => field = value ?? ""; } = "";
     public int? OverallLevel { get; init; }
     public int? Disability { get; init; }
     public int? Aggression { get; init; }
@@ -75,7 +75,7 @@ public sealed record GetBannedUsersRequest
 {
     public required string BroadcasterId { get; init; }
     /// <summary>Up to 100 user IDs; results keep the requested order.</summary>
-    public IReadOnlyList<string> UserIds { get; init; } = [];
+    public IReadOnlyList<string> UserIds { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
     public string? Before { get; init; }
@@ -91,7 +91,7 @@ public sealed class BannedUser
     public DateTimeOffset? ExpiresAt { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
     /// <summary>Empty when the moderator gave no reason.</summary>
-    public string Reason { get; init; } = "";
+    public string Reason { get; init => field = value ?? ""; } = "";
     public required string ModeratorId { get; init; }
     public required string ModeratorLogin { get; init; }
     public required string ModeratorName { get; init; }
@@ -101,9 +101,9 @@ public sealed class BannedUser
 public sealed class BanUserRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     [JsonIgnore]
-    public string ModeratorId { get; init; } = "";
+    public string ModeratorId { get; init => field = value ?? ""; } = "";
     public required BanUserData Data { get; init; }
 }
 
@@ -163,7 +163,7 @@ public sealed class UnbanRequest
     public required string UserId { get; init; }
     public required string UserLogin { get; init; }
     public required string UserName { get; init; }
-    public string Text { get; init; } = "";
+    public string Text { get; init => field = value ?? ""; } = "";
     public required string Status { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
     [JsonConverter(typeof(EmptyStringAsNullDateTimeOffsetConverter))]
@@ -182,9 +182,9 @@ public sealed record GetBlockedTermsRequest
 public sealed class AddBlockedTermRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     [JsonIgnore]
-    public string ModeratorId { get; init; } = "";
+    public string ModeratorId { get; init => field = value ?? ""; } = "";
     /// <summary>2–500 characters. A wildcard (*) may appear only at the beginning or end of a word.</summary>
     public required string Text { get; init; }
 }

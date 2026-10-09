@@ -12,8 +12,8 @@ public sealed class GetBitsLeaderboardRequest
 
 public sealed class BitsLeaderboardResponse
 {
-    public IReadOnlyList<BitsLeaderboardEntry> Data { get; init; } = [];
-    public BitsLeaderboardDateRange DateRange { get; init; } = new();
+    public IReadOnlyList<BitsLeaderboardEntry> Data { get; init => field = value ?? []; } = [];
+    public BitsLeaderboardDateRange DateRange { get; init => field = value ?? new(); } = new();
     public int Total { get; init; }
 }
 
@@ -29,14 +29,14 @@ public sealed class BitsLeaderboardEntry
 /// <summary>Dates may be empty strings when started_at was not supplied.</summary>
 public sealed class BitsLeaderboardDateRange
 {
-    public string StartedAt { get; init; } = "";
-    public string EndedAt { get; init; } = "";
+    public string StartedAt { get; init => field = value ?? ""; } = "";
+    public string EndedAt { get; init => field = value ?? ""; } = "";
 }
 
 public sealed class Cheermote
 {
     public required string Prefix { get; init; }
-    public IReadOnlyList<CheermoteTier> Tiers { get; init; } = [];
+    public IReadOnlyList<CheermoteTier> Tiers { get; init => field = value ?? []; } = [];
     public required string Type { get; init; }
     public int Order { get; init; }
     public DateTimeOffset LastUpdated { get; init; }
@@ -48,27 +48,27 @@ public sealed class CheermoteTier
     public int MinBits { get; init; }
     public required string Id { get; init; }
     public required string Color { get; init; }
-    public CheermoteImages Images { get; init; } = new();
+    public CheermoteImages Images { get; init => field = value ?? new(); } = new();
     public bool CanCheer { get; init; }
     public bool ShowInBitsCard { get; init; }
 }
 
 public sealed class CheermoteImages
 {
-    public CheermoteImageFormats Dark { get; init; } = new();
-    public CheermoteImageFormats Light { get; init; } = new();
+    public CheermoteImageFormats Dark { get; init => field = value ?? new(); } = new();
+    public CheermoteImageFormats Light { get; init => field = value ?? new(); } = new();
 }
 
 public sealed class CheermoteImageFormats
 {
-    public IReadOnlyDictionary<string, string> Animated { get; init; } = new Dictionary<string, string>();
-    public IReadOnlyDictionary<string, string> Static { get; init; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> Animated { get; init => field = value ?? new Dictionary<string, string>(); } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> Static { get; init => field = value ?? new Dictionary<string, string>(); } = new Dictionary<string, string>();
 }
 
 public sealed record GetExtensionTransactionsRequest
 {
     public required string ExtensionId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }
@@ -96,7 +96,7 @@ public sealed class ExtensionTransactionProduct
     public bool InDevelopment { get; init; }
     [JsonPropertyName("displayName")]
     public required string DisplayName { get; init; }
-    public string Expiration { get; init; } = "";
+    public string Expiration { get; init => field = value ?? ""; } = "";
     public bool Broadcast { get; init; }
 }
 

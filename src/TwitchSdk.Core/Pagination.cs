@@ -9,7 +9,7 @@ public sealed class Pagination
 
 public sealed class HelixPage<T>
 {
-    public IReadOnlyList<T> Data { get; init; } = [];
+    public IReadOnlyList<T> Data { get; init => field = value ?? []; } = [];
     public Pagination? Pagination { get; init; }
     public int? Total { get; init; }
 }

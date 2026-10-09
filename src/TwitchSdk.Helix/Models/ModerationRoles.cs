@@ -22,7 +22,7 @@ public sealed record GetModeratorsRequest
 {
     public required string BroadcasterId { get; init; }
     /// <summary>Up to 100 user IDs. Only users who are moderators are returned, in the requested order.</summary>
-    public IReadOnlyList<string> UserIds { get; init; } = [];
+    public IReadOnlyList<string> UserIds { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }
@@ -38,7 +38,7 @@ public sealed record GetVipsRequest
 {
     public required string BroadcasterId { get; init; }
     /// <summary>Up to 100 user IDs. Users that are not VIPs are ignored.</summary>
-    public IReadOnlyList<string> UserIds { get; init; } = [];
+    public IReadOnlyList<string> UserIds { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }
@@ -59,9 +59,9 @@ public sealed class ShieldModeStatus
 {
     public bool IsActive { get; init; }
     /// <summary>The moderator that last activated Shield Mode; empty if it was never activated.</summary>
-    public string ModeratorId { get; init; } = "";
-    public string ModeratorLogin { get; init; } = "";
-    public string ModeratorName { get; init; } = "";
+    public string ModeratorId { get; init => field = value ?? ""; } = "";
+    public string ModeratorLogin { get; init => field = value ?? ""; } = "";
+    public string ModeratorName { get; init => field = value ?? ""; } = "";
     /// <summary>Null when Twitch sends an empty string because Shield Mode was never activated.</summary>
     [JsonConverter(typeof(EmptyStringAsNullDateTimeOffsetConverter))]
     public DateTimeOffset? LastActivatedAt { get; init; }
@@ -104,5 +104,5 @@ public sealed class SuspiciousChatUserStatus
     /// <summary>ACTIVE_MONITORING or RESTRICTED after adding; NO_TREATMENT after removal. Kept as a string for new values.</summary>
     public required string Status { get; init; }
     /// <summary>For example MANUALLY_ADDED, DETECTED_BAN_EVADER, DETECTED_SUS_CHATTER or BANNED_IN_SHARED_CHANNEL.</summary>
-    public IReadOnlyList<string> Types { get; init; } = [];
+    public IReadOnlyList<string> Types { get; init => field = value ?? []; } = [];
 }

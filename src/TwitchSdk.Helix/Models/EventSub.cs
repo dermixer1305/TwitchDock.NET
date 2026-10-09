@@ -40,7 +40,7 @@ public sealed class EventSubSubscription
     public required string Status { get; init; }
     public required string Type { get; init; }
     public required string Version { get; init; }
-    public IReadOnlyDictionary<string, string> Condition { get; init; } = new Dictionary<string, string>();
+    public IReadOnlyDictionary<string, string> Condition { get; init => field = value ?? new Dictionary<string, string>(); } = new Dictionary<string, string>();
     public DateTimeOffset CreatedAt { get; init; }
     public required EventSubTransport Transport { get; init; }
     public int Cost { get; init; }
@@ -48,7 +48,7 @@ public sealed class EventSubSubscription
 
 public sealed class EventSubSubscriptionsResponse
 {
-    public IReadOnlyList<EventSubSubscription> Data { get; init; } = [];
+    public IReadOnlyList<EventSubSubscription> Data { get; init => field = value ?? []; } = [];
     public int Total { get; init; }
     public int TotalCost { get; init; }
     public int MaxTotalCost { get; init; }

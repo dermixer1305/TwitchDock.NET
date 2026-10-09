@@ -3,7 +3,7 @@ namespace TwitchSdk.Helix.Models;
 public sealed record GetPollsRequest
 {
     public required string BroadcasterId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }
@@ -37,7 +37,7 @@ public sealed class TwitchPoll
     public required string BroadcasterName { get; init; }
     public required string BroadcasterLogin { get; init; }
     public required string Title { get; init; }
-    public IReadOnlyList<PollChoice> Choices { get; init; } = [];
+    public IReadOnlyList<PollChoice> Choices { get; init => field = value ?? []; } = [];
     /// <summary>Unused by Twitch; always false.</summary>
     public bool BitsVotingEnabled { get; init; }
     /// <summary>Unused by Twitch; always zero.</summary>

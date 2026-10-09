@@ -12,9 +12,9 @@ public sealed class ChatMessage
     public required string ChatterUserName { get; init; }
     public required string MessageId { get; init; }
     public required ChatMessageContent Message { get; init; }
-    public string Color { get; init; } = "";
-    public IReadOnlyList<ChatBadge> Badges { get; init; } = [];
-    public string MessageType { get; init; } = "";
+    public string Color { get; init => field = value ?? ""; } = "";
+    public IReadOnlyList<ChatBadge> Badges { get; init => field = value ?? []; } = [];
+    public string MessageType { get; init => field = value ?? ""; } = "";
     public ChatCheer? Cheer { get; init; }
     public ChatReply? Reply { get; init; }
     public string? ChannelPointsCustomRewardId { get; init; }
@@ -29,7 +29,7 @@ public sealed class ChatMessage
 public sealed class ChatMessageContent
 {
     public required string Text { get; init; }
-    public IReadOnlyList<ChatFragment> Fragments { get; init; } = [];
+    public IReadOnlyList<ChatFragment> Fragments { get; init => field = value ?? []; } = [];
 }
 
 public sealed class ChatFragment
@@ -52,7 +52,7 @@ public sealed class ChatBadge
 {
     public required string SetId { get; init; }
     public required string Id { get; init; }
-    public string Info { get; init; } = "";
+    public string Info { get; init => field = value ?? ""; } = "";
 }
 public sealed class ChatCheer { public int Bits { get; init; } }
 public sealed class ChatCheermote
@@ -66,7 +66,7 @@ public sealed class ChatEmote
     public required string Id { get; init; }
     public required string EmoteSetId { get; init; }
     public required string OwnerId { get; init; }
-    public IReadOnlyList<string> Format { get; init; } = [];
+    public IReadOnlyList<string> Format { get; init => field = value ?? []; } = [];
 }
 public sealed class ChatMention
 {

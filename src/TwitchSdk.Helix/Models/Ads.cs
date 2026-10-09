@@ -9,7 +9,7 @@ public sealed class StartCommercialRequest
 public sealed class CommercialResult
 {
     public int Length { get; init; }
-    public string Message { get; init; } = "";
+    public string Message { get; init => field = value ?? ""; } = "";
     public int RetryAfter { get; init; }
 }
 

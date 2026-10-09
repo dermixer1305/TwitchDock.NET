@@ -17,8 +17,8 @@ public enum OpenIdResponseType
 /// <summary>Optional claims to request: email, email_verified, picture, preferred_username, updated_at.</summary>
 public sealed class OpenIdClaimsRequest
 {
-    public IReadOnlyList<string> IdToken { get; init; } = [];
-    public IReadOnlyList<string> UserInfo { get; init; } = [];
+    public IReadOnlyList<string> IdToken { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> UserInfo { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>The UserInfo endpoint response. Optional claims are present only when requested and granted.</summary>

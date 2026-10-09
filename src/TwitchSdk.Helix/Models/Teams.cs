@@ -24,7 +24,7 @@ public sealed class ChannelTeam
 
 public sealed class TwitchTeam
 {
-    public IReadOnlyList<TeamMember> Users { get; init; } = [];
+    public IReadOnlyList<TeamMember> Users { get; init => field = value ?? []; } = [];
     public string? BackgroundImageUrl { get; init; }
     public string? Banner { get; init; }
     public DateTimeOffset CreatedAt { get; init; }

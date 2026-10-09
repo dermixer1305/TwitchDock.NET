@@ -28,7 +28,7 @@ public sealed record GetClipsRequest
 {
     public string? BroadcasterId { get; init; }
     public string? GameId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public DateTimeOffset? StartedAt { get; init; }
     public DateTimeOffset? EndedAt { get; init; }
     public int? First { get; init; }

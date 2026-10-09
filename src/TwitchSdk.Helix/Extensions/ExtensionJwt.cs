@@ -121,7 +121,7 @@ internal sealed class ExtensionJwtPayload
 
 internal sealed class ExtensionJwtPubSubPermissions
 {
-    public IReadOnlyList<string> Send { get; init; } = [];
+    public IReadOnlyList<string> Send { get; init => field = value ?? []; } = [];
 }
 
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull)]

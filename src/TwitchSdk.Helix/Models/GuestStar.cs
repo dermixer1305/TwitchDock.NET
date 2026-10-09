@@ -34,7 +34,7 @@ public sealed class GuestStarSession
 {
     public required string Id { get; init; }
     /// <summary>Guests currently interacting with the session; on creation it contains only the broadcaster.</summary>
-    public IReadOnlyList<GuestStarGuest> Guests { get; init; } = [];
+    public IReadOnlyList<GuestStarGuest> Guests { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>A guest's slot assignment within a Guest Star session.</summary>

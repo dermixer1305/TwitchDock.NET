@@ -33,8 +33,8 @@ public sealed class ChannelSearchResult
     public required string Id { get; init; }
     public bool IsLive { get; init; }
     /// <summary>Deprecated by Twitch; use Tags.</summary>
-    public IReadOnlyList<string> TagIds { get; init; } = [];
-    public IReadOnlyList<string> Tags { get; init; } = [];
+    public IReadOnlyList<string> TagIds { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Tags { get; init => field = value ?? []; } = [];
     public required string ThumbnailUrl { get; init; }
     public required string Title { get; init; }
     /// <summary>RFC3339 timestamp or an empty string when the channel is offline.</summary>

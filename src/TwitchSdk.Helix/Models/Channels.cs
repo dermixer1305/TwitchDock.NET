@@ -5,7 +5,7 @@ namespace TwitchSdk.Helix.Models;
 public sealed class ModifyChannelInformationRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     public string? GameId { get; init; }
     public string? BroadcasterLanguage { get; init; }
     public string? Title { get; init; }
@@ -65,12 +65,12 @@ public sealed class ChannelInformation
     public required string BroadcasterId { get; init; }
     public required string BroadcasterLogin { get; init; }
     public required string BroadcasterName { get; init; }
-    public string BroadcasterLanguage { get; init; } = "";
-    public string GameId { get; init; } = "";
-    public string GameName { get; init; } = "";
-    public string Title { get; init; } = "";
+    public string BroadcasterLanguage { get; init => field = value ?? ""; } = "";
+    public string GameId { get; init => field = value ?? ""; } = "";
+    public string GameName { get; init => field = value ?? ""; } = "";
+    public string Title { get; init => field = value ?? ""; } = "";
     public uint Delay { get; init; }
-    public IReadOnlyList<string> Tags { get; init; } = [];
-    public IReadOnlyList<string> ContentClassificationLabels { get; init; } = [];
+    public IReadOnlyList<string> Tags { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> ContentClassificationLabels { get; init => field = value ?? []; } = [];
     public bool IsBrandedContent { get; init; }
 }

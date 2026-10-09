@@ -34,7 +34,7 @@ public sealed class UpdateCustomRewardRequest : CustomRewardOptions
 public sealed class GetCustomRewardsRequest
 {
     public required string BroadcasterId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public bool? OnlyManageableRewards { get; init; }
 }
 
@@ -45,16 +45,16 @@ public sealed class CustomReward
     public required string BroadcasterName { get; init; }
     public required string Id { get; init; }
     public required string Title { get; init; }
-    public string Prompt { get; init; } = "";
+    public string Prompt { get; init => field = value ?? ""; } = "";
     public long Cost { get; init; }
     public RewardImages? Image { get; init; }
     public required RewardImages DefaultImage { get; init; }
     public required string BackgroundColor { get; init; }
     public bool IsEnabled { get; init; }
     public bool IsUserInputRequired { get; init; }
-    public RewardMaxPerStreamSetting MaxPerStreamSetting { get; init; } = new();
-    public RewardMaxPerUserPerStreamSetting MaxPerUserPerStreamSetting { get; init; } = new();
-    public RewardGlobalCooldownSetting GlobalCooldownSetting { get; init; } = new();
+    public RewardMaxPerStreamSetting MaxPerStreamSetting { get; init => field = value ?? new(); } = new();
+    public RewardMaxPerUserPerStreamSetting MaxPerUserPerStreamSetting { get; init => field = value ?? new(); } = new();
+    public RewardGlobalCooldownSetting GlobalCooldownSetting { get; init => field = value ?? new(); } = new();
     public bool IsPaused { get; init; }
     public bool IsInStock { get; init; }
     public bool ShouldRedemptionsSkipRequestQueue { get; init; }
@@ -95,7 +95,7 @@ public sealed record GetCustomRewardRedemptionsRequest
     public required string BroadcasterId { get; init; }
     public required string RewardId { get; init; }
     public string? Status { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public string? Sort { get; init; }
     public string? After { get; init; }
     public int? First { get; init; }
@@ -104,11 +104,11 @@ public sealed record GetCustomRewardRedemptionsRequest
 public sealed class UpdateRedemptionStatusRequest
 {
     [JsonIgnore]
-    public string BroadcasterId { get; init; } = "";
+    public string BroadcasterId { get; init => field = value ?? ""; } = "";
     [JsonIgnore]
-    public string RewardId { get; init; } = "";
+    public string RewardId { get; init => field = value ?? ""; } = "";
     [JsonIgnore]
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public required string Status { get; init; }
 }
 
@@ -121,7 +121,7 @@ public sealed class CustomRewardRedemption
     public required string UserLogin { get; init; }
     public required string UserId { get; init; }
     public required string UserName { get; init; }
-    public string UserInput { get; init; } = "";
+    public string UserInput { get; init => field = value ?? ""; } = "";
     public required string Status { get; init; }
     public DateTimeOffset RedeemedAt { get; init; }
     public required RedeemedReward Reward { get; init; }
@@ -131,6 +131,6 @@ public sealed class RedeemedReward
 {
     public required string Id { get; init; }
     public required string Title { get; init; }
-    public string Prompt { get; init; } = "";
+    public string Prompt { get; init => field = value ?? ""; } = "";
     public long Cost { get; init; }
 }

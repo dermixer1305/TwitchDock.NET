@@ -3,7 +3,7 @@ namespace TwitchSdk.Core;
 public sealed class TwitchHttpOptions
 {
     public required string ClientId { get; init; }
-    public Uri BaseAddress { get; init; } = new("https://api.twitch.tv/helix/");
+    public Uri BaseAddress { get; init => field = value ?? new("https://api.twitch.tv/helix/"); } = new("https://api.twitch.tv/helix/");
     public int MaxRateLimitRetries { get; init; } = 2;
     public int MaxTransientRetries { get; init; } = 2;
     public TimeSpan MaxRetryDelay { get; init; } = TimeSpan.FromMinutes(2);

@@ -15,7 +15,7 @@ public sealed class ChannelUpdateEvent
     public required string CategoryId { get; init; }
     public required string CategoryName { get; init; }
     /// <summary>IDs of the content classification labels currently applied to the channel.</summary>
-    public IReadOnlyList<string> ContentClassificationLabels { get; init; } = [];
+    public IReadOnlyList<string> ContentClassificationLabels { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>channel.follow v2: a user followed the channel.</summary>
@@ -287,7 +287,7 @@ public sealed class ChannelModerateAutomodTerms
     public required string Action { get; init; }
     /// <summary>blocked or permitted.</summary>
     public required string List { get; init; }
-    public IReadOnlyList<string> Terms { get; init; } = [];
+    public IReadOnlyList<string> Terms { get; init => field = value ?? []; } = [];
     /// <summary>True when the terms changed because of an AutoMod message approve or deny action.</summary>
     public bool FromAutomod { get; init; }
 }

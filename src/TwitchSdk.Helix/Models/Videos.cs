@@ -2,7 +2,7 @@ namespace TwitchSdk.Helix.Models;
 
 public sealed record GetVideosRequest
 {
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public string? UserId { get; init; }
     public string? GameId { get; init; }
     public string? Language { get; init; }

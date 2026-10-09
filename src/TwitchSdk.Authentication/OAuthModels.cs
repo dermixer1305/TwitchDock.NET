@@ -8,8 +8,8 @@ public sealed class OAuthTokenResponse
     [JsonPropertyName("access_token")] public required string AccessToken { get; init; }
     public string? RefreshToken { get; init; }
     public int ExpiresIn { get; init; }
-    public IReadOnlyList<string> Scope { get; init; } = [];
-    public string TokenType { get; init; } = "bearer";
+    public IReadOnlyList<string> Scope { get; init => field = value ?? []; } = [];
+    public string TokenType { get; init => field = value ?? "bearer"; } = "bearer";
     /// <summary>Present for authorization-code grants that requested the openid scope. Validate with ValidateIdTokenAsync.</summary>
     public string? IdToken { get; init; }
     [JsonIgnore] public TwitchTokenKind Kind { get; internal set; }
@@ -22,7 +22,7 @@ public sealed class TokenValidation
     public required string ClientId { get; init; }
     public string? Login { get; init; }
     public string? UserId { get; init; }
-    public IReadOnlyList<string> Scopes { get; init; } = [];
+    public IReadOnlyList<string> Scopes { get; init => field = value ?? []; } = [];
     public int ExpiresIn { get; init; }
     public AccessToken ToAccessToken(string value, TimeProvider? timeProvider = null)
         => new(value, (timeProvider ?? TimeProvider.System).GetUtcNow().AddSeconds(ExpiresIn), Scopes,
@@ -64,7 +64,7 @@ internal sealed class IdTokenPayload
 
 internal sealed class JsonWebKeySet
 {
-    public IReadOnlyList<JsonWebKey> Keys { get; init; } = [];
+    public IReadOnlyList<JsonWebKey> Keys { get; init => field = value ?? []; } = [];
 }
 
 internal sealed class JsonWebKey

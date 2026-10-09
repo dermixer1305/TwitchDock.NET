@@ -2,9 +2,9 @@ namespace TwitchSdk.Helix.Models;
 
 public sealed record GetGamesRequest
 {
-    public IReadOnlyList<string> Ids { get; init; } = [];
-    public IReadOnlyList<string> Names { get; init; } = [];
-    public IReadOnlyList<string> IgdbIds { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> Names { get; init => field = value ?? []; } = [];
+    public IReadOnlyList<string> IgdbIds { get; init => field = value ?? []; } = [];
 }
 
 public sealed record GetTopGamesRequest

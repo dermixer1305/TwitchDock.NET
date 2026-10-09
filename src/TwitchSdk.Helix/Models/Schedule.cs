@@ -6,7 +6,7 @@ namespace TwitchSdk.Helix.Models;
 public sealed record GetChannelStreamScheduleRequest
 {
     public required string BroadcasterId { get; init; }
-    public IReadOnlyList<string> Ids { get; init; } = [];
+    public IReadOnlyList<string> Ids { get; init => field = value ?? []; } = [];
     public DateTimeOffset? StartTime { get; init; }
     public int? First { get; init; }
     public string? After { get; init; }
@@ -20,7 +20,7 @@ public sealed class ChannelStreamScheduleResponse
 
 public sealed class ChannelStreamSchedule
 {
-    public IReadOnlyList<ScheduleSegment> Segments { get; init; } = [];
+    public IReadOnlyList<ScheduleSegment> Segments { get; init => field = value ?? []; } = [];
     public required string BroadcasterId { get; init; }
     public required string BroadcasterName { get; init; }
     public required string BroadcasterLogin { get; init; }
@@ -32,7 +32,7 @@ public sealed class ScheduleSegment
     public required string Id { get; init; }
     public DateTimeOffset StartTime { get; init; }
     public DateTimeOffset EndTime { get; init; }
-    public string Title { get; init; } = "";
+    public string Title { get; init => field = value ?? ""; } = "";
     public DateTimeOffset? CanceledUntil { get; init; }
     public ScheduleCategory? Category { get; init; }
     public bool IsRecurring { get; init; }

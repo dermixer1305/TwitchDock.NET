@@ -22,9 +22,9 @@ public sealed class EventSubSubscriptionSpec
     public required string Version { get; init; }
     public required IReadOnlyDictionary<string, string> Condition { get; init; }
     /// <summary>Scopes the authorizing user must have granted (all of them).</summary>
-    public IReadOnlyList<string> RequiredScopes { get; init; } = [];
+    public IReadOnlyList<string> RequiredScopes { get; init => field = value ?? []; } = [];
     /// <summary>When nonempty, the authorizing user must also have granted at least one of these scopes.</summary>
-    public IReadOnlyList<string> AnyOfScopes { get; init; } = [];
+    public IReadOnlyList<string> AnyOfScopes { get; init => field = value ?? []; } = [];
     /// <summary>The condition user whose token must authorize a WebSocket subscription; null when no specific user is required.</summary>
     public string? AuthorizingUserId { get; init; }
     public EventSubTransports Transports { get; init; } = EventSubTransports.All;
