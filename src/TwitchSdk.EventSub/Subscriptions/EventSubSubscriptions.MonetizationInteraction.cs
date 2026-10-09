@@ -44,26 +44,31 @@ public static partial class EventSubSubscriptions
         => MonetizationInteractionSpecs.Broadcaster("channel.channel_points_custom_reward.add", "1", broadcasterUserId, anyOf: MonetizationInteractionSpecs.Redemptions());
 
     /// <summary>channel.channel_points_custom_reward.update v1. Authorization: channel:read:redemptions or channel:manage:redemptions.</summary>
+    /// <param name="broadcasterUserId">The broadcaster whose channel is monitored; their token authorizes WebSocket subscriptions.</param>
     /// <param name="rewardId">Optional reward ID that limits notifications to one reward.</param>
     public static EventSubSubscriptionSpec ChannelPointsCustomRewardUpdateV1(string broadcasterUserId, string? rewardId = null)
         => MonetizationInteractionSpecs.Broadcaster("channel.channel_points_custom_reward.update", "1", broadcasterUserId, rewardId, anyOf: MonetizationInteractionSpecs.Redemptions());
 
     /// <summary>channel.channel_points_custom_reward.remove v1. Authorization: channel:read:redemptions or channel:manage:redemptions.</summary>
+    /// <param name="broadcasterUserId">The broadcaster whose channel is monitored; their token authorizes WebSocket subscriptions.</param>
     /// <param name="rewardId">Optional reward ID that limits notifications to one reward.</param>
     public static EventSubSubscriptionSpec ChannelPointsCustomRewardRemoveV1(string broadcasterUserId, string? rewardId = null)
         => MonetizationInteractionSpecs.Broadcaster("channel.channel_points_custom_reward.remove", "1", broadcasterUserId, rewardId, anyOf: MonetizationInteractionSpecs.Redemptions());
 
     /// <summary>channel.channel_points_custom_reward_redemption.add v1. Authorization: channel:read:redemptions or channel:manage:redemptions.</summary>
+    /// <param name="broadcasterUserId">The broadcaster whose channel is monitored; their token authorizes WebSocket subscriptions.</param>
     /// <param name="rewardId">Optional reward ID that limits notifications to one reward.</param>
     public static EventSubSubscriptionSpec ChannelPointsCustomRewardRedemptionAddV1(string broadcasterUserId, string? rewardId = null)
         => MonetizationInteractionSpecs.Broadcaster("channel.channel_points_custom_reward_redemption.add", "1", broadcasterUserId, rewardId, anyOf: MonetizationInteractionSpecs.Redemptions());
 
     /// <summary>channel.channel_points_custom_reward_redemption.update v1. Authorization: channel:read:redemptions or channel:manage:redemptions.</summary>
+    /// <param name="broadcasterUserId">The broadcaster whose channel is monitored; their token authorizes WebSocket subscriptions.</param>
     /// <param name="rewardId">Optional reward ID that limits notifications to one reward.</param>
     public static EventSubSubscriptionSpec ChannelPointsCustomRewardRedemptionUpdateV1(string broadcasterUserId, string? rewardId = null)
         => MonetizationInteractionSpecs.Broadcaster("channel.channel_points_custom_reward_redemption.update", "1", broadcasterUserId, rewardId, anyOf: MonetizationInteractionSpecs.Redemptions());
 
     /// <summary>channel.custom_power_up_redemption.add v1. Authorization: bits:read.</summary>
+    /// <param name="broadcasterUserId">The broadcaster whose channel is monitored; their token authorizes WebSocket subscriptions.</param>
     /// <param name="rewardId">Optional custom Power-up ID that limits notifications to one Power-up.</param>
     public static EventSubSubscriptionSpec ChannelCustomPowerUpRedemptionAddV1(string broadcasterUserId, string? rewardId = null)
         => MonetizationInteractionSpecs.Broadcaster("channel.custom_power_up_redemption.add", "1", broadcasterUserId, rewardId, required: [TwitchScopes.BitsRead]);

@@ -8,7 +8,8 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
-    <Version>0.1.0-alpha.1</Version>
+    <!-- Release candidate: every generally available API meets the definition of done; live-credential verification and publication remain. -->
+    <Version>1.0.0-rc.1</Version>
     <Authors>TwitchSdk contributors</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,6 +20,9 @@
   <!-- Library projects: enable trimming, single-file and native AOT analyzers (warnings fail the build). -->
   <PropertyGroup Condition="$(MSBuildProjectDirectory.Replace('\', '/').Contains('/src/'))">
     <IsAotCompatible>true</IsAotCompatible>
+    <!-- Ship XML documentation for IntelliSense; not every self-describing member carries a summary. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <ItemGroup Condition="'$(IsPackable)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />

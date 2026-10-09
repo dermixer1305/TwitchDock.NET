@@ -31,6 +31,7 @@ public sealed class EventSubWebSocketClient
 
     /// <param name="onSession">Create subscriptions promptly when resubscribe is true. False indicates a Twitch session migration.</param>
     /// <param name="onMessage">Handle notifications and revocations. Exceptions stop the client and propagate to its host.</param>
+    /// <param name="cancellationToken">Stops the client and closes the connection.</param>
     public async Task RunAsync(Func<EventSubSession, bool, CancellationToken, Task> onSession,
         Func<EventSubMessage, CancellationToken, Task> onMessage, CancellationToken cancellationToken = default)
     {
