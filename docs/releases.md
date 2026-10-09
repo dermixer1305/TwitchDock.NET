@@ -60,7 +60,7 @@ One-time setup by the maintainer:
 
 1. Sign in to [nuget.org](https://www.nuget.org/) and confirm that all six `TwitchDock.*` package IDs are free or owned by you. Do not assume a prefix is reserved; an ID prefix reservation can be requested separately.
 2. On nuget.org open **Trusted Publishing** and add a GitHub Actions policy: owner `dermixer1305`, repository `TwitchDock.NET`, workflow file `release.yml`, environment `nuget`.
-3. In the GitHub repository open **Settings → Environments**, create `nuget`, add yourself as a required reviewer and limit deployments to tags matching `v*`.
+3. In the GitHub repository open **Settings → Environments**, create `nuget`, add yourself as a required reviewer and limit deployments to tags matching `v*` plus the `main` branch (manual runs for an existing tag start from `main`).
 4. Under **Settings → Secrets and variables → Actions → Variables** add `NUGET_USER` (your nuget.org user name, not your e-mail address) and `NUGET_PUBLISH` with the value `true`.
 
 From then on each version tag creates the GitHub release first; the `nuget` job then waits for your approval in the workflow run and pushes the packages. To publish an earlier GitHub release (for example `v1.0.0-rc.1`), run the **Release** workflow manually under **Actions** and enter the tag. Reruns are safe because versions that already exist are skipped.
