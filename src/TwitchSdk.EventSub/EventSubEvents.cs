@@ -53,6 +53,27 @@ public static partial class EventSubEvents
         // <group:monetization-interaction>
         // </group:monetization-interaction>
         // <group:community-system>
+        yield return ChannelCharityCampaignDonateV1;
+        yield return ChannelCharityCampaignStartV1;
+        yield return ChannelCharityCampaignProgressV1;
+        yield return ChannelCharityCampaignStopV1;
+        yield return ChannelGoalBeginV1;
+        yield return ChannelGoalProgressV1;
+        yield return ChannelGoalEndV1;
+        yield return ChannelHypeTrainBeginV2;
+        yield return ChannelHypeTrainProgressV2;
+        yield return ChannelHypeTrainEndV2;
+        yield return UserAuthorizationGrantV1;
+        yield return UserAuthorizationRevokeV1;
+        yield return UserUpdateV1;
+        yield return UserWhisperMessageV1;
+        yield return ConduitShardDisabledV1;
+        yield return DropEntitlementGrantV1;
+        yield return ExtensionBitsTransactionCreateV1;
+        yield return ChannelGuestStarSessionBeginBeta;
+        yield return ChannelGuestStarSessionEndBeta;
+        yield return ChannelGuestStarGuestUpdateBeta;
+        yield return ChannelGuestStarSettingsUpdateBeta;
         // </group:community-system>
     }
 }
