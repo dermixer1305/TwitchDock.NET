@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.WebSockets;
 using System.Text.Json;
 
@@ -12,7 +13,14 @@ public interface IEventSubConnection : IAsyncDisposable
 public sealed class ClientWebSocketConnection : IEventSubConnection
 {
     private readonly ClientWebSocket _socket = new();
-    public Task ConnectAsync(Uri uri, CancellationToken cancellationToken) => _socket.ConnectAsync(uri, cancellationToken);
+
+    /// <summary>Connects over wss://. Plain ws:// is only accepted for a loopback IP address or exactly localhost.</summary>
+    public Task ConnectAsync(Uri uri, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(uri);
+        if (!IsAllowedEndpoint(uri)) throw new ArgumentException("EventSub connections require wss://, or ws:// on a loopback IP address or localhost.", nameof(uri));
+        return _socket.ConnectAsync(uri, cancellationToken);
+    }
 
     public async Task<EventSubMessage> ReceiveAsync(CancellationToken cancellationToken)
     {
@@ -30,4 +38,18 @@ public sealed class ClientWebSocketConnection : IEventSubConnection
     }
 
     public ValueTask DisposeAsync() { _socket.Dispose(); return ValueTask.CompletedTask; }
+
+    /// <summary>
+    /// An absolute wss:// URI, or ws:// whose host is an IP-literal loopback address or the host name localhost (Uri also
+    /// normalizes "loopback" to it), without user info.
+    /// </summary>
+    internal static bool IsAllowedEndpoint(Uri uri)
+        => uri.IsAbsoluteUri && string.IsNullOrEmpty(uri.UserInfo) && (uri.Scheme == "wss" || (uri.Scheme == "ws" && IsLoopbackHost(uri)));
+
+    private static bool IsLoopbackHost(Uri uri) => uri.HostNameType switch
+    {
+        UriHostNameType.IPv4 or UriHostNameType.IPv6 => IPAddress.TryParse(uri.DnsSafeHost, out var address) && IPAddress.IsLoopback(address),
+        UriHostNameType.Dns => string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase),
+        _ => false,
+    };
 }

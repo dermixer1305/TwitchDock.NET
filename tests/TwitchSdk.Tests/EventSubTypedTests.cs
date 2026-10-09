@@ -183,6 +183,87 @@ public sealed class EventSubTypedTests
     }
 
     [Fact]
+    public async Task RouterReportsPoisonEventsInsteadOfThrowingAndKeepsHandlerExceptions()
+    {
+        var reported = new List<(string Type, string Message)>();
+        var handled = 0;
+        var router = new EventSubEventRouter()
+            .On(EventSubEvents.StreamOnlineV1, (_, _, _) => { handled++; return Task.CompletedTask; })
+            .On(EventSubEvents.StreamOfflineV1, (_, _, _) => throw new InvalidOperationException("handler failure"))
+            .OnDeserializationError((payload, error, _) => { reported.Add((payload.Subscription!.Type, error.Message)); return Task.CompletedTask; });
+        Assert.True(await router.DispatchAsync(Notification("stream.online", "1", """{"id":42}""")));
+        Assert.True(await router.DispatchAsync(Notification("stream.online", "1", "null")));
+        Assert.Equal(0, handled);
+        Assert.Equal(["stream.online", "stream.online"], reported.Select(r => r.Type));
+        Assert.Throws<InvalidOperationException>(() => router.OnDeserializationError((_, _, _) => Task.CompletedTask));
+        // Exceptions from typed handlers are not deserialization errors and still propagate.
+        await Assert.ThrowsAsync<InvalidOperationException>(() => router.DispatchAsync(Notification("stream.offline", "1", ContractAssertions.Fixture("eventsub-stream.json", "stream.offline@1"))));
+        // Without the hook a poison event is dropped rather than thrown.
+        Assert.True(await new EventSubEventRouter().On(EventSubEvents.StreamOnlineV1, (_, _, _) => Task.CompletedTask).DispatchAsync(Notification("stream.online", "1", "[]")));
+    }
+
+    [Fact]
+    public async Task WebhookAcknowledgesPoisonEventsSoTwitchStopsRetrying()
+    {
+        var reported = 0;
+        var router = new EventSubEventRouter()
+            .On(EventSubEvents.StreamOnlineV1, (_, _, _) => throw new InvalidOperationException("must not run"))
+            .OnDeserializationError((_, _, _) => { reported++; return Task.CompletedTask; });
+        var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(Secret, new FixedTime()), router);
+        var poison = Request("notification", """{"subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":{"id":42}}""");
+        Assert.Equal(204, (await handler.HandleAsync(poison)).StatusCode);
+        Assert.Equal(204, (await handler.HandleAsync(poison)).StatusCode);
+        Assert.Equal(1, reported);
+    }
+
+    [Theory]
+    // The message type header is not signed; it must agree with the signed body.
+    [InlineData("notification", """{"challenge":"c","subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":{}}""")]
+    [InlineData("notification", """{"subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0}}""")]
+    [InlineData("notification", """{"subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":null}""")]
+    [InlineData("notification", """{"challenge":"c"}""")]
+    [InlineData("revocation", """{"subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":{}}""")]
+    [InlineData("revocation", """{"challenge":"c","subscription":{"id":"s1","status":"authorization_revoked","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0}}""")]
+    [InlineData("revocation", """{}""")]
+    [InlineData("webhook_callback_verification", """{"subscription":{"id":"s1","status":"enabled","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":{}}""")]
+    public async Task WebhookRejectsAMessageTypeThatContradictsTheSignedBody(string messageType, string body)
+    {
+        var calls = 0;
+        var router = new EventSubEventRouter()
+            .On(EventSubEvents.StreamOnlineV1, (_, _, _) => { calls++; return Task.CompletedTask; })
+            .OnRevocation((_, _) => { calls++; return Task.CompletedTask; });
+        var dedupe = new MessageDeduplicator(timeProvider: new FixedTime());
+        var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(Secret, new FixedTime()), router, dedupe);
+        Assert.Equal(400, (await handler.HandleAsync(Request(messageType, body))).StatusCode);
+        Assert.Equal(0, calls);
+        // A rejected request does not consume its message ID.
+        Assert.True(dedupe.TryAdd("m1"));
+    }
+
+    [Fact]
+    public async Task WebhookDispatchesRevocationsWhoseSubscriptionIsNoLongerEnabled()
+    {
+        EventSubSubscription? revoked = null;
+        var router = new EventSubEventRouter().OnRevocation((subscription, _) => { revoked = subscription; return Task.CompletedTask; });
+        var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(Secret, new FixedTime()), router);
+        var response = await handler.HandleAsync(Request("revocation", """{"subscription":{"id":"s1","status":"authorization_revoked","type":"stream.online","version":"1","condition":{},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0}}"""));
+        Assert.Equal(204, response.StatusCode);
+        Assert.Equal("authorization_revoked", revoked!.Status);
+    }
+
+    [Fact]
+    public async Task FullFailClosedDeduplicatorAnswersServiceUnavailable()
+    {
+        var received = 0;
+        var router = new EventSubEventRouter().On(EventSubEvents.StreamOnlineV1, (_, _, _) => { received++; return Task.CompletedTask; });
+        var dedupe = new MessageDeduplicator(capacity: 1, timeProvider: new FixedTime(), throwWhenFull: true);
+        dedupe.TryAdd("earlier");
+        var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(Secret, new FixedTime()), router, dedupe);
+        Assert.Equal(503, (await handler.HandleAsync(Request("notification", WebhookNotification()))).StatusCode);
+        Assert.Equal(0, received);
+    }
+
+    [Fact]
     public void WebhookRequestReadsTwitchHeadersThroughHostLookup()
     {
         var headers = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { ["twitch-eventsub-message-id"] = "id", ["Twitch-Eventsub-Message-Type"] = "notification", ["Twitch-Eventsub-Message-Timestamp"] = Timestamp, ["Twitch-Eventsub-Message-Signature"] = "sha256=00" };

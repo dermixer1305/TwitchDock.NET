@@ -40,14 +40,17 @@ public sealed class EventSubWebhookResponse
 
 /// <summary>
 /// Verifies, deduplicates and dispatches webhook deliveries. Answers the callback verification challenge.
-/// Handler exceptions propagate after the message ID is released, so the host returns 5xx and Twitch retries.
-/// The default deduplicator is process-local; share a durable store across replicas.
+/// The Twitch-Eventsub-Message-Type header is not covered by the signature, so it must agree with the signed body (400 otherwise).
+/// Handler exceptions propagate after the message ID is released, so the host returns 5xx and Twitch retries. Events that do
+/// not match their typed model are acknowledged (see <see cref="EventSubEventRouter.OnDeserializationError"/>). A full
+/// fail-closed deduplicator answers 503. The default deduplicator is process-local; share a durable store across replicas.
 /// </summary>
 public sealed class EventSubWebhookHandler
 {
     private static readonly EventSubWebhookResponse NoContent = new() { StatusCode = 204 };
     private static readonly EventSubWebhookResponse BadRequest = new() { StatusCode = 400 };
     private static readonly EventSubWebhookResponse Forbidden = new() { StatusCode = 403 };
+    private static readonly EventSubWebhookResponse ServiceUnavailable = new() { StatusCode = 503 };
     private readonly EventSubWebhookVerifier _verifier;
     private readonly EventSubEventRouter _router;
     private readonly MessageDeduplicator _deduplicator;
@@ -71,8 +74,10 @@ public sealed class EventSubWebhookHandler
             case "webhook_callback_verification":
                 return string.IsNullOrEmpty(payload.Challenge) ? BadRequest : new() { StatusCode = 200, ContentType = "text/plain", Body = payload.Challenge };
             case "notification" or "revocation":
+                if (!MatchesSignedBody(request.MessageType, payload)) return BadRequest;
                 // A retry of an already accepted delivery is acknowledged without processing it twice.
-                if (!_deduplicator.TryAdd(request.MessageId)) return NoContent;
+                try { if (!_deduplicator.TryAdd(request.MessageId)) return NoContent; }
+                catch (EventSubDeduplicationException) { return ServiceUnavailable; }
                 try { await _router.DispatchAsync(request.MessageType, payload, cancellationToken).ConfigureAwait(false); }
                 catch { _deduplicator.Remove(request.MessageId); throw; }
                 return NoContent;
@@ -81,4 +86,12 @@ public sealed class EventSubWebhookHandler
                 return NoContent;
         }
     }
+
+    /// <summary>A notification carries an event (or batched events) and no challenge; a revocation carries a subscription that is no longer enabled.</summary>
+    private static bool MatchesSignedBody(string messageType, EventSubPayload payload) => messageType switch
+    {
+        "notification" => payload.Challenge is null && payload.Subscription is not null && payload.HasEventData,
+        "revocation" => payload.Challenge is null && payload.Subscription is { } subscription && !string.Equals(subscription.Status, "enabled", StringComparison.Ordinal),
+        _ => false,
+    };
 }

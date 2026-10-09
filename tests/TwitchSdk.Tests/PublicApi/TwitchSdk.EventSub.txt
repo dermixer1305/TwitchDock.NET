@@ -3,6 +3,8 @@ sealed class TwitchSdk.EventSub.ClientWebSocketConnection : System.IAsyncDisposa
     ConnectAsync(System.Uri uri, System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task
     DisposeAsync(): System.Threading.Tasks.ValueTask
     ReceiveAsync(System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task<TwitchSdk.EventSub.EventSubMessage>
+sealed class TwitchSdk.EventSub.EventSubDeduplicationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
+    .ctor(System.String message)
 sealed class TwitchSdk.EventSub.EventSubEventDefinition<TEvent> : TwitchSdk.EventSub.IEventSubEventDefinition
     .ctor(System.String type, System.String version, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TEvent> typeInfo)
     Deserialize(System.Text.Json.JsonElement element): TEvent
@@ -16,6 +18,7 @@ sealed class TwitchSdk.EventSub.EventSubEventRouter
     DispatchAsync(System.String messageType, TwitchSdk.EventSub.EventSubPayload payload, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<System.Boolean>
     DispatchAsync(TwitchSdk.EventSub.EventSubMessage message, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<System.Boolean>
     On<TEvent>(TwitchSdk.EventSub.EventSubEventDefinition<TEvent> definition, System.Func<TEvent, TwitchSdk.Helix.Models.EventSubSubscription, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchSdk.EventSub.EventSubEventRouter
+    OnDeserializationError(System.Func<TwitchSdk.EventSub.EventSubPayload, System.Text.Json.JsonException, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchSdk.EventSub.EventSubEventRouter
     OnRevocation(System.Func<TwitchSdk.Helix.Models.EventSubSubscription, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchSdk.EventSub.EventSubEventRouter
 static class TwitchSdk.EventSub.EventSubEvents
     static All: System.Collections.Generic.IReadOnlyCollection<TwitchSdk.EventSub.IEventSubEventDefinition> { get; }
@@ -1843,6 +1846,9 @@ interface TwitchSdk.EventSub.IEventSubEventDefinition
     Version: System.String { get; }
     abstract Deserialize(System.Text.Json.JsonElement element): System.Object
 sealed class TwitchSdk.EventSub.MessageDeduplicator
-    .ctor(System.TimeSpan? retention = null, System.Int32 capacity = 10000, System.TimeProvider timeProvider = null)
+    .ctor(System.TimeSpan? retention = null, System.Int32 capacity = 100000, System.TimeProvider timeProvider = null, System.Boolean throwWhenFull = false)
+    EvictedCount: System.Int64 { get; }
     Remove(System.String messageId): System.Void
     TryAdd(System.String messageId): System.Boolean
+    const DefaultCapacity: System.Int32 = 100000
+    static readonly DefaultRetention: System.TimeSpan
