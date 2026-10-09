@@ -31,6 +31,8 @@ public sealed class HelixClient(TwitchHttpClient transport)
     public ScheduleClient Schedule { get; } = new(transport);
     public ConduitsClient Conduits { get; } = new(transport);
     public HypeTrainClient HypeTrain { get; } = new(transport);
+    public ChatClient Chat { get; } = new(transport);
+    public ModerationClient Moderation { get; } = new(transport);
     // <group:moderation-a>
     // </group:moderation-a>
     // <group:moderation-b>
