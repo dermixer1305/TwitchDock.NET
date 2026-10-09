@@ -61,12 +61,15 @@ public sealed class TwitchHttpClient
     {
         ArgumentNullException.ThrowIfNull(method);
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
-        // Callers supply a Helix path, never a URI. This prevents sending bearer tokens to another origin.
-        if (path.StartsWith('/') || path.Contains(':') || path.Contains('\\') || path.Contains('?') || path.Contains('#') || path.Contains('%') || path.Split('/').Any(p => p is "." or ".."))
-            throw new ArgumentException("Expected a relative Helix endpoint path.", nameof(path));
+        // Callers supply a Helix path, never a URI. An allow-list (not a block-list: Uri trims leading whitespace and control
+        // characters, which turned " //host" into another origin) plus an origin check keeps bearer tokens on BaseAddress.
+        if (!IsHelixPath(path)) throw new ArgumentException("Expected a relative Helix endpoint path such as \"chat/settings\".", nameof(path));
         var encoded = query?.Where(p => p.Value is not null).Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value!)}");
         var suffix = encoded is null ? "" : string.Join("&", encoded);
         var uri = new Uri(_options.BaseAddress, path + (suffix.Length == 0 ? "" : "?" + suffix));
+        if (uri.Scheme != _options.BaseAddress.Scheme || !string.Equals(uri.Authority, _options.BaseAddress.Authority, StringComparison.OrdinalIgnoreCase)
+            || !uri.AbsolutePath.StartsWith(_options.BaseAddress.AbsolutePath, StringComparison.Ordinal))
+            throw new ArgumentException("The endpoint path resolved outside the configured base address.", nameof(path));
         var token = authenticated ? await _tokens.GetTokenAsync(ct).ConfigureAwait(false) : null;
         int rateRetries = 0, transientRetries = 0;
         bool refreshed = false;
@@ -145,6 +148,19 @@ public sealed class TwitchHttpClient
                 throw new TwitchApiException(response.StatusCode, error, message, requestId, existingSubscriptionId);
             }
         }
+    }
+
+    /// <summary>Segments of ASCII letters, digits, '_' and '-', separated by single '/' without a leading or trailing slash.</summary>
+    internal static bool IsHelixPath(string path)
+    {
+        if (path.Length == 0 || path[0] == '/' || path[^1] == '/') return false;
+        for (var i = 0; i < path.Length; i++)
+        {
+            var c = path[i];
+            if (c == '/') { if (path[i - 1] == '/') return false; }
+            else if (!char.IsAsciiLetterOrDigit(c) && c is not '_' and not '-') return false;
+        }
+        return true;
     }
 
     private TimeSpan GetRetryDelay(HttpResponseMessage response)

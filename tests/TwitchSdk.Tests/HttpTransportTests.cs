@@ -145,6 +145,15 @@ public sealed class HttpTransportTests
     [InlineData("../oauth2")]
     [InlineData("users?token=x")]
     [InlineData("%2e%2e/users")]
+    // Uri trims leading whitespace and control characters, which once turned these into network-path references.
+    [InlineData(" //evil.example/steal")]
+    [InlineData("\t//evil.example/steal")]
+    [InlineData("\n//evil.example/steal")]
+    [InlineData("\r//evil.example/steal")]
+    [InlineData("users/")]
+    [InlineData("chat//settings")]
+    [InlineData("users ")]
+    [InlineData("users\u0000")]
     public async Task RejectsNonEndpointPathsBeforeSendingCredentials(string path)
     {
         using var http = new HttpClient(new TestHttpHandler((_, _) => throw new InvalidOperationException("Must not send")));
