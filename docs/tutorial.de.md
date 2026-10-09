@@ -1,45 +1,241 @@
-# Tutorial: erster API-Aufruf und Chatbot
+# Tutorial: dein erster Twitch-Bot
 
 [English](tutorial.md) · **Deutsch** · [Projektübersicht](../README.de.md)
 
-Diese Anleitung verwendet die Vorabversion `1.0.0-rc.1`. Du registrierst eine Twitch-Anwendung, liest echte API-Daten, meldest dein Konto an und startest einen Chatbot. Verwende für Experimente einen Testkanal.
+In etwa 15 Minuten registrierst du eine Twitch-Anwendung, legst ein eigenes C#-Projekt an, startest einen Chatbot mit Befehlen, ergänzt Alerts für Follows, Subs und Raids und liest Daten aus der Twitch-API. Alles kommt von [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection); du musst dieses Repository weder herunterladen noch selbst bauen. Verwende für Experimente einen Testkanal.
 
-## 1. Projekt herunterladen
+## 1. Was du brauchst
 
-Installiere Git und das [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0). Zum Bauen dieses Projekts ist .NET 10 erforderlich. Die Bibliotheken können in .NET-8- und .NET-10-Anwendungen verwendet werden. Für Tests unter .NET 8 brauchst du zusätzlich dessen Runtime.
-
-```sh
-git clone https://github.com/dermixer1305/TwitchDock.NET.git
-cd TwitchDock.NET
-git checkout v1.0.0-rc.1
-dotnet build TwitchDock.slnx -c Release
-```
-
-Führe die folgenden Befehle in diesem Projektordner aus, sofern nichts anderes angegeben ist. Du kannst die Beispiele mit Rider, Visual Studio oder VS Code bearbeiten.
+- Das [.NET SDK](https://dotnet.microsoft.com/download) 8 oder 10. Prüfen kannst du das mit `dotnet --version`.
+- Ein Twitch-Konto mit bestätigter E-Mail-Adresse und Zwei-Faktor-Anmeldung (Voraussetzung für die Entwicklerkonsole).
+- Einen beliebigen Editor: Visual Studio, Rider, VS Code oder einen einfachen Texteditor.
 
 ## 2. Eigene Twitch-Anwendung registrieren
 
-1. Öffne die [Twitch-Entwicklerkonsole](https://dev.twitch.tv/console/apps) und melde dich an. Dein Konto benötigt eine bestätigte E-Mail-Adresse und Zwei-Faktor-Anmeldung.
-2. Wähle **Anwendung registrieren**. Verwende einen eigenen eindeutigen Namen, beispielsweise `MeinKanal Integrationstest` mit einem persönlichen Zusatz.
-3. Trage `http://localhost:3000` unter **OAuth Redirect URLs** ein und klicke auf **Hinzufügen**. Wähle eine passende Kategorie, etwa **Chat Bot**.
-4. Wähle für das folgende Beispiel mit App-Token den Client-Typ **Vertraulich**. Das Secret bleibt auf deinem eigenen Rechner/Server und gehört nicht in eine ausgelieferte Anwendung.
-5. Erstelle die Anwendung und öffne **Verwalten**. Kopiere die **Client-ID** und erzeuge über **Neues Geheimnis** das **Client-Secret** für das API-Beispiel.
+1. Öffne die [Twitch-Entwicklerkonsole](https://dev.twitch.tv/console/apps) und melde dich an.
+2. Wähle **Anwendung registrieren**. Verwende einen eigenen, eindeutigen Namen, etwa `MeinKanal Bot` mit einem persönlichen Zusatz.
+3. Trage `http://localhost:3000` unter **OAuth Redirect URLs** ein und klicke auf **Hinzufügen**. Wähle eine Kategorie, etwa **Chat Bot**.
+4. Wähle den Client-Typ **Vertraulich**. Das Secret brauchst du nur für das API-Beispiel in Schritt 6. Es bleibt auf deinem eigenen Rechner oder Server und gehört nie in eine ausgelieferte Anwendung.
+5. Erstelle die Anwendung, öffne **Verwalten** und kopiere die **Client-ID**.
 
-Das Chatbeispiel verwendet eine Geräteanmeldung und benötigt nur die Client-ID. Die Weiterleitungsadresse wird dabei nicht verwendet; sie steht für einen späteren Authorization-Code-Ablauf bereit. Wenn du ein neues Secret erzeugst, wird das vorherige ungültig.
+Die Client-ID ist kein Geheimnis. Der Bot meldet sich per Gerätecode an und braucht sonst nichts. Die Weiterleitungsadresse wird dabei nicht verwendet; sie ist für eine spätere Anmeldung per Authorization Code gedacht.
 
 Quellen: [Twitch-App registrieren](https://dev.twitch.tv/docs/authentication/register-app/), [OAuth-Verfahren](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 
-## 3. Echte Twitch-Daten abrufen
+## 3. Projekt anlegen
 
-Gib in **PowerShell** die Werte an den Eingabeaufforderungen ein. Dadurch steht das Secret nicht als Klartext in einem gespeicherten Befehl:
+```sh
+dotnet new console -n MyTwitchBot
+cd MyTwitchBot
+dotnet add package TwitchDock.DependencyInjection --prerelease
+```
+
+`--prerelease` ist nötig, solange 1.0.0 eine Vorabversion ist. Das Paket bringt alle TwitchDock-Module mit; [Welches Paket brauche ich?](../README.de.md#welches-paket-brauche-ich) erklärt, wie du später einzelne Pakete auswählst.
+
+## 4. Dein erster Chatbot
+
+Ersetze den Inhalt von `Program.cs` durch Folgendes und trage deine Client-ID in die Zeile mit `ClientId` ein:
+
+```csharp
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.EventSub;
+using TwitchDock.Helix;
+using TwitchDock.Helix.Models;
+
+const string ClientId = "deine-client-id"; // aus dev.twitch.tv/console/apps – kein Geheimnis
+
+using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
+var oauth = new TwitchOAuthClient(http);
+
+// 1. Anmelden: Twitch zeigt einen Code, den du im Browser bestätigst. Kein Client-Secret nötig.
+string[] scopes = [TwitchScopes.UserReadChat, TwitchScopes.UserWriteChat];
+var device = await oauth.StartDeviceAuthorizationAsync(ClientId, scopes);
+Console.WriteLine($"Öffne {device.VerificationUri} und bestätige den Code {device.UserCode}");
+var grant = await oauth.WaitForDeviceAuthorizationAsync(ClientId, device, scopes);
+
+// 2. Token einmal prüfen: Das SDK erfährt, wer angemeldet ist und welche Rechte erteilt wurden.
+var me = await oauth.ValidateAsync(grant.AccessToken);
+var botId = me.UserId!;
+var channelId = botId; // dein eigener Kanal; für einen anderen Chat dessen Broadcaster-ID eintragen
+var tokens = new StaticAccessTokenProvider(me.ToAccessToken(grant.AccessToken));
+var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = ClientId }));
+
+// 3. Befehle: Jede Chatnachricht kommt als typisiertes Ereignis an.
+var router = new EventSubEventRouter()
+    .On(EventSubEvents.ChannelChatMessageV1, async (chat, _, ct) =>
+    {
+        Console.WriteLine($"{chat.ChatterUserName}: {chat.Message.Text}");
+        var reply = chat.Message.Text.Trim().ToLowerInvariant() switch
+        {
+            "!ping" => "pong",
+            "!hallo" => $"Hallo @{chat.ChatterUserName}!",
+            "!würfel" => $"Du hast eine {Random.Shared.Next(1, 7)} gewürfelt",
+            _ => null,
+        };
+        if (reply is null) return;
+
+        await helix.SendChatMessageAsync(new SendChatMessageRequest
+        {
+            BroadcasterId = channelId, SenderId = botId, Message = reply, ReplyParentMessageId = chat.MessageId,
+        }, ct);
+    });
+
+// 4. Verbinden: EventSub über WebSocket, Wiederverbindungen übernimmt der Client.
+var socket = new EventSubWebSocketClient();
+await socket.RunAsync(
+    async (session, resubscribe, ct) =>
+    {
+        if (!resubscribe) return; // Twitch hat die Sitzung verschoben, das Abo bleibt bestehen
+        await helix.SubscribeWebSocketAsync(EventSubSubscriptions.ChannelChatMessageV1(channelId, botId), session.Id, ct);
+        Console.WriteLine("Bot ist online – schreib !ping in deinen Chat.");
+    },
+    router.DispatchAsync);
+```
+
+Starte ihn:
+
+```sh
+dotnet run
+```
+
+1. Öffne den Twitch-Link aus dem Terminal und bestätige den angezeigten Code.
+2. Melde dich mit dem Konto an, das der Bot nutzen soll, und erlaube **Chatnachrichten lesen und senden**.
+3. Warte auf **Bot ist online** und öffne den Kanal-Chat dieses Kontos.
+4. Schreibe **`!ping`**, **`!hallo`** oder **`!würfel`**. Der Bot zeigt jede Nachricht an und antwortet auf die Befehle. Ein Konto reicht; ein eigenes Bot-Konto ist optional.
+5. Mit **Strg+C** beendest du ihn.
+
+**Was hier passiert:** Die Gerätecode-Anmeldung liefert ein Benutzer-Token. `ValidateAsync` teilt dem SDK mit, zu welchem Benutzer es gehört und welche Rechte es hat. Ein falsches Token scheitert so mit einer klaren Fehlermeldung, bevor etwas gesendet wird. `EventSubWebSocketClient` hält eine WebSocket-Verbindung zu Twitch offen und verbindet sich bei Abbrüchen selbst neu. Bei jeder neuen Sitzung abonniert der Bot `channel.chat.message`, und der Router reicht jede Nachricht als typisiertes `ChannelChatMessageEvent` an deinen Handler weiter. Antworten gehen über die Helix-API raus.
+
+Tokens bleiben im Arbeitsspeicher und werden nie ausgegeben oder gespeichert. Du meldest dich deshalb bei jedem Start neu an. Den Zugriff der App kannst du jederzeit in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections) entfernen.
+
+## 5. Alerts für Follows, Subs und Raids
+
+Ereignisse funktionieren genau wie Chatnachrichten: Recht anfordern, Handler ergänzen, abonnieren. Ersetze `Program.cs` noch einmal; die mit **Neu** markierten Zeilen sind die Änderungen:
+
+```csharp
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.EventSub;
+using TwitchDock.Helix;
+using TwitchDock.Helix.Models;
+
+const string ClientId = "deine-client-id"; // aus dev.twitch.tv/console/apps – kein Geheimnis
+
+using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
+var oauth = new TwitchOAuthClient(http);
+
+// Neu: Der Bot muss auch Follower und Abonnenten sehen dürfen.
+string[] scopes =
+[
+    TwitchScopes.UserReadChat, TwitchScopes.UserWriteChat,
+    TwitchScopes.ModeratorReadFollowers, TwitchScopes.ChannelReadSubscriptions,
+];
+var device = await oauth.StartDeviceAuthorizationAsync(ClientId, scopes);
+Console.WriteLine($"Öffne {device.VerificationUri} und bestätige den Code {device.UserCode}");
+var grant = await oauth.WaitForDeviceAuthorizationAsync(ClientId, device, scopes);
+
+var me = await oauth.ValidateAsync(grant.AccessToken);
+var botId = me.UserId!;
+var channelId = botId;
+var tokens = new StaticAccessTokenProvider(me.ToAccessToken(grant.AccessToken));
+var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = ClientId }));
+
+// Neu: sendet eine Chatnachricht in den Kanal; genutzt von Befehlen und Alerts.
+Task Say(string message, CancellationToken ct, string? replyTo = null) =>
+    helix.SendChatMessageAsync(new SendChatMessageRequest
+    {
+        BroadcasterId = channelId, SenderId = botId, Message = message, ReplyParentMessageId = replyTo,
+    }, ct);
+
+var router = new EventSubEventRouter()
+    .On(EventSubEvents.ChannelChatMessageV1, async (chat, _, ct) =>
+    {
+        Console.WriteLine($"{chat.ChatterUserName}: {chat.Message.Text}");
+        var reply = chat.Message.Text.Trim().ToLowerInvariant() switch
+        {
+            "!ping" => "pong",
+            "!hallo" => $"Hallo @{chat.ChatterUserName}!",
+            "!würfel" => $"Du hast eine {Random.Shared.Next(1, 7)} gewürfelt",
+            _ => null,
+        };
+        if (reply is not null) await Say(reply, ct, replyTo: chat.MessageId);
+    })
+    // Neu: Alerts im Chat.
+    .On(EventSubEvents.ChannelFollowV2, (follow, _, ct) => Say($"Danke für den Follow, {follow.UserName}!", ct))
+    .On(EventSubEvents.ChannelSubscribeV1, (sub, _, ct) => Say($"Willkommen im Team, {sub.UserName}!", ct))
+    .On(EventSubEvents.ChannelRaidV1, (raid, _, ct) => Say($"{raid.FromBroadcasterUserName} raidet mit {raid.Viewers} Zuschauern!", ct));
+
+var socket = new EventSubWebSocketClient();
+await socket.RunAsync(
+    async (session, resubscribe, ct) =>
+    {
+        if (!resubscribe) return;
+        EventSubSubscriptionSpec[] subscriptions =
+        [
+            EventSubSubscriptions.ChannelChatMessageV1(channelId, botId),
+            EventSubSubscriptions.ChannelFollowV2(channelId, moderatorUserId: botId), // Neu
+            EventSubSubscriptions.ChannelSubscribeV1(channelId),                    // Neu
+            EventSubSubscriptions.ChannelRaidV1(toBroadcasterUserId: channelId),    // Neu
+        ];
+        foreach (var subscription in subscriptions)
+            await helix.SubscribeWebSocketAsync(subscription, session.Id, ct);
+        Console.WriteLine("Bot ist online – schreib !ping in deinen Chat.");
+    },
+    router.DispatchAsync);
+```
+
+Starte erneut mit `dotnet run` und erlaube die zusätzlichen Rechte. Folge deinem Kanal mit einem zweiten Konto, um den Alert zu sehen.
+
+- Follows brauchen `moderator:read:followers`. Der Bot liest seinen eigenen Kanal und gilt dort als sein eigener Moderator.
+- Abos brauchen `channel:read:subscriptions` und gibt es nur bei Affiliate- oder Partner-Kanälen.
+- Raids brauchen kein Recht.
+- Fehlt ein Recht, wirft `SubscribeWebSocketAsync` eine `TwitchAuthorizationException` mit dessen Namen, bevor etwas gesendet wird.
+
+Alle 83 EventSub-Typen funktionieren so: Kanalpunkte, Cheers, Umfragen, Hype Trains, Stream-Start und -Ende und mehr. Den Namen findest du auf `EventSubEvents` / `EventSubSubscriptions`, die nötigen Rechte unter [EventSub](eventsub.md).
+
+## 6. Daten aus der Twitch-API lesen
+
+Werkzeuge, die nur öffentliche Daten lesen (Profile, laufende Streams, Clips), kommen mit einem **App-Token** statt einer Benutzeranmeldung aus. Dafür brauchst du das Client-Secret: In der Entwicklerkonsole unter **Verwalten → Neues Geheimnis**. Ein neues Secret macht das vorherige ungültig. Lege ein zweites Projekt an:
+
+```sh
+dotnet new console -n MyTwitchApi
+cd MyTwitchApi
+dotnet add package TwitchDock.DependencyInjection --prerelease
+```
+
+`Program.cs`:
+
+```csharp
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.Helix;
+
+var clientId = Environment.GetEnvironmentVariable("TWITCH_CLIENT_ID")!;
+var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET")!; // Geheimnisse nicht in den Quellcode schreiben
+
+using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
+var oauth = new TwitchOAuthClient(http);
+// App-Token: wird mit Client-ID und Secret geholt und bei Ablauf automatisch erneuert.
+using var tokens = new RefreshingTokenProvider((_, ct) => oauth.GetAppTokenAsync(clientId, clientSecret, ct));
+var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = clientId }));
+
+var users = await helix.GetUsersAsync(new() { Logins = ["twitchdev"] });
+Console.WriteLine($"{users.Data[0].DisplayName}: {users.Data[0].Description}");
+
+var streams = await helix.GetStreamsAsync(new() { Languages = ["de"], First = 5 });
+foreach (var stream in streams.Data)
+    Console.WriteLine($"{stream.UserName} spielt {stream.GameName} vor {stream.ViewerCount} Zuschauern");
+```
+
+Gib die Zugangsdaten an Eingabeaufforderungen ein, statt sie in eine Datei oder deinen Befehlsverlauf zu schreiben. In **PowerShell**:
 
 ```powershell
 $env:TWITCH_CLIENT_ID = Read-Host 'Client-ID'
 $secretInput = Read-Host 'Client-Secret' -AsSecureString
 $env:TWITCH_CLIENT_SECRET = [System.Net.NetworkCredential]::new('', $secretInput).Password
-dotnet run --project samples/TwitchDock.Quickstart -c Release -f net10.0 -- twitchdev
+dotnet run
 Remove-Item Env:TWITCH_CLIENT_SECRET
-$secretInput = $null
 ```
 
 Mit **Bash** unter Linux oder macOS:
@@ -48,92 +244,68 @@ Mit **Bash** unter Linux oder macOS:
 read -r -p 'Client-ID: ' TWITCH_CLIENT_ID
 read -r -s -p 'Client-Secret: ' TWITCH_CLIENT_SECRET
 export TWITCH_CLIENT_ID TWITCH_CLIENT_SECRET
-dotnet run --project samples/TwitchDock.Quickstart -c Release -f net10.0 -- twitchdev
+dotnet run
 unset TWITCH_CLIENT_SECRET
 ```
 
-Das Programm sollte die Benutzer-ID und den Anzeigenamen von `twitchdev` ausgeben. Es holt und prüft einen App-Token und ruft anschließend Helix Get Users auf. Ersetze den Namen hinter `--`, um einen anderen Benutzer abzufragen. Tokens und Secrets werden nicht ausgegeben.
+Erwartet: das Profil von `twitchdev` und fünf laufende deutschsprachige Streams. Alle Helix-Gruppen hängen an `helix`: `helix.Channels`, `helix.Moderation`, `helix.Polls`, `helix.Clips`, `helix.ChannelPoints` und mehr; siehe [Dokumentationsindex](README.md).
 
-## 4. Konto freigeben und Chat testen
+## 7. Den Bot stundenlang laufen lassen
 
-Lasse `TWITCH_CLIENT_ID` aus dem vorherigen Schritt gesetzt und starte:
-
-```sh
-dotnet run --project samples/TwitchDock.ChatBot -c Release -f net10.0
-```
-
-1. Öffne den Twitch-Link aus dem Terminal und trage bei Bedarf den angezeigten Code ein.
-2. Melde dich mit dem gewünschten Konto an. Prüfe und bestätige die Berechtigungen **Chatnachrichten lesen und senden** (`user:read:chat`, `user:write:chat`).
-3. Warte auf die Ausgabe **Connected**. Öffne den Twitch-Chat des angemeldeten Kontos.
-4. Schreibe **`!ping`**. Das Beispiel zeigt die empfangene Nachricht an und antwortet mit **`pong`**. Ein zweites Bot-Konto ist für diesen Test nicht erforderlich.
-5. Beende das Beispiel mit **Strg+C**. Die WebSocket-Verbindung wird geschlossen.
-
-Das Beispiel wartet mit dem SDK auf deine Freigabe, prüft den Benutzertoken, richtet ein EventSub-WebSocket-Abonnement ein und sendet Antworten über Helix. Twitch kann eine HTTP-Anfrage erfolgreich beantworten und die Chatnachricht trotzdem verwerfen; deshalb prüft das Beispiel `IsSent` und zeigt gegebenenfalls den Ablehnungsgrund an.
-
-Tokens bleiben im Arbeitsspeicher und werden nicht gespeichert. Das Lernbeispiel verwendet einen festen Token und erneuert ihn nicht automatisch. Nach Ablauf startest du es neu und meldest dich erneut an. Das Beenden widerruft nicht die App-Freigabe; diese kannst du in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections) entfernen. Für dauerhafte Bots benötigst du Token-Erneuerung und sichere Speicherung, siehe [Authentifizierung](authentication.md#token-providers-and-refresh).
-
-### Vorhandenen Token oder anderen Kanal verwenden
-
-| Umgebungsvariable | Bedeutung |
-| --- | --- |
-| `TWITCH_CLIENT_ID` | Pflicht: Client-ID deiner Anwendung |
-| `TWITCH_ACCESS_TOKEN` | Optional: Benutzertoken ohne `oauth:` davor; sonst startet die Geräteanmeldung |
-| `TWITCH_BOT_USER_ID` | Optional: muss zum Token gehören; standardmäßig dessen Benutzer-ID |
-| `TWITCH_BROADCASTER_ID` | Optional: numerische ID des Zielkanals; standardmäßig dein eigener Kanal |
-
-Entferne alte optionale Variablen, wenn du wieder dem Test mit nur einem Konto folgen möchtest. Für andere Kanäle benötigst du die passende Benutzerfreigabe und die von Twitch für die jeweilige Aktion geforderten Rechte. Ein App-Token ersetzt den Benutzertoken für dieses WebSocket-Chatbeispiel nicht.
-
-## 5. In dein eigenes Projekt einbauen
-
-Die Pakete liegen auf [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection). Du musst also nichts selbst bauen oder von Hand herunterladen. `TwitchDock.DependencyInjection` bringt alle sechs Module mit.
-
-Erstelle eine eigene Anwendung:
-
-```sh
-dotnet new console -n MyFirstBot -o artifacts/MyFirstBot -f net10.0
-dotnet add artifacts/MyFirstBot/MyFirstBot.csproj package TwitchDock.DependencyInjection --version 1.0.0-rc.1
-```
-
-Ersetze `artifacts/MyFirstBot/Program.cs` durch:
+Twitch verlangt, dass länger laufende Apps Benutzer-Tokens stündlich prüfen, und ein Bot sollte bei Strg+C sauber beenden. Ersetze im Bot aus Schritt 5 alles ab `var socket = new EventSubWebSocketClient();` bis zum Ende durch:
 
 ```csharp
-using TwitchDock.Authentication;
-using TwitchDock.Core;
-using TwitchDock.Helix;
+using var stop = new CancellationTokenSource();
+Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); }; // Neu: Strg+C beendet den Bot sauber
 
-var clientId = Environment.GetEnvironmentVariable("TWITCH_CLIENT_ID")
-    ?? throw new InvalidOperationException("Set TWITCH_CLIENT_ID.");
-var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET")
-    ?? throw new InvalidOperationException("Set TWITCH_CLIENT_SECRET.");
+var socket = new EventSubWebSocketClient();
+var chatLoop = socket.RunAsync(
+    async (session, resubscribe, ct) =>
+    {
+        if (!resubscribe) return;
+        EventSubSubscriptionSpec[] subscriptions =
+        [
+            EventSubSubscriptions.ChannelChatMessageV1(channelId, botId),
+            EventSubSubscriptions.ChannelFollowV2(channelId, moderatorUserId: botId),
+            EventSubSubscriptions.ChannelSubscribeV1(channelId),
+            EventSubSubscriptions.ChannelRaidV1(toBroadcasterUserId: channelId),
+        ];
+        foreach (var subscription in subscriptions)
+            await helix.SubscribeWebSocketAsync(subscription, session.Id, ct);
+        Console.WriteLine("Bot ist online – schreib !ping in deinen Chat.");
+    },
+    router.DispatchAsync, stop.Token);
 
-using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
-var oauth = new TwitchOAuthClient(http);
-using var tokens = new RefreshingTokenProvider((_, ct) => oauth.GetAppTokenAsync(clientId, clientSecret, ct));
-var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = clientId }));
-var users = await helix.GetUsersAsync(new() { Logins = ["twitchdev"] });
-Console.WriteLine(users.Data[0].DisplayName);
+// Neu: prüft das Token jetzt und dann stündlich; die Aufgabe schlägt fehl, wenn Twitch es nicht mehr akzeptiert.
+var validationLoop = TokenValidationLoop.RunAsync(oauth, tokens, ClientId, (_, _) => Task.CompletedTask, cancellationToken: stop.Token);
+
+await Task.WhenAny(chatLoop, validationLoop); // was zuerst endet, beendet den Bot
+await stop.CancelAsync();
+try { await Task.WhenAll(chatLoop, validationLoop); }
+catch (OperationCanceledException) { Console.WriteLine("Bot beendet."); }
 ```
 
-Setze die Umgebungsvariablen über die Eingabeaufforderungen aus Schritt 3 erneut. Starte dann `dotnet run --project artifacts/MyFirstBot -f net10.0` und entferne anschließend die Secret-Variable. Weitere Beispiele für Dependency Injection, Seitennavigation und API-Aufrufe stehen im [Schnellstart](quickstart.md). Mit passendem SDK und Runtime kannst du die Pakete auch in einer .NET-8-Anwendung nutzen.
+Ein Benutzer-Token läuft nach einigen Stunden ab. Damit der Bot ohne neue Anmeldung weiterläuft, nutzt du einen `RefreshingTokenProvider` mit dem Refresh-Token und speicherst erneuerte Tokens sicher; siehe [Token-Provider und Erneuerung](authentication.md#token-providers-and-refresh). Das vollständige [Chatbot-Beispiel](../samples/TwitchDock.ChatBot/Program.cs) meldet außerdem Nachrichten, die Twitch verwirft.
 
 ## Häufige Fehler
 
 | Problem | Prüfen |
 | --- | --- |
-| `Invalid client name` bei der Registrierung | Eigenen eindeutigen App-Namen wählen. |
-| Client-ID oder Secret fehlt | Variable in demselben Terminal setzen, in dem das Programm startet. |
-| `401` oder ungültiger Token | App-Zugangsdaten prüfen bzw. Benutzerfreigabe wiederholen; App- und Benutzertokens sind nicht austauschbar. |
-| Fehlende Berechtigung / falscher Benutzer | Passendes Konto anmelden, Rechte freigeben und alte optionale Chatvariablen entfernen. |
-| Gerätecode abgelaufen | Chatbeispiel neu starten und den neuen Link/Code verwenden. |
-| Keine Antwort auf `!ping` | Auf Connected warten, richtigen Kanal öffnen und genau `!ping` senden; Ablehnungsgründe im Terminal prüfen. |
-| Paket nicht gefunden | Lokale Quelle einrichten, alle sechs Pakete herunterladen/bauen und Version `1.0.0-rc.1` verwenden. |
-| Falsches SDK oder Framework | Mit .NET 10 SDK bauen und passende Runtime installieren. |
+| `Invalid client name` bei der Registrierung | Eigenen, eindeutigen App-Namen wählen. |
+| `dotnet add package` findet keine Version | `--prerelease` ergänzen oder `--version 1.0.0-rc.1` angeben. |
+| Client-ID fehlt | Client-ID in `Program.cs` eintragen (Bot) bzw. die Variable im selben Terminal setzen, in dem `dotnet run` läuft (API-Beispiel). |
+| `401` oder ungültiges Token | Client-ID und Secret prüfen oder neu anmelden. App- und Benutzer-Tokens sind nicht austauschbar. |
+| `TwitchAuthorizationException` | Dem Token fehlt ein Recht. In `scopes` ergänzen, neu starten und das neue Recht erlauben. |
+| Gerätecode abgelaufen | Programm neu starten und den neuen Link und Code verwenden. |
+| Keine Antwort im Chat | Auf **Bot ist online** warten, im Kanal des angemeldeten Kontos schreiben und genau `!ping` senden. |
+| Kein Follow-Alert | Mit einem **anderen** Konto folgen; dir selbst kannst du nicht folgen. |
+| Fehler beim Zielframework | .NET SDK 8 oder 10 verwenden; die Pakete unterstützen `net8.0` und `net10.0`. |
 
 ## Nächste Schritte
 
-- [Weitere Beispiele](samples.md), darunter ein ASP.NET-Core-Webhook-Empfänger.
-- [Authentifizierung](authentication.md): Erneuerung, stündliche Prüfung, Authorization Code und OpenID Connect.
-- [EventSub](eventsub.md): Ereignisse, öffentliche HTTPS-Endpunkte und Wiederverbindungen.
-- [API-Referenzen](README.md), [Tests](testing.md) und [Grenzen der Live-Prüfung](live-verification.md).
+- [Welches Paket brauche ich?](../README.de.md#welches-paket-brauche-ich) mit einem Beispiel für jedes Paket.
+- [Authentifizierung](authentication.md): Token-Erneuerung, stündliche Prüfung, Authorization Code und OpenID Connect.
+- [EventSub](eventsub.md): alle Ereignistypen, Webhooks, Conduits und Wiederverbindungen.
+- [Ausführbare Beispiele](samples.md), darunter ein ASP.NET-Core-Webhook-Empfänger, und die [API-Referenzen](README.md).
 
-Speichere Zugangsdaten nicht im Quellcode oder in Logs. Für produktive Anwendungen brauchst du außerdem sichere Token-Speicherung, geeignete Fehlerbehandlung und die in [SECURITY.md](../SECURITY.md) beschriebenen Betriebsmaßnahmen.
+Speichere Zugangsdaten nicht im Quellcode oder in Logs. Dieses Tutorial ist eine Einführung; produktive Anwendungen brauchen außerdem sichere Token-Speicherung, Fehlerbehandlung und die Maßnahmen aus [SECURITY.md](../SECURITY.md).

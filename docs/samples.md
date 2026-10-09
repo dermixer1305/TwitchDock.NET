@@ -1,6 +1,8 @@
 # Samples
 
-The samples live in `samples/`, are part of `TwitchDock.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly so they always build against the current source. Credentials come from environment variables or interactive device authorization; tokens are never printed or saved. Follow the [English tutorial](tutorial.md) or [deutsche Anleitung](tutorial.de.md).
+The samples live in `samples/`, are part of `TwitchDock.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly so they always build against the current source. Credentials come from environment variables or interactive device authorization; tokens are never printed or saved.
+
+To run them, clone the repository (`git clone https://github.com/dermixer1305/TwitchDock.NET.git`), install the .NET 10 SDK and use the commands below from the repository root. To build your own app from the NuGet packages instead, follow the [English tutorial](tutorial.md) or [deutsche Anleitung](tutorial.de.md); it also explains the Twitch app registration.
 
 | Sample | Shows |
 | --- | --- |
