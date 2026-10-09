@@ -1,16 +1,41 @@
+# Build output and packages
 **/bin/
 **/obj/
-.vs/
-.idea/
 artifacts/
 TestResults/
-docs/api/*-reference.html
-docs/api/*.txt
-.local/
-.claude/worktrees/
-.claude/settings.local.json
-*.user
-*.suo
 *.nupkg
 *.snupkg
+*.trx
+
+# Generated API documentation snapshots (downloaded by tools/Update-ApiInventory.ps1)
+docs/api/*-reference.html
+docs/api/*.txt
+
+# IDEs and editors
+.vs/
+.vscode/
+.idea/
+.fleet/
+*.user
+*.suo
+*.swp
+*~
+
+# AI coding assistants and their local state
+.claude/
+.codex/
+.cursor/
+.aider*
+.continue/
+.windsurf/
+
+# Local experiments, caches and secrets
+.local/
+.ruff_cache/
 .env
+.env.*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
