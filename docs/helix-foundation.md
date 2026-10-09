@@ -76,7 +76,7 @@ await helix.DeleteEventSubSubscriptionAsync("subscription-id", cancellationToken
 
 Listing supports exactly one optional filter among `Status`, `Type`, `UserId`, `SubscriptionId` and `ConduitId`, plus an optional `After` cursor. Status and type remain strings to accept future Twitch values. Manual pages expose `Total`, `TotalCost`, `MaxTotalCost` and pagination; enumeration yields subscriptions in Twitch's oldest-first order. Use the same token kind as the transport: user token for WebSockets, app token for webhooks/conduits. Listing and deleting cannot infer the transport from an opaque subscription ID, so Twitch enforces that relationship. Deletion returns no value for HTTP 204 and throws for HTTP 404.
 
-The low-level creation method is available, but its inventory entry remains **partial** until the dedicated typed conditions and scope requirements are implemented for all subscription types:
+Prefer the typed specs: `helix.SubscribeWebSocketAsync(EventSubSubscriptions.StreamOnlineV1("123"), sessionId, ct)` or `helix.CreateEventSubSubscriptionAsync(spec, transport, ct)` from `TwitchSdk.EventSub` build the documented condition and check the subscription's scopes and authorizing user ([EventSub](eventsub.md)). The untyped creation method remains available for raw requests:
 
 ```csharp
 var created = await helix.CreateEventSubSubscriptionAsync(new()
@@ -89,7 +89,7 @@ var created = await helix.CreateEventSubSubscriptionAsync(new()
 
 `EventSubTransportRequest` contains only request fields. Select `websocket` with `SessionId`, `webhook` with `Callback` and `Secret`, or `conduit` with `ConduitId`. Fields from other methods are rejected. The webhook callback must use HTTPS port 443; the secret must contain 10–100 ASCII characters and is redacted by `ToString()`. The response's separate `EventSubTransport` includes connection timestamps and never contains the secret. Explicitly typed initializers in older local alpha code must change from `EventSubTransport` to `EventSubTransportRequest` when creating subscriptions; target-typed `new()` still works.
 
-Creation checks the token kind locally when known: user for WebSockets, app for webhooks/conduits. Generic condition maps currently defer subscription-specific scopes, required condition keys and actor identities to Twitch. HTTP 202 accepts the request; webhook subscriptions still require challenge verification before becoming enabled. Each creation response contains the newly created subscription. The synthetic contract fixture groups all three transport variants to check their different response fields; it is not a recording of one live creation call.
+Creation checks the token kind locally when known: user for WebSockets, app for webhooks/conduits. With an untyped request, subscription-specific scopes, required condition keys and actor identities are left to Twitch; the typed specs check them before sending. HTTP 202 accepts the request; webhook subscriptions still require challenge verification before becoming enabled. Each creation response contains the newly created subscription. The synthetic contract fixture groups all three transport variants to check their different response fields; it is not a recording of one live creation call.
 
 ## Errors and verification
 

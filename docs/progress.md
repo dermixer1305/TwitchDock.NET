@@ -1,35 +1,52 @@
-# Implementation progress — 2026-10-09
+# Implementation progress (2026-10-09)
 
-The original [project plan](project-plan.md) remains the goal. The current foundation is not a finished SDK or a 1.0 release.
+TwitchSdk is at **1.0.0-rc.1**. Every API in the pinned official documentation meets the definition of done; what remains before 1.0.0 needs the maintainer's accounts (live credentials, GitHub, NuGet). The original goals are in the [project plan](project-plan.md); next steps are in the [roadmap](roadmap.md).
+
+## Coverage
+
+The [coverage matrix](api/coverage.json) inventories the official documentation snapshot of 2026-10-09 with source URLs and hashes. Rendered report: [coverage.md](coverage.md).
+
+| Inventory | Entries | Complete | Availability notes |
+| --- | ---: | ---: | --- |
+| Helix endpoints | 149 | 149 | 113 public, 12 public beta (Guest Star), 11 extension owner, 6 affiliate/partner channel points, 2 game or organization owner (Drops), 2 schedule segments with non-recurring restrictions, 2 deprecated (Tags), 1 verified-phone sender (whispers) |
+| EventSub type/versions | 83 | 83 | 77 public, 4 public beta (Guest Star), 1 extension owner, 1 game or organization owner |
+| Scopes | 81 | n/a | Generated into `TwitchScopes` from the official scope table |
+
+"Complete" means: public SDK method or event, every documented parameter and response field, authorization handling, errors, passing tests and user documentation, with linked evidence. `tools/Test-ApiCoverage.ps1 -RequireComplete` passes.
+
+## Delivered
+
+- **Core**: transport with bounded retries, shared rate-limit coordination, one refresh on 401, error mapping, pagination with cycle protection, scope/identity preflight, loopback-only plain HTTP for local mocks, empty-string timestamp converter.
+- **Authentication**: client credentials, authorization code, implicit grant, device code with `WaitForDeviceAuthorizationAsync`, callback parsing with constant-time state checks, OpenID Connect (`CreateOpenIdAuthorizationUri`, `ValidateIdTokenAsync` with RS256/JWKS, `GetUserInfoAsync`), validation, revocation, `RefreshingTokenProvider`, `TokenValidationLoop`.
+- **Helix**: all groups, including moderation, chat, Extensions with Extension JWTs, Drops entitlements, Guest Star (beta), Tags (obsolete), content classification labels, authorization by user and custom Power-ups.
+- **EventSub**: typed factories and events for all 83 type/versions, registry, router, `TryReadEvent`, WebSocket client with migration, reconnect and optional loopback endpoint, webhook verifier and handler, batching for `drop.entitlement.grant`.
+- **Chat**: `TwitchChatClient` over EventSub + Helix; IRC transport (`TwitchIrcClient`, IRCv3 parser, typed views, router, rate limiters, WebSocket/TCP connections).
+- **DependencyInjection**: `AddTwitchSdk`, `AddTwitchTokenValidation` (hosted, bounded transient retries), `AddTwitchIrc`.
+- **Samples**: quickstart console app, EventSub chat bot, ASP.NET Core webhook host.
 
 ## Verified locally
 
-- All six modules and the executable quickstart build for net8.0 and net10.0 with warnings treated as errors (earlier environment with the .NET 10 SDK).
-- 279 unit/contract tests passed on each target in that environment (558 test executions). Coverage includes concurrent refresh, OAuth encoding and metadata validation, scope/identity preflight and alternative scopes, concurrently extended rate-limit waits, safe retries, cursor cycles, public calendar text without token acquisition, webhook tampering, deduplication, migration, keepalive expiry, hourly validation, DI and reviewed endpoint contracts.
-- After adding Hype Train, all 287 tests pass on net8.0 (SDK 8.0.425, build with `-p:TargetFrameworks=net8.0`). The current developer machine has no .NET 10 SDK, so net10.0 has not been re-verified for this change; CI covers both targets.
-- Six local 0.1.0-alpha.1 NuGet packages were created under artifacts/packages.
-- A separate consumer restored these actual packages and ran on both frameworks with JSON reflection disabled. This verifies packaging and source-generated serialization, not native AOT compilation.
-- Coverage evidence validation passes. The stable-release gate correctly rejects the current incomplete coverage.
-- The local repository was initialized on main. No commit, remote repository, external publication, credentialed Twitch call or CI execution has been performed.
+On Windows with .NET SDK 10.0.401 (runtimes 8.0 and 10.0):
 
-## Current coverage
+- `dotnet build TwitchSdk.slnx -c Release`: 0 warnings, 0 errors (libraries, samples and tests; warnings are errors, AOT analyzers enabled).
+- Unit and contract tests: 771 passed on net8.0 and 771 on net10.0.
+- Integration tests against Twitch CLI 1.1.24: all 4 passed on each framework (mock API, mock EventSub WebSocket with reconnect, signed webhooks for every CLI-supported type, callback verification).
+- `dotnet pack`: six `1.0.0-rc.1` packages. The package smoke test passed on net8.0 and net10.0 with JSON reflection disabled, and as native AOT executables (win-x64) on net8.0 and net10.0.
+- The webhook host sample answered the Twitch CLI's `verify-subscription` challenge, routed `stream.online` and `channel.follow` v2, and rejected a delivery signed with another secret (403).
+- The snippets in the README, quickstart, authentication and EventSub docs compile against the current API.
+- `tools/Test-ApiCoverage.ps1 -RequireComplete` passes on Windows PowerShell 5.1.
 
-149 Helix endpoint definitions and 83 EventSub type/version pairs are inventoried from official documentation, with source URLs/hashes. Seventy-four Helix endpoints now meet the per-endpoint definition of done against the pinned reference: complete request/response models, authorization rules, errors, passing tests and examples. This includes the earlier reviewed groups, all Users/Whispers/Channels/Streams/Subscriptions/Bits/Channel Points/Polls/Predictions/Schedule/Conduits/Hype Train endpoints, Send Chat, List EventSub and Delete EventSub. Generic Create EventSub and the dedicated chat event model remain **partial**, particularly for subscription-specific typed conditions and authorization rules. The other 74 Helix entries and 82 EventSub entries are inventoried only. Availability reviews record extension ownership, Channel Points eligibility, Whisper phone verification and non-recurring schedule restrictions; four Guest Star event versions are public beta. Remaining availability reviews are open. Credentialed integration remains a release-level requirement.
+CI defines the same checks on Ubuntu and Windows (`.github/workflows/ci.yml`), plus a native AOT run on linux-x64 and the weekly `api-drift` workflow. They have not run on GitHub yet because no repository exists.
 
-The HTML importer now accounts for inconsistent upstream table column order, singular headings, optional question marks in Required headers, and the upstream `Paramters` typo. Extracted schema fields are review inputs, not proof of complete models. The EventSub models reference is pinned alongside the subscription catalog. Changes to previously implemented Helix sections reset their status to needs-review; removed entries stop the importer for manual review.
+## Not verified yet
 
-Scope extraction now reads the actual scope-table entries without a prefix allow-list. This corrected the previously missed editor:manage:clips scope: the pinned table contains 81 names, exposed through generated TwitchScopes constants. Legacy documented scope names remain in that catalog without implying support for obsolete transports.
+- **Live Twitch API**: no request has been made with real credentials. Contract tests use fixtures built from the official reference, and integration tests use the Twitch CLI mocks, which lag behind the reference for some fields, scopes and versions.
+- **Chat bot sample**: builds, but has not run against Twitch (needs a bot account and token).
+- **Publication**: no GitHub repository, no NuGet package ID reservation, nothing published.
 
-## Next work
+## Known limitations
 
-1. Complete typed subscription conditions, subscription-specific authorization and the chat event review; generic Create EventSub remains partial. Its transport envelope is reviewed, request/response transport types are separate, listing has a forward paginator and HTTP 409 exposes ExistingSubscriptionId.
-2. Add Moderation, remaining Chat and the other inventoried groups. Keep method groups small and reuse independent response-fixture checks against the official matrix. Conduits now include explicit per-shard failures in HTTP 202 responses and app-only authorization, including for WebSocket shards. Schedule includes public iCalendar, vacation settings, recurring-series caveats, string-encoded minute durations and segment pagination. ContractAssertions preserves nulls during round trips to detect accidentally omitted nullable fields.
-3. Expand typed EventSub conditions/events and provide the HTTP webhook hosting adapter with durable inbox integration.
-4. Complete remaining OAuth flows, broader failure tests, native AOT checks, API compatibility checks and full documentation before publishing.
-
-## Local execution notes
-
-Use `-m:1 -p:UseSharedCompilation=false` for builds in the current restricted environment. The sandbox's testhost communication stalled; test execution succeeded with the approved `dotnet test` escalation. Ordinary restore/build used cached dependencies with `-p:NuGetAudit=false` because network access is restricted; CI retains normal audit behavior. API downloads needed network escalation. Package-consumer restore used artifacts/smoke-cache rather than writing to the global NuGet cache. No automatic approval review rejected an action.
-
-When repacking an unchanged prerelease version during development, use a fresh workspace-local package cache for package smoke tests so an older package with the same ID/version cannot be reused. The package consumer is intentionally outside the source-project solution and has only a package reference.
-
+- Duplicate suppression (`MessageDeduplicator`) is in memory; multi-instance webhook receivers need their own durable inbox.
+- `RefreshingTokenProvider` serializes refreshes within one process only.
+- Guest Star endpoints and events are public beta; Twitch may change them without a version bump.
+- The Tags endpoints are deprecated by Twitch and marked `[Obsolete]`.

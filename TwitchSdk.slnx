@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/samples/">
+    <Project Path="samples/TwitchSdk.ChatBot/TwitchSdk.ChatBot.csproj" />
     <Project Path="samples/TwitchSdk.Quickstart/TwitchSdk.Quickstart.csproj" />
+    <Project Path="samples/TwitchSdk.WebhookHost/TwitchSdk.WebhookHost.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/TwitchSdk.Authentication/TwitchSdk.Authentication.csproj" />
