@@ -11,6 +11,7 @@
     <Project Path="src/TwitchSdk.Helix/TwitchSdk.Helix.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj" />
     <Project Path="tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj" />
   </Folder>
 </Solution>

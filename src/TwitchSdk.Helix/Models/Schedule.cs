@@ -46,8 +46,11 @@ public sealed class ScheduleCategory
 
 public sealed class ScheduleVacation
 {
-    public DateTimeOffset StartTime { get; init; }
-    public DateTimeOffset EndTime { get; init; }
+    // Some producers (such as the Twitch CLI mock) send an empty vacation object instead of null.
+    [JsonConverter(typeof(EmptyStringAsNullDateTimeOffsetConverter))]
+    public DateTimeOffset? StartTime { get; init; }
+    [JsonConverter(typeof(EmptyStringAsNullDateTimeOffsetConverter))]
+    public DateTimeOffset? EndTime { get; init; }
 }
 
 public sealed class UpdateChannelStreamScheduleRequest

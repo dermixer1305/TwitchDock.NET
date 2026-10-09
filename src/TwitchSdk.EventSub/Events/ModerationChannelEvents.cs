@@ -119,8 +119,8 @@ public sealed class ChannelUnbanEvent
 /// <summary>channel.unban_request.create v1: a banned user created an unban request.</summary>
 public sealed class ChannelUnbanRequestCreateEvent
 {
-    /// <summary>The unban request ID.</summary>
-    public required string Id { get; init; }
+    /// <summary>The unban request ID. Documented by Twitch but absent from some payloads (for example the Twitch CLI); null then.</summary>
+    public string? Id { get; init; }
     public required string BroadcasterUserId { get; init; }
     public required string BroadcasterUserLogin { get; init; }
     public required string BroadcasterUserName { get; init; }

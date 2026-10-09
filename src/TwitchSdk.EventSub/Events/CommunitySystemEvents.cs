@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 using TwitchSdk.Core;
 
@@ -38,9 +39,19 @@ public sealed class ChannelCharityCampaignStartEvent
 {
     /// <summary>Campaign ID.</summary>
     public required string Id { get; init; }
-    public required string BroadcasterId { get; init; }
-    public required string BroadcasterLogin { get; init; }
-    public required string BroadcasterName { get; init; }
+    // Twitch documents broadcaster_id/login/name here; other producers (such as the Twitch CLI) send broadcaster_user_*.
+    public string BroadcasterId { get; init => field = value ?? field; } = "";
+    public string BroadcasterLogin { get; init => field = value ?? field; } = "";
+    public string BroadcasterName { get; init => field = value ?? field; } = "";
+    /// <summary>Fills <see cref="BroadcasterId"/> from the broadcaster_user_id spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_id"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserIdAlias { get => null; init { if (value is not null && BroadcasterId.Length == 0) BroadcasterId = value; } }
+    /// <summary>Fills <see cref="BroadcasterLogin"/> from the broadcaster_user_login spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_login"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserLoginAlias { get => null; init { if (value is not null && BroadcasterLogin.Length == 0) BroadcasterLogin = value; } }
+    /// <summary>Fills <see cref="BroadcasterName"/> from the broadcaster_user_name spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_name"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserNameAlias { get => null; init { if (value is not null && BroadcasterName.Length == 0) BroadcasterName = value; } }
     public required string CharityName { get; init; }
     public required string CharityDescription { get; init; }
     public required string CharityLogo { get; init; }
@@ -55,9 +66,19 @@ public sealed class ChannelCharityCampaignProgressEvent
 {
     /// <summary>Campaign ID.</summary>
     public required string Id { get; init; }
-    public required string BroadcasterId { get; init; }
-    public required string BroadcasterLogin { get; init; }
-    public required string BroadcasterName { get; init; }
+    // Twitch documents broadcaster_id/login/name here; other producers (such as the Twitch CLI) send broadcaster_user_*.
+    public string BroadcasterId { get; init => field = value ?? field; } = "";
+    public string BroadcasterLogin { get; init => field = value ?? field; } = "";
+    public string BroadcasterName { get; init => field = value ?? field; } = "";
+    /// <summary>Fills <see cref="BroadcasterId"/> from the broadcaster_user_id spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_id"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserIdAlias { get => null; init { if (value is not null && BroadcasterId.Length == 0) BroadcasterId = value; } }
+    /// <summary>Fills <see cref="BroadcasterLogin"/> from the broadcaster_user_login spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_login"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserLoginAlias { get => null; init { if (value is not null && BroadcasterLogin.Length == 0) BroadcasterLogin = value; } }
+    /// <summary>Fills <see cref="BroadcasterName"/> from the broadcaster_user_name spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_name"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserNameAlias { get => null; init { if (value is not null && BroadcasterName.Length == 0) BroadcasterName = value; } }
     public required string CharityName { get; init; }
     public required string CharityDescription { get; init; }
     public required string CharityLogo { get; init; }
@@ -71,9 +92,19 @@ public sealed class ChannelCharityCampaignStopEvent
 {
     /// <summary>Campaign ID.</summary>
     public required string Id { get; init; }
-    public required string BroadcasterId { get; init; }
-    public required string BroadcasterLogin { get; init; }
-    public required string BroadcasterName { get; init; }
+    // Twitch documents broadcaster_id/login/name here; other producers (such as the Twitch CLI) send broadcaster_user_*.
+    public string BroadcasterId { get; init => field = value ?? field; } = "";
+    public string BroadcasterLogin { get; init => field = value ?? field; } = "";
+    public string BroadcasterName { get; init => field = value ?? field; } = "";
+    /// <summary>Fills <see cref="BroadcasterId"/> from the broadcaster_user_id spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_id"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserIdAlias { get => null; init { if (value is not null && BroadcasterId.Length == 0) BroadcasterId = value; } }
+    /// <summary>Fills <see cref="BroadcasterLogin"/> from the broadcaster_user_login spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_login"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserLoginAlias { get => null; init { if (value is not null && BroadcasterLogin.Length == 0) BroadcasterLogin = value; } }
+    /// <summary>Fills <see cref="BroadcasterName"/> from the broadcaster_user_name spelling; always reads null.</summary>
+    [JsonPropertyName("broadcaster_user_name"), EditorBrowsable(EditorBrowsableState.Never)]
+    public string? BroadcasterUserNameAlias { get => null; init { if (value is not null && BroadcasterName.Length == 0) BroadcasterName = value; } }
     public required string CharityName { get; init; }
     public required string CharityDescription { get; init; }
     public required string CharityLogo { get; init; }
