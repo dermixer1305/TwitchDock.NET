@@ -71,4 +71,17 @@ namespace TwitchSdk.Helix;
 [JsonSerializable(typeof(HelixPage<CharityDonation>))]
 [JsonSerializable(typeof(HelixPage<ChannelTeam>))]
 [JsonSerializable(typeof(HelixPage<TwitchTeam>))]
+// Each group keeps its own region so parallel additions merge without conflicts.
+// <group:moderation-a>
+// </group:moderation-a>
+// <group:moderation-b>
+// </group:moderation-b>
+// <group:chat-a>
+// </group:chat-a>
+// <group:chat-b>
+// </group:chat-b>
+// <group:extensions>
+// </group:extensions>
+// <group:guest-star>
+// </group:guest-star>
 public partial class HelixJsonContext : JsonSerializerContext;

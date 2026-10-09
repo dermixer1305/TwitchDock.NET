@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
@@ -10,6 +11,14 @@ public sealed class EventSubMessage
     public required EventSubMetadata Metadata { get; init; }
     public required EventSubPayload Payload { get; init; }
     public T ReadEvent<T>(JsonTypeInfo<T> type) => Payload.Event.Deserialize(type) ?? throw new JsonException("Empty EventSub event.");
+
+    /// <summary>Reads a typed notification event. Returns false for other message types and other subscription types or versions.</summary>
+    public bool TryReadEvent<TEvent>(EventSubEventDefinition<TEvent> definition, [NotNullWhen(true)] out TEvent? evt) where TEvent : class
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        evt = null;
+        return Metadata.MessageType == "notification" && Payload.TryReadEvent(definition, out evt);
+    }
 
     public static EventSubMessage Parse(ReadOnlySpan<byte> utf8)
         => JsonSerializer.Deserialize(utf8, EventSubJsonContext.Default.EventSubMessage) ?? throw new JsonException("Empty EventSub message.");
@@ -31,6 +40,16 @@ public sealed class EventSubPayload
     public EventSubSubscription? Subscription { get; init; }
     public JsonElement Event { get; init; }
     public string? Challenge { get; init; }
+
+    /// <summary>Reads a typed event when the payload's subscription matches the definition. Returns false when no event is present.</summary>
+    public bool TryReadEvent<TEvent>(EventSubEventDefinition<TEvent> definition, [NotNullWhen(true)] out TEvent? evt) where TEvent : class
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        evt = null;
+        if (Subscription is null || Event.ValueKind == JsonValueKind.Undefined || !definition.Matches(Subscription.Type, Subscription.Version)) return false;
+        evt = definition.Deserialize(Event);
+        return true;
+    }
 }
 
 public sealed class EventSubSession

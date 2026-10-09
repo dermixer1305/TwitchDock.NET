@@ -37,7 +37,7 @@ internal static class ContractAssertions
             foreach (var item in element.EnumerateArray()) foreach (var name in AllNames(item)) yield return name;
     }
 
-    private static void AssertSubset(JsonElement expected, JsonElement actual)
+    internal static void AssertSubset(JsonElement expected, JsonElement actual)
     {
         Assert.Equal(expected.ValueKind, actual.ValueKind);
         if (expected.ValueKind == JsonValueKind.Object)

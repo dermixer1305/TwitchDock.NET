@@ -31,6 +31,18 @@ public sealed class HelixClient(TwitchHttpClient transport)
     public ScheduleClient Schedule { get; } = new(transport);
     public ConduitsClient Conduits { get; } = new(transport);
     public HypeTrainClient HypeTrain { get; } = new(transport);
+    // <group:moderation-a>
+    // </group:moderation-a>
+    // <group:moderation-b>
+    // </group:moderation-b>
+    // <group:chat-a>
+    // </group:chat-a>
+    // <group:chat-b>
+    // </group:chat-b>
+    // <group:extensions>
+    // </group:extensions>
+    // <group:guest-star>
+    // </group:guest-star>
 
     /// <summary>Uses an app or user token; no filters means the authenticated user. Email requires user:read:email.</summary>
     public Task<HelixPage<TwitchUser>> GetUsersAsync(GetUsersRequest? request = null, CancellationToken cancellationToken = default)
@@ -61,6 +73,14 @@ public sealed class HelixClient(TwitchHttpClient transport)
     }
 
     public Task<EventSubSubscriptionsResponse> CreateEventSubSubscriptionAsync(CreateEventSubSubscriptionRequest request, CancellationToken cancellationToken = default)
+        => CreateEventSubSubscriptionAsync(request, null, cancellationToken);
+
+    /// <param name="request">The subscription to create.</param>
+    /// <param name="webSocketUserRequirement">Subscription-specific scopes and user that Twitch checks against the user token of a WebSocket
+    /// subscription. App-token transports (webhook, conduit) cannot be preflighted for user grants, so it is ignored for them.</param>
+    /// <param name="cancellationToken">Cancels the request.</param>
+    public Task<EventSubSubscriptionsResponse> CreateEventSubSubscriptionAsync(CreateEventSubSubscriptionRequest request,
+        TwitchAuthorizationRequirement? webSocketUserRequirement, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentException.ThrowIfNullOrWhiteSpace(request.Type);
@@ -86,7 +106,9 @@ public sealed class HelixClient(TwitchHttpClient transport)
         }
         return _transport.SendAsync(HttpMethod.Post, "eventsub/subscriptions", HelixJsonContext.Default.EventSubSubscriptionsResponse,
             jsonBody: JsonSerializer.SerializeToUtf8Bytes(request, HelixJsonContext.Default.CreateEventSubSubscriptionRequest),
-            authorization: request.Transport.Method == "websocket" ? new([]) : new([], allowAppToken: true, allowUserToken: false), cancellationToken: cancellationToken);
+            authorization: request.Transport.Method == "websocket"
+                ? new(webSocketUserRequirement?.RequiredUserScopes ?? [], requiredUserId: webSocketUserRequirement?.RequiredUserId, anyUserScopes: webSocketUserRequirement?.AnyUserScopes)
+                : new([], allowAppToken: true, allowUserToken: false), cancellationToken: cancellationToken);
     }
 
     public Task<EventSubSubscriptionsResponse> GetEventSubSubscriptionsAsync(GetEventSubSubscriptionsRequest? request = null, CancellationToken cancellationToken = default)
