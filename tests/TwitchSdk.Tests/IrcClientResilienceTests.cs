@@ -291,6 +291,8 @@ public sealed class IrcClientResilienceTests
         cancel.Cancel();
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => cancelled.WaitAsync(TestTimeout));
         Assert.Contains("shared", client.JoinedChannels);
+        // Wait for the remaining JOIN to arm its limiter delay; advancing earlier would schedule it past the new time.
+        await ManualTimeProvider.WaitUntilAsync(() => time.HasPendingDelays(10));
         time.Advance(TimeSpan.FromSeconds(10));
         await other.WaitAsync(TestTimeout);
         Assert.Equal(new[] { "JOIN #first", "JOIN #shared" }, connection.Sent.Where(IsJoin));
@@ -334,6 +336,7 @@ public sealed class IrcClientResilienceTests
         await hold.WaitAsync(TestTimeout);
         await part.WaitAsync(TestTimeout);
         await partPending.WaitAsync(TestTimeout);
+        await ManualTimeProvider.WaitUntilAsync(() => time.HasPendingDelays(10));
         time.Advance(TimeSpan.FromSeconds(10));
         await pendingJoin.WaitAsync(TestTimeout);
 

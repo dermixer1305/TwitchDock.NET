@@ -145,6 +145,11 @@ public sealed class TwitchIrcClient
             // Transports may report their own cancellation as a failure, for example an aborted socket read as IOException on .NET 8.
             throw new OperationCanceledException("The IRC client was stopped.", ex, cancellationToken);
         }
+        catch (OperationCanceledException ex) when (cancellationToken.IsCancellationRequested && ex.CancellationToken != cancellationToken)
+        {
+            // Internal session tokens are linked to the caller's; report the caller's token so `when (ex.CancellationToken == stoppingToken)` filters work.
+            throw new OperationCanceledException(ex.Message, ex, cancellationToken);
+        }
         finally
         {
             Volatile.Write(ref _running, 0);
@@ -498,7 +503,8 @@ public sealed class TwitchIrcClient
             {
                 if (!session.Lifetime.IsCancellationRequested) _logger.LogWarning(ex, "Twitch IRC send failed; closing the connection.");
                 Forget(session.CancelAsync());
-                if (send is { IsCompleted: false }) Forget(send);
+                // Observe the write even if it faulted after the timeout fired, so no exception goes unobserved.
+                if (send is not null) Forget(send);
                 throw;
             }
         }
@@ -549,7 +555,10 @@ public sealed class TwitchIrcClient
         }
         try
         {
-            await session.Connection.DisposeAsync().ConfigureAwait(false);
+            // A transport stuck in a close handshake must not block the reconnect.
+            var dispose = session.Connection.DisposeAsync().AsTask();
+            try { await dispose.WaitAsync(_options.KeepaliveTimeout, _time).ConfigureAwait(false); }
+            catch (TimeoutException) { Forget(dispose); throw; }
         }
         catch (Exception ex)
         {
