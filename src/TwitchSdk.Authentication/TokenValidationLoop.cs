@@ -14,10 +14,21 @@ public static class TokenValidationLoop
         ArgumentException.ThrowIfNullOrWhiteSpace(expectedClientId);
         ArgumentNullException.ThrowIfNull(onValidated);
         var time = timeProvider ?? TimeProvider.System;
+        var refreshedAfterRejection = false;
         while (true)
         {
             var token = await provider.GetTokenAsync(cancellationToken).ConfigureAwait(false);
-            var result = await oauth.ValidateAsync(token.Value, cancellationToken).ConfigureAwait(false);
+            TokenValidation result;
+            try { result = await oauth.ValidateAsync(token.Value, cancellationToken).ConfigureAwait(false); }
+            catch (TwitchApiException ex) when (ex.StatusCode == System.Net.HttpStatusCode.Unauthorized && !refreshedAfterRejection)
+            {
+                // Twitch invalidated the token (for example after a password change). Try one refresh before giving up.
+                var next = await provider.RefreshTokenAsync(token, cancellationToken).ConfigureAwait(false);
+                if (next.Value == token.Value) throw;
+                refreshedAfterRejection = true;
+                continue;
+            }
+            refreshedAfterRejection = false;
             if (!string.Equals(result.ClientId, expectedClientId, StringComparison.Ordinal))
                 throw new InvalidOperationException("The Twitch token belongs to a different client ID.");
             if (provider is ITokenMetadataSink sink)
