@@ -7,6 +7,8 @@ TestResults/
 docs/api/*-reference.html
 docs/api/*.txt
 .local/
+.claude/worktrees/
+.claude/settings.local.json
 *.user
 *.suo
 *.nupkg

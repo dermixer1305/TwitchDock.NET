@@ -7,14 +7,23 @@ namespace TwitchSdk.EventSub;
 /// <summary>One receive loop per client. Callbacks run sequentially and must return promptly.</summary>
 public sealed class EventSubWebSocketClient
 {
-    private static readonly Uri Endpoint = new("wss://eventsub.wss.twitch.tv/ws");
+    public static readonly Uri DefaultEndpoint = new("wss://eventsub.wss.twitch.tv/ws");
+    private readonly Uri _endpoint;
     private readonly Func<IEventSubConnection> _factory;
     private readonly MessageDeduplicator _deduplicator;
     private readonly TimeProvider _time;
     private int _running;
 
-    public EventSubWebSocketClient(Func<IEventSubConnection>? connectionFactory = null, MessageDeduplicator? deduplicator = null, TimeProvider? timeProvider = null)
+    /// <param name="connectionFactory">Creates a connection per session; defaults to <see cref="ClientWebSocketConnection"/>.</param>
+    /// <param name="deduplicator">Suppresses redelivered message IDs.</param>
+    /// <param name="timeProvider">Clock for keepalive and backoff timing.</param>
+    /// <param name="endpoint">Defaults to Twitch. A ws:// endpoint is only accepted on loopback hosts, for example the Twitch CLI mock server.</param>
+    public EventSubWebSocketClient(Func<IEventSubConnection>? connectionFactory = null, MessageDeduplicator? deduplicator = null, TimeProvider? timeProvider = null,
+        Uri? endpoint = null)
     {
+        _endpoint = endpoint ?? DefaultEndpoint;
+        if (!_endpoint.IsAbsoluteUri || !string.IsNullOrEmpty(_endpoint.UserInfo) || !(_endpoint.Scheme == "wss" || (_endpoint.Scheme == "ws" && _endpoint.IsLoopback)))
+            throw new ArgumentException("The EventSub endpoint must use wss://, or ws:// on a loopback host.", nameof(endpoint));
         _factory = connectionFactory ?? (() => new ClientWebSocketConnection());
         _time = timeProvider ?? TimeProvider.System;
         _deduplicator = deduplicator ?? new(timeProvider: _time);
@@ -38,7 +47,7 @@ public sealed class EventSubWebSocketClient
                 EventSubSession session;
                 try
                 {
-                    (connection, session) = await OpenAsync(Endpoint, cancellationToken).ConfigureAwait(false);
+                    (connection, session) = await OpenAsync(_endpoint, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception ex) when (IsConnectionFailure(ex, cancellationToken))
                 {
@@ -54,7 +63,9 @@ public sealed class EventSubWebSocketClient
                     if (message.Metadata.MessageType == "session_reconnect")
                     {
                         var reconnect = message.Payload.Session?.ReconnectUrl;
-                        if (!Uri.TryCreate(reconnect, UriKind.Absolute, out var uri) || uri.Scheme != "wss" || uri.Host != Endpoint.Host || !uri.IsDefaultPort || !string.IsNullOrEmpty(uri.UserInfo))
+                        // Only follow reconnects to the configured origin so a forged URL cannot redirect the session.
+                        if (!Uri.TryCreate(reconnect, UriKind.Absolute, out var uri) || uri.Scheme != _endpoint.Scheme || !string.Equals(uri.Host, _endpoint.Host, StringComparison.OrdinalIgnoreCase)
+                            || uri.Port != _endpoint.Port || !string.IsNullOrEmpty(uri.UserInfo))
                             throw new JsonException("Invalid Twitch reconnect URL.");
                         try
                         {

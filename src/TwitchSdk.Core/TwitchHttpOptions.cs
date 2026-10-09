@@ -12,8 +12,10 @@ public sealed class TwitchHttpOptions
     internal void Validate()
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(ClientId);
-        if (!BaseAddress.IsAbsoluteUri || BaseAddress.Scheme != Uri.UriSchemeHttps || !BaseAddress.AbsolutePath.EndsWith('/') || !string.IsNullOrEmpty(BaseAddress.Query) || !string.IsNullOrEmpty(BaseAddress.UserInfo))
-            throw new ArgumentException("BaseAddress must be an HTTPS directory URI without credentials or query parameters.");
+        // Plain HTTP is only accepted for loopback hosts, such as the Twitch CLI mock API during local testing.
+        if (!BaseAddress.IsAbsoluteUri || !(BaseAddress.Scheme == Uri.UriSchemeHttps || (BaseAddress.Scheme == Uri.UriSchemeHttp && BaseAddress.IsLoopback))
+            || !BaseAddress.AbsolutePath.EndsWith('/') || !string.IsNullOrEmpty(BaseAddress.Query) || !string.IsNullOrEmpty(BaseAddress.UserInfo))
+            throw new ArgumentException("BaseAddress must be an HTTPS (or loopback HTTP) directory URI without credentials or query parameters.");
         if (MaxRateLimitRetries < 0 || MaxTransientRetries < 0 || MaxRetryDelay <= TimeSpan.Zero || FallbackRetryDelay <= TimeSpan.Zero || FallbackRetryDelay > MaxRetryDelay)
             throw new ArgumentOutOfRangeException(nameof(MaxRateLimitRetries));
     }
