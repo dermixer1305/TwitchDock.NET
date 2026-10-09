@@ -1,0 +1,5 @@
+{
+  "get-channel-editors": {"data":[{"user_id":"2","user_name":"Editor","created_at":"2026-10-01T12:00:00Z"}]},
+  "get-followed-channels": {"data":[{"broadcaster_id":"1","broadcaster_login":"example","broadcaster_name":"Example","followed_at":"2026-10-01T12:00:00Z"}],"pagination":{"cursor":"next"},"total":3},
+  "get-channel-followers": {"data":[{"user_id":"2","user_login":"follower","user_name":"Follower","followed_at":"2026-10-01T12:00:00Z"}],"pagination":{"cursor":"next"},"total":42}
+}

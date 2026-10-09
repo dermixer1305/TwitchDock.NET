@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../TwitchSdk.Authentication/TwitchSdk.Authentication.csproj" />
+    <ProjectReference Include="../TwitchSdk.Chat/TwitchSdk.Chat.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,174 @@
+{
+  "create-custom-rewards": {
+    "data": [
+      {
+        "broadcaster_id": "1",
+        "broadcaster_login": "example",
+        "broadcaster_name": "Example",
+        "id": "r1",
+        "title": "Highlight",
+        "prompt": "Which moment?",
+        "cost": 2147483648,
+        "image": {
+          "url_1x": "https://example.org/custom1",
+          "url_2x": "https://example.org/custom2",
+          "url_4x": "https://example.org/custom4"
+        },
+        "default_image": {
+          "url_1x": "https://example.org/default1",
+          "url_2x": "https://example.org/default2",
+          "url_4x": "https://example.org/default4"
+        },
+        "background_color": "#9147FF",
+        "is_enabled": true,
+        "is_user_input_required": true,
+        "max_per_stream_setting": {
+          "is_enabled": true,
+          "max_per_stream": 2147483648
+        },
+        "max_per_user_per_stream_setting": {
+          "is_enabled": false,
+          "max_per_user_per_stream": 0
+        },
+        "global_cooldown_setting": {
+          "is_enabled": true,
+          "global_cooldown_seconds": 60
+        },
+        "is_paused": false,
+        "is_in_stock": true,
+        "should_redemptions_skip_request_queue": false,
+        "redemptions_redeemed_current_stream": 2,
+        "cooldown_expires_at": "2026-10-09T12:01:00Z"
+      }
+    ]
+  },
+  "get-custom-reward": {
+    "data": [
+      {
+        "broadcaster_id": "1",
+        "broadcaster_login": "example",
+        "broadcaster_name": "Example",
+        "id": "r1",
+        "title": "Highlight",
+        "prompt": "Which moment?",
+        "cost": 2147483648,
+        "image": null,
+        "default_image": {
+          "url_1x": "https://example.org/default1",
+          "url_2x": "https://example.org/default2",
+          "url_4x": "https://example.org/default4"
+        },
+        "background_color": "#9147FF",
+        "is_enabled": true,
+        "is_user_input_required": true,
+        "max_per_stream_setting": {
+          "is_enabled": true,
+          "max_per_stream": 2147483648
+        },
+        "max_per_user_per_stream_setting": {
+          "is_enabled": false,
+          "max_per_user_per_stream": 0
+        },
+        "global_cooldown_setting": {
+          "is_enabled": true,
+          "global_cooldown_seconds": 60
+        },
+        "is_paused": false,
+        "is_in_stock": true,
+        "should_redemptions_skip_request_queue": false,
+        "redemptions_redeemed_current_stream": null,
+        "cooldown_expires_at": null
+      }
+    ]
+  },
+  "update-custom-reward": {
+    "data": [
+      {
+        "broadcaster_id": "1",
+        "broadcaster_login": "example",
+        "broadcaster_name": "Example",
+        "id": "r1",
+        "title": "Highlight",
+        "prompt": "Which moment?",
+        "cost": 2147483648,
+        "image": {
+          "url_1x": "https://example.org/custom1",
+          "url_2x": "https://example.org/custom2",
+          "url_4x": "https://example.org/custom4"
+        },
+        "default_image": {
+          "url_1x": "https://example.org/default1",
+          "url_2x": "https://example.org/default2",
+          "url_4x": "https://example.org/default4"
+        },
+        "background_color": "#9147FF",
+        "is_enabled": true,
+        "is_user_input_required": true,
+        "max_per_stream_setting": {
+          "is_enabled": true,
+          "max_per_stream": 2147483648
+        },
+        "max_per_user_per_stream_setting": {
+          "is_enabled": false,
+          "max_per_user_per_stream": 0
+        },
+        "global_cooldown_setting": {
+          "is_enabled": true,
+          "global_cooldown_seconds": 60
+        },
+        "is_paused": false,
+        "is_in_stock": true,
+        "should_redemptions_skip_request_queue": false,
+        "redemptions_redeemed_current_stream": 2,
+        "cooldown_expires_at": "2026-10-09T12:01:00Z"
+      }
+    ]
+  },
+  "get-custom-reward-redemption": {
+    "data": [
+      {
+        "broadcaster_id": "1",
+        "broadcaster_login": "example",
+        "broadcaster_name": "Example",
+        "id": "d1",
+        "user_login": "viewer",
+        "user_id": "2",
+        "user_name": "Viewer",
+        "user_input": "That one",
+        "status": "UNFULFILLED",
+        "redeemed_at": "2026-10-09T12:00:00Z",
+        "reward": {
+          "id": "r1",
+          "title": "Highlight",
+          "prompt": "Which moment?",
+          "cost": 2147483648
+        }
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "update-redemption-status": {
+    "data": [
+      {
+        "broadcaster_id": "1",
+        "broadcaster_login": "example",
+        "broadcaster_name": "Example",
+        "id": "d1",
+        "user_login": "viewer",
+        "user_id": "2",
+        "user_name": "Viewer",
+        "user_input": "That one",
+        "status": "CANCELED",
+        "redeemed_at": "2026-10-09T12:00:00Z",
+        "reward": {
+          "id": "r1",
+          "title": "Highlight",
+          "prompt": "Which moment?",
+          "cost": 2147483648
+        }
+      }
+    ]
+  }
+}

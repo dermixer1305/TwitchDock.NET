@@ -1,0 +1,242 @@
+{
+  "get-polls": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Next game?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "One",
+            "votes": 2147483648,
+            "channel_points_votes": 2,
+            "bits_votes": 0
+          },
+          {
+            "id": "c2",
+            "title": "Two",
+            "votes": 3,
+            "channel_points_votes": 0,
+            "bits_votes": 0
+          }
+        ],
+        "bits_voting_enabled": false,
+        "bits_per_vote": 0,
+        "channel_points_voting_enabled": true,
+        "channel_points_per_vote": 10,
+        "status": "ACTIVE",
+        "duration": 60,
+        "started_at": "2026-10-09T12:00:00Z",
+        "ended_at": null
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "create-poll": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Next game?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "One",
+            "votes": 2147483648,
+            "channel_points_votes": 2,
+            "bits_votes": 0
+          },
+          {
+            "id": "c2",
+            "title": "Two",
+            "votes": 3,
+            "channel_points_votes": 0,
+            "bits_votes": 0
+          }
+        ],
+        "bits_voting_enabled": false,
+        "bits_per_vote": 0,
+        "channel_points_voting_enabled": true,
+        "channel_points_per_vote": 10,
+        "status": "ACTIVE",
+        "duration": 60,
+        "started_at": "2026-10-09T12:00:00Z",
+        "ended_at": null
+      }
+    ]
+  },
+  "end-poll": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Next game?",
+        "choices": [
+          {
+            "id": "c1",
+            "title": "One",
+            "votes": 2147483648,
+            "channel_points_votes": 2,
+            "bits_votes": 0
+          },
+          {
+            "id": "c2",
+            "title": "Two",
+            "votes": 3,
+            "channel_points_votes": 0,
+            "bits_votes": 0
+          }
+        ],
+        "bits_voting_enabled": false,
+        "bits_per_vote": 0,
+        "channel_points_voting_enabled": true,
+        "channel_points_per_vote": 10,
+        "status": "TERMINATED",
+        "duration": 60,
+        "started_at": "2026-10-09T12:00:00Z",
+        "ended_at": "2026-10-09T12:01:00Z"
+      }
+    ]
+  },
+  "get-predictions": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Will it work?",
+        "winning_outcome_id": null,
+        "outcomes": [
+          {
+            "id": "o1",
+            "title": "Yes",
+            "users": 1,
+            "channel_points": 2147483648,
+            "top_predictors": [
+              {
+                "user_id": "2",
+                "user_name": "Viewer",
+                "user_login": "viewer",
+                "channel_points_used": 2147483648,
+                "channel_points_won": null
+              }
+            ],
+            "color": "BLUE"
+          },
+          {
+            "id": "o2",
+            "title": "No",
+            "users": 0,
+            "channel_points": 0,
+            "top_predictors": null,
+            "color": "PINK"
+          }
+        ],
+        "prediction_window": 60,
+        "status": "ACTIVE",
+        "created_at": "2026-10-09T12:00:00Z",
+        "ended_at": null,
+        "locked_at": null
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "create-prediction": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Will it work?",
+        "winning_outcome_id": null,
+        "outcomes": [
+          {
+            "id": "o1",
+            "title": "Yes",
+            "users": 1,
+            "channel_points": 2147483648,
+            "top_predictors": [
+              {
+                "user_id": "2",
+                "user_name": "Viewer",
+                "user_login": "viewer",
+                "channel_points_used": 2147483648,
+                "channel_points_won": null
+              }
+            ],
+            "color": "BLUE"
+          },
+          {
+            "id": "o2",
+            "title": "No",
+            "users": 0,
+            "channel_points": 0,
+            "top_predictors": null,
+            "color": "PINK"
+          }
+        ],
+        "prediction_window": 60,
+        "status": "ACTIVE",
+        "created_at": "2026-10-09T12:00:00Z",
+        "ended_at": null,
+        "locked_at": null
+      }
+    ]
+  },
+  "end-prediction": {
+    "data": [
+      {
+        "id": "p1",
+        "broadcaster_id": "1",
+        "broadcaster_name": "Example",
+        "broadcaster_login": "example",
+        "title": "Will it work?",
+        "winning_outcome_id": "o1",
+        "outcomes": [
+          {
+            "id": "o1",
+            "title": "Yes",
+            "users": 1,
+            "channel_points": 2147483648,
+            "top_predictors": [
+              {
+                "user_id": "2",
+                "user_name": "Viewer",
+                "user_login": "viewer",
+                "channel_points_used": 2147483648,
+                "channel_points_won": 2147483649
+              }
+            ],
+            "color": "BLUE"
+          },
+          {
+            "id": "o2",
+            "title": "No",
+            "users": 0,
+            "channel_points": 0,
+            "top_predictors": null,
+            "color": "PINK"
+          }
+        ],
+        "prediction_window": 60,
+        "status": "RESOLVED",
+        "created_at": "2026-10-09T12:00:00Z",
+        "ended_at": "2026-10-09T12:02:00Z",
+        "locked_at": "2026-10-09T12:01:00Z"
+      }
+    ]
+  }
+}

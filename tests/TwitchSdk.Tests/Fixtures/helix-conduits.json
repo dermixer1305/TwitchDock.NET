@@ -1,0 +1,20 @@
+{
+  "get-conduits": { "data": [{ "id": "c1", "shard_count": 3 }] },
+  "create-conduits": { "data": [{ "id": "c1", "shard_count": 3 }] },
+  "update-conduits": { "data": [{ "id": "c1", "shard_count": 2 }] },
+  "get-conduit-shards": {
+    "data": [
+      { "id": "0", "status": "webhook_callback_verification_pending", "transport": { "method": "webhook", "callback": "https://example.org/events" } },
+      { "id": "1", "status": "websocket_disconnected", "transport": { "method": "websocket", "session_id": "session1", "connected_at": "2026-10-09T10:00:00Z", "disconnected_at": "2026-10-09T11:00:00Z" } },
+      { "id": "2", "status": "enabled", "transport": { "method": "websocket", "session_id": "session2", "connected_at": "2026-10-09T12:00:00Z", "disconnected_at": null } }
+    ],
+    "pagination": { "cursor": "next" }
+  },
+  "update-conduit-shards": {
+    "data": [
+      { "id": "0", "status": "webhook_callback_verification_pending", "transport": { "method": "webhook", "callback": "https://example.org/events" } },
+      { "id": "1", "status": "enabled", "transport": { "method": "websocket", "session_id": "session1", "connected_at": "2026-10-09T12:00:00Z", "disconnected_at": null } }
+    ],
+    "errors": [{ "id": "3", "message": "The shard id is outside of the conduit's range.", "code": "invalid_parameter" }]
+  }
+}

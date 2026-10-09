@@ -1,0 +1,18 @@
+{
+  "get-hype-train-status": {
+    "data": [{
+      "current": {
+        "id": "train1", "broadcaster_user_id": "1", "broadcaster_user_login": "channel", "broadcaster_user_name": "Channel",
+        "level": 20, "total": 4000000000, "progress": 3000000000, "goal": 5000000000,
+        "top_contributions": [
+          { "user_id": "2", "user_login": "viewer", "user_name": "Viewer", "type": "bits", "total": 3000000000 },
+          { "user_id": "3", "user_login": "other", "user_name": "Other", "type": "other", "total": 1000000000 }
+        ],
+        "shared_train_participants": [{ "broadcaster_user_id": "4", "broadcaster_user_login": "partner", "broadcaster_user_name": "Partner" }],
+        "started_at": "2026-10-09T12:00:00.17106713Z", "expires_at": "2026-10-09T12:05:00Z", "type": "golden_kappa", "is_shared_train": true
+      },
+      "all_time_high": { "level": 25, "total": 9000000000, "achieved_at": "2026-10-01T12:00:00.003802269Z" },
+      "shared_all_time_high": { "level": 30, "total": 11000000000, "achieved_at": "2026-10-02T12:00:00Z" }
+    }]
+  }
+}

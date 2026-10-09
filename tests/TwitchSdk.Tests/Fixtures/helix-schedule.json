@@ -1,0 +1,89 @@
+{
+  "get-channel-stream-schedule": {
+    "data": {
+      "segments": [
+        {
+          "id": "s1",
+          "start_time": "2026-10-10T12:00:00Z",
+          "end_time": "2026-10-10T13:00:00Z",
+          "title": "Stream",
+          "canceled_until": "2026-10-10T13:00:00Z",
+          "category": {
+            "id": "1",
+            "name": "Example"
+          },
+          "is_recurring": true
+        },
+        {
+          "id": "s2",
+          "start_time": "2026-10-10T12:00:00Z",
+          "end_time": "2026-10-10T13:00:00Z",
+          "title": "Stream",
+          "canceled_until": null,
+          "category": null,
+          "is_recurring": true
+        }
+      ],
+      "broadcaster_id": "1",
+      "broadcaster_name": "Example",
+      "broadcaster_login": "example",
+      "vacation": {
+        "start_time": "2026-10-15T12:00:00Z",
+        "end_time": "2026-10-20T12:00:00Z"
+      }
+    },
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "create-channel-stream-schedule-segment": {
+    "data": {
+      "segments": [
+        {
+          "id": "s1",
+          "start_time": "2026-10-10T12:00:00Z",
+          "end_time": "2026-10-10T13:00:00Z",
+          "title": "Stream",
+          "canceled_until": "2026-10-10T13:00:00Z",
+          "category": {
+            "id": "1",
+            "name": "Example"
+          },
+          "is_recurring": true
+        }
+      ],
+      "broadcaster_id": "1",
+      "broadcaster_name": "Example",
+      "broadcaster_login": "example",
+      "vacation": {
+        "start_time": "2026-10-15T12:00:00Z",
+        "end_time": "2026-10-20T12:00:00Z"
+      }
+    }
+  },
+  "update-channel-stream-schedule-segment": {
+    "data": {
+      "segments": [
+        {
+          "id": "s1",
+          "start_time": "2026-10-10T12:00:00Z",
+          "end_time": "2026-10-10T13:00:00Z",
+          "title": "Stream",
+          "canceled_until": "2026-10-10T13:00:00Z",
+          "category": {
+            "id": "1",
+            "name": "Example"
+          },
+          "is_recurring": true
+        }
+      ],
+      "broadcaster_id": "1",
+      "broadcaster_name": "Example",
+      "broadcaster_login": "example",
+      "vacation": {
+        "start_time": "2026-10-15T12:00:00Z",
+        "end_time": "2026-10-20T12:00:00Z"
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+using TwitchSdk.Core;
+
+namespace TwitchSdk.Authentication;
+
+public static class TokenValidationLoop
+{
+    /// <summary>Validates immediately and hourly, including when idle. Any failure ends the loop and must be handled by the host.</summary>
+    public static async Task RunAsync(TwitchOAuthClient oauth, IAccessTokenProvider provider, string expectedClientId,
+        Func<TokenValidation, CancellationToken, Task> onValidated, TimeProvider? timeProvider = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(oauth);
+        ArgumentNullException.ThrowIfNull(provider);
+        ArgumentException.ThrowIfNullOrWhiteSpace(expectedClientId);
+        ArgumentNullException.ThrowIfNull(onValidated);
+        var time = timeProvider ?? TimeProvider.System;
+        while (true)
+        {
+            var token = await provider.GetTokenAsync(cancellationToken).ConfigureAwait(false);
+            var result = await oauth.ValidateAsync(token.Value, cancellationToken).ConfigureAwait(false);
+            if (!string.Equals(result.ClientId, expectedClientId, StringComparison.Ordinal))
+                throw new InvalidOperationException("The Twitch token belongs to a different client ID.");
+            if (provider is ITokenMetadataSink sink)
+            {
+                if (!await sink.UpdateMetadataAsync(result.ToAccessToken(token.Value, time), cancellationToken).ConfigureAwait(false))
+                    continue; // The validated token rotated concurrently; validate its replacement before notifying the host.
+            }
+            await onValidated(result, cancellationToken).ConfigureAwait(false);
+            await Task.Delay(TimeSpan.FromHours(1), time, cancellationToken).ConfigureAwait(false);
+        }
+    }
+}

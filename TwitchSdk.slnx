@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/TwitchSdk.Quickstart/TwitchSdk.Quickstart.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/TwitchSdk.Authentication/TwitchSdk.Authentication.csproj" />
+    <Project Path="src/TwitchSdk.Chat/TwitchSdk.Chat.csproj" />
+    <Project Path="src/TwitchSdk.Core/TwitchSdk.Core.csproj" />
+    <Project Path="src/TwitchSdk.DependencyInjection/TwitchSdk.DependencyInjection.csproj" />
+    <Project Path="src/TwitchSdk.EventSub/TwitchSdk.EventSub.csproj" />
+    <Project Path="src/TwitchSdk.Helix/TwitchSdk.Helix.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj" />
+  </Folder>
+</Solution>

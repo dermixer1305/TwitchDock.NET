@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+artifacts/
+TestResults/
+docs/api/*-reference.html
+docs/api/*.txt
+.local/
+*.user
+*.suo
+*.nupkg
+*.snupkg
+.env

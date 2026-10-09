@@ -1,0 +1,3 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup><ProjectReference Include="../TwitchSdk.Core/TwitchSdk.Core.csproj" /></ItemGroup>
+</Project>
