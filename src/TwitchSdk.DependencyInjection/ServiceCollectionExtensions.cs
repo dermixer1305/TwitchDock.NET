@@ -12,12 +12,15 @@ namespace TwitchSdk.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     /// <summary>Registers clients for one authorization. A token provider factory creates an owned singleton.</summary>
+    /// <exception cref="ArgumentException">The options are invalid (see <see cref="TwitchHttpOptions.EnsureValid"/>); checked at registration.</exception>
     public static IServiceCollection AddTwitchSdk(this IServiceCollection services, TwitchHttpOptions options,
         Func<IServiceProvider, IAccessTokenProvider> tokenProviderFactory)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(tokenProviderFactory);
+        // Fail at startup rather than when the first client is resolved.
+        options.EnsureValid();
         services.AddSingleton(options);
         services.AddSingleton(tokenProviderFactory);
         services.TryAddSingleton(TimeProvider.System);

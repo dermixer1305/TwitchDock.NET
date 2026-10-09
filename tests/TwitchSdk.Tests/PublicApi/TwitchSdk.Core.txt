@@ -34,10 +34,11 @@ sealed class TwitchSdk.Core.StaticAccessTokenProvider : TwitchSdk.Core.IAccessTo
     GetTokenAsync(System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchSdk.Core.AccessToken>
     RefreshTokenAsync(TwitchSdk.Core.AccessToken rejectedToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchSdk.Core.AccessToken>
 sealed class TwitchSdk.Core.TwitchApiException : System.Net.Http.HttpRequestException, System.Runtime.Serialization.ISerializable
-    .ctor(System.Net.HttpStatusCode statusCode, System.String error, System.String message, System.String requestId = null, System.String existingSubscriptionId = null)
+    .ctor(System.Net.HttpStatusCode statusCode, System.String error, System.String message, System.String requestId = null, System.String existingSubscriptionId = null, System.TimeSpan? retryAfter = null)
     Error: System.String { get; }
     ExistingSubscriptionId: System.String { get; }
     RequestId: System.String { get; }
+    RetryAfter: System.TimeSpan? { get; }
 sealed class TwitchSdk.Core.TwitchAuthorizationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
     .ctor(System.String message, System.Collections.Generic.IEnumerable<System.String> missingScopes = null, System.Collections.Generic.IEnumerable<System.String> requiredAnyOfScopes = null)
     MissingScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
@@ -59,10 +60,13 @@ sealed class TwitchSdk.Core.TwitchHttpOptions
     .ctor()
     BaseAddress: System.Uri { get; init; }
     ClientId: System.String { get; init; }
+    EnsureValid(): System.Void
     FallbackRetryDelay: System.TimeSpan { get; init; }
     MaxRateLimitRetries: System.Int32 { get; init; }
+    MaxResponseContentBytes: System.Int64 { get; init; }
     MaxRetryDelay: System.TimeSpan { get; init; }
     MaxTransientRetries: System.Int32 { get; init; }
+    const DefaultMaxResponseContentBytes: System.Int64 = 33554432
 static class TwitchSdk.Core.TwitchScopes
     const AnalyticsReadExtensions: System.String = "analytics:read:extensions"
     const AnalyticsReadGames: System.String = "analytics:read:games"

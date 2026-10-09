@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 using TwitchSdk.Core;
 using TwitchSdk.Helix;
 using TwitchSdk.Helix.Models;
@@ -112,6 +113,107 @@ public sealed class HttpTransportTests
         var ex = await Assert.ThrowsAsync<TwitchApiException>(() => Create(http).SendAsync(HttpMethod.Get, "users"));
         Assert.Equal("limited", ex.Message);
         Assert.Equal(1, calls);
+        Assert.Equal(TimeSpan.FromHours(1), ex.RetryAfter);
+    }
+
+    [Fact]
+    public async Task RateLimitErrorsCarryTheAdvertisedDelayOnlyFor429()
+    {
+        var time = new ManualTimeProvider();
+        async Task<TwitchApiException> FailAsync(Action<HttpResponseMessage> configure, HttpStatusCode status = HttpStatusCode.TooManyRequests)
+        {
+            using var http = new HttpClient(new TestHttpHandler((_, _) =>
+            {
+                var response = TestHttpHandler.Json("{}", status);
+                configure(response);
+                return Task.FromResult(response);
+            }));
+            var transport = new TwitchHttpClient(http, new StaticAccessTokenProvider(new("token")), new() { ClientId = "client", MaxRateLimitRetries = 0, MaxTransientRetries = 0 }, time);
+            return await Assert.ThrowsAsync<TwitchApiException>(() => transport.SendAsync(HttpMethod.Get, "users"));
+        }
+        // Retries exhausted: the later of Retry-After and Ratelimit-Reset is reported.
+        var reset = await FailAsync(r =>
+        {
+            r.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(5));
+            r.Headers.Add("Ratelimit-Reset", time.GetUtcNow().AddSeconds(30).ToUnixTimeSeconds().ToString(System.Globalization.CultureInfo.InvariantCulture));
+        });
+        Assert.Equal(TimeSpan.FromSeconds(30), reset.RetryAfter);
+        Assert.Equal(TimeSpan.Zero, (await FailAsync(r => r.Headers.Add("Ratelimit-Reset", "0"))).RetryAfter);
+        Assert.Null((await FailAsync(_ => { })).RetryAfter);
+        Assert.Null((await FailAsync(r => r.Headers.RetryAfter = new RetryConditionHeaderValue(TimeSpan.FromSeconds(5)), HttpStatusCode.ServiceUnavailable)).RetryAfter);
+    }
+
+    [Theory]
+    [InlineData(nameof(TwitchHttpOptions.ClientId))]
+    [InlineData(nameof(TwitchHttpOptions.BaseAddress))]
+    [InlineData(nameof(TwitchHttpOptions.MaxRateLimitRetries))]
+    [InlineData(nameof(TwitchHttpOptions.MaxTransientRetries))]
+    [InlineData(nameof(TwitchHttpOptions.MaxRetryDelay))]
+    [InlineData(nameof(TwitchHttpOptions.FallbackRetryDelay))]
+    [InlineData(nameof(TwitchHttpOptions.MaxResponseContentBytes))]
+    public void OptionsValidationNamesTheInvalidProperty(string property)
+    {
+        TwitchHttpOptions options = property switch
+        {
+            nameof(TwitchHttpOptions.ClientId) => new() { ClientId = " " },
+            nameof(TwitchHttpOptions.BaseAddress) => new() { ClientId = "client", BaseAddress = new("http://example.org/helix/") },
+            nameof(TwitchHttpOptions.MaxRateLimitRetries) => new() { ClientId = "client", MaxRateLimitRetries = -1 },
+            nameof(TwitchHttpOptions.MaxTransientRetries) => new() { ClientId = "client", MaxTransientRetries = -1 },
+            nameof(TwitchHttpOptions.MaxRetryDelay) => new() { ClientId = "client", MaxRetryDelay = TimeSpan.Zero },
+            nameof(TwitchHttpOptions.FallbackRetryDelay) => new() { ClientId = "client", FallbackRetryDelay = TimeSpan.FromMinutes(5) },
+            _ => new() { ClientId = "client", MaxResponseContentBytes = 0 },
+        };
+        Assert.Equal(property, Assert.ThrowsAny<ArgumentException>(options.EnsureValid).ParamName);
+        using var http = new HttpClient();
+        Assert.Equal(property, Assert.ThrowsAny<ArgumentException>(() => new TwitchHttpClient(http, new StaticAccessTokenProvider(new("token")), options)).ParamName);
+        new TwitchHttpOptions { ClientId = "client" }.EnsureValid();
+    }
+
+    [Theory]
+    // Uri normalizes the host name "loopback" to localhost, so that request stays on this machine.
+    [InlineData("http://loopback/helix/", true)]
+    [InlineData("http://localhost.example.org/helix/", false)]
+    [InlineData("http://127.0.0.1.example.org/helix/", false)]
+    [InlineData("http://example.org/helix/", false)]
+    [InlineData("http://127.0.0.1:8080/mock/", true)]
+    [InlineData("http://[::1]:8080/mock/", true)]
+    [InlineData("http://localhost:8080/mock/", true)]
+    [InlineData("https://api.twitch.tv/helix/", true)]
+    public void PlainHttpBaseAddressMustBeALoopbackAddressOrLocalhost(string baseAddress, bool valid)
+    {
+        var options = new TwitchHttpOptions { ClientId = "client", BaseAddress = new(baseAddress) };
+        if (valid) options.EnsureValid();
+        else Assert.Equal(nameof(TwitchHttpOptions.BaseAddress), Assert.Throws<ArgumentException>(options.EnsureValid).ParamName);
+    }
+
+    [Fact]
+    public async Task ResponsesBeyondTheConfiguredSizeAreRejectedWhetherDeclaredOrStreamed()
+    {
+        var json = Encoding.UTF8.GetBytes("""{"data":[{"id":"1","login":"a","display_name":"A"},{"id":"2","login":"b","display_name":"B"}]}""");
+        HttpResponseMessage Declared() => new(HttpStatusCode.OK) { Content = new ByteArrayContent(json) };
+        HttpResponseMessage Streamed() => new(HttpStatusCode.OK) { Content = new UnknownLengthContent(json) };
+        foreach (var respond in new Func<HttpResponseMessage>[] { Declared, Streamed })
+        {
+            using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(respond())));
+            TwitchHttpClient Transport(long limit) => new(http, new StaticAccessTokenProvider(new("token")), new() { ClientId = "client", MaxResponseContentBytes = limit });
+            await Assert.ThrowsAsync<InvalidDataException>(() => new HelixClient(Transport(json.Length - 1)).GetUsersAsync());
+            await Assert.ThrowsAsync<InvalidDataException>(() => Transport(json.Length - 1).SendTextAsync(HttpMethod.Get, "schedule/icalendar", authenticated: false));
+            Assert.Equal(2, (await new HelixClient(Transport(json.Length)).GetUsersAsync()).Data.Count);
+            Assert.Equal(json.Length, Encoding.UTF8.GetByteCount(await Transport(json.Length).SendTextAsync(HttpMethod.Get, "schedule/icalendar", authenticated: false)));
+        }
+        Assert.Equal(TwitchHttpOptions.DefaultMaxResponseContentBytes, new TwitchHttpOptions { ClientId = "client" }.MaxResponseContentBytes);
+    }
+
+    [Fact]
+    public async Task OversizedErrorBodiesKeepTheStatusCode()
+    {
+        using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest)
+        {
+            Content = new UnknownLengthContent(Encoding.UTF8.GetBytes("{\"message\":\"" + new string('x', 256) + "\"}")),
+        })));
+        var transport = new TwitchHttpClient(http, new StaticAccessTokenProvider(new("token")), new() { ClientId = "client", MaxResponseContentBytes = 64 });
+        var error = await Assert.ThrowsAsync<TwitchApiException>(() => transport.SendAsync(HttpMethod.Get, "users"));
+        Assert.Equal((HttpStatusCode.BadRequest, "Twitch API returned HTTP 400."), (error.StatusCode!.Value, error.Message));
     }
 
     [Fact]
