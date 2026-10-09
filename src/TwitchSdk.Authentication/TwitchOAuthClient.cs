@@ -7,11 +7,17 @@ using TwitchSdk.Core;
 
 namespace TwitchSdk.Authentication;
 
-public sealed class TwitchOAuthClient
+public sealed partial class TwitchOAuthClient
 {
     private static readonly Uri Authority = new("https://id.twitch.tv/oauth2/");
     private readonly HttpClient _http;
-    public TwitchOAuthClient(HttpClient httpClient) => _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+    private readonly TimeProvider _time;
+
+    public TwitchOAuthClient(HttpClient httpClient, TimeProvider? timeProvider = null)
+    {
+        _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+        _time = timeProvider ?? TimeProvider.System;
+    }
 
     public static string CreateState() => Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant();
 
@@ -32,8 +38,11 @@ public sealed class TwitchOAuthClient
             ["response_type"] = implicitGrant ? "token" : "code", ["scope"] = string.Join(' ', scopes),
             ["state"] = state, ["force_verify"] = forceVerify ? "true" : "false"
         };
-        return new Uri(Authority, "authorize?" + string.Join('&', values.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}")));
+        return BuildAuthorizeUri(values);
     }
+
+    private static Uri BuildAuthorizeUri(Dictionary<string, string> values)
+        => new(Authority, "authorize?" + string.Join('&', values.Select(p => $"{Uri.EscapeDataString(p.Key)}={Uri.EscapeDataString(p.Value)}")));
 
     public Task<OAuthTokenResponse> GetAppTokenAsync(string clientId, string clientSecret, CancellationToken cancellationToken = default)
         => TokenAsync(Credentials(clientId, clientSecret, "client_credentials"), cancellationToken);
@@ -74,6 +83,29 @@ public sealed class TwitchOAuthClient
             ["client_id"] = clientId, ["device_code"] = deviceCode,
             ["grant_type"] = "urn:ietf:params:oauth:grant-type:device_code", ["scopes"] = string.Join(' ', scopes)
         }, cancellationToken);
+    }
+
+    /// <summary>
+    /// Polls the token endpoint at the advertised interval until the user authorizes the device code.
+    /// Throws <see cref="TimeoutException"/> when the code expires and <see cref="TwitchApiException"/> when Twitch rejects it.
+    /// </summary>
+    public async Task<OAuthTokenResponse> WaitForDeviceAuthorizationAsync(string clientId, DeviceAuthorization authorization, IEnumerable<string> scopes,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
+        ArgumentNullException.ThrowIfNull(authorization);
+        ArgumentNullException.ThrowIfNull(scopes);
+        var scopeList = scopes.ToArray();
+        var deadline = _time.GetUtcNow().AddSeconds(Math.Max(1, authorization.ExpiresIn));
+        var interval = TimeSpan.FromSeconds(Math.Max(1, authorization.Interval));
+        while (true)
+        {
+            await Task.Delay(interval, _time, cancellationToken).ConfigureAwait(false);
+            try { return await ExchangeDeviceCodeAsync(clientId, authorization.DeviceCode, scopeList, cancellationToken).ConfigureAwait(false); }
+            catch (TwitchApiException ex) when (ex.Error == "authorization_pending") { }
+            catch (TwitchApiException ex) when (ex.Error == "slow_down") { interval += TimeSpan.FromSeconds(5); }
+            if (_time.GetUtcNow() >= deadline) throw new TimeoutException("The device code expired before the user authorized it.");
+        }
     }
 
     public async Task<TokenValidation> ValidateAsync(string accessToken, CancellationToken cancellationToken = default)
@@ -127,10 +159,26 @@ public sealed class TwitchOAuthClient
             using var json = await JsonDocument.ParseAsync(stream, cancellationToken: ct).ConfigureAwait(false);
             if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e) && e.ValueKind == JsonValueKind.String)
                 error = e.GetString();
+            // Twitch reports some protocol states only in "message"; keep just the known machine-readable values.
+            if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("message", out var m) && m.ValueKind == JsonValueKind.String)
+                error = KnownOAuthMessage(m.GetString()) ?? error;
         }
         catch (JsonException) { }
         throw new TwitchApiException(response.StatusCode, error, $"Twitch OAuth request failed with HTTP {(int)response.StatusCode}.");
     }
+
+    private static string? KnownOAuthMessage(string? message) => message?.Trim().ToLowerInvariant() switch
+    {
+        "authorization_pending" => "authorization_pending",
+        "slow_down" => "slow_down",
+        "invalid device code" => "invalid_device_code",
+        "invalid refresh token" => "invalid_refresh_token",
+        "invalid access token" => "invalid_access_token",
+        "invalid client" => "invalid_client",
+        "invalid client secret" => "invalid_client_secret",
+        "missing client secret" => "missing_client_secret",
+        _ => null,
+    };
 
     private static Dictionary<string, string> Credentials(string clientId, string clientSecret, string grant)
     {
