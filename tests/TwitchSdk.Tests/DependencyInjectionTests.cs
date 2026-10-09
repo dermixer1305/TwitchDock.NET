@@ -24,4 +24,14 @@ public sealed class DependencyInjectionTests
         Assert.NotNull(provider.GetRequiredService<TwitchOAuthClient>());
         Assert.Equal(1, creations);
     }
+
+    [Fact]
+    public void RegistersOneIrcClientUsingTheSharedTokenProvider()
+    {
+        var services = new ServiceCollection();
+        services.AddTwitchSdk(new() { ClientId = "test" }, _ => new StaticAccessTokenProvider(new("token")));
+        services.AddTwitchIrc(new() { Login = "bot" });
+        using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
+        Assert.Same(provider.GetRequiredService<TwitchSdk.Chat.Irc.TwitchIrcClient>(), provider.GetRequiredService<TwitchSdk.Chat.Irc.TwitchIrcClient>());
+    }
 }
