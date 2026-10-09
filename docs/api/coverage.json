@@ -13826,27 +13826,48 @@
       "type": "channel.update",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.follow@2",
       "type": "channel.follow",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelfollow",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.ad_break.begin@1",
       "type": "channel.ad_break.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelad_breakbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.chat.clear@1",
@@ -14001,81 +14022,144 @@
       "type": "channel.raid",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelraid",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.ban@1",
       "type": "channel.ban",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelban",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.unban@1",
       "type": "channel.unban",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelunban",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.unban_request.create@1",
       "type": "channel.unban_request.create",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelunban_requestcreate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.unban_request.resolve@1",
       "type": "channel.unban_request.resolve",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelunban_requestresolve",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.moderate@1",
       "type": "channel.moderate",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelmoderate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.moderate@2",
       "type": "channel.moderate",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelmoderate-v2",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.moderator.add@1",
       "type": "channel.moderator.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelmoderatoradd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.moderator.remove@1",
       "type": "channel.moderator.remove",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelmoderatorremove",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.guest_star_session.begin@beta",
@@ -14271,18 +14355,32 @@
       "type": "channel.vip.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelvipadd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.vip.remove@1",
       "type": "channel.vip.remove",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelvipremove",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.warning.acknowledge@1",
@@ -14424,36 +14522,64 @@
       "type": "channel.shield_mode.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshield_modebegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.shield_mode.end@1",
       "type": "channel.shield_mode.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshield_modeend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.shoutout.create@1",
       "type": "channel.shoutout.create",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshoutoutcreate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "channel.shoutout.receive@1",
       "type": "channel.shoutout.receive",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshoutoutreceive",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "docs/eventsub-moderation-channel.md"
+      ]
     },
     {
       "id": "stream.online@1",
