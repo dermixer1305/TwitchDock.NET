@@ -5175,10 +5175,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "game-or-organization-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/EntitlementsClient.cs",
+        "src/TwitchSdk.Helix/Models/Entitlements.cs",
+        "tests/TwitchSdk.Tests/EntitlementsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-entitlements.json",
+        "docs/helix-entitlements.md"
+      ]
     },
     {
       "id": "update-drops-entitlements",
@@ -5220,10 +5226,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "game-or-organization-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/EntitlementsClient.cs",
+        "src/TwitchSdk.Helix/Models/Entitlements.cs",
+        "tests/TwitchSdk.Tests/EntitlementsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-entitlements.json",
+        "docs/helix-entitlements.md"
+      ]
     },
     {
       "id": "get-extension-configuration-segment",
@@ -5281,10 +5293,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "set-extension-configuration-segment",
@@ -5328,10 +5349,19 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "set-extension-required-configuration",
@@ -5370,10 +5400,19 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "send-extension-pubsub-message",
@@ -5411,10 +5450,19 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "get-extension-live-channels",
@@ -5482,10 +5530,19 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "get-extension-secrets",
@@ -5536,10 +5593,19 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "create-extension-secret",
@@ -5596,10 +5662,19 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "send-extension-chat-message",
@@ -5638,10 +5713,19 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "get-extensions",
@@ -5888,10 +5972,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "get-released-extensions",
@@ -6138,10 +6231,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "get-extension-bits-products",
@@ -6207,10 +6309,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "update-extension-bits-product",
@@ -6318,10 +6429,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchSdk.Helix/Models/Extensions.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "docs/helix-extensions.md"
+      ]
     },
     {
       "id": "create-eventsub-subscription",
@@ -8086,10 +8206,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "manage-held-automod-messages",
@@ -8123,10 +8249,16 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "get-automod-settings",
@@ -8216,10 +8348,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "update-automod-settings",
@@ -8354,10 +8492,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "get-banned-users",
@@ -8465,10 +8609,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "ban-user",
@@ -8553,10 +8703,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "unban-user",
@@ -8591,10 +8747,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "get-unban-requests",
@@ -8738,10 +8900,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "resolve-unban-requests",
@@ -8868,10 +9036,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "get-blocked-terms",
@@ -8963,10 +9137,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "add-blocked-term",
@@ -9042,10 +9222,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "remove-blocked-term",
@@ -9079,10 +9265,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "delete-chat-messages",
@@ -9116,10 +9308,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "docs/helix-moderation-enforcement.md"
+      ]
     },
     {
       "id": "get-moderated-channels",
@@ -13889,9 +14087,16 @@
       "type": "channel.bits.use",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelbitsuse",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.update@2",
@@ -14049,45 +14254,80 @@
       "type": "channel.subscribe",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsubscribe",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.subscription.end@1",
       "type": "channel.subscription.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsubscriptionend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.subscription.gift@1",
       "type": "channel.subscription.gift",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsubscriptiongift",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.subscription.message@1",
       "type": "channel.subscription.message",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsubscriptionmessage",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.cheer@1",
       "type": "channel.cheer",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcheer",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.raid@1",
@@ -14239,8 +14479,16 @@
       "version": "beta",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelguest_star_sessionbegin",
       "availabilityReview": "public-beta",
-      "status": "inventoried",
-      "evidence": []
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.guest_star_session.end@beta",
@@ -14248,8 +14496,16 @@
       "version": "beta",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelguest_star_sessionend",
       "availabilityReview": "public-beta",
-      "status": "inventoried",
-      "evidence": []
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.guest_star_guest.update@beta",
@@ -14257,8 +14513,16 @@
       "version": "beta",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelguest_star_guestupdate",
       "availabilityReview": "public-beta",
-      "status": "inventoried",
-      "evidence": []
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.guest_star_settings.update@beta",
@@ -14266,143 +14530,256 @@
       "version": "beta",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelguest_star_settingsupdate",
       "availabilityReview": "public-beta",
-      "status": "inventoried",
-      "evidence": []
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.channel_points_automatic_reward_redemption.add@1",
       "type": "channel.channel_points_automatic_reward_redemption.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_automatic_reward_redemptionadd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_automatic_reward_redemption.add@2",
       "type": "channel.channel_points_automatic_reward_redemption.add",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_automatic_reward_redemptionadd-v2",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_custom_reward.add@1",
       "type": "channel.channel_points_custom_reward.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_rewardadd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_custom_reward.update@1",
       "type": "channel.channel_points_custom_reward.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_rewardupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_custom_reward.remove@1",
       "type": "channel.channel_points_custom_reward.remove",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_rewardremove",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_custom_reward_redemption.add@1",
       "type": "channel.channel_points_custom_reward_redemption.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_reward_redemptionadd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.channel_points_custom_reward_redemption.update@1",
       "type": "channel.channel_points_custom_reward_redemption.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchannel_points_custom_reward_redemptionupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.custom_power_up_redemption.add@1",
       "type": "channel.custom_power_up_redemption.add",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcustom_power_up_redemptionadd",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.poll.begin@1",
       "type": "channel.poll.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpollbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.poll.progress@1",
       "type": "channel.poll.progress",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpollprogress",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.poll.end@1",
       "type": "channel.poll.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpollend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.prediction.begin@1",
       "type": "channel.prediction.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.prediction.progress@1",
       "type": "channel.prediction.progress",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionprogress",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.prediction.lock@1",
       "type": "channel.prediction.lock",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionlock",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.prediction.end@1",
       "type": "channel.prediction.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelpredictionend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "docs/eventsub-monetization-interaction.md"
+      ]
     },
     {
       "id": "channel.suspicious_user.message@1",
@@ -14477,117 +14854,221 @@
       "type": "channel.charity_campaign.donate",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcharity_campaigndonate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.charity_campaign.start@1",
       "type": "channel.charity_campaign.start",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcharity_campaignstart",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.charity_campaign.progress@1",
       "type": "channel.charity_campaign.progress",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcharity_campaignprogress",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.charity_campaign.stop@1",
       "type": "channel.charity_campaign.stop",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelcharity_campaignstop",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "conduit.shard.disabled@1",
       "type": "conduit.shard.disabled",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#conduitsharddisabled",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "drop.entitlement.grant@1",
       "type": "drop.entitlement.grant",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#dropentitlementgrant",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "game-or-organization-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "extension.bits_transaction.create@1",
       "type": "extension.bits_transaction.create",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#extensionbits_transactioncreate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "extension-owner",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.goal.begin@1",
       "type": "channel.goal.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelgoalbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.goal.progress@1",
       "type": "channel.goal.progress",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelgoalprogress",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.goal.end@1",
       "type": "channel.goal.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelgoalend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.hype_train.begin@2",
       "type": "channel.hype_train.begin",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelhype_trainbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.hype_train.progress@2",
       "type": "channel.hype_train.progress",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelhype_trainprogress",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.hype_train.end@2",
       "type": "channel.hype_train.end",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelhype_trainend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "channel.shield_mode.begin@1",
@@ -14658,54 +15139,98 @@
       "type": "stream.online",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#streamonline",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/StreamEvents.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-stream.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "stream.offline@1",
       "type": "stream.offline",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#streamoffline",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/StreamEvents.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-stream.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "user.authorization.grant@1",
       "type": "user.authorization.grant",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#userauthorizationgrant",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "user.authorization.revoke@1",
       "type": "user.authorization.revoke",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#userauthorizationrevoke",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "user.update@1",
       "type": "user.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#userupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     },
     {
       "id": "user.whisper.message@1",
       "type": "user.whisper.message",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#userwhispermessage",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "docs/eventsub-community-system.md"
+      ]
     }
   ],
   "scopes": [
