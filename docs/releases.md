@@ -28,7 +28,7 @@ Twitch deprecations are marked `[Obsolete]` in a minor release and removed only 
    git push origin v1.0.0-rc.1
    ```
 
-5. The [release workflow](../.github/workflows/release.yml) runs the full reusable CI workflow: Windows/Linux tests on both frameworks, coverage gate, Twitch CLI integration tests, package smoke tests and native AOT. Only after all required jobs succeed does it check the tag/version match, pack the SDK, bundle the six packages into `TwitchDock.NET-<version>-packages.zip`, generate SHA-256 checksums and create the GitHub release. If nuget.org publication is enabled, the `nuget` job then waits for approval and pushes the same packages.
+5. The [release workflow](../.github/workflows/release.yml) runs the full reusable CI workflow: Windows/Linux tests on both frameworks, coverage gate, Twitch CLI integration tests, package smoke tests and native AOT. Only after all required jobs succeed does it check the tag/version match, pack the SDK, bundle the six packages into `TwitchDock.NET-<version>-packages.zip`, generate SHA-256 checksums and create the GitHub release. The `github-packages` job then pushes the same packages to [GitHub Packages](#github-packages). If nuget.org publication is enabled, the `nuget` job waits for approval and pushes them to nuget.org.
 6. Verify that the release is marked **prerelease**, contains all six `.nupkg` assets, the zip bundle and `SHA256SUMS.txt`, and has working tutorial links. Install the release packages into a clean consumer project.
 
 The workflow uses GitHub's per-run token with `contents: write` only in the GitHub release job. It stores no NuGet secret; the optional nuget.org job obtains a short-lived key through trusted publishing. The GitHub release contains the version-specific bilingual notes, not the complete historical changelog.
@@ -47,6 +47,10 @@ Do not replace an already published version with different packages. Fix the pro
 - [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
 - [ ] Check NuGet package name availability/ownership and complete the [nuget.org setup](#nugetorg-publication) if distribution through nuget.org is desired.
 - [ ] Set `1.0.0`, date the changelog and publish using the same verified release procedure.
+
+## GitHub Packages
+
+Every release is also pushed to the repository's NuGet registry on GitHub Packages with the run's `GITHUB_TOKEN`; no setup is needed. The packages' repository URL links them to this repository, so they appear in its **Packages** section. After the first push, check on the package page that its visibility is **public**. GitHub's NuGet registry requires authentication even for public packages: consumers need a personal access token with `read:packages`. For everyone else the zip bundle on the GitHub release, or nuget.org, remains the simpler way to install. To push an existing release, run the **Release** workflow manually and enter its tag.
 
 ## nuget.org publication
 
