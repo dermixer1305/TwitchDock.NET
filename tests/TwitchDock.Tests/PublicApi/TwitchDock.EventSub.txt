@@ -1,0 +1,1854 @@
+sealed class TwitchDock.EventSub.ClientWebSocketConnection : System.IAsyncDisposable, TwitchDock.EventSub.IEventSubConnection
+    .ctor()
+    ConnectAsync(System.Uri uri, System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task
+    DisposeAsync(): System.Threading.Tasks.ValueTask
+    ReceiveAsync(System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task<TwitchDock.EventSub.EventSubMessage>
+sealed class TwitchDock.EventSub.EventSubDeduplicationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
+    .ctor(System.String message)
+sealed class TwitchDock.EventSub.EventSubEventDefinition<TEvent> : TwitchDock.EventSub.IEventSubEventDefinition
+    .ctor(System.String type, System.String version, System.Text.Json.Serialization.Metadata.JsonTypeInfo<TEvent> typeInfo)
+    Deserialize(System.Text.Json.JsonElement element): TEvent
+    Matches(System.String type, System.String version): System.Boolean
+    Type: System.String { get; }
+    TypeInfo: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TEvent> { get; }
+    Version: System.String { get; }
+    virtual ToString(): System.String
+sealed class TwitchDock.EventSub.EventSubEventRouter
+    .ctor()
+    DispatchAsync(System.String messageType, TwitchDock.EventSub.EventSubPayload payload, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<System.Boolean>
+    DispatchAsync(TwitchDock.EventSub.EventSubMessage message, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<System.Boolean>
+    On<TEvent>(TwitchDock.EventSub.EventSubEventDefinition<TEvent> definition, System.Func<TEvent, TwitchDock.Helix.Models.EventSubSubscription, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchDock.EventSub.EventSubEventRouter
+    OnDeserializationError(System.Func<TwitchDock.EventSub.EventSubPayload, System.Text.Json.JsonException, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchDock.EventSub.EventSubEventRouter
+    OnRevocation(System.Func<TwitchDock.Helix.Models.EventSubSubscription, System.Threading.CancellationToken, System.Threading.Tasks.Task> handler): TwitchDock.EventSub.EventSubEventRouter
+static class TwitchDock.EventSub.EventSubEvents
+    static All: System.Collections.Generic.IReadOnlyCollection<TwitchDock.EventSub.IEventSubEventDefinition> { get; }
+    static AutomodMessageHoldV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodMessageHoldEvent> { get; }
+    static AutomodMessageHoldV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodMessageHoldEventV2> { get; }
+    static AutomodMessageUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodMessageUpdateEvent> { get; }
+    static AutomodMessageUpdateV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodMessageUpdateEventV2> { get; }
+    static AutomodSettingsUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodSettingsUpdateEvent> { get; }
+    static AutomodTermsUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.AutomodTermsUpdateEvent> { get; }
+    static ChannelAdBreakBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelAdBreakBeginEvent> { get; }
+    static ChannelBanV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelBanEvent> { get; }
+    static ChannelBitsUseV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelBitsUseEvent> { get; }
+    static ChannelCharityCampaignDonateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCharityCampaignDonateEvent> { get; }
+    static ChannelCharityCampaignProgressV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCharityCampaignProgressEvent> { get; }
+    static ChannelCharityCampaignStartV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCharityCampaignStartEvent> { get; }
+    static ChannelCharityCampaignStopV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCharityCampaignStopEvent> { get; }
+    static ChannelChatClearUserMessagesV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatClearUserMessagesEvent> { get; }
+    static ChannelChatClearV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatClearEvent> { get; }
+    static ChannelChatMessageDeleteV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatMessageDeleteEvent> { get; }
+    static ChannelChatMessageV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatMessageEvent> { get; }
+    static ChannelChatNotificationV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatNotificationEvent> { get; }
+    static ChannelChatSettingsUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatSettingsUpdateEvent> { get; }
+    static ChannelChatUserMessageHoldV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatUserMessageHoldEvent> { get; }
+    static ChannelChatUserMessageUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelChatUserMessageUpdateEvent> { get; }
+    static ChannelCheerV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCheerEvent> { get; }
+    static ChannelCustomPowerUpRedemptionAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelCustomPowerUpRedemptionAddEvent> { get; }
+    static ChannelFollowV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelFollowEvent> { get; }
+    static ChannelGoalBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGoalBeginEvent> { get; }
+    static ChannelGoalEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGoalEndEvent> { get; }
+    static ChannelGoalProgressV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGoalProgressEvent> { get; }
+    static ChannelGuestStarGuestUpdateBeta: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGuestStarGuestUpdateEvent> { get; }
+    static ChannelGuestStarSessionBeginBeta: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGuestStarSessionBeginEvent> { get; }
+    static ChannelGuestStarSessionEndBeta: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGuestStarSessionEndEvent> { get; }
+    static ChannelGuestStarSettingsUpdateBeta: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelGuestStarSettingsUpdateEvent> { get; }
+    static ChannelHypeTrainBeginV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelHypeTrainBeginEvent> { get; }
+    static ChannelHypeTrainEndV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelHypeTrainEndEvent> { get; }
+    static ChannelHypeTrainProgressV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelHypeTrainProgressEvent> { get; }
+    static ChannelModerateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelModerateEvent> { get; }
+    static ChannelModerateV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelModerateEventV2> { get; }
+    static ChannelModeratorAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelModeratorAddEvent> { get; }
+    static ChannelModeratorRemoveV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelModeratorRemoveEvent> { get; }
+    static ChannelPointsAutomaticRewardRedemptionAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEvent> { get; }
+    static ChannelPointsAutomaticRewardRedemptionAddV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEventV2> { get; }
+    static ChannelPointsCustomRewardAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsCustomRewardAddEvent> { get; }
+    static ChannelPointsCustomRewardRedemptionAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionAddEvent> { get; }
+    static ChannelPointsCustomRewardRedemptionUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionUpdateEvent> { get; }
+    static ChannelPointsCustomRewardRemoveV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRemoveEvent> { get; }
+    static ChannelPointsCustomRewardUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPointsCustomRewardUpdateEvent> { get; }
+    static ChannelPollBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPollBeginEvent> { get; }
+    static ChannelPollEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPollEndEvent> { get; }
+    static ChannelPollProgressV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPollProgressEvent> { get; }
+    static ChannelPredictionBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPredictionBeginEvent> { get; }
+    static ChannelPredictionEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPredictionEndEvent> { get; }
+    static ChannelPredictionLockV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPredictionLockEvent> { get; }
+    static ChannelPredictionProgressV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelPredictionProgressEvent> { get; }
+    static ChannelRaidV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelRaidEvent> { get; }
+    static ChannelSharedChatBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSharedChatBeginEvent> { get; }
+    static ChannelSharedChatEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSharedChatEndEvent> { get; }
+    static ChannelSharedChatUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSharedChatUpdateEvent> { get; }
+    static ChannelShieldModeBeginV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelShieldModeBeginEvent> { get; }
+    static ChannelShieldModeEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelShieldModeEndEvent> { get; }
+    static ChannelShoutoutCreateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelShoutoutCreateEvent> { get; }
+    static ChannelShoutoutReceiveV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelShoutoutReceiveEvent> { get; }
+    static ChannelSubscribeV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSubscribeEvent> { get; }
+    static ChannelSubscriptionEndV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSubscriptionEndEvent> { get; }
+    static ChannelSubscriptionGiftV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSubscriptionGiftEvent> { get; }
+    static ChannelSubscriptionMessageV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSubscriptionMessageEvent> { get; }
+    static ChannelSuspiciousUserMessageV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSuspiciousUserMessageEvent> { get; }
+    static ChannelSuspiciousUserUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelSuspiciousUserUpdateEvent> { get; }
+    static ChannelUnbanRequestCreateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelUnbanRequestCreateEvent> { get; }
+    static ChannelUnbanRequestResolveV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelUnbanRequestResolveEvent> { get; }
+    static ChannelUnbanV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelUnbanEvent> { get; }
+    static ChannelUpdateV2: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelUpdateEvent> { get; }
+    static ChannelVipAddV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelVipAddEvent> { get; }
+    static ChannelVipRemoveV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelVipRemoveEvent> { get; }
+    static ChannelWarningAcknowledgeV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelWarningAcknowledgeEvent> { get; }
+    static ChannelWarningSendV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ChannelWarningSendEvent> { get; }
+    static ConduitShardDisabledV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ConduitShardDisabledEvent> { get; }
+    static DropEntitlementGrantV1: TwitchDock.EventSub.EventSubEventDefinition<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.DropEntitlementGrantEvent>> { get; }
+    static ExtensionBitsTransactionCreateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.ExtensionBitsTransactionCreateEvent> { get; }
+    static StreamOfflineV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.StreamOfflineEvent> { get; }
+    static StreamOnlineV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.StreamOnlineEvent> { get; }
+    static TryGetDefinition(System.String type, System.String version, out TwitchDock.EventSub.IEventSubEventDefinition definition): System.Boolean
+    static UserAuthorizationGrantV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.UserAuthorizationGrantEvent> { get; }
+    static UserAuthorizationRevokeV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.UserAuthorizationRevokeEvent> { get; }
+    static UserUpdateV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.UserUpdateEvent> { get; }
+    static UserWhisperMessageV1: TwitchDock.EventSub.EventSubEventDefinition<TwitchDock.EventSub.Events.UserWhisperMessageEvent> { get; }
+class TwitchDock.EventSub.EventSubEventsJsonContext : System.Text.Json.Serialization.JsonSerializerContext, System.Text.Json.Serialization.Metadata.IBuiltInJsonTypeInfoResolver, System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver
+    .ctor()
+    .ctor(System.Text.Json.JsonSerializerOptions options)
+    AutomodBlockedTermReason: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodBlockedTermReason> { get; }
+    AutomodCaughtReason: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodCaughtReason> { get; }
+    AutomodFoundTerm: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodFoundTerm> { get; }
+    AutomodHeldMessage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodHeldMessage> { get; }
+    AutomodHeldMessageCheermote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodHeldMessageCheermote> { get; }
+    AutomodHeldMessageEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodHeldMessageEmote> { get; }
+    AutomodHeldMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodHeldMessageFragment> { get; }
+    AutomodMessageHoldEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodMessageHoldEvent> { get; }
+    AutomodMessageHoldEventV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodMessageHoldEventV2> { get; }
+    AutomodMessageUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodMessageUpdateEvent> { get; }
+    AutomodMessageUpdateEventV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodMessageUpdateEventV2> { get; }
+    AutomodSettingsUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodSettingsUpdateEvent> { get; }
+    AutomodTermsUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodTermsUpdateEvent> { get; }
+    AutomodTextBoundary: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.AutomodTextBoundary> { get; }
+    Boolean: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Boolean> { get; }
+    ChannelAdBreakBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelAdBreakBeginEvent> { get; }
+    ChannelBanEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBanEvent> { get; }
+    ChannelBitsUseCheermote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseCheermote> { get; }
+    ChannelBitsUseCustomPowerUp: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseCustomPowerUp> { get; }
+    ChannelBitsUseEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseEmote> { get; }
+    ChannelBitsUseEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseEvent> { get; }
+    ChannelBitsUseMessage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseMessage> { get; }
+    ChannelBitsUseMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUseMessageFragment> { get; }
+    ChannelBitsUsePowerUp: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUsePowerUp> { get; }
+    ChannelBitsUsePowerUpEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelBitsUsePowerUpEmote> { get; }
+    ChannelCharityCampaignDonateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCharityCampaignDonateEvent> { get; }
+    ChannelCharityCampaignProgressEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCharityCampaignProgressEvent> { get; }
+    ChannelCharityCampaignStartEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCharityCampaignStartEvent> { get; }
+    ChannelCharityCampaignStopEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCharityCampaignStopEvent> { get; }
+    ChannelChatClearEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatClearEvent> { get; }
+    ChannelChatClearUserMessagesEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatClearUserMessagesEvent> { get; }
+    ChannelChatMessageDeleteEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatMessageDeleteEvent> { get; }
+    ChannelChatMessageEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatMessageEvent> { get; }
+    ChannelChatNotificationEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatNotificationEvent> { get; }
+    ChannelChatSettingsUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatSettingsUpdateEvent> { get; }
+    ChannelChatUserMessageHoldEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatUserMessageHoldEvent> { get; }
+    ChannelChatUserMessageUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelChatUserMessageUpdateEvent> { get; }
+    ChannelCheerEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCheerEvent> { get; }
+    ChannelCustomPowerUpInfo: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCustomPowerUpInfo> { get; }
+    ChannelCustomPowerUpRedemptionAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelCustomPowerUpRedemptionAddEvent> { get; }
+    ChannelFollowEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelFollowEvent> { get; }
+    ChannelGoalBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGoalBeginEvent> { get; }
+    ChannelGoalEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGoalEndEvent> { get; }
+    ChannelGoalProgressEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGoalProgressEvent> { get; }
+    ChannelGuestStarGuestUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGuestStarGuestUpdateEvent> { get; }
+    ChannelGuestStarSessionBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGuestStarSessionBeginEvent> { get; }
+    ChannelGuestStarSessionEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGuestStarSessionEndEvent> { get; }
+    ChannelGuestStarSettingsUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelGuestStarSettingsUpdateEvent> { get; }
+    ChannelHypeTrainBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelHypeTrainBeginEvent> { get; }
+    ChannelHypeTrainEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelHypeTrainEndEvent> { get; }
+    ChannelHypeTrainProgressEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelHypeTrainProgressEvent> { get; }
+    ChannelModerateAutomodTerms: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateAutomodTerms> { get; }
+    ChannelModerateBan: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateBan> { get; }
+    ChannelModerateDelete: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateDelete> { get; }
+    ChannelModerateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateEvent> { get; }
+    ChannelModerateEventV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateEventV2> { get; }
+    ChannelModerateFollowers: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateFollowers> { get; }
+    ChannelModerateRaid: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateRaid> { get; }
+    ChannelModerateSlow: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateSlow> { get; }
+    ChannelModerateTimeout: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateTimeout> { get; }
+    ChannelModerateUnbanRequest: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateUnbanRequest> { get; }
+    ChannelModerateUser: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateUser> { get; }
+    ChannelModerateWarn: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModerateWarn> { get; }
+    ChannelModeratorAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModeratorAddEvent> { get; }
+    ChannelModeratorRemoveEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelModeratorRemoveEvent> { get; }
+    ChannelPointsAutomaticReward: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticReward> { get; }
+    ChannelPointsAutomaticRewardMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageFragment> { get; }
+    ChannelPointsAutomaticRewardMessageV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageV2> { get; }
+    ChannelPointsAutomaticRewardRedemptionAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEvent> { get; }
+    ChannelPointsAutomaticRewardRedemptionAddEventV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEventV2> { get; }
+    ChannelPointsAutomaticRewardV2: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardV2> { get; }
+    ChannelPointsCustomRewardAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsCustomRewardAddEvent> { get; }
+    ChannelPointsCustomRewardRedemptionAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionAddEvent> { get; }
+    ChannelPointsCustomRewardRedemptionUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionUpdateEvent> { get; }
+    ChannelPointsCustomRewardRemoveEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsCustomRewardRemoveEvent> { get; }
+    ChannelPointsCustomRewardUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsCustomRewardUpdateEvent> { get; }
+    ChannelPointsFragmentEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsFragmentEmote> { get; }
+    ChannelPointsRewardCooldown: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsRewardCooldown> { get; }
+    ChannelPointsRewardEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsRewardEmote> { get; }
+    ChannelPointsRewardImage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsRewardImage> { get; }
+    ChannelPointsRewardInfo: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsRewardInfo> { get; }
+    ChannelPointsRewardLimit: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPointsRewardLimit> { get; }
+    ChannelPollBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPollBeginEvent> { get; }
+    ChannelPollChoice: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPollChoice> { get; }
+    ChannelPollEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPollEndEvent> { get; }
+    ChannelPollProgressEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPollProgressEvent> { get; }
+    ChannelPollVoting: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPollVoting> { get; }
+    ChannelPredictionBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionBeginEvent> { get; }
+    ChannelPredictionEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionEndEvent> { get; }
+    ChannelPredictionLockEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionLockEvent> { get; }
+    ChannelPredictionOutcome: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionOutcome> { get; }
+    ChannelPredictionProgressEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionProgressEvent> { get; }
+    ChannelPredictionTopPredictor: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelPredictionTopPredictor> { get; }
+    ChannelRaidEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelRaidEvent> { get; }
+    ChannelSharedChatBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSharedChatBeginEvent> { get; }
+    ChannelSharedChatEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSharedChatEndEvent> { get; }
+    ChannelSharedChatParticipant: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSharedChatParticipant> { get; }
+    ChannelSharedChatUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSharedChatUpdateEvent> { get; }
+    ChannelShieldModeBeginEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelShieldModeBeginEvent> { get; }
+    ChannelShieldModeEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelShieldModeEndEvent> { get; }
+    ChannelShoutoutCreateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelShoutoutCreateEvent> { get; }
+    ChannelShoutoutReceiveEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelShoutoutReceiveEvent> { get; }
+    ChannelSubscribeEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSubscribeEvent> { get; }
+    ChannelSubscriptionEndEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSubscriptionEndEvent> { get; }
+    ChannelSubscriptionGiftEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSubscriptionGiftEvent> { get; }
+    ChannelSubscriptionMessageEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSubscriptionMessageEvent> { get; }
+    ChannelSuspiciousUserMessageEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSuspiciousUserMessageEvent> { get; }
+    ChannelSuspiciousUserUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelSuspiciousUserUpdateEvent> { get; }
+    ChannelUnbanEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelUnbanEvent> { get; }
+    ChannelUnbanRequestCreateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelUnbanRequestCreateEvent> { get; }
+    ChannelUnbanRequestResolveEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelUnbanRequestResolveEvent> { get; }
+    ChannelUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelUpdateEvent> { get; }
+    ChannelVipAddEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelVipAddEvent> { get; }
+    ChannelVipRemoveEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelVipRemoveEvent> { get; }
+    ChannelWarningAcknowledgeEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelWarningAcknowledgeEvent> { get; }
+    ChannelWarningSendEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChannelWarningSendEvent> { get; }
+    CharityCampaignAmount: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.CharityCampaignAmount> { get; }
+    ChatMessageBadge: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageBadge> { get; }
+    ChatMessageBody: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageBody> { get; }
+    ChatMessageCheer: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageCheer> { get; }
+    ChatMessageCheermote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageCheermote> { get; }
+    ChatMessageEmote: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageEmote> { get; }
+    ChatMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageFragment> { get; }
+    ChatMessageGif: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageGif> { get; }
+    ChatMessageMention: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageMention> { get; }
+    ChatMessageReply: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatMessageReply> { get; }
+    ChatNotificationAnnouncement: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationAnnouncement> { get; }
+    ChatNotificationBitsBadgeTier: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationBitsBadgeTier> { get; }
+    ChatNotificationCharityAmount: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationCharityAmount> { get; }
+    ChatNotificationCharityDonation: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationCharityDonation> { get; }
+    ChatNotificationCommunitySubGift: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationCommunitySubGift> { get; }
+    ChatNotificationGiftPaidUpgrade: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade> { get; }
+    ChatNotificationGiftedDropsSummary: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary> { get; }
+    ChatNotificationModiversary: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationModiversary> { get; }
+    ChatNotificationPayItForward: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationPayItForward> { get; }
+    ChatNotificationPrimePaidUpgrade: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationPrimePaidUpgrade> { get; }
+    ChatNotificationRaid: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationRaid> { get; }
+    ChatNotificationResub: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationResub> { get; }
+    ChatNotificationSub: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationSub> { get; }
+    ChatNotificationSubGift: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationSubGift> { get; }
+    ChatNotificationUnraid: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationUnraid> { get; }
+    ChatNotificationWatchStreak: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ChatNotificationWatchStreak> { get; }
+    ConduitShardDisabledEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ConduitShardDisabledEvent> { get; }
+    ConduitShardDisabledTransport: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ConduitShardDisabledTransport> { get; }
+    DateTimeOffset: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.DateTimeOffset> { get; }
+    DropEntitlementGrantData: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.DropEntitlementGrantData> { get; }
+    DropEntitlementGrantEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.DropEntitlementGrantEvent> { get; }
+    ExtensionBitsTransactionCreateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ExtensionBitsTransactionCreateEvent> { get; }
+    ExtensionBitsTransactionProduct: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.ExtensionBitsTransactionProduct> { get; }
+    GeneratedSerializerOptions: System.Text.Json.JsonSerializerOptions { get; }
+    HypeTrainEventContribution: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.HypeTrainEventContribution> { get; }
+    HypeTrainEventParticipant: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.HypeTrainEventParticipant> { get; }
+    IReadOnlyListAutomodFoundTerm: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodFoundTerm>> { get; }
+    IReadOnlyListAutomodHeldMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodHeldMessageFragment>> { get; }
+    IReadOnlyListAutomodTextBoundary: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodTextBoundary>> { get; }
+    IReadOnlyListChannelBitsUseMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelBitsUseMessageFragment>> { get; }
+    IReadOnlyListChannelPointsAutomaticRewardMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageFragment>> { get; }
+    IReadOnlyListChannelPollChoice: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPollChoice>> { get; }
+    IReadOnlyListChannelPredictionOutcome: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPredictionOutcome>> { get; }
+    IReadOnlyListChannelPredictionTopPredictor: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPredictionTopPredictor>> { get; }
+    IReadOnlyListChannelSharedChatParticipant: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelSharedChatParticipant>> { get; }
+    IReadOnlyListChatMessageBadge: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageBadge>> { get; }
+    IReadOnlyListChatMessageFragment: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageFragment>> { get; }
+    IReadOnlyListDropEntitlementGrantEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.DropEntitlementGrantEvent>> { get; }
+    IReadOnlyListHypeTrainEventContribution: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventContribution>> { get; }
+    IReadOnlyListHypeTrainEventParticipant: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventParticipant>> { get; }
+    IReadOnlyListMessageEmoteRange: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.MessageEmoteRange>> { get; }
+    IReadOnlyListString: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyList<System.String>> { get; }
+    Int32: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int32> { get; }
+    Int64: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int64> { get; }
+    MessageEmoteRange: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.MessageEmoteRange> { get; }
+    MessageWithEmoteRanges: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.MessageWithEmoteRanges> { get; }
+    NullableBoolean: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Boolean?> { get; }
+    NullableDateTimeOffset: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.DateTimeOffset?> { get; }
+    NullableInt32: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int32?> { get; }
+    NullableInt64: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int64?> { get; }
+    StreamOfflineEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.StreamOfflineEvent> { get; }
+    StreamOnlineEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.StreamOnlineEvent> { get; }
+    String: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.String> { get; }
+    SuspiciousUserChatMessage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.SuspiciousUserChatMessage> { get; }
+    UserAuthorizationGrantEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.UserAuthorizationGrantEvent> { get; }
+    UserAuthorizationRevokeEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.UserAuthorizationRevokeEvent> { get; }
+    UserUpdateEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.UserUpdateEvent> { get; }
+    UserWhisperMessageContent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.UserWhisperMessageContent> { get; }
+    UserWhisperMessageEvent: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.Events.UserWhisperMessageEvent> { get; }
+    static Default: TwitchDock.EventSub.EventSubEventsJsonContext { get; }
+    virtual GetTypeInfo(System.Type type): System.Text.Json.Serialization.Metadata.JsonTypeInfo
+class TwitchDock.EventSub.EventSubJsonContext : System.Text.Json.Serialization.JsonSerializerContext, System.Text.Json.Serialization.Metadata.IBuiltInJsonTypeInfoResolver, System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver
+    .ctor()
+    .ctor(System.Text.Json.JsonSerializerOptions options)
+    DateTimeOffset: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.DateTimeOffset> { get; }
+    EventSubMessage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubMessage> { get; }
+    EventSubMetadata: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubMetadata> { get; }
+    EventSubPayload: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubPayload> { get; }
+    EventSubSession: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubSession> { get; }
+    EventSubSubscription: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.Helix.Models.EventSubSubscription> { get; }
+    EventSubTransport: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.Helix.Models.EventSubTransport> { get; }
+    GeneratedSerializerOptions: System.Text.Json.JsonSerializerOptions { get; }
+    IReadOnlyDictionaryStringString: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Collections.Generic.IReadOnlyDictionary<System.String, System.String>> { get; }
+    Int32: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int32> { get; }
+    JsonElement: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Text.Json.JsonElement> { get; }
+    NullableDateTimeOffset: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.DateTimeOffset?> { get; }
+    NullableInt32: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Int32?> { get; }
+    String: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.String> { get; }
+    static Default: TwitchDock.EventSub.EventSubJsonContext { get; }
+    virtual GetTypeInfo(System.Type type): System.Text.Json.Serialization.Metadata.JsonTypeInfo
+sealed class TwitchDock.EventSub.EventSubMessage
+    .ctor()
+    Metadata: TwitchDock.EventSub.EventSubMetadata { get; init; }
+    Payload: TwitchDock.EventSub.EventSubPayload { get; init; }
+    ReadEvent<T>(System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> type): T
+    TryReadEvent<TEvent>(TwitchDock.EventSub.EventSubEventDefinition<TEvent> definition, out TEvent evt): System.Boolean
+    static Parse(System.ReadOnlySpan<System.Byte> utf8): TwitchDock.EventSub.EventSubMessage
+sealed class TwitchDock.EventSub.EventSubMetadata
+    .ctor()
+    MessageId: System.String { get; init; }
+    MessageTimestamp: System.String { get; init; }
+    MessageType: System.String { get; init; }
+    SubscriptionType: System.String { get; init; }
+    SubscriptionVersion: System.String { get; init; }
+sealed class TwitchDock.EventSub.EventSubPayload
+    .ctor()
+    Challenge: System.String { get; init; }
+    Event: System.Text.Json.JsonElement { get; init; }
+    Events: System.Text.Json.JsonElement { get; init; }
+    Session: TwitchDock.EventSub.EventSubSession { get; init; }
+    Subscription: TwitchDock.Helix.Models.EventSubSubscription { get; init; }
+    TryReadEvent<TEvent>(TwitchDock.EventSub.EventSubEventDefinition<TEvent> definition, out TEvent evt): System.Boolean
+sealed class TwitchDock.EventSub.EventSubSession
+    .ctor()
+    ConnectedAt: System.String { get; init; }
+    Id: System.String { get; init; }
+    KeepaliveTimeoutSeconds: System.Int32? { get; init; }
+    ReconnectUrl: System.String { get; init; }
+    Status: System.String { get; init; }
+sealed class TwitchDock.EventSub.EventSubSubscriptionSpec
+    .ctor()
+    AnyOfScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    AuthorizingUserId: System.String { get; init; }
+    Condition: System.Collections.Generic.IReadOnlyDictionary<System.String, System.String> { get; init; }
+    IsBatchingEnabled: System.Boolean { get; init; }
+    RequiredScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Transports: TwitchDock.EventSub.EventSubTransports { get; init; }
+    Type: System.String { get; init; }
+    Version: System.String { get; init; }
+    virtual ToString(): System.String
+static class TwitchDock.EventSub.EventSubSubscriptions
+    static AutomodMessageHoldV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static AutomodMessageHoldV2(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static AutomodMessageUpdateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static AutomodMessageUpdateV2(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static AutomodSettingsUpdateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static AutomodTermsUpdateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelAdBreakBeginV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelBanV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelBitsUseV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCharityCampaignDonateV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCharityCampaignProgressV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCharityCampaignStartV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCharityCampaignStopV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatClearUserMessagesV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatClearV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatMessageDeleteV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatMessageV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatNotificationV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatSettingsUpdateV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatUserMessageHoldV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelChatUserMessageUpdateV1(System.String broadcasterUserId, System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCheerV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelCustomPowerUpRedemptionAddV1(System.String broadcasterUserId, System.String rewardId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelFollowV2(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGoalBeginV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGoalEndV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGoalProgressV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGuestStarGuestUpdateBeta(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGuestStarSessionBeginBeta(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGuestStarSessionEndBeta(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelGuestStarSettingsUpdateBeta(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelHypeTrainBeginV2(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelHypeTrainEndV2(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelHypeTrainProgressV2(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelModerateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelModerateV2(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelModeratorAddV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelModeratorRemoveV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsAutomaticRewardRedemptionAddV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsAutomaticRewardRedemptionAddV2(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsCustomRewardAddV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsCustomRewardRedemptionAddV1(System.String broadcasterUserId, System.String rewardId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsCustomRewardRedemptionUpdateV1(System.String broadcasterUserId, System.String rewardId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsCustomRewardRemoveV1(System.String broadcasterUserId, System.String rewardId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPointsCustomRewardUpdateV1(System.String broadcasterUserId, System.String rewardId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPollBeginV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPollEndV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPollProgressV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPredictionBeginV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPredictionEndV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPredictionLockV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelPredictionProgressV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelRaidFromBroadcasterV1(System.String fromBroadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelRaidToBroadcasterV1(System.String toBroadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelRaidV1(System.String fromBroadcasterUserId = null, System.String toBroadcasterUserId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSharedChatBeginV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSharedChatEndV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSharedChatUpdateV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelShieldModeBeginV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelShieldModeEndV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelShoutoutCreateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelShoutoutReceiveV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSubscribeV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSubscriptionEndV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSubscriptionGiftV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSubscriptionMessageV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSuspiciousUserMessageV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelSuspiciousUserUpdateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelUnbanRequestCreateV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelUnbanRequestResolveV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelUnbanV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelUpdateV2(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelVipAddV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelVipRemoveV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelWarningAcknowledgeV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ChannelWarningSendV1(System.String broadcasterUserId, System.String moderatorUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ConduitShardDisabledV1(System.String clientId, System.String conduitId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static DropEntitlementGrantV1(System.String organizationId, System.String categoryId = null, System.String campaignId = null): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static ExtensionBitsTransactionCreateV1(System.String extensionClientId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static StreamOfflineV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static StreamOnlineV1(System.String broadcasterUserId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static UserAuthorizationGrantV1(System.String clientId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static UserAuthorizationRevokeV1(System.String clientId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static UserUpdateV1(System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+    static UserWhisperMessageV1(System.String userId): TwitchDock.EventSub.EventSubSubscriptionSpec
+enum TwitchDock.EventSub.EventSubTransports : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+    const All: TwitchDock.EventSub.EventSubTransports = 7
+    const Conduit: TwitchDock.EventSub.EventSubTransports = 4
+    const None: TwitchDock.EventSub.EventSubTransports = 0
+    const WebSocket: TwitchDock.EventSub.EventSubTransports = 1
+    const Webhook: TwitchDock.EventSub.EventSubTransports = 2
+sealed class TwitchDock.EventSub.EventSubWebSocketClient
+    .ctor(System.Func<TwitchDock.EventSub.IEventSubConnection> connectionFactory = null, TwitchDock.EventSub.MessageDeduplicator deduplicator = null, System.TimeProvider timeProvider = null, System.Uri endpoint = null)
+    RunAsync(System.Func<TwitchDock.EventSub.EventSubSession, System.Boolean, System.Threading.CancellationToken, System.Threading.Tasks.Task> onSession, System.Func<TwitchDock.EventSub.EventSubMessage, System.Threading.CancellationToken, System.Threading.Tasks.Task> onMessage, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
+    static readonly DefaultEndpoint: System.Uri
+sealed class TwitchDock.EventSub.EventSubWebhookHandler
+    .ctor(TwitchDock.EventSub.EventSubWebhookVerifier verifier, TwitchDock.EventSub.EventSubEventRouter router, TwitchDock.EventSub.MessageDeduplicator deduplicator = null)
+    HandleAsync(TwitchDock.EventSub.EventSubWebhookRequest request, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchDock.EventSub.EventSubWebhookResponse>
+sealed class TwitchDock.EventSub.EventSubWebhookRequest
+    .ctor()
+    Body: System.ReadOnlyMemory<System.Byte> { get; init; }
+    MessageId: System.String { get; init; }
+    MessageSignature: System.String { get; init; }
+    MessageTimestamp: System.String { get; init; }
+    MessageType: System.String { get; init; }
+    const MessageIdHeader: System.String = "Twitch-Eventsub-Message-Id"
+    const MessageSignatureHeader: System.String = "Twitch-Eventsub-Message-Signature"
+    const MessageTimestampHeader: System.String = "Twitch-Eventsub-Message-Timestamp"
+    const MessageTypeHeader: System.String = "Twitch-Eventsub-Message-Type"
+    static FromHeaders(System.Func<System.String, System.String> header, System.ReadOnlyMemory<System.Byte> body): TwitchDock.EventSub.EventSubWebhookRequest
+sealed class TwitchDock.EventSub.EventSubWebhookResponse
+    .ctor()
+    Body: System.String { get; init; }
+    ContentType: System.String { get; init; }
+    StatusCode: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.EventSubWebhookVerifier
+    .ctor(System.String secret, System.TimeProvider timeProvider = null)
+    VerifyAndParse(System.String messageId, System.String timestamp, System.String signature, System.ReadOnlySpan<System.Byte> rawBody): TwitchDock.EventSub.EventSubPayload
+sealed class TwitchDock.EventSub.Events.AutomodBlockedTermReason
+    .ctor()
+    TermsFound: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodFoundTerm> { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodCaughtReason
+    .ctor()
+    Boundaries: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodTextBoundary> { get; init; }
+    Category: System.String { get; init; }
+    Level: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodFoundTerm
+    .ctor()
+    Boundary: TwitchDock.EventSub.Events.AutomodTextBoundary { get; init; }
+    OwnerBroadcasterUserId: System.String { get; init; }
+    OwnerBroadcasterUserLogin: System.String { get; init; }
+    OwnerBroadcasterUserName: System.String { get; init; }
+    TermId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodHeldMessage
+    .ctor()
+    Fragments: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodHeldMessageFragment> { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodHeldMessageCheermote
+    .ctor()
+    Bits: System.Int32 { get; init; }
+    Prefix: System.String { get; init; }
+    Tier: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodHeldMessageEmote
+    .ctor()
+    EmoteSetId: System.String { get; init; }
+    Id: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodHeldMessageFragment
+    .ctor()
+    Cheermote: TwitchDock.EventSub.Events.AutomodHeldMessageCheermote { get; init; }
+    Emote: TwitchDock.EventSub.Events.AutomodHeldMessageEmote { get; init; }
+    Text: System.String { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodMessageHoldEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Category: System.String { get; init; }
+    HeldAt: System.DateTimeOffset { get; init; }
+    Level: System.Int32 { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodMessageHoldEventV2
+    .ctor()
+    Automod: TwitchDock.EventSub.Events.AutomodCaughtReason { get; init; }
+    BlockedTerm: TwitchDock.EventSub.Events.AutomodBlockedTermReason { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    HeldAt: System.DateTimeOffset { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodMessageUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Category: System.String { get; init; }
+    HeldAt: System.DateTimeOffset { get; init; }
+    Level: System.Int32 { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodMessageUpdateEventV2
+    .ctor()
+    Automod: TwitchDock.EventSub.Events.AutomodCaughtReason { get; init; }
+    BlockedTerm: TwitchDock.EventSub.Events.AutomodBlockedTermReason { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    HeldAt: System.DateTimeOffset { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Reason: System.String { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodSettingsUpdateEvent
+    .ctor()
+    Aggression: System.Int32 { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Bullying: System.Int32 { get; init; }
+    Disability: System.Int32 { get; init; }
+    Misogyny: System.Int32 { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    OverallLevel: System.Int32? { get; init; }
+    RaceEthnicityOrReligion: System.Int32 { get; init; }
+    SexBasedTerms: System.Int32 { get; init; }
+    SexualitySexOrGender: System.Int32 { get; init; }
+    Swearing: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodTermsUpdateEvent
+    .ctor()
+    Action: System.String { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    FromAutomod: System.Boolean { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Terms: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+sealed class TwitchDock.EventSub.Events.AutomodTextBoundary
+    .ctor()
+    EndPos: System.Int32 { get; init; }
+    StartPos: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelAdBreakBeginEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    DurationSeconds: System.Int32 { get; init; }
+    IsAutomatic: System.Boolean { get; init; }
+    RequesterUserId: System.String { get; init; }
+    RequesterUserLogin: System.String { get; init; }
+    RequesterUserName: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBanEvent
+    .ctor()
+    BannedAt: System.DateTimeOffset { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    EndsAt: System.DateTimeOffset? { get; init; }
+    IsPermanent: System.Boolean { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseCheermote
+    .ctor()
+    Bits: System.Int64 { get; init; }
+    Prefix: System.String { get; init; }
+    Tier: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseCustomPowerUp
+    .ctor()
+    RewardId: System.String { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseEmote
+    .ctor()
+    EmoteSetId: System.String { get; init; }
+    Format: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Id: System.String { get; init; }
+    OwnerId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseEvent
+    .ctor()
+    Bits: System.Int64 { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CustomPowerUp: TwitchDock.EventSub.Events.ChannelBitsUseCustomPowerUp { get; init; }
+    Message: TwitchDock.EventSub.Events.ChannelBitsUseMessage { get; init; }
+    PowerUp: TwitchDock.EventSub.Events.ChannelBitsUsePowerUp { get; init; }
+    Type: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseMessage
+    .ctor()
+    Fragments: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelBitsUseMessageFragment> { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUseMessageFragment
+    .ctor()
+    Cheermote: TwitchDock.EventSub.Events.ChannelBitsUseCheermote { get; init; }
+    Emote: TwitchDock.EventSub.Events.ChannelBitsUseEmote { get; init; }
+    Text: System.String { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUsePowerUp
+    .ctor()
+    Emote: TwitchDock.EventSub.Events.ChannelBitsUsePowerUpEmote { get; init; }
+    MessageEffectId: System.String { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelBitsUsePowerUpEmote
+    .ctor()
+    Id: System.String { get; init; }
+    Name: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCharityCampaignDonateEvent
+    .ctor()
+    Amount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CampaignId: System.String { get; init; }
+    CharityDescription: System.String { get; init; }
+    CharityLogo: System.String { get; init; }
+    CharityName: System.String { get; init; }
+    CharityWebsite: System.String { get; init; }
+    Id: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCharityCampaignProgressEvent
+    .ctor()
+    BroadcasterId: System.String { get; init; }
+    BroadcasterLogin: System.String { get; init; }
+    BroadcasterName: System.String { get; init; }
+    BroadcasterUserIdAlias: System.String { get; init; }
+    BroadcasterUserLoginAlias: System.String { get; init; }
+    BroadcasterUserNameAlias: System.String { get; init; }
+    CharityDescription: System.String { get; init; }
+    CharityLogo: System.String { get; init; }
+    CharityName: System.String { get; init; }
+    CharityWebsite: System.String { get; init; }
+    CurrentAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+    Id: System.String { get; init; }
+    TargetAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCharityCampaignStartEvent
+    .ctor()
+    BroadcasterId: System.String { get; init; }
+    BroadcasterLogin: System.String { get; init; }
+    BroadcasterName: System.String { get; init; }
+    BroadcasterUserIdAlias: System.String { get; init; }
+    BroadcasterUserLoginAlias: System.String { get; init; }
+    BroadcasterUserNameAlias: System.String { get; init; }
+    CharityDescription: System.String { get; init; }
+    CharityLogo: System.String { get; init; }
+    CharityName: System.String { get; init; }
+    CharityWebsite: System.String { get; init; }
+    CurrentAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+    Id: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TargetAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCharityCampaignStopEvent
+    .ctor()
+    BroadcasterId: System.String { get; init; }
+    BroadcasterLogin: System.String { get; init; }
+    BroadcasterName: System.String { get; init; }
+    BroadcasterUserIdAlias: System.String { get; init; }
+    BroadcasterUserLoginAlias: System.String { get; init; }
+    BroadcasterUserNameAlias: System.String { get; init; }
+    CharityDescription: System.String { get; init; }
+    CharityLogo: System.String { get; init; }
+    CharityName: System.String { get; init; }
+    CharityWebsite: System.String { get; init; }
+    CurrentAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+    Id: System.String { get; init; }
+    StoppedAt: System.DateTimeOffset { get; init; }
+    TargetAmount: TwitchDock.EventSub.Events.CharityCampaignAmount { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatClearEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatClearUserMessagesEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    TargetUserId: System.String { get; init; }
+    TargetUserLogin: System.String { get; init; }
+    TargetUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatMessageDeleteEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    MessageId: System.String { get; init; }
+    TargetUserId: System.String { get; init; }
+    TargetUserLogin: System.String { get; init; }
+    TargetUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatMessageEvent
+    .ctor()
+    Badges: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageBadge> { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ChannelPointsAnimationId: System.String { get; init; }
+    ChannelPointsCustomRewardId: System.String { get; init; }
+    ChatterUserId: System.String { get; init; }
+    ChatterUserLogin: System.String { get; init; }
+    ChatterUserName: System.String { get; init; }
+    Cheer: TwitchDock.EventSub.Events.ChatMessageCheer { get; init; }
+    Color: System.String { get; init; }
+    IsSourceOnly: System.Boolean? { get; init; }
+    Message: TwitchDock.EventSub.Events.ChatMessageBody { get; init; }
+    MessageId: System.String { get; init; }
+    MessageType: System.String { get; init; }
+    Reply: TwitchDock.EventSub.Events.ChatMessageReply { get; init; }
+    SourceBadges: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageBadge> { get; init; }
+    SourceBroadcasterUserId: System.String { get; init; }
+    SourceBroadcasterUserLogin: System.String { get; init; }
+    SourceBroadcasterUserName: System.String { get; init; }
+    SourceMessageId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatNotificationEvent
+    .ctor()
+    Announcement: TwitchDock.EventSub.Events.ChatNotificationAnnouncement { get; init; }
+    Badges: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageBadge> { get; init; }
+    BitsBadgeTier: TwitchDock.EventSub.Events.ChatNotificationBitsBadgeTier { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CharityDonation: TwitchDock.EventSub.Events.ChatNotificationCharityDonation { get; init; }
+    ChatterIsAnonymous: System.Boolean { get; init; }
+    ChatterUserId: System.String { get; init; }
+    ChatterUserLogin: System.String { get; init; }
+    ChatterUserName: System.String { get; init; }
+    Color: System.String { get; init; }
+    CommunitySubGift: TwitchDock.EventSub.Events.ChatNotificationCommunitySubGift { get; init; }
+    GiftPaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade { get; init; }
+    GiftedDropsSummary: TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary { get; init; }
+    IsSourceOnly: System.Boolean? { get; init; }
+    Message: TwitchDock.EventSub.Events.ChatMessageBody { get; init; }
+    MessageId: System.String { get; init; }
+    Modiversary: TwitchDock.EventSub.Events.ChatNotificationModiversary { get; init; }
+    NoticeType: System.String { get; init; }
+    PayItForward: TwitchDock.EventSub.Events.ChatNotificationPayItForward { get; init; }
+    PrimePaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationPrimePaidUpgrade { get; init; }
+    Raid: TwitchDock.EventSub.Events.ChatNotificationRaid { get; init; }
+    Resub: TwitchDock.EventSub.Events.ChatNotificationResub { get; init; }
+    SharedChatAnnouncement: TwitchDock.EventSub.Events.ChatNotificationAnnouncement { get; init; }
+    SharedChatBitsBadgeTier: TwitchDock.EventSub.Events.ChatNotificationBitsBadgeTier { get; init; }
+    SharedChatCharityDonation: TwitchDock.EventSub.Events.ChatNotificationCharityDonation { get; init; }
+    SharedChatCommunitySubGift: TwitchDock.EventSub.Events.ChatNotificationCommunitySubGift { get; init; }
+    SharedChatGiftPaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade { get; init; }
+    SharedChatGiftedDropsSummary: TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary { get; init; }
+    SharedChatModiversary: TwitchDock.EventSub.Events.ChatNotificationModiversary { get; init; }
+    SharedChatPayItForward: TwitchDock.EventSub.Events.ChatNotificationPayItForward { get; init; }
+    SharedChatPrimePaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationPrimePaidUpgrade { get; init; }
+    SharedChatRaid: TwitchDock.EventSub.Events.ChatNotificationRaid { get; init; }
+    SharedChatResub: TwitchDock.EventSub.Events.ChatNotificationResub { get; init; }
+    SharedChatSub: TwitchDock.EventSub.Events.ChatNotificationSub { get; init; }
+    SharedChatSubGift: TwitchDock.EventSub.Events.ChatNotificationSubGift { get; init; }
+    SharedChatUnraid: TwitchDock.EventSub.Events.ChatNotificationUnraid { get; init; }
+    SourceBadges: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageBadge> { get; init; }
+    SourceBroadcasterUserId: System.String { get; init; }
+    SourceBroadcasterUserLogin: System.String { get; init; }
+    SourceBroadcasterUserName: System.String { get; init; }
+    SourceMessageId: System.String { get; init; }
+    Sub: TwitchDock.EventSub.Events.ChatNotificationSub { get; init; }
+    SubGift: TwitchDock.EventSub.Events.ChatNotificationSubGift { get; init; }
+    SystemMessage: System.String { get; init; }
+    Unraid: TwitchDock.EventSub.Events.ChatNotificationUnraid { get; init; }
+    WatchStreak: TwitchDock.EventSub.Events.ChatNotificationWatchStreak { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatSettingsUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    EmoteMode: System.Boolean { get; init; }
+    FollowerMode: System.Boolean { get; init; }
+    FollowerModeDurationMinutes: System.Int32? { get; init; }
+    SlowMode: System.Boolean { get; init; }
+    SlowModeWaitTimeSeconds: System.Int32? { get; init; }
+    SubscriberMode: System.Boolean { get; init; }
+    UniqueChatMode: System.Boolean { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatUserMessageHoldEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelChatUserMessageUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Message: TwitchDock.EventSub.Events.AutomodHeldMessage { get; init; }
+    MessageId: System.String { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCheerEvent
+    .ctor()
+    Bits: System.Int64 { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    IsAnonymous: System.Boolean { get; init; }
+    Message: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCustomPowerUpInfo
+    .ctor()
+    Bits: System.Int64 { get; init; }
+    Id: System.String { get; init; }
+    Prompt: System.String { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelCustomPowerUpRedemptionAddEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CustomPowerUp: TwitchDock.EventSub.Events.ChannelCustomPowerUpInfo { get; init; }
+    Id: System.String { get; init; }
+    RedeemedAt: System.DateTimeOffset { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserInput: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelFollowEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    FollowedAt: System.DateTimeOffset { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGoalBeginEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CurrentAmount: System.Int64 { get; init; }
+    Description: System.String { get; init; }
+    Id: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TargetAmount: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGoalEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CurrentAmount: System.Int64 { get; init; }
+    Description: System.String { get; init; }
+    EndedAt: System.DateTimeOffset { get; init; }
+    Id: System.String { get; init; }
+    IsAchieved: System.Boolean { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TargetAmount: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGoalProgressEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CurrentAmount: System.Int64 { get; init; }
+    Description: System.String { get; init; }
+    Id: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TargetAmount: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGuestStarGuestUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    GuestUserId: System.String { get; init; }
+    GuestUserLogin: System.String { get; init; }
+    GuestUserName: System.String { get; init; }
+    HostAudioEnabled: System.Boolean? { get; init; }
+    HostUserId: System.String { get; init; }
+    HostUserLogin: System.String { get; init; }
+    HostUserName: System.String { get; init; }
+    HostVideoEnabled: System.Boolean? { get; init; }
+    HostVolume: System.Int32? { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    SessionId: System.String { get; init; }
+    SlotId: System.String { get; init; }
+    State: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGuestStarSessionBeginEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    SessionId: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGuestStarSessionEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    EndedAt: System.DateTimeOffset { get; init; }
+    HostUserId: System.String { get; init; }
+    HostUserLogin: System.String { get; init; }
+    HostUserName: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    SessionId: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelGuestStarSettingsUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    GroupLayout: System.String { get; init; }
+    IsBrowserSourceAudioEnabled: System.Boolean { get; init; }
+    IsModeratorSendLiveEnabled: System.Boolean { get; init; }
+    SlotCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelHypeTrainBeginEvent
+    .ctor()
+    AllTimeHighLevel: System.Int32 { get; init; }
+    AllTimeHighTotal: System.Int64 { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ExpiresAt: System.DateTimeOffset { get; init; }
+    Goal: System.Int64 { get; init; }
+    Id: System.String { get; init; }
+    IsSharedTrain: System.Boolean { get; init; }
+    Level: System.Int32 { get; init; }
+    Progress: System.Int64 { get; init; }
+    SharedTrainParticipants: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventParticipant> { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TopContributions: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventContribution> { get; init; }
+    Total: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelHypeTrainEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CooldownEndsAt: System.DateTimeOffset { get; init; }
+    EndedAt: System.DateTimeOffset { get; init; }
+    Id: System.String { get; init; }
+    IsSharedTrain: System.Boolean { get; init; }
+    Level: System.Int32 { get; init; }
+    SharedTrainParticipants: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventParticipant> { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TopContributions: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventContribution> { get; init; }
+    Total: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelHypeTrainProgressEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ExpiresAt: System.DateTimeOffset { get; init; }
+    Goal: System.Int64 { get; init; }
+    Id: System.String { get; init; }
+    IsSharedTrain: System.Boolean { get; init; }
+    Level: System.Int32 { get; init; }
+    Progress: System.Int64 { get; init; }
+    SharedTrainParticipants: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventParticipant> { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TopContributions: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.HypeTrainEventContribution> { get; init; }
+    Total: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateAutomodTerms
+    .ctor()
+    Action: System.String { get; init; }
+    FromAutomod: System.Boolean { get; init; }
+    List: System.String { get; init; }
+    Terms: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateBan
+    .ctor()
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateDelete
+    .ctor()
+    MessageBody: System.String { get; init; }
+    MessageId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateEvent : TwitchDock.EventSub.Events.ChannelModerateEventBase
+    .ctor()
+abstract class TwitchDock.EventSub.Events.ChannelModerateEventBase
+    .ctor()
+    Action: System.String { get; init; }
+    AutomodTerms: TwitchDock.EventSub.Events.ChannelModerateAutomodTerms { get; init; }
+    Ban: TwitchDock.EventSub.Events.ChannelModerateBan { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Delete: TwitchDock.EventSub.Events.ChannelModerateDelete { get; init; }
+    Followers: TwitchDock.EventSub.Events.ChannelModerateFollowers { get; init; }
+    Mod: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Raid: TwitchDock.EventSub.Events.ChannelModerateRaid { get; init; }
+    SharedChatBan: TwitchDock.EventSub.Events.ChannelModerateBan { get; init; }
+    SharedChatDelete: TwitchDock.EventSub.Events.ChannelModerateDelete { get; init; }
+    SharedChatTimeout: TwitchDock.EventSub.Events.ChannelModerateTimeout { get; init; }
+    SharedChatUnban: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    SharedChatUntimeout: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    Slow: TwitchDock.EventSub.Events.ChannelModerateSlow { get; init; }
+    SourceBroadcasterUserId: System.String { get; init; }
+    SourceBroadcasterUserLogin: System.String { get; init; }
+    SourceBroadcasterUserName: System.String { get; init; }
+    Timeout: TwitchDock.EventSub.Events.ChannelModerateTimeout { get; init; }
+    Unban: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    UnbanRequest: TwitchDock.EventSub.Events.ChannelModerateUnbanRequest { get; init; }
+    Unmod: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    Unraid: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    Untimeout: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    Unvip: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+    Vip: TwitchDock.EventSub.Events.ChannelModerateUser { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateEventV2 : TwitchDock.EventSub.Events.ChannelModerateEventBase
+    .ctor()
+    Warn: TwitchDock.EventSub.Events.ChannelModerateWarn { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateFollowers
+    .ctor()
+    FollowDurationMinutes: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateRaid
+    .ctor()
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+    ViewerCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateSlow
+    .ctor()
+    WaitTimeSeconds: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateTimeout
+    .ctor()
+    ExpiresAt: System.DateTimeOffset { get; init; }
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateUnbanRequest
+    .ctor()
+    IsApproved: System.Boolean { get; init; }
+    ModeratorMessage: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateUser
+    .ctor()
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModerateWarn
+    .ctor()
+    ChatRulesCited: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModeratorAddEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelModeratorRemoveEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticReward
+    .ctor()
+    Cost: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+    UnlockedEmote: TwitchDock.EventSub.Events.ChannelPointsRewardEmote { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageFragment
+    .ctor()
+    Emote: TwitchDock.EventSub.Events.ChannelPointsFragmentEmote { get; init; }
+    Text: System.String { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageV2
+    .ctor()
+    Fragments: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageFragment> { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    Message: TwitchDock.EventSub.Events.MessageWithEmoteRanges { get; init; }
+    RedeemedAt: System.DateTimeOffset { get; init; }
+    Reward: TwitchDock.EventSub.Events.ChannelPointsAutomaticReward { get; init; }
+    UserId: System.String { get; init; }
+    UserInput: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardRedemptionAddEventV2
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    Message: TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardMessageV2 { get; init; }
+    RedeemedAt: System.DateTimeOffset { get; init; }
+    Reward: TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardV2 { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsAutomaticRewardV2
+    .ctor()
+    ChannelPoints: System.Int64 { get; init; }
+    Emote: TwitchDock.EventSub.Events.ChannelPointsRewardEmote { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsCustomRewardAddEvent : TwitchDock.EventSub.Events.ChannelPointsCustomRewardEventBase
+    .ctor()
+abstract class TwitchDock.EventSub.Events.ChannelPointsCustomRewardEventBase
+    .ctor()
+    BackgroundColor: System.String { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CooldownExpiresAt: System.DateTimeOffset? { get; init; }
+    Cost: System.Int64 { get; init; }
+    DefaultImage: TwitchDock.EventSub.Events.ChannelPointsRewardImage { get; init; }
+    GlobalCooldown: TwitchDock.EventSub.Events.ChannelPointsRewardCooldown { get; init; }
+    Id: System.String { get; init; }
+    Image: TwitchDock.EventSub.Events.ChannelPointsRewardImage { get; init; }
+    IsEnabled: System.Boolean { get; init; }
+    IsInStock: System.Boolean { get; init; }
+    IsPaused: System.Boolean { get; init; }
+    IsUserInputRequired: System.Boolean { get; init; }
+    MaxPerStream: TwitchDock.EventSub.Events.ChannelPointsRewardLimit { get; init; }
+    MaxPerUserPerStream: TwitchDock.EventSub.Events.ChannelPointsRewardLimit { get; init; }
+    Prompt: System.String { get; init; }
+    RedemptionsRedeemedCurrentStream: System.Int64? { get; init; }
+    ShouldRedemptionsSkipRequestQueue: System.Boolean { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionAddEvent : TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionEventBase
+    .ctor()
+abstract class TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionEventBase
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    RedeemedAt: System.DateTimeOffset { get; init; }
+    Reward: TwitchDock.EventSub.Events.ChannelPointsRewardInfo { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserInput: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionUpdateEvent : TwitchDock.EventSub.Events.ChannelPointsCustomRewardRedemptionEventBase
+    .ctor()
+sealed class TwitchDock.EventSub.Events.ChannelPointsCustomRewardRemoveEvent : TwitchDock.EventSub.Events.ChannelPointsCustomRewardEventBase
+    .ctor()
+sealed class TwitchDock.EventSub.Events.ChannelPointsCustomRewardUpdateEvent : TwitchDock.EventSub.Events.ChannelPointsCustomRewardEventBase
+    .ctor()
+sealed class TwitchDock.EventSub.Events.ChannelPointsFragmentEmote
+    .ctor()
+    Id: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsRewardCooldown
+    .ctor()
+    IsEnabled: System.Boolean { get; init; }
+    Seconds: System.Int64 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsRewardEmote
+    .ctor()
+    Id: System.String { get; init; }
+    Name: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsRewardImage
+    .ctor()
+    Url1x: System.String { get; init; }
+    Url2x: System.String { get; init; }
+    Url4x: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsRewardInfo
+    .ctor()
+    Cost: System.Int64 { get; init; }
+    Id: System.String { get; init; }
+    Prompt: System.String { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPointsRewardLimit
+    .ctor()
+    IsEnabled: System.Boolean { get; init; }
+    Value: System.Int64 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPollBeginEvent : TwitchDock.EventSub.Events.ChannelPollEventBase
+    .ctor()
+    EndsAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPollChoice
+    .ctor()
+    BitsVotes: System.Int64 { get; init; }
+    ChannelPointsVotes: System.Int64 { get; init; }
+    Id: System.String { get; init; }
+    Title: System.String { get; init; }
+    Votes: System.Int64 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPollEndEvent : TwitchDock.EventSub.Events.ChannelPollEventBase
+    .ctor()
+    EndedAt: System.DateTimeOffset { get; init; }
+    Status: System.String { get; init; }
+abstract class TwitchDock.EventSub.Events.ChannelPollEventBase
+    .ctor()
+    BitsVoting: TwitchDock.EventSub.Events.ChannelPollVoting { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ChannelPointsVoting: TwitchDock.EventSub.Events.ChannelPollVoting { get; init; }
+    Choices: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPollChoice> { get; init; }
+    Id: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPollProgressEvent : TwitchDock.EventSub.Events.ChannelPollEventBase
+    .ctor()
+    EndsAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPollVoting
+    .ctor()
+    AmountPerVote: System.Int64 { get; init; }
+    IsEnabled: System.Boolean { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionBeginEvent : TwitchDock.EventSub.Events.ChannelPredictionEventBase
+    .ctor()
+    LocksAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionEndEvent : TwitchDock.EventSub.Events.ChannelPredictionEventBase
+    .ctor()
+    EndedAt: System.DateTimeOffset { get; init; }
+    Status: System.String { get; init; }
+    WinningOutcomeId: System.String { get; init; }
+abstract class TwitchDock.EventSub.Events.ChannelPredictionEventBase
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    Outcomes: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPredictionOutcome> { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionLockEvent : TwitchDock.EventSub.Events.ChannelPredictionEventBase
+    .ctor()
+    LockedAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionOutcome
+    .ctor()
+    ChannelPoints: System.Int64 { get; init; }
+    Color: System.String { get; init; }
+    Id: System.String { get; init; }
+    Title: System.String { get; init; }
+    TopPredictors: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelPredictionTopPredictor> { get; init; }
+    Users: System.Int64 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionProgressEvent : TwitchDock.EventSub.Events.ChannelPredictionEventBase
+    .ctor()
+    LocksAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelPredictionTopPredictor
+    .ctor()
+    ChannelPointsUsed: System.Int64 { get; init; }
+    ChannelPointsWon: System.Int64? { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelRaidEvent
+    .ctor()
+    FromBroadcasterUserId: System.String { get; init; }
+    FromBroadcasterUserLogin: System.String { get; init; }
+    FromBroadcasterUserName: System.String { get; init; }
+    ToBroadcasterUserId: System.String { get; init; }
+    ToBroadcasterUserLogin: System.String { get; init; }
+    ToBroadcasterUserName: System.String { get; init; }
+    Viewers: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSharedChatBeginEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    HostBroadcasterUserId: System.String { get; init; }
+    HostBroadcasterUserLogin: System.String { get; init; }
+    HostBroadcasterUserName: System.String { get; init; }
+    Participants: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelSharedChatParticipant> { get; init; }
+    SessionId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSharedChatEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    HostBroadcasterUserId: System.String { get; init; }
+    HostBroadcasterUserLogin: System.String { get; init; }
+    HostBroadcasterUserName: System.String { get; init; }
+    SessionId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSharedChatParticipant
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSharedChatUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    HostBroadcasterUserId: System.String { get; init; }
+    HostBroadcasterUserLogin: System.String { get; init; }
+    HostBroadcasterUserName: System.String { get; init; }
+    Participants: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChannelSharedChatParticipant> { get; init; }
+    SessionId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelShieldModeBeginEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelShieldModeEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    EndedAt: System.DateTimeOffset { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelShoutoutCreateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CooldownEndsAt: System.DateTimeOffset { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    TargetCooldownEndsAt: System.DateTimeOffset { get; init; }
+    ToBroadcasterUserId: System.String { get; init; }
+    ToBroadcasterUserLogin: System.String { get; init; }
+    ToBroadcasterUserName: System.String { get; init; }
+    ViewerCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelShoutoutReceiveEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    FromBroadcasterUserId: System.String { get; init; }
+    FromBroadcasterUserLogin: System.String { get; init; }
+    FromBroadcasterUserName: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    ViewerCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSubscribeEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    IsGift: System.Boolean { get; init; }
+    Tier: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSubscriptionEndEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    IsGift: System.Boolean { get; init; }
+    Tier: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSubscriptionGiftEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CumulativeTotal: System.Int32? { get; init; }
+    IsAnonymous: System.Boolean { get; init; }
+    Tier: System.String { get; init; }
+    Total: System.Int32 { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSubscriptionMessageEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CumulativeMonths: System.Int32 { get; init; }
+    DurationMonths: System.Int32 { get; init; }
+    Message: TwitchDock.EventSub.Events.MessageWithEmoteRanges { get; init; }
+    StreakMonths: System.Int32? { get; init; }
+    Tier: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSuspiciousUserMessageEvent
+    .ctor()
+    BanEvasionEvaluation: System.String { get; init; }
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    LowTrustStatus: System.String { get; init; }
+    Message: TwitchDock.EventSub.Events.SuspiciousUserChatMessage { get; init; }
+    SharedBanChannelIds: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Types: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelSuspiciousUserUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    LowTrustStatus: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelUnbanEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelUnbanRequestCreateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CreatedAt: System.DateTimeOffset { get; init; }
+    Id: System.String { get; init; }
+    Text: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelUnbanRequestResolveEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    ModeratorId: System.String { get; init; }
+    ModeratorLogin: System.String { get; init; }
+    ModeratorName: System.String { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    ResolutionText: System.String { get; init; }
+    Status: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelUpdateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    CategoryId: System.String { get; init; }
+    CategoryName: System.String { get; init; }
+    ContentClassificationLabels: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Language: System.String { get; init; }
+    Title: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelVipAddEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelVipRemoveEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelWarningAcknowledgeEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChannelWarningSendEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ChatRulesCited: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    ModeratorUserId: System.String { get; init; }
+    ModeratorUserLogin: System.String { get; init; }
+    ModeratorUserName: System.String { get; init; }
+    Reason: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.CharityCampaignAmount
+    .ctor()
+    Currency: System.String { get; init; }
+    DecimalPlaces: System.Int32 { get; init; }
+    Value: System.Int64 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageBadge
+    .ctor()
+    Id: System.String { get; init; }
+    Info: System.String { get; init; }
+    SetId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageBody
+    .ctor()
+    Fragments: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.ChatMessageFragment> { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageCheer
+    .ctor()
+    Bits: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageCheermote
+    .ctor()
+    Bits: System.Int32 { get; init; }
+    Prefix: System.String { get; init; }
+    Tier: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageEmote
+    .ctor()
+    EmoteSetId: System.String { get; init; }
+    Format: System.Collections.Generic.IReadOnlyList<System.String> { get; init; }
+    Id: System.String { get; init; }
+    OwnerId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageFragment
+    .ctor()
+    Cheermote: TwitchDock.EventSub.Events.ChatMessageCheermote { get; init; }
+    Emote: TwitchDock.EventSub.Events.ChatMessageEmote { get; init; }
+    Gif: TwitchDock.EventSub.Events.ChatMessageGif { get; init; }
+    Mention: TwitchDock.EventSub.Events.ChatMessageMention { get; init; }
+    Text: System.String { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageGif
+    .ctor()
+    Id: System.String { get; init; }
+    Url: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageMention
+    .ctor()
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatMessageReply
+    .ctor()
+    ParentMessageBody: System.String { get; init; }
+    ParentMessageId: System.String { get; init; }
+    ParentUserId: System.String { get; init; }
+    ParentUserLogin: System.String { get; init; }
+    ParentUserName: System.String { get; init; }
+    ThreadMessageId: System.String { get; init; }
+    ThreadUserId: System.String { get; init; }
+    ThreadUserLogin: System.String { get; init; }
+    ThreadUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationAnnouncement
+    .ctor()
+    Color: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationBitsBadgeTier
+    .ctor()
+    Tier: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationCharityAmount
+    .ctor()
+    Currency: System.String { get; init; }
+    DecimalPlace: System.Int32 { get; init; }
+    Value: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationCharityDonation
+    .ctor()
+    Amount: TwitchDock.EventSub.Events.ChatNotificationCharityAmount { get; init; }
+    CharityName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationCommunitySubGift
+    .ctor()
+    CumulativeTotal: System.Int32? { get; init; }
+    Id: System.String { get; init; }
+    SubTier: System.String { get; init; }
+    Total: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade
+    .ctor()
+    GifterIsAnonymous: System.Boolean { get; init; }
+    GifterUserId: System.String { get; init; }
+    GifterUserLogin: System.String { get; init; }
+    GifterUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary
+    .ctor()
+    RecipientCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationModiversary
+    .ctor()
+    Months: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationPayItForward
+    .ctor()
+    GifterIsAnonymous: System.Boolean { get; init; }
+    GifterUserId: System.String { get; init; }
+    GifterUserLogin: System.String { get; init; }
+    GifterUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationPrimePaidUpgrade
+    .ctor()
+    SubTier: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationRaid
+    .ctor()
+    ProfileImageUrl: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+    ViewerCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationResub
+    .ctor()
+    CumulativeMonths: System.Int32 { get; init; }
+    DurationMonths: System.Int32 { get; init; }
+    GifterIsAnonymous: System.Boolean? { get; init; }
+    GifterUserId: System.String { get; init; }
+    GifterUserLogin: System.String { get; init; }
+    GifterUserName: System.String { get; init; }
+    IsGift: System.Boolean { get; init; }
+    IsPrime: System.Boolean? { get; init; }
+    StreakMonths: System.Int32? { get; init; }
+    SubTier: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationSub
+    .ctor()
+    DurationMonths: System.Int32 { get; init; }
+    IsPrime: System.Boolean { get; init; }
+    SubTier: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationSubGift
+    .ctor()
+    CommunityGiftId: System.String { get; init; }
+    CumulativeTotal: System.Int32? { get; init; }
+    DurationMonths: System.Int32 { get; init; }
+    RecipientUserId: System.String { get; init; }
+    RecipientUserLogin: System.String { get; init; }
+    RecipientUserName: System.String { get; init; }
+    SubTier: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ChatNotificationUnraid
+    .ctor()
+sealed class TwitchDock.EventSub.Events.ChatNotificationWatchStreak
+    .ctor()
+    ChannelPointsAwarded: System.Int32 { get; init; }
+    StreakCount: System.Int32 { get; init; }
+sealed class TwitchDock.EventSub.Events.ConduitShardDisabledEvent
+    .ctor()
+    ConduitId: System.String { get; init; }
+    ShardId: System.String { get; init; }
+    Status: System.String { get; init; }
+    Transport: TwitchDock.EventSub.Events.ConduitShardDisabledTransport { get; init; }
+sealed class TwitchDock.EventSub.Events.ConduitShardDisabledTransport
+    .ctor()
+    Callback: System.String { get; init; }
+    ConnectedAt: System.DateTimeOffset? { get; init; }
+    DisconnectedAt: System.DateTimeOffset? { get; init; }
+    Method: System.String { get; init; }
+    SessionId: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.DropEntitlementGrantData
+    .ctor()
+    BenefitId: System.String { get; init; }
+    CampaignId: System.String { get; init; }
+    CategoryId: System.String { get; init; }
+    CategoryName: System.String { get; init; }
+    CreatedAt: System.DateTimeOffset { get; init; }
+    EntitlementId: System.String { get; init; }
+    OrganizationId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.DropEntitlementGrantEvent
+    .ctor()
+    Data: TwitchDock.EventSub.Events.DropEntitlementGrantData { get; init; }
+    Id: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ExtensionBitsTransactionCreateEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    ExtensionClientId: System.String { get; init; }
+    Id: System.String { get; init; }
+    Product: TwitchDock.EventSub.Events.ExtensionBitsTransactionProduct { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.ExtensionBitsTransactionProduct
+    .ctor()
+    Bits: System.Int32 { get; init; }
+    InDevelopment: System.Boolean { get; init; }
+    Name: System.String { get; init; }
+    Sku: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.HypeTrainEventContribution
+    .ctor()
+    Total: System.Int64 { get; init; }
+    Type: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.HypeTrainEventParticipant
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.MessageEmoteRange
+    .ctor()
+    Begin: System.Int32 { get; init; }
+    End: System.Int32 { get; init; }
+    Id: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.MessageWithEmoteRanges
+    .ctor()
+    Emotes: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.MessageEmoteRange> { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.StreamOfflineEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.StreamOnlineEvent
+    .ctor()
+    BroadcasterUserId: System.String { get; init; }
+    BroadcasterUserLogin: System.String { get; init; }
+    BroadcasterUserName: System.String { get; init; }
+    Id: System.String { get; init; }
+    StartedAt: System.DateTimeOffset { get; init; }
+    Type: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.SuspiciousUserChatMessage
+    .ctor()
+    Fragments: System.Collections.Generic.IReadOnlyList<TwitchDock.EventSub.Events.AutomodHeldMessageFragment> { get; init; }
+    MessageId: System.String { get; init; }
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.UserAuthorizationGrantEvent
+    .ctor()
+    ClientId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.UserAuthorizationRevokeEvent
+    .ctor()
+    ClientId: System.String { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.UserUpdateEvent
+    .ctor()
+    Description: System.String { get; init; }
+    Email: System.String { get; init; }
+    EmailVerified: System.Boolean { get; init; }
+    UserId: System.String { get; init; }
+    UserLogin: System.String { get; init; }
+    UserName: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.UserWhisperMessageContent
+    .ctor()
+    Text: System.String { get; init; }
+sealed class TwitchDock.EventSub.Events.UserWhisperMessageEvent
+    .ctor()
+    FromUserId: System.String { get; init; }
+    FromUserLogin: System.String { get; init; }
+    FromUserName: System.String { get; init; }
+    ToUserId: System.String { get; init; }
+    ToUserLogin: System.String { get; init; }
+    ToUserName: System.String { get; init; }
+    Whisper: TwitchDock.EventSub.Events.UserWhisperMessageContent { get; init; }
+    WhisperId: System.String { get; init; }
+static class TwitchDock.EventSub.HelixEventSubExtensions
+    static CreateEventSubSubscriptionAsync(TwitchDock.Helix.HelixClient helix, TwitchDock.EventSub.EventSubSubscriptionSpec subscription, TwitchDock.Helix.Models.EventSubTransportRequest transport, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchDock.Helix.Models.EventSubSubscriptionsResponse>
+    static SubscribeWebSocketAsync(TwitchDock.Helix.HelixClient helix, TwitchDock.EventSub.EventSubSubscriptionSpec subscription, System.String sessionId, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchDock.Helix.Models.EventSubSubscriptionsResponse>
+interface TwitchDock.EventSub.IEventSubConnection : System.IAsyncDisposable
+    abstract ConnectAsync(System.Uri uri, System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task
+    abstract ReceiveAsync(System.Threading.CancellationToken cancellationToken): System.Threading.Tasks.Task<TwitchDock.EventSub.EventSubMessage>
+interface TwitchDock.EventSub.IEventSubEventDefinition
+    EventType: System.Type { get; }
+    Type: System.String { get; }
+    Version: System.String { get; }
+    abstract Deserialize(System.Text.Json.JsonElement element): System.Object
+sealed class TwitchDock.EventSub.MessageDeduplicator
+    .ctor(System.TimeSpan? retention = null, System.Int32 capacity = 100000, System.TimeProvider timeProvider = null, System.Boolean throwWhenFull = false)
+    EvictedCount: System.Int64 { get; }
+    Remove(System.String messageId): System.Void
+    TryAdd(System.String messageId): System.Boolean
+    const DefaultCapacity: System.Int32 = 100000
+    static readonly DefaultRetention: System.TimeSpan

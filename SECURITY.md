@@ -2,13 +2,13 @@
 
 ## Reporting a vulnerability
 
-Do not open a public issue for security problems. The public GitHub repository does not exist yet. Before the first publication, private vulnerability reporting will be enabled there and this section will link it: **Reporting channel: to be added before publication.**
+Do not open a public issue for security problems. Use [GitHub's private vulnerability reporting](https://github.com/dermixer1305/TwitchDock.NET/security/advisories/new). Include a minimal reproduction, affected version and impact without credentials.
 
 Never include access tokens, refresh tokens, client secrets, webhook secrets, extension secrets or stream keys in a report. Revoke any credential that was exposed.
 
 ## Supported versions
 
-Only the latest release receives fixes. The current version is the 1.0.0-rc.1 release candidate, which has not been verified against the live Twitch API and has not had an independent security audit.
+Only the latest release receives fixes. The current version is the 1.0.0-rc.1 release candidate. Selected authentication, Helix and chat flows have been verified against Twitch; broader live verification remains outstanding ([report](docs/live-verification.md)). No independent security audit has been performed.
 
 ## What the SDK does for you
 

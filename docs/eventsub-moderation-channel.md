@@ -1,6 +1,6 @@
 # EventSub: channel and moderation events
 
-Typed subscriptions for channel updates, follows, ads, raids, bans, unban requests, moderation actions, moderators, VIPs, Shield Mode and Shoutouts. Each row pairs a factory on `EventSubSubscriptions` (condition plus authorization metadata) with a definition on `EventSubEvents` (the same name, used for routing and deserialization) and an event class in `TwitchSdk.EventSub.Events`.
+Typed subscriptions for channel updates, follows, ads, raids, bans, unban requests, moderation actions, moderators, VIPs, Shield Mode and Shoutouts. Each row pairs a factory on `EventSubSubscriptions` (condition plus authorization metadata) with a definition on `EventSubEvents` (the same name, used for routing and deserialization) and an event class in `TwitchDock.EventSub.Events`.
 
 | Type@version | Factory / definition | Event class | Authorization (user in the token for WebSockets) | Transports |
 |---|---|---|---|---|
@@ -39,8 +39,8 @@ Typed subscriptions for channel updates, follows, ads, raids, bans, unban reques
 ## Example
 
 ```csharp
-using TwitchSdk.EventSub;
-using TwitchSdk.EventSub.Events;
+using TwitchDock.EventSub;
+using TwitchDock.EventSub.Events;
 
 var router = new EventSubEventRouter()
     .On(EventSubEvents.ChannelModerateV2, (evt, subscription, ct) =>

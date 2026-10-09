@@ -1,6 +1,6 @@
 # Architecture
 
-TwitchSdk is an independent implementation. No TwitchLib source or architecture is reused.
+TwitchDock is an independent implementation. No TwitchLib source or architecture is reused.
 
 ## Modules
 
@@ -10,8 +10,8 @@ TwitchSdk is an independent implementation. No TwitchLib source or architecture 
 | Authentication | Core | OAuth grants, callback parsing, OpenID Connect (JWKS, ID token validation, UserInfo), `RefreshingTokenProvider`, `TokenValidationLoop` |
 | Helix | Core | One client per API group behind `HelixClient`, request validation, wire models, `HelixJsonContext`, Extension JWTs (`ExtensionSecret`, `ExtensionJwt`, `ExtensionJwtTokenProvider`) |
 | EventSub | Helix | Typed subscription specs (`EventSubSubscriptions`), event definitions and registry (`EventSubEvents`, `EventSubEventsJsonContext`), `EventSubEventRouter`, `EventSubWebSocketClient`, `EventSubWebhookVerifier`, `EventSubWebhookHandler`, `MessageDeduplicator`, the typed `CreateEventSubSubscriptionAsync`/`SubscribeWebSocketAsync` extensions |
-| Chat | EventSub | `TwitchChatClient` (EventSub + Helix) and the IRC transport in `TwitchSdk.Chat.Irc` |
-| DependencyInjection | Authentication, Chat, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Hosting.Abstractions` | `AddTwitchSdk`, `AddTwitchTokenValidation` (`TwitchTokenValidationService`), `AddTwitchIrc` |
+| Chat | EventSub | `TwitchChatClient` (EventSub + Helix) and the IRC transport in `TwitchDock.Chat.Irc` |
+| DependencyInjection | Authentication, Chat, `Microsoft.Extensions.Http`, `Microsoft.Extensions.Hosting.Abstractions` | `AddTwitchDock`, `AddTwitchTokenValidation` (`TwitchTokenValidationService`), `AddTwitchIrc` |
 
 Dependencies flow from DI to Chat, EventSub, Helix and Core; Authentication depends only on Core. Core knows nothing about grant implementations. There are no third-party dependencies.
 
@@ -72,7 +72,7 @@ All library projects set `IsAotCompatible`, which enables the trimming, single-f
 
 ## Public API compatibility
 
-`tests/TwitchSdk.Tests/PublicApi/*.txt` lists every public type and member per assembly. `PublicApiTests` fails on any difference, so every API change is an explicit, reviewed snapshot update; removals and signature changes are breaking changes under the [versioning policy](releases.md#versioning).
+`tests/TwitchDock.Tests/PublicApi/*.txt` lists every public type and member per assembly. `PublicApiTests` fails on any difference, so every API change is an explicit, reviewed snapshot update; removals and signature changes are breaking changes under the [versioning policy](releases.md#versioning).
 
 ## API inventory
 

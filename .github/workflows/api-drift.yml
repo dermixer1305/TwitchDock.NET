@@ -22,10 +22,10 @@ jobs:
       - name: Report drift
         shell: bash
         run: |
-          if git diff --quiet -- docs/api/coverage.json src/TwitchSdk.Core/TwitchScopes.cs; then
+          if git diff --quiet -- docs/api/coverage.json src/TwitchDock.Core/TwitchScopes.cs; then
             echo "No drift against the pinned Twitch documentation." >> "$GITHUB_STEP_SUMMARY"
           else
-            { echo '## Twitch API drift detected'; echo '```diff'; git diff --stat -- docs/api/coverage.json src/TwitchSdk.Core/TwitchScopes.cs; git diff -U0 -- docs/api/coverage.json | head -n 400; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            { echo '## Twitch API drift detected'; echo '```diff'; git diff --stat -- docs/api/coverage.json src/TwitchDock.Core/TwitchScopes.cs; git diff -U0 -- docs/api/coverage.json | head -n 400; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
       - name: Validate the refreshed matrix

@@ -7,21 +7,22 @@ This page gets you from zero to API calls, chat and EventSub. The [documentation
 The packages are not on NuGet yet (release candidate). Either reference the projects from a clone, or pack them and use a local feed:
 
 ```sh
-dotnet pack TwitchSdk.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$PWD/artifacts/packages" --name twitchsdk-local
-dotnet add package TwitchSdk.DependencyInjection --version 1.0.0-rc.1
+dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
+dotnet nuget add source "$PWD/artifacts/packages" --name twitchdock-local
+dotnet new console -n MyFirstBot -o artifacts/MyFirstBot -f net10.0
+dotnet add artifacts/MyFirstBot/MyFirstBot.csproj package TwitchDock.DependencyInjection --version 1.0.0-rc.1
 ```
 
-`TwitchSdk.DependencyInjection` pulls in the other modules: `TwitchSdk.Core`, `TwitchSdk.Authentication`, `TwitchSdk.Helix`, `TwitchSdk.EventSub` and `TwitchSdk.Chat`. Building from source needs the .NET 10 SDK; consumers can target net8.0 or net10.0.
+`TwitchDock.DependencyInjection` pulls in the other modules: `TwitchDock.Core`, `TwitchDock.Authentication`, `TwitchDock.Helix`, `TwitchDock.EventSub` and `TwitchDock.Chat`. Building from source needs the .NET 10 SDK; consumers can target net8.0 or net10.0.
 
 ## App token and users
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
-using TwitchSdk.Authentication;
-using TwitchSdk.Core;
-using TwitchSdk.DependencyInjection;
-using TwitchSdk.Helix;
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.DependencyInjection;
+using TwitchDock.Helix;
 
 var clientId = Environment.GetEnvironmentVariable("TWITCH_CLIENT_ID")
     ?? throw new InvalidOperationException("Set TWITCH_CLIENT_ID.");
@@ -29,7 +30,7 @@ var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET")
     ?? throw new InvalidOperationException("Set TWITCH_CLIENT_SECRET.");
 
 var services = new ServiceCollection();
-services.AddTwitchSdk(new TwitchHttpOptions { ClientId = clientId }, sp =>
+services.AddTwitchDock(new TwitchHttpOptions { ClientId = clientId }, sp =>
 {
     var oauth = sp.GetRequiredService<TwitchOAuthClient>();
     // App tokens are reacquired with client credentials; they have no refresh token.
@@ -41,7 +42,7 @@ var page = await helix.GetUsersAsync(new() { Logins = ["twitchdev"] });
 foreach (var user in page.Data) Console.WriteLine($"{user.Id}: {user.DisplayName}");
 ```
 
-The runnable version is [samples/TwitchSdk.Quickstart](samples.md#quickstart). Every API group hangs off `HelixClient` (`helix.Users`, `helix.Channels`, `helix.Streams`, `helix.Chat`, `helix.Moderation`, `helix.ChannelPoints` and more); see the [index](README.md#helix-rest-api). For user tokens (chat, moderation, channel management) pick a flow in [authentication](authentication.md).
+The runnable version is [samples/TwitchDock.Quickstart](samples.md#quickstart). Every API group hangs off `HelixClient` (`helix.Users`, `helix.Channels`, `helix.Streams`, `helix.Chat`, `helix.Moderation`, `helix.ChannelPoints` and more); see the [index](README.md#helix-rest-api). For user tokens (chat, moderation, channel management) pick a flow in [authentication](authentication.md).
 
 ## Streams and channels
 
@@ -56,11 +57,11 @@ var channels = await helix.GetChannelInformationAsync(["141981764"], cancellatio
 
 ## Chat over EventSub
 
-Twitch recommends EventSub plus Helix for chat bots. Register `AddTwitchSdk` with the **bot's user token** (scopes `user:read:chat` and `user:write:chat`), for example a `RefreshingTokenProvider` from the [device code flow](authentication.md#device-code).
+Twitch recommends EventSub plus Helix for chat bots. Register `AddTwitchDock` with the **bot's user token** (scopes `user:read:chat` and `user:write:chat`), for example a `RefreshingTokenProvider` from the [device code flow](authentication.md#device-code).
 
 ```csharp
-using TwitchSdk.Chat;
-using TwitchSdk.EventSub;
+using TwitchDock.Chat;
+using TwitchDock.EventSub;
 
 var chat = provider.GetRequiredService<TwitchChatClient>();
 var socket = provider.GetRequiredService<EventSubWebSocketClient>();
@@ -87,7 +88,7 @@ await socket.RunAsync(
     cancellationToken);
 ```
 
-`TryReadMessage` returns the typed `ChannelChatMessageEvent`. `SubscribeAsync` checks the token's scopes and user before sending and throws `TwitchAuthorizationException` for a wrong token. A successful send can still be dropped by Twitch: check `IsSent` and `DropReason`. Callbacks run sequentially, so keep them short. The complete bot with Ctrl+C handling and hourly validation is [samples/TwitchSdk.ChatBot](samples.md#chat-bot); IRC is covered in [chat over IRC](chat-irc.md).
+`TryReadMessage` returns the typed `ChannelChatMessageEvent`. `SubscribeAsync` checks the token's scopes and user before sending and throws `TwitchAuthorizationException` for a wrong token. A successful send can still be dropped by Twitch: check `IsSent` and `DropReason`. Callbacks run sequentially, so keep them short. The complete bot with Ctrl+C handling and hourly validation is [samples/TwitchDock.ChatBot](samples.md#chat-bot); IRC is covered in [chat over IRC](chat-irc.md).
 
 ## Typed EventSub events
 
@@ -125,11 +126,11 @@ var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(webhookSecr
 var result = await handler.HandleAsync(EventSubWebhookRequest.FromHeaders(name => headers[name], rawBody), cancellationToken);
 ```
 
-The handler verifies the signature, answers the challenge, suppresses duplicates and dispatches to the router. The ASP.NET Core version is [samples/TwitchSdk.WebhookHost](samples.md#webhook-host).
+The handler verifies the signature, answers the challenge, suppresses duplicates and dispatches to the router. The ASP.NET Core version is [samples/TwitchDock.WebhookHost](samples.md#webhook-host).
 
 ## Dependency injection and hosting
 
-`AddTwitchSdk(options, tokenProviderFactory)` registers one authorization:
+`AddTwitchDock(options, tokenProviderFactory)` registers one authorization:
 
 | Service | Lifetime | Notes |
 | --- | --- | --- |

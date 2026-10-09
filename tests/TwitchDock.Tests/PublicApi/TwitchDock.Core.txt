@@ -1,0 +1,155 @@
+sealed class TwitchDock.Core.AccessToken
+    .ctor(System.String value, System.DateTimeOffset? expiresAt = null, System.Collections.Generic.IEnumerable<System.String> scopes = null, TwitchDock.Core.TwitchTokenKind kind = 0, System.String userId = null, System.String clientId = null)
+    ClientId: System.String { get; }
+    ExpiresAt: System.DateTimeOffset? { get; }
+    HasScopes(params System.String[] required): System.Boolean
+    Kind: TwitchDock.Core.TwitchTokenKind { get; }
+    Scopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
+    ScopesKnown: System.Boolean { get; }
+    UserId: System.String { get; }
+    Value: System.String { get; }
+    virtual ToString(): System.String
+sealed class TwitchDock.Core.EmptyStringAsNullDateTimeOffsetConverter : System.Text.Json.Serialization.JsonConverter<System.DateTimeOffset?>
+    .ctor()
+    HandleNull: System.Boolean { get; }
+    virtual Read(ref System.Text.Json.Utf8JsonReader reader, System.Type typeToConvert, System.Text.Json.JsonSerializerOptions options): System.DateTimeOffset?
+    virtual Write(System.Text.Json.Utf8JsonWriter writer, System.DateTimeOffset? value, System.Text.Json.JsonSerializerOptions options): System.Void
+sealed class TwitchDock.Core.HelixPage<T>
+    .ctor()
+    Data: System.Collections.Generic.IReadOnlyList<T> { get; init; }
+    Pagination: TwitchDock.Core.Pagination { get; init; }
+    Total: System.Int32? { get; init; }
+static class TwitchDock.Core.HelixPagination
+    static EnumerateAsync<T>(System.Func<System.String, System.Threading.CancellationToken, System.Threading.Tasks.Task<TwitchDock.Core.HelixPage<T>>> fetchPage, System.Threading.CancellationToken cancellationToken = null): System.Collections.Generic.IAsyncEnumerable<T>
+interface TwitchDock.Core.IAccessTokenProvider
+    abstract GetTokenAsync(System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchDock.Core.AccessToken>
+    abstract RefreshTokenAsync(TwitchDock.Core.AccessToken rejectedToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchDock.Core.AccessToken>
+interface TwitchDock.Core.ITokenMetadataSink
+    abstract UpdateMetadataAsync(TwitchDock.Core.AccessToken validatedToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<System.Boolean>
+sealed class TwitchDock.Core.Pagination
+    .ctor()
+    Cursor: System.String { get; init; }
+sealed class TwitchDock.Core.StaticAccessTokenProvider : TwitchDock.Core.IAccessTokenProvider
+    .ctor(TwitchDock.Core.AccessToken token)
+    GetTokenAsync(System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchDock.Core.AccessToken>
+    RefreshTokenAsync(TwitchDock.Core.AccessToken rejectedToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.ValueTask<TwitchDock.Core.AccessToken>
+sealed class TwitchDock.Core.TwitchApiException : System.Net.Http.HttpRequestException, System.Runtime.Serialization.ISerializable
+    .ctor(System.Net.HttpStatusCode statusCode, System.String error, System.String message, System.String requestId = null, System.String existingSubscriptionId = null, System.TimeSpan? retryAfter = null)
+    Error: System.String { get; }
+    ExistingSubscriptionId: System.String { get; }
+    RequestId: System.String { get; }
+    RetryAfter: System.TimeSpan? { get; }
+sealed class TwitchDock.Core.TwitchAuthorizationException : System.InvalidOperationException, System.Runtime.Serialization.ISerializable
+    .ctor(System.String message, System.Collections.Generic.IEnumerable<System.String> missingScopes = null, System.Collections.Generic.IEnumerable<System.String> requiredAnyOfScopes = null)
+    MissingScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
+    RequiredAnyOfScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
+sealed class TwitchDock.Core.TwitchAuthorizationRequirement
+    .ctor(System.Collections.Generic.IEnumerable<System.String> requiredUserScopes, System.Boolean allowAppToken = false, System.String requiredUserId = null, System.Boolean allowUserToken = true, System.Collections.Generic.IEnumerable<System.String> anyUserScopes = null)
+    AllowAppToken: System.Boolean { get; }
+    AllowUserToken: System.Boolean { get; }
+    AnyUserScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
+    RequiredUserId: System.String { get; }
+    RequiredUserScopes: System.Collections.Generic.IReadOnlyList<System.String> { get; }
+    Validate(TwitchDock.Core.AccessToken token): System.Void
+sealed class TwitchDock.Core.TwitchHttpClient
+    .ctor(System.Net.Http.HttpClient httpClient, TwitchDock.Core.IAccessTokenProvider tokens, TwitchDock.Core.TwitchHttpOptions options, System.TimeProvider timeProvider = null, Microsoft.Extensions.Logging.ILogger<TwitchDock.Core.TwitchHttpClient> logger = null)
+    SendAsync(System.Net.Http.HttpMethod method, System.String path, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>> query = null, System.ReadOnlyMemory<System.Byte>? jsonBody = null, TwitchDock.Core.TwitchAuthorizationRequirement authorization = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
+    SendAsync<T>(System.Net.Http.HttpMethod method, System.String path, System.Text.Json.Serialization.Metadata.JsonTypeInfo<T> responseType, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>> query = null, System.ReadOnlyMemory<System.Byte>? jsonBody = null, TwitchDock.Core.TwitchAuthorizationRequirement authorization = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<T>
+    SendTextAsync(System.Net.Http.HttpMethod method, System.String path, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>> query = null, System.Boolean authenticated = true, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<System.String>
+sealed class TwitchDock.Core.TwitchHttpOptions
+    .ctor()
+    BaseAddress: System.Uri { get; init; }
+    ClientId: System.String { get; init; }
+    EnsureValid(): System.Void
+    FallbackRetryDelay: System.TimeSpan { get; init; }
+    MaxRateLimitRetries: System.Int32 { get; init; }
+    MaxResponseContentBytes: System.Int64 { get; init; }
+    MaxRetryDelay: System.TimeSpan { get; init; }
+    MaxTransientRetries: System.Int32 { get; init; }
+    const DefaultMaxResponseContentBytes: System.Int64 = 33554432
+static class TwitchDock.Core.TwitchScopes
+    const AnalyticsReadExtensions: System.String = "analytics:read:extensions"
+    const AnalyticsReadGames: System.String = "analytics:read:games"
+    const BitsRead: System.String = "bits:read"
+    const ChannelBot: System.String = "channel:bot"
+    const ChannelEditCommercial: System.String = "channel:edit:commercial"
+    const ChannelManageAds: System.String = "channel:manage:ads"
+    const ChannelManageBroadcast: System.String = "channel:manage:broadcast"
+    const ChannelManageClips: System.String = "channel:manage:clips"
+    const ChannelManageExtensions: System.String = "channel:manage:extensions"
+    const ChannelManageGuestStar: System.String = "channel:manage:guest_star"
+    const ChannelManageModerators: System.String = "channel:manage:moderators"
+    const ChannelManagePolls: System.String = "channel:manage:polls"
+    const ChannelManagePredictions: System.String = "channel:manage:predictions"
+    const ChannelManageRaids: System.String = "channel:manage:raids"
+    const ChannelManageRedemptions: System.String = "channel:manage:redemptions"
+    const ChannelManageSchedule: System.String = "channel:manage:schedule"
+    const ChannelManageVideos: System.String = "channel:manage:videos"
+    const ChannelManageVips: System.String = "channel:manage:vips"
+    const ChannelModerate: System.String = "channel:moderate"
+    const ChannelReadAds: System.String = "channel:read:ads"
+    const ChannelReadCharity: System.String = "channel:read:charity"
+    const ChannelReadEditors: System.String = "channel:read:editors"
+    const ChannelReadGoals: System.String = "channel:read:goals"
+    const ChannelReadGuestStar: System.String = "channel:read:guest_star"
+    const ChannelReadHypeTrain: System.String = "channel:read:hype_train"
+    const ChannelReadPolls: System.String = "channel:read:polls"
+    const ChannelReadPredictions: System.String = "channel:read:predictions"
+    const ChannelReadRedemptions: System.String = "channel:read:redemptions"
+    const ChannelReadStreamKey: System.String = "channel:read:stream_key"
+    const ChannelReadSubscriptions: System.String = "channel:read:subscriptions"
+    const ChannelReadVips: System.String = "channel:read:vips"
+    const ChatEdit: System.String = "chat:edit"
+    const ChatRead: System.String = "chat:read"
+    const ClipsEdit: System.String = "clips:edit"
+    const EditorManageClips: System.String = "editor:manage:clips"
+    const ModerationRead: System.String = "moderation:read"
+    const ModeratorManageAnnouncements: System.String = "moderator:manage:announcements"
+    const ModeratorManageAutomod: System.String = "moderator:manage:automod"
+    const ModeratorManageAutomodSettings: System.String = "moderator:manage:automod_settings"
+    const ModeratorManageBannedUsers: System.String = "moderator:manage:banned_users"
+    const ModeratorManageBlockedTerms: System.String = "moderator:manage:blocked_terms"
+    const ModeratorManageChatMessages: System.String = "moderator:manage:chat_messages"
+    const ModeratorManageChatSettings: System.String = "moderator:manage:chat_settings"
+    const ModeratorManageGuestStar: System.String = "moderator:manage:guest_star"
+    const ModeratorManageShieldMode: System.String = "moderator:manage:shield_mode"
+    const ModeratorManageShoutouts: System.String = "moderator:manage:shoutouts"
+    const ModeratorManageSuspiciousUsers: System.String = "moderator:manage:suspicious_users"
+    const ModeratorManageUnbanRequests: System.String = "moderator:manage:unban_requests"
+    const ModeratorManageWarnings: System.String = "moderator:manage:warnings"
+    const ModeratorReadAutomodSettings: System.String = "moderator:read:automod_settings"
+    const ModeratorReadBannedUsers: System.String = "moderator:read:banned_users"
+    const ModeratorReadBlockedTerms: System.String = "moderator:read:blocked_terms"
+    const ModeratorReadChatMessages: System.String = "moderator:read:chat_messages"
+    const ModeratorReadChatSettings: System.String = "moderator:read:chat_settings"
+    const ModeratorReadChatters: System.String = "moderator:read:chatters"
+    const ModeratorReadFollowers: System.String = "moderator:read:followers"
+    const ModeratorReadGuestStar: System.String = "moderator:read:guest_star"
+    const ModeratorReadModerators: System.String = "moderator:read:moderators"
+    const ModeratorReadShieldMode: System.String = "moderator:read:shield_mode"
+    const ModeratorReadShoutouts: System.String = "moderator:read:shoutouts"
+    const ModeratorReadSuspiciousUsers: System.String = "moderator:read:suspicious_users"
+    const ModeratorReadUnbanRequests: System.String = "moderator:read:unban_requests"
+    const ModeratorReadVips: System.String = "moderator:read:vips"
+    const ModeratorReadWarnings: System.String = "moderator:read:warnings"
+    const UserBot: System.String = "user:bot"
+    const UserEdit: System.String = "user:edit"
+    const UserEditBroadcast: System.String = "user:edit:broadcast"
+    const UserManageBlockedUsers: System.String = "user:manage:blocked_users"
+    const UserManageChatColor: System.String = "user:manage:chat_color"
+    const UserManageWhispers: System.String = "user:manage:whispers"
+    const UserReadBlockedUsers: System.String = "user:read:blocked_users"
+    const UserReadBroadcast: System.String = "user:read:broadcast"
+    const UserReadChat: System.String = "user:read:chat"
+    const UserReadEmail: System.String = "user:read:email"
+    const UserReadEmotes: System.String = "user:read:emotes"
+    const UserReadFollows: System.String = "user:read:follows"
+    const UserReadModeratedChannels: System.String = "user:read:moderated_channels"
+    const UserReadSubscriptions: System.String = "user:read:subscriptions"
+    const UserReadWhispers: System.String = "user:read:whispers"
+    const UserWriteChat: System.String = "user:write:chat"
+    const WhispersRead: System.String = "whispers:read"
+enum TwitchDock.Core.TwitchTokenKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+    const App: TwitchDock.Core.TwitchTokenKind = 2
+    const Unknown: TwitchDock.Core.TwitchTokenKind = 0
+    const User: TwitchDock.Core.TwitchTokenKind = 1

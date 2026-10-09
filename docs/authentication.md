@@ -1,12 +1,12 @@
 # Authentication
 
-`TwitchSdk.Authentication` implements Twitch's OAuth 2.0 and OpenID Connect flows against `https://id.twitch.tv/oauth2/`. Everything goes through `TwitchOAuthClient`, which wraps an `HttpClient` you own (or the typed client registered by `AddTwitchSdk`) and an optional `TimeProvider`. Every method accepts a final `CancellationToken`.
+`TwitchDock.Authentication` implements Twitch's OAuth 2.0 and OpenID Connect flows against `https://id.twitch.tv/oauth2/`. Everything goes through `TwitchOAuthClient`, which wraps an `HttpClient` you own (or the typed client registered by `AddTwitchDock`) and an optional `TimeProvider`. Every method accepts a final `CancellationToken`.
 
 ```csharp
-using TwitchSdk.Authentication;
-using TwitchSdk.Core;
+using TwitchDock.Authentication;
+using TwitchDock.Core;
 
-// Disable redirects on custom handlers; AddTwitchSdk configures this for you.
+// Disable redirects on custom handlers; AddTwitchDock configures this for you.
 using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
 var oauth = new TwitchOAuthClient(http);
 ```
@@ -136,7 +136,7 @@ In a generic host, register the hosted service instead:
 
 ```csharp
 var builder = Host.CreateApplicationBuilder(args);
-builder.Services.AddTwitchSdk(new TwitchHttpOptions { ClientId = clientId }, _ => userTokens);
+builder.Services.AddTwitchDock(new TwitchHttpOptions { ClientId = clientId }, _ => userTokens);
 builder.Services.AddTwitchTokenValidation(new TwitchTokenValidationOptions
 {
     ExpectedClientId = clientId,

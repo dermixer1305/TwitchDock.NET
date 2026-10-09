@@ -6,7 +6,7 @@ $matrix = Get-Content (Join-Path $root 'docs/api/coverage.json') -Raw | ConvertF
 $lines = [Collections.Generic.List[string]]::new()
 $lines.Add('// Generated from docs/api/coverage.json by tools/Update-ScopeConstants.ps1.')
 $lines.Add('// Includes documented legacy scopes; a constant does not imply transport availability.')
-$lines.Add('namespace TwitchSdk.Core;')
+$lines.Add('namespace TwitchDock.Core;')
 $lines.Add('')
 $lines.Add('public static class TwitchScopes')
 $lines.Add('{')
@@ -18,5 +18,5 @@ foreach($scope in $matrix.scopes) {
     $lines.Add(('    public const string {0} = "{1}";' -f $name, $scope))
 }
 $lines.Add('}')
-Set-Content (Join-Path $root 'src/TwitchSdk.Core/TwitchScopes.cs') ($lines -join "`n") -Encoding utf8
+Set-Content (Join-Path $root 'src/TwitchDock.Core/TwitchScopes.cs') ($lines -join "`n") -Encoding utf8
 Write-Output "Generated $($matrix.scopes.Count) scope constants."

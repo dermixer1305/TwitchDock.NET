@@ -1,0 +1,43 @@
+name: Bug report / Fehler melden
+description: Report a reproducible SDK issue / Einen reproduzierbaren SDK-Fehler melden
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and German reports are welcome. Please remove tokens, client secrets, webhook secrets and private data.
+        Meldungen auf Deutsch und Englisch sind willkommen. Bitte entferne Zugangsdaten und private Daten.
+        Report security issues privately: https://github.com/dermixer1305/TwitchDock.NET/security/advisories/new
+  - type: input
+    id: version
+    attributes:
+      label: SDK version / SDK-Version
+      placeholder: 1.0.0-rc.1
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: .NET version and OS / .NET-Version und Betriebssystem
+      placeholder: .NET 10, Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction / Schritte zum Nachstellen
+      description: Include minimal code with credentials removed. / Kleines Codebeispiel ohne Zugangsdaten.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result / Erwartetes Ergebnis
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result / Tatsächliches Ergebnis
+      description: Include the exception type and HTTP status if available; redact private data.
+    validations:
+      required: true

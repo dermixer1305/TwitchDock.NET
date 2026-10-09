@@ -1,115 +1,104 @@
-# TwitchSdk
+# TwitchDock.NET
 
-An independent, asynchronous Twitch SDK for .NET 8 and .NET 10: the Helix REST API, EventSub (WebSocket, webhooks, conduits), chat (EventSub + Helix or IRC), OAuth 2.0 and OpenID Connect, and dependency injection. It is written from scratch; it is not a fork of TwitchLib and shares no code or architecture with it.
+**An independent .NET SDK for the Twitch API, EventSub and chat.**
 
-## Status: 1.0.0-rc.1 (release candidate)
+[English](https://github.com/dermixer1305/TwitchDock.NET/blob/main/README.md) · [Deutsch](https://github.com/dermixer1305/TwitchDock.NET/blob/main/README.de.md) · [Tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.md) · [Documentation](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/README.md) · [Releases](https://github.com/dermixer1305/TwitchDock.NET/releases)
 
-- **Complete coverage of the pinned official documentation** (snapshot of 2026-10-09): all 149 Helix endpoints, including the 12 Guest Star beta endpoints and the 2 deprecated Tags endpoints, and all 83 EventSub subscription types/versions meet the definition of done: typed public API, every documented parameter and response field, authorization rules, error handling, tests and documentation. See the [coverage report](docs/coverage.md).
-- **Tested offline and locally**: 771 unit and contract tests on each of net8.0 and net10.0, integration tests against the Twitch CLI mock API, mock EventSub WebSocket server and CLI-signed webhooks, public API snapshots, and a native AOT run of the packed SDK.
-- **Not done yet**: verification against the live Twitch API with real credentials, the public GitHub repository, and reserving and publishing the NuGet package IDs. Until then the packages are local build artifacts. See the [roadmap](docs/roadmap.md).
+[![Build and test](https://github.com/dermixer1305/TwitchDock.NET/actions/workflows/ci.yml/badge.svg)](https://github.com/dermixer1305/TwitchDock.NET/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dermixer1305/TwitchDock.NET/blob/main/LICENSE)
 
-## Features
+Build bots, channel tools and stream integrations in C# with typed requests, typed events and asynchronous methods. TwitchDock targets **.NET 8 and .NET 10** and supports trimming and native AOT.
 
-| Package | Contents |
+This is an independent community project, written from scratch. It is not affiliated with or endorsed by Twitch and is not a fork or successor of TwitchLib.
+
+## Release status
+
+**1.0.0-rc.1 is a release candidate, not a stable 1.0 release.**
+
+- **Pinned API coverage:** 149 Helix endpoints and 83 EventSub type/version combinations from the official documentation snapshot of 2026-10-09 have typed models, authorization rules, tests and documentation. Beta and deprecated APIs are explicitly marked. See the [coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md).
+- **Automated validation:** 878 unit and contract tests per target framework, Twitch CLI integration tests, public API snapshots and package/native AOT smoke checks.
+- **Live verification:** app-token acquisition, validation and revocation; real Helix reads; device authorization and user-token validation; EventSub chat subscription, receipt of a real message and successful Helix chat send. See the [live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md).
+- **Still pending:** broader live coverage, including IRC, public webhooks, reconnect scenarios, refresh rotation and restricted APIs. Packages are **not published on nuget.org**; use GitHub release assets or a local build.
+
+## Packages
+
+| Package | What it provides |
 | --- | --- |
-| `TwitchSdk.Core` | HTTP transport with bounded retries and shared rate-limit handling, pagination, `TwitchApiException`, token abstractions, scope constants and local authorization preflight |
-| `TwitchSdk.Authentication` | Client credentials, authorization code, implicit grant, device code with polling, OpenID Connect (ID token validation, UserInfo), callback parsing with constant-time state checks, serialized refresh, hourly validation, revocation |
-| `TwitchSdk.Helix` | Every Helix group: users, channels, streams, chat, moderation, Channel Points, Bits, subscriptions, polls, predictions, schedule, clips, videos, extensions (with Extension JWTs), entitlements, Guest Star, conduits and more |
-| `TwitchSdk.EventSub` | Typed subscription factories and events for every type, event registry, router, WebSocket client with migration and reconnects, webhook verifier and framework-independent webhook handler, batching |
-| `TwitchSdk.Chat` | `TwitchChatClient` over EventSub + Helix, and an IRC transport (`TwitchIrcClient`, IRCv3 parser, typed views, router, rate limiters, WebSocket or TCP) |
-| `TwitchSdk.DependencyInjection` | `AddTwitchSdk`, hosted token validation (`AddTwitchTokenValidation`), `AddTwitchIrc` |
+| `TwitchDock.Core` | HTTP transport, rate limits, bounded retries, pagination, token abstractions and authorization checks |
+| `TwitchDock.Authentication` | OAuth flows, device login, OpenID Connect, token refresh, validation and revocation |
+| `TwitchDock.Helix` | Typed REST API groups: users, streams, channels, moderation, chat, polls, Channel Points and more |
+| `TwitchDock.EventSub` | Typed subscriptions and events, WebSocket client, webhook verification and routing, conduits and batching |
+| `TwitchDock.Chat` | Chat over EventSub + Helix, plus IRC with reconnects and rate limiting |
+| `TwitchDock.DependencyInjection` | `AddTwitchDock`, hosted token validation and registration; brings in all modules |
 
-Design: `async` APIs with `CancellationToken` everywhere, source-generated JSON (no reflection; trimming and native AOT compatible), local scope and identity checks before requests, redacted credentials in `ToString()`, no hidden background work, and no third-party dependencies: only `Microsoft.Extensions.Logging.Abstractions`, plus `Microsoft.Extensions.Http` and `Microsoft.Extensions.Hosting.Abstractions` in the DI package.
+Public operations accept cancellation tokens. JSON serialization is source-generated. Runtime package dependencies are limited to the Microsoft.Extensions packages used for logging and hosting.
 
-## Install
+## Start with a working example
 
-The packages are not on NuGet yet. Reference the projects in `src/` from a clone, or pack them into a local feed:
+Install the **.NET 10 SDK** to build the repository. The libraries also target .NET 8.
 
 ```sh
-dotnet pack TwitchSdk.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$PWD/artifacts/packages" --name twitchsdk-local
-dotnet add package TwitchSdk.DependencyInjection --version 1.0.0-rc.1
+git clone https://github.com/dermixer1305/TwitchDock.NET.git
+cd TwitchDock.NET
+dotnet build TwitchDock.slnx -c Release
 ```
 
-Building needs the .NET 10 SDK (C# 14); the libraries target net8.0 and net10.0.
+Register your own application in the [Twitch developer console](https://dev.twitch.tv/console/apps). In **PowerShell**:
 
-## Quickstart
-
-App token and a Helix call:
-
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using TwitchSdk.Authentication;
-using TwitchSdk.Core;
-using TwitchSdk.DependencyInjection;
-using TwitchSdk.Helix;
-
-var clientId = Environment.GetEnvironmentVariable("TWITCH_CLIENT_ID") ?? throw new InvalidOperationException("Set TWITCH_CLIENT_ID.");
-var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET") ?? throw new InvalidOperationException("Set TWITCH_CLIENT_SECRET.");
-
-var services = new ServiceCollection();
-services.AddTwitchSdk(new TwitchHttpOptions { ClientId = clientId }, sp =>
-{
-    var oauth = sp.GetRequiredService<TwitchOAuthClient>();
-    return new RefreshingTokenProvider((_, ct) => oauth.GetAppTokenAsync(clientId, clientSecret, ct));
-});
-using var provider = services.BuildServiceProvider();
-var helix = provider.GetRequiredService<HelixClient>();
-
-var users = await helix.GetUsersAsync(new() { Logins = ["twitchdev"] });
-Console.WriteLine(users.Data[0].DisplayName);
+```powershell
+$env:TWITCH_CLIENT_ID = Read-Host 'Your Twitch application client ID'
+dotnet run --project samples/TwitchDock.ChatBot -c Release -f net10.0
 ```
 
-EventSub over WebSocket with typed events (needs a user token, for example from the [device code flow](docs/authentication.md#device-code)):
+In **Bash**:
 
-```csharp
-using TwitchSdk.EventSub;
-
-var router = new EventSubEventRouter()
-    .On(EventSubEvents.ChannelChatMessageV1, (chat, _, _) => { Console.WriteLine($"{chat.ChatterUserName}: {chat.Message.Text}"); return Task.CompletedTask; })
-    .On(EventSubEvents.StreamOnlineV1, (online, _, _) => { Console.WriteLine($"{online.BroadcasterUserName} is live"); return Task.CompletedTask; });
-
-var socket = provider.GetRequiredService<EventSubWebSocketClient>();
-await socket.RunAsync(
-    async (session, resubscribe, ct) =>
-    {
-        if (!resubscribe) return; // a migrated session keeps its subscriptions
-        await helix.SubscribeWebSocketAsync(EventSubSubscriptions.ChannelChatMessageV1(broadcasterId, botUserId), session.Id, ct);
-        await helix.SubscribeWebSocketAsync(EventSubSubscriptions.StreamOnlineV1(broadcasterId), session.Id, ct);
-    },
-    (message, ct) => router.DispatchAsync(message, ct),
-    cancellationToken);
+```bash
+read -r -p 'Your Twitch application client ID: ' TWITCH_CLIENT_ID
+export TWITCH_CLIENT_ID
+dotnet run --project samples/TwitchDock.ChatBot -c Release -f net10.0
 ```
 
-Webhooks: the handler verifies the signature on the raw body, answers the challenge, drops duplicates and dispatches to the same router:
+Open the Twitch URL printed in the terminal, sign in and authorize reading and sending chat messages. The sample connects to **your own channel** by default. Send `!ping` in your channel chat and it replies `pong`. Press Ctrl+C to stop. No client secret is needed for this device-login example; access tokens are neither printed nor saved.
 
-```csharp
-var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(webhookSecret), router);
-var result = await handler.HandleAsync(EventSubWebhookRequest.FromHeaders(name => request.Headers[name].ToString(), rawBody), cancellationToken);
-// Write result.StatusCode, result.ContentType and result.Body to the HTTP response.
+Follow the **[English tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.md)** or **[deutsches Tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.de.md)** for registration, API calls, package installation and troubleshooting.
+
+## Install into your own project
+
+Download all six `.nupkg` files from the [release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) into a local package folder, or build them:
+
+```sh
+dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
 ```
 
-Runnable versions: [samples](docs/samples.md) (quickstart console app, EventSub chat bot, ASP.NET Core webhook host).
+Add that folder as a NuGet source while keeping nuget.org enabled for Microsoft dependencies. The tutorial has complete commands for both shells. Then run in your own project:
+
+```sh
+dotnet add package TwitchDock.DependencyInjection --version 1.0.0-rc.1
+```
+
+You can also reference projects in `src/` directly. Namespaces and package IDs use `TwitchDock`; earlier unpublished builds used `TwitchSdk`.
 
 ## Documentation
 
-The [documentation index](docs/README.md) links everything. Most used:
+- [English tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.md) / [Deutsches Tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.de.md)
+- [C# quickstart](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/quickstart.md), [authentication](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/authentication.md), [EventSub](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/eventsub.md), [IRC](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/chat-irc.md)
+- [Runnable samples](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/samples.md): API quickstart, chat bot and ASP.NET Core webhook receiver
+- [Reference index](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/README.md), [roadmap](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/roadmap.md), [changelog](https://github.com/dermixer1305/TwitchDock.NET/blob/main/CHANGELOG.md)
 
-- [Quickstart](docs/quickstart.md) and [authentication](docs/authentication.md)
-- [EventSub overview](docs/eventsub.md) and [chat over IRC](docs/chat-irc.md)
-- Helix group references, starting at [users, streams and channels](docs/helix-foundation.md)
-- [Architecture](docs/architecture.md), [testing](docs/testing.md), [API coverage](docs/coverage.md), [releases](docs/releases.md)
+The detailed API reference is in English. The project overview and beginner tutorial are available in English and German.
 
-## Build and test
+## Build and contribute
 
 ```sh
-dotnet build TwitchSdk.slnx -c Release
-dotnet test tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj -c Release --no-build
-dotnet test tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj -c Release   # skipped without the Twitch CLI
+dotnet build TwitchDock.slnx -c Release
+dotnet test tests/TwitchDock.Tests/TwitchDock.Tests.csproj -c Release --no-build
+pwsh ./tools/Test-ApiCoverage.ps1 -RequireComplete
 ```
 
-Details, including the package smoke test and native AOT, are in [testing](docs/testing.md). No test needs Twitch credentials. Never commit access tokens, refresh tokens, client secrets or webhook secrets.
+See [testing](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/testing.md) for CLI integration tests, optional live tests and AOT checks, and [contributing](https://github.com/dermixer1305/TwitchDock.NET/blob/main/CONTRIBUTING.md) for development guidelines. Include a minimal reproduction and redact credentials in bug reports.
 
-## Contributing, security and license
+Report vulnerabilities privately through [GitHub security reporting](https://github.com/dermixer1305/TwitchDock.NET/security/advisories/new). Read the [security policy](https://github.com/dermixer1305/TwitchDock.NET/blob/main/SECURITY.md).
 
-See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) and the [changelog](CHANGELOG.md). Licensed under the [MIT license](LICENSE). Twitch is a trademark of Twitch Interactive, Inc.; this project is not affiliated with or endorsed by Twitch.
+## License
+
+[MIT](https://github.com/dermixer1305/TwitchDock.NET/blob/main/LICENSE). Twitch is a trademark of Twitch Interactive, Inc. This project has no affiliation with or endorsement from Twitch. Twitch's API terms and authorization requirements still apply.

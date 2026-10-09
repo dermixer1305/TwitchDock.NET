@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/TwitchDock.ChatBot/TwitchDock.ChatBot.csproj" />
+    <Project Path="samples/TwitchDock.Quickstart/TwitchDock.Quickstart.csproj" />
+    <Project Path="samples/TwitchDock.WebhookHost/TwitchDock.WebhookHost.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/TwitchDock.Authentication/TwitchDock.Authentication.csproj" />
+    <Project Path="src/TwitchDock.Chat/TwitchDock.Chat.csproj" />
+    <Project Path="src/TwitchDock.Core/TwitchDock.Core.csproj" />
+    <Project Path="src/TwitchDock.DependencyInjection/TwitchDock.DependencyInjection.csproj" />
+    <Project Path="src/TwitchDock.EventSub/TwitchDock.EventSub.csproj" />
+    <Project Path="src/TwitchDock.Helix/TwitchDock.Helix.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TwitchDock.IntegrationTests/TwitchDock.IntegrationTests.csproj" />
+    <Project Path="tests/TwitchDock.Tests/TwitchDock.Tests.csproj" />
+  </Folder>
+</Solution>

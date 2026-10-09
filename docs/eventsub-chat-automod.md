@@ -2,7 +2,7 @@
 
 Typed subscriptions and events for chat, shared chat, AutoMod, suspicious users and warnings. Each row pairs a factory on
 `EventSubSubscriptions` with a definition of the same name on `EventSubEvents` (for example `EventSubSubscriptions.ChannelChatMessageV1(...)`
-and `EventSubEvents.ChannelChatMessageV1`). Events live in `TwitchSdk.EventSub.Events`. See [quickstart](quickstart.md) for client setup.
+and `EventSubEvents.ChannelChatMessageV1`). Events live in `TwitchDock.EventSub.Events`. See [quickstart](quickstart.md) for client setup.
 
 | Type@version | Factory / definition | Event class | Authorization (WebSocket user token) | Transports |
 | --- | --- | --- | --- | --- |
@@ -63,8 +63,8 @@ Webhook and conduit subscriptions use an app token, so the user's grant to your 
 ## Example
 
 ```csharp
-using TwitchSdk.EventSub;
-using TwitchSdk.EventSub.Events;
+using TwitchDock.EventSub;
+using TwitchDock.EventSub.Events;
 
 var router = new EventSubEventRouter()
     .On(EventSubEvents.ChannelChatMessageV1, (chat, _, _) =>
@@ -100,7 +100,7 @@ await socket.RunAsync(
 
 ## Chat module (0.x breaking change)
 
-`channel.chat.message` previously had a hand-written partial model in `TwitchSdk.Chat` (`ChatMessage`, `ChatMessageContent`, `ChatFragment`,
+`channel.chat.message` previously had a hand-written partial model in `TwitchDock.Chat` (`ChatMessage`, `ChatMessageContent`, `ChatFragment`,
 `ChatBadge`, `ChatCheer`, `ChatCheermote`, `ChatEmote`, `ChatMention`, `ChatGif`, `ChatReply`, `ChatJsonContext`). These types were removed.
 `TwitchChatClient.TryReadMessage(EventSubMessage, out ChannelChatMessageEvent?)` now reads through `EventSubEvents.ChannelChatMessageV1`
 and requires the notification's `payload.subscription`, which Twitch always sends. `TwitchChatClient.SubscribeAsync` now sends

@@ -1,6 +1,6 @@
 # EventSub
 
-`TwitchSdk.EventSub` covers the whole EventSub workflow: typed subscription specs, creating subscriptions through Helix, typed events with a registry and router, a WebSocket client with migration and reconnects, webhook verification and a framework-independent webhook handler. Conduits are managed through `helix.Conduits` ([conduits](helix-conduits.md)).
+`TwitchDock.EventSub` covers the whole EventSub workflow: typed subscription specs, creating subscriptions through Helix, typed events with a registry and router, a WebSocket client with migration and reconnects, webhook verification and a framework-independent webhook handler. Conduits are managed through `helix.Conduits` ([conduits](helix-conduits.md)).
 
 Every subscription type and version in the pinned official documentation (83 pairs, 2026-10-09) has a typed factory and event definition. The group references list conditions, authorization and transports per type:
 
@@ -20,7 +20,7 @@ var follows = EventSubSubscriptions.ChannelFollowV2(broadcasterUserId: "123", mo
 // channel.follow@2, RequiredScopes = [moderator:read:followers], AuthorizingUserId = "456"
 ```
 
-Create subscriptions with the extension methods from `TwitchSdk.EventSub` on `HelixClient`:
+Create subscriptions with the extension methods from `TwitchDock.EventSub` on `HelixClient`:
 
 ```csharp
 // WebSocket: after the session's welcome message, with the authorizing user's token.
@@ -46,7 +46,7 @@ Failed preflight checks throw `TwitchAuthorizationException` with `MissingScopes
 
 ## Reading events
 
-`EventSubEvents.<Type>V<version>` is an `EventSubEventDefinition<TEvent>` that binds the type and version to its event class in `TwitchSdk.EventSub.Events` and its source-generated JSON metadata.
+`EventSubEvents.<Type>V<version>` is an `EventSubEventDefinition<TEvent>` that binds the type and version to its event class in `TwitchDock.EventSub.Events` and its source-generated JSON metadata.
 
 ```csharp
 if (message.TryReadEvent(EventSubEvents.StreamOnlineV1, out var online))   // WebSocket message
@@ -98,7 +98,7 @@ Lifecycle of `RunAsync`:
 - **Messages.** `onMessage` receives notifications and revocations; keepalives are consumed internally. Callbacks run sequentially, so hand slow work to a bounded queue.
 - **Errors.** An exception from a callback stops `RunAsync` and propagates (the message ID is released first). Protocol violations, such as an unexpected first message or a forged reconnect URL, end it with `JsonException`. Cancellation ends it with `OperationCanceledException`.
 
-One instance runs one loop at a time; `AddTwitchSdk` registers the client as transient. The `endpoint` constructor parameter accepts `wss://` URIs, and `ws://` only on loopback hosts for the Twitch CLI mock server.
+One instance runs one loop at a time; `AddTwitchDock` registers the client as transient. The `endpoint` constructor parameter accepts `wss://` URIs, and `ws://` only on loopback hosts for the Twitch CLI mock server.
 
 ## Webhooks
 
@@ -118,7 +118,7 @@ app.MapPost("/eventsub", async (HttpRequest request, HttpResponse response, Canc
 });
 ```
 
-The complete ASP.NET Core host is [samples/TwitchSdk.WebhookHost](samples.md#webhook-host). Responses: 200 with the challenge as `text/plain` for `webhook_callback_verification`, 204 for notifications, revocations, duplicates and unknown message types, 403 for invalid or stale signatures, 400 for malformed requests. A handler exception propagates so the host answers 5xx and Twitch retries the delivery.
+The complete ASP.NET Core host is [samples/TwitchDock.WebhookHost](samples.md#webhook-host). Responses: 200 with the challenge as `text/plain` for `webhook_callback_verification`, 204 for notifications, revocations, duplicates and unknown message types, 403 for invalid or stale signatures, 400 for malformed requests. A handler exception propagates so the host answers 5xx and Twitch retries the delivery.
 
 `EventSubWebhookVerifier.VerifyAndParse` checks the HMAC-SHA256 signature over message ID, timestamp and raw body in constant time, rejects bodies over 1 MiB and timestamps older than ten minutes or more than one minute in the future, and only then parses the JSON. Never parse and re-serialize the body before verification. Limit the request body size in the host as well.
 
@@ -146,7 +146,7 @@ twitch event websocket start-server --port 8080
 twitch event trigger channel.follow -v 2 --transport=websocket --session <session-id>
 twitch event websocket reconnect   # exercises session migration
 
-# Signed webhook deliveries to a local receiver (for example samples/TwitchSdk.WebhookHost)
+# Signed webhook deliveries to a local receiver (for example samples/TwitchDock.WebhookHost)
 twitch event verify-subscription stream.online -F http://localhost:5000/eventsub -s <secret>
 twitch event trigger stream.online -F http://localhost:5000/eventsub -s <secret>
 ```

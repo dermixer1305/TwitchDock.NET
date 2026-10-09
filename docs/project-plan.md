@@ -1,6 +1,6 @@
 # Projektplan – Moderne Twitch SDK für .NET
 
-**Projektname (vorläufig):** TwitchSdk  
+**Projektname:** TwitchDock.NET
 **Programmiersprache:** C#  
 **Zielplattformen:** .NET 8 und .NET 10  
 **Projektart:** Open-Source-Bibliothek / Software Development Kit  
@@ -74,12 +74,12 @@ Komplexe technische Vorgänge wie Token-Verwaltung, WebSocket-Reconnects und HTT
 
 | Modul | Verantwortlichkeit |
 |---|---|
-| TwitchSdk.Core | Gemeinsame Infrastruktur, HTTP, Fehler, Rate Limits |
-| TwitchSdk.Authentication | OAuth, Scopes und Token-Verwaltung |
-| TwitchSdk.Helix | Vollständige Twitch-REST-API |
-| TwitchSdk.EventSub | EventSub WebSocket und Webhook |
-| TwitchSdk.Chat | Twitch-Chat-Funktionen |
-| TwitchSdk.DependencyInjection | Integration in .NET-Anwendungen |
+| TwitchDock.Core | Gemeinsame Infrastruktur, HTTP, Fehler, Rate Limits |
+| TwitchDock.Authentication | OAuth, Scopes und Token-Verwaltung |
+| TwitchDock.Helix | Vollständige Twitch-REST-API |
+| TwitchDock.EventSub | EventSub WebSocket und Webhook |
+| TwitchDock.Chat | Twitch-Chat-Funktionen |
+| TwitchDock.DependencyInjection | Integration in .NET-Anwendungen |
 
 Die Module sollen unabhängig testbar sein und gemeinsame Funktionen nicht mehrfach implementieren.
 

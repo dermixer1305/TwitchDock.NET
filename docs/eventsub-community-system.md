@@ -1,6 +1,6 @@
 # EventSub: charity, goals, Hype Train, users, system and Guest Star
 
-Typed subscriptions and events for the community and system subscription types. Each type has a factory on `EventSubSubscriptions` that builds the documented condition and authorization metadata, and a definition with the same name on `EventSubEvents` that binds the type and version to its event model in `TwitchSdk.EventSub.Events`. All definitions are registered in `EventSubEvents.All` and resolve through `EventSubEvents.TryGetDefinition`.
+Typed subscriptions and events for the community and system subscription types. Each type has a factory on `EventSubSubscriptions` that builds the documented condition and authorization metadata, and a definition with the same name on `EventSubEvents` that binds the type and version to its event model in `TwitchDock.EventSub.Events`. All definitions are registered in `EventSubEvents.All` and resolve through `EventSubEvents.TryGetDefinition`.
 
 | Type@version | Factory / definition | Event | Authorization | Transports |
 | --- | --- | --- | --- | --- |
@@ -49,8 +49,8 @@ Typed subscriptions and events for the community and system subscription types. 
 ## Example
 
 ```csharp
-using TwitchSdk.EventSub;
-using TwitchSdk.Helix.Models;
+using TwitchDock.EventSub;
+using TwitchDock.Helix.Models;
 
 var router = new EventSubEventRouter()
     .On(EventSubEvents.ChannelHypeTrainBeginV2, (train, subscription, ct) =>
@@ -90,6 +90,6 @@ var response = await handler.HandleAsync(EventSubWebhookRequest.FromHeaders(name
 
 ## Tests
 
-`tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs` round-trips every event through `Fixtures/eventsub-community-system.json` (keyed `type@version`, covering every documented field, nulls for nullable fields and a two-item drop batch), checks exact conditions, scopes, authorizing users and transports of every factory, verifies WebSocket preflight and the app-token-only rejections over HTTP, and dispatches a batched drop entitlement notification through `EventSubEventRouter`. `stream.online@1` and `stream.offline@1` were reviewed against the same reference and are covered by `EventSubTypedTests`.
+`tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs` round-trips every event through `Fixtures/eventsub-community-system.json` (keyed `type@version`, covering every documented field, nulls for nullable fields and a two-item drop batch), checks exact conditions, scopes, authorizing users and transports of every factory, verifies WebSocket preflight and the app-token-only rejections over HTTP, and dispatches a batched drop entitlement notification through `EventSubEventRouter`. `stream.online@1` and `stream.offline@1` were reviewed against the same reference and are covered by `EventSubTypedTests`.
 
 Sources: local snapshots of Twitch's [EventSub subscription types](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/) and [EventSub reference](https://dev.twitch.tv/docs/eventsub/eventsub-reference/).

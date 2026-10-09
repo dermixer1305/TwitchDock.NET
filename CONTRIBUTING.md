@@ -7,8 +7,8 @@ Thanks for helping. Please read [architecture](docs/architecture.md) before larg
 Install the .NET 10 SDK (required by `global.json` for C# 14) and the .NET 8 runtime. Then:
 
 ```sh
-dotnet build TwitchSdk.slnx -c Release
-dotnet test tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj -c Release --no-build
+dotnet build TwitchDock.slnx -c Release
+dotnet test tests/TwitchDock.Tests/TwitchDock.Tests.csproj -c Release --no-build
 pwsh ./tools/Test-ApiCoverage.ps1 -RequireComplete
 ```
 
@@ -49,7 +49,7 @@ Beta and deprecated APIs are marked as such in docs and code. Never mark partial
 
 1. Read the official section in the pinned reference. `pwsh ./tools/Update-ApiInventory.ps1 -Download` refreshes the local copies (ignored by Git; URLs and SHA-256 hashes are kept in `docs/api/coverage.json`).
 2. Implement the method or event and its models.
-3. Add a fixture under `tests/TwitchSdk.Tests/Fixtures` containing every documented field (Helix contract tests fail when a response field listed in the matrix is missing), plus tests for requests, authorization preflight and errors.
+3. Add a fixture under `tests/TwitchDock.Tests/Fixtures` containing every documented field (Helix contract tests fail when a response field listed in the matrix is missing), plus tests for requests, authorization preflight and errors.
 4. Document it in the group reference (`docs/helix-*.md` or `docs/eventsub-*.md`).
 5. Update its entry in `docs/api/coverage.json`: `status: complete`, the availability and (for Helix) authorization review, and `evidence` paths under `src/`, `tests/` and `docs/`.
 6. Run `pwsh ./tools/Test-ApiCoverage.ps1 -RequireComplete`, regenerate the report with `pwsh ./tools/New-CoverageReport.ps1` and commit `docs/coverage.md` with the change.
@@ -58,7 +58,7 @@ Inventory refreshes are reviewed like API changes, not accepted blindly: a chang
 
 ## Public API changes
 
-`PublicApiTests` fails whenever the public surface changes. If the change is intended, regenerate the snapshots with `TWITCHSDK_UPDATE_PUBLIC_API=1` ([testing](docs/testing.md#public-api-snapshots)), review the diff and add a `CHANGELOG.md` entry. Removed or changed members are breaking changes and need a versioning decision and migration notes ([releases](docs/releases.md#versioning)).
+`PublicApiTests` fails whenever the public surface changes. If the change is intended, regenerate the snapshots with `TWITCHDOCK_UPDATE_PUBLIC_API=1` ([testing](docs/testing.md#public-api-snapshots)), review the diff and add a `CHANGELOG.md` entry. Removed or changed members are breaking changes and need a versioning decision and migration notes ([releases](docs/releases.md#versioning)).
 
 ## Commits and pull requests
 

@@ -70,9 +70,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/AdsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/AdsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -136,9 +136,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/AdsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/AdsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -187,9 +187,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/AdsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/AdsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -293,9 +293,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/AnalyticsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/AnalyticsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -399,9 +399,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/AnalyticsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/AnalyticsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -498,10 +498,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Bits.cs",
-        "tests/TwitchSdk.Tests/BitsAndSubscriptionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-bits-subscriptions.json",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/Bits.cs",
+        "tests/TwitchDock.Tests/BitsAndSubscriptionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-bits-subscriptions.json",
         "docs/helix-bits-subscriptions.md"
       ]
     },
@@ -593,10 +593,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Bits.cs",
-        "tests/TwitchSdk.Tests/BitsAndSubscriptionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-bits-subscriptions.json",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/Bits.cs",
+        "tests/TwitchDock.Tests/BitsAndSubscriptionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-bits-subscriptions.json",
         "docs/helix-bits-subscriptions.md"
       ]
     },
@@ -791,13 +791,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
-        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
-        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "src/TwitchDock.Helix/Clients/TagsClient.cs",
+        "src/TwitchDock.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchDock.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-tags-labels-authorization.json",
         "docs/helix-tags-labels-authorization.md"
       ]
     },
@@ -952,10 +952,10 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Bits.cs",
-        "tests/TwitchSdk.Tests/BitsAndSubscriptionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-bits-subscriptions.json",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/Bits.cs",
+        "tests/TwitchDock.Tests/BitsAndSubscriptionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-bits-subscriptions.json",
         "docs/helix-bits-subscriptions.md"
       ]
     },
@@ -1042,12 +1042,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md",
-        "src/TwitchSdk.Helix/Clients/ChannelsClient.cs"
+        "src/TwitchDock.Helix/Clients/ChannelsClient.cs"
       ]
     },
     {
@@ -1129,10 +1129,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelsClient.cs",
-        "src/TwitchSdk.Helix/Models/Channels.cs",
-        "tests/TwitchSdk.Tests/ChannelsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channels.json",
+        "src/TwitchDock.Helix/Clients/ChannelsClient.cs",
+        "src/TwitchDock.Helix/Models/Channels.cs",
+        "tests/TwitchDock.Tests/ChannelsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channels.json",
         "docs/helix-channels.md"
       ]
     },
@@ -1181,10 +1181,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelsClient.cs",
-        "src/TwitchSdk.Helix/Models/Channels.cs",
-        "tests/TwitchSdk.Tests/ChannelsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channels.json",
+        "src/TwitchDock.Helix/Clients/ChannelsClient.cs",
+        "src/TwitchDock.Helix/Models/Channels.cs",
+        "tests/TwitchDock.Tests/ChannelsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channels.json",
         "docs/helix-channels.md"
       ]
     },
@@ -1271,10 +1271,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelsClient.cs",
-        "src/TwitchSdk.Helix/Models/Channels.cs",
-        "tests/TwitchSdk.Tests/ChannelsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channels.json",
+        "src/TwitchDock.Helix/Clients/ChannelsClient.cs",
+        "src/TwitchDock.Helix/Models/Channels.cs",
+        "tests/TwitchDock.Tests/ChannelsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channels.json",
         "docs/helix-channels.md"
       ]
     },
@@ -1361,10 +1361,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelsClient.cs",
-        "src/TwitchSdk.Helix/Models/Channels.cs",
-        "tests/TwitchSdk.Tests/ChannelsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channels.json",
+        "src/TwitchDock.Helix/Clients/ChannelsClient.cs",
+        "src/TwitchDock.Helix/Models/Channels.cs",
+        "tests/TwitchDock.Tests/ChannelsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channels.json",
         "docs/helix-channels.md"
       ]
     },
@@ -1637,10 +1637,10 @@
       "availabilityReview": "affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -1674,10 +1674,10 @@
       "availabilityReview": "creator-app-and-affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -1884,10 +1884,10 @@
       "availabilityReview": "affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -2043,10 +2043,10 @@
       "availabilityReview": "creator-app-and-affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -2331,10 +2331,10 @@
       "availabilityReview": "creator-app-and-affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -2462,10 +2462,10 @@
       "availabilityReview": "creator-app-and-affiliate-or-partner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChannelPointsClient.cs",
-        "src/TwitchSdk.Helix/Models/ChannelPoints.cs",
-        "tests/TwitchSdk.Tests/ChannelPointsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-channel-points.json",
+        "src/TwitchDock.Helix/Clients/ChannelPointsClient.cs",
+        "src/TwitchDock.Helix/Models/ChannelPoints.cs",
+        "tests/TwitchDock.Tests/ChannelPointsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-channel-points.json",
         "docs/helix-channel-points.md"
       ]
     },
@@ -2579,9 +2579,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/CharityClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/CharityClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -2682,9 +2682,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/CharityClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/CharityClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -2766,10 +2766,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -2866,10 +2866,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -2944,10 +2944,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -3044,10 +3044,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -3129,10 +3129,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -3207,10 +3207,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -3303,10 +3303,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -3368,10 +3368,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -3472,10 +3472,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
-        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
-        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchDock.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchDock.Tests/ChatCatalogTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-catalog.json",
         "docs/helix-chat-catalog.md"
       ]
     },
@@ -3616,10 +3616,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -3674,10 +3674,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -3719,10 +3719,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -3813,10 +3813,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md"
       ]
     },
@@ -4004,10 +4004,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4055,10 +4055,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4106,10 +4106,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4151,10 +4151,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4206,10 +4206,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4243,10 +4243,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
-        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
-        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "src/TwitchDock.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchDock.Helix/Models/ChatSettings.cs",
+        "tests/TwitchDock.Tests/ChatSettingsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-chat-settings.json",
         "docs/helix-chat-settings.md"
       ]
     },
@@ -4302,9 +4302,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ClipsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/ClipsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -4379,9 +4379,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ClipsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/ClipsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -4556,9 +4556,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ClipsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/ClipsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -4620,9 +4620,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ClipsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/ClipsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -4657,10 +4657,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -4702,10 +4702,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -4753,10 +4753,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -4782,10 +4782,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -4879,10 +4879,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -5016,10 +5016,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ConduitsClient.cs",
-        "src/TwitchSdk.Helix/Models/Conduits.cs",
-        "tests/TwitchSdk.Tests/ConduitsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-conduits.json",
+        "src/TwitchDock.Helix/Clients/ConduitsClient.cs",
+        "src/TwitchDock.Helix/Models/Conduits.cs",
+        "tests/TwitchDock.Tests/ConduitsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-conduits.json",
         "docs/helix-conduits.md"
       ]
     },
@@ -5066,13 +5066,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
-        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
-        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "src/TwitchDock.Helix/Clients/TagsClient.cs",
+        "src/TwitchDock.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchDock.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-tags-labels-authorization.json",
         "docs/helix-tags-labels-authorization.md"
       ]
     },
@@ -5179,10 +5179,10 @@
       "availabilityReview": "game-or-organization-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/EntitlementsClient.cs",
-        "src/TwitchSdk.Helix/Models/Entitlements.cs",
-        "tests/TwitchSdk.Tests/EntitlementsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-entitlements.json",
+        "src/TwitchDock.Helix/Clients/EntitlementsClient.cs",
+        "src/TwitchDock.Helix/Models/Entitlements.cs",
+        "tests/TwitchDock.Tests/EntitlementsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-entitlements.json",
         "docs/helix-entitlements.md"
       ]
     },
@@ -5230,10 +5230,10 @@
       "availabilityReview": "game-or-organization-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/EntitlementsClient.cs",
-        "src/TwitchSdk.Helix/Models/Entitlements.cs",
-        "tests/TwitchSdk.Tests/EntitlementsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-entitlements.json",
+        "src/TwitchDock.Helix/Clients/EntitlementsClient.cs",
+        "src/TwitchDock.Helix/Models/Entitlements.cs",
+        "tests/TwitchDock.Tests/EntitlementsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-entitlements.json",
         "docs/helix-entitlements.md"
       ]
     },
@@ -5297,13 +5297,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5353,13 +5353,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5404,13 +5404,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5454,13 +5454,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5534,13 +5534,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5597,13 +5597,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5666,13 +5666,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5717,13 +5717,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -5976,13 +5976,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -6235,13 +6235,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -6313,13 +6313,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -6433,13 +6433,13 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ExtensionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Extensions.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwt.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionJwtTokenProvider.cs",
-        "src/TwitchSdk.Helix/Extensions/ExtensionSecret.cs",
-        "tests/TwitchSdk.Tests/ExtensionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-extensions.json",
+        "src/TwitchDock.Helix/Clients/ExtensionsClient.cs",
+        "src/TwitchDock.Helix/Models/Extensions.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwt.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionJwtTokenProvider.cs",
+        "src/TwitchDock.Helix/Extensions/ExtensionSecret.cs",
+        "tests/TwitchDock.Tests/ExtensionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-extensions.json",
         "docs/helix-extensions.md"
       ]
     },
@@ -6601,13 +6601,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "src/TwitchSdk.Helix/Models/EventSub.cs",
-        "src/TwitchSdk.EventSub/EventSubSubscriptionSpec.cs",
-        "src/TwitchSdk.EventSub/HelixEventSubExtensions.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.IntegrationTests/WebhookCliTests.cs",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "src/TwitchDock.Helix/Models/EventSub.cs",
+        "src/TwitchDock.EventSub/EventSubSubscriptionSpec.cs",
+        "src/TwitchDock.EventSub/HelixEventSubExtensions.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.IntegrationTests/WebhookCliTests.cs",
         "docs/helix-foundation.md",
         "docs/eventsub-community-system.md"
       ]
@@ -6634,10 +6634,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md"
       ]
     },
@@ -6789,10 +6789,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md"
       ]
     },
@@ -6866,9 +6866,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GamesClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/GamesClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -6932,9 +6932,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GamesClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/GamesClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -7013,9 +7013,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GoalsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/GoalsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -7078,10 +7078,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7140,10 +7140,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7271,10 +7271,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7393,10 +7393,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7521,10 +7521,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7608,10 +7608,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7658,10 +7658,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7708,10 +7708,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7764,10 +7764,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7820,10 +7820,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7882,10 +7882,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -7956,10 +7956,10 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
-        "src/TwitchSdk.Helix/Models/GuestStar.cs",
-        "tests/TwitchSdk.Tests/GuestStarTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "src/TwitchDock.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchDock.Helix/Models/GuestStar.cs",
+        "tests/TwitchDock.Tests/GuestStarTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-guest-star.json",
         "docs/helix-guest-star.md"
       ]
     },
@@ -8148,11 +8148,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/HypeTrainClient.cs",
-        "src/TwitchSdk.Helix/Models/HypeTrain.cs",
-        "tests/TwitchSdk.Tests/HypeTrainTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-hype-train.json",
+        "src/TwitchDock.Helix/Clients/HypeTrainClient.cs",
+        "src/TwitchDock.Helix/Models/HypeTrain.cs",
+        "tests/TwitchDock.Tests/HypeTrainTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-hype-train.json",
         "docs/helix-hype-train.md"
       ]
     },
@@ -8215,10 +8215,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8258,10 +8258,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8357,10 +8357,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8501,10 +8501,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8618,10 +8618,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8712,10 +8712,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8756,10 +8756,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -8909,10 +8909,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9045,10 +9045,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9146,10 +9146,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9231,10 +9231,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9274,10 +9274,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9317,10 +9317,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Enforcement.cs",
-        "src/TwitchSdk.Helix/Models/ModerationEnforcement.cs",
-        "tests/TwitchSdk.Tests/ModerationEnforcementTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-enforcement.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Enforcement.cs",
+        "src/TwitchDock.Helix/Models/ModerationEnforcement.cs",
+        "tests/TwitchDock.Tests/ModerationEnforcementTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-enforcement.json",
         "docs/helix-moderation-enforcement.md"
       ]
     },
@@ -9391,10 +9391,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9472,10 +9472,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9509,10 +9509,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9546,10 +9546,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9627,10 +9627,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9664,10 +9664,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9701,10 +9701,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9776,10 +9776,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9845,10 +9845,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -9927,10 +9927,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -10013,10 +10013,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -10092,10 +10092,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
-        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
-        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "src/TwitchDock.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchDock.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchDock.Tests/ModerationRolesTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-moderation-roles.json",
         "docs/helix-moderation-roles.md"
       ]
     },
@@ -10253,10 +10253,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PollsClient.cs",
-        "src/TwitchSdk.Helix/Models/Polls.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PollsClient.cs",
+        "src/TwitchDock.Helix/Models/Polls.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -10421,10 +10421,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PollsClient.cs",
-        "src/TwitchSdk.Helix/Models/Polls.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PollsClient.cs",
+        "src/TwitchDock.Helix/Models/Polls.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -10565,10 +10565,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PollsClient.cs",
-        "src/TwitchSdk.Helix/Models/Polls.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PollsClient.cs",
+        "src/TwitchDock.Helix/Models/Polls.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -10746,10 +10746,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PredictionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Predictions.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PredictionsClient.cs",
+        "src/TwitchDock.Helix/Models/Predictions.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -10922,10 +10922,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PredictionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Predictions.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PredictionsClient.cs",
+        "src/TwitchDock.Helix/Models/Predictions.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -11092,10 +11092,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/PredictionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Predictions.cs",
-        "tests/TwitchSdk.Tests/PollsAndPredictionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-polls-predictions.json",
+        "src/TwitchDock.Helix/Clients/PredictionsClient.cs",
+        "src/TwitchDock.Helix/Models/Predictions.cs",
+        "tests/TwitchDock.Tests/PollsAndPredictionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-polls-predictions.json",
         "docs/helix-polls-predictions.md"
       ]
     },
@@ -11145,9 +11145,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/RaidsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/RaidsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -11175,9 +11175,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/RaidsClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/RaidsClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -11329,11 +11329,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11359,11 +11359,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11415,11 +11415,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11570,11 +11570,11 @@
       "availabilityReview": "public-with-non-recurring-restrictions",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11731,11 +11731,11 @@
       "availabilityReview": "public-with-non-recurring-restrictions",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11769,11 +11769,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/ScheduleClient.cs",
-        "src/TwitchSdk.Helix/Models/Schedule.cs",
-        "src/TwitchSdk.Core/TwitchHttpClient.cs",
-        "tests/TwitchSdk.Tests/ScheduleTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-schedule.json",
+        "src/TwitchDock.Helix/Clients/ScheduleClient.cs",
+        "src/TwitchDock.Helix/Models/Schedule.cs",
+        "src/TwitchDock.Core/TwitchHttpClient.cs",
+        "tests/TwitchDock.Tests/ScheduleTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-schedule.json",
         "docs/helix-schedule.md"
       ]
     },
@@ -11842,9 +11842,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/SearchClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/SearchClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -11964,9 +11964,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/SearchClient.cs",
-        "tests/TwitchSdk.Tests/HelixGroupsTests.cs",
-        "tests/TwitchSdk.Tests/AuthorizationTests.cs",
+        "src/TwitchDock.Helix/Clients/SearchClient.cs",
+        "tests/TwitchDock.Tests/HelixGroupsTests.cs",
+        "tests/TwitchDock.Tests/AuthorizationTests.cs",
         "docs/helix-groups.md"
       ]
     },
@@ -12005,10 +12005,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/StreamsClient.cs",
-        "src/TwitchSdk.Helix/Models/Streams.cs",
-        "tests/TwitchSdk.Tests/StreamsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-streams.json",
+        "src/TwitchDock.Helix/Clients/StreamsClient.cs",
+        "src/TwitchDock.Helix/Models/Streams.cs",
+        "tests/TwitchDock.Tests/StreamsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-streams.json",
         "docs/helix-streams.md"
       ]
     },
@@ -12167,12 +12167,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md",
-        "src/TwitchSdk.Helix/Clients/StreamsClient.cs"
+        "src/TwitchDock.Helix/Clients/StreamsClient.cs"
       ]
     },
     {
@@ -12302,10 +12302,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/StreamsClient.cs",
-        "src/TwitchSdk.Helix/Models/Streams.cs",
-        "tests/TwitchSdk.Tests/StreamsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-streams.json",
+        "src/TwitchDock.Helix/Clients/StreamsClient.cs",
+        "src/TwitchDock.Helix/Models/Streams.cs",
+        "tests/TwitchDock.Tests/StreamsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-streams.json",
         "docs/helix-streams.md"
       ]
     },
@@ -12365,10 +12365,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/StreamsClient.cs",
-        "src/TwitchSdk.Helix/Models/Streams.cs",
-        "tests/TwitchSdk.Tests/StreamsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-streams.json",
+        "src/TwitchDock.Helix/Clients/StreamsClient.cs",
+        "src/TwitchDock.Helix/Models/Streams.cs",
+        "tests/TwitchDock.Tests/StreamsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-streams.json",
         "docs/helix-streams.md"
       ]
     },
@@ -12492,10 +12492,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/StreamsClient.cs",
-        "src/TwitchSdk.Helix/Models/Streams.cs",
-        "tests/TwitchSdk.Tests/StreamsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-streams.json",
+        "src/TwitchDock.Helix/Clients/StreamsClient.cs",
+        "src/TwitchDock.Helix/Models/Streams.cs",
+        "tests/TwitchDock.Tests/StreamsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-streams.json",
         "docs/helix-streams.md"
       ]
     },
@@ -12633,10 +12633,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/SubscriptionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Subscriptions.cs",
-        "tests/TwitchSdk.Tests/BitsAndSubscriptionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-bits-subscriptions.json",
+        "src/TwitchDock.Helix/Clients/SubscriptionsClient.cs",
+        "src/TwitchDock.Helix/Models/Subscriptions.cs",
+        "tests/TwitchDock.Tests/BitsAndSubscriptionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-bits-subscriptions.json",
         "docs/helix-bits-subscriptions.md"
       ]
     },
@@ -12716,10 +12716,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/SubscriptionsClient.cs",
-        "src/TwitchSdk.Helix/Models/Subscriptions.cs",
-        "tests/TwitchSdk.Tests/BitsAndSubscriptionsTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-bits-subscriptions.json",
+        "src/TwitchDock.Helix/Clients/SubscriptionsClient.cs",
+        "src/TwitchDock.Helix/Models/Subscriptions.cs",
+        "tests/TwitchDock.Tests/BitsAndSubscriptionsTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-bits-subscriptions.json",
         "docs/helix-bits-subscriptions.md"
       ]
     },
@@ -12793,13 +12793,13 @@
       "availabilityReview": "deprecated",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
-        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
-        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "src/TwitchDock.Helix/Clients/TagsClient.cs",
+        "src/TwitchDock.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchDock.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-tags-labels-authorization.json",
         "docs/helix-tags-labels-authorization.md"
       ]
     },
@@ -12851,13 +12851,13 @@
       "availabilityReview": "deprecated",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
-        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
-        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "src/TwitchDock.Helix/Clients/TagsClient.cs",
+        "src/TwitchDock.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchDock.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-tags-labels-authorization.json",
         "docs/helix-tags-labels-authorization.md"
       ]
     },
@@ -12949,9 +12949,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TeamsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/TeamsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -13054,9 +13054,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TeamsClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/TeamsClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -13149,12 +13149,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/HelixClient.cs",
-        "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "tests/TwitchSdk.Tests/HelixTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-foundation.json",
+        "src/TwitchDock.Helix/HelixClient.cs",
+        "tests/TwitchDock.Tests/HelixFoundationTests.cs",
+        "tests/TwitchDock.Tests/HelixTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-foundation.json",
         "docs/helix-foundation.md",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs"
+        "src/TwitchDock.Helix/Clients/UsersClient.cs"
       ]
     },
     {
@@ -13242,10 +13242,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13302,13 +13302,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
-        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
-        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
-        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "src/TwitchDock.Helix/Clients/TagsClient.cs",
+        "src/TwitchDock.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Clients/BitsClient.cs",
+        "src/TwitchDock.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchDock.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-tags-labels-authorization.json",
         "docs/helix-tags-labels-authorization.md"
       ]
     },
@@ -13379,10 +13379,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13422,10 +13422,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13453,10 +13453,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13509,10 +13509,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13629,10 +13629,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13751,10 +13751,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
-        "src/TwitchSdk.Helix/Models/Users.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/UsersClient.cs",
+        "src/TwitchDock.Helix/Models/Users.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     },
@@ -13945,9 +13945,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/VideosClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/VideosClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -13981,9 +13981,9 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/VideosClient.cs",
-        "tests/TwitchSdk.Tests/HelixMediaTests.cs",
-        "tests/TwitchSdk.Tests/ContractAssertions.cs",
+        "src/TwitchDock.Helix/Clients/VideosClient.cs",
+        "tests/TwitchDock.Tests/HelixMediaTests.cs",
+        "tests/TwitchDock.Tests/ContractAssertions.cs",
         "docs/helix-media.md"
       ]
     },
@@ -14024,10 +14024,10 @@
       "availabilityReview": "verified-phone-sender",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Helix/Clients/WhispersClient.cs",
-        "src/TwitchSdk.Helix/Models/Whispers.cs",
-        "tests/TwitchSdk.Tests/UsersAndWhispersTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/helix-users.json",
+        "src/TwitchDock.Helix/Clients/WhispersClient.cs",
+        "src/TwitchDock.Helix/Models/Whispers.cs",
+        "tests/TwitchDock.Tests/UsersAndWhispersTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/helix-users.json",
         "docs/helix-users-whispers.md"
       ]
     }
@@ -14041,13 +14041,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14059,13 +14059,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14077,13 +14077,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14095,13 +14095,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14113,13 +14113,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14131,13 +14131,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14149,11 +14149,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14165,11 +14165,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14181,11 +14181,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14197,11 +14197,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14213,13 +14213,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14231,13 +14231,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14249,13 +14249,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14267,13 +14267,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14285,13 +14285,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14303,13 +14303,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14321,13 +14321,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14339,13 +14339,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14357,13 +14357,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14375,13 +14375,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14393,13 +14393,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14411,11 +14411,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14427,11 +14427,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14443,11 +14443,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14459,11 +14459,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14475,11 +14475,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14491,11 +14491,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14507,11 +14507,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14523,11 +14523,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14539,11 +14539,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14555,11 +14555,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14571,11 +14571,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14587,11 +14587,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14603,11 +14603,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14619,11 +14619,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14635,12 +14635,12 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -14652,12 +14652,12 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -14669,12 +14669,12 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -14686,12 +14686,12 @@
       "availabilityReview": "public-beta",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -14703,11 +14703,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14719,11 +14719,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14735,11 +14735,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14751,11 +14751,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14767,11 +14767,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14783,11 +14783,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14799,11 +14799,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14815,11 +14815,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14831,11 +14831,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14847,11 +14847,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14863,11 +14863,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14879,11 +14879,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14895,11 +14895,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14911,11 +14911,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14927,11 +14927,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
-        "src/TwitchSdk.EventSub/Events/MonetizationInteractionEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.MonetizationInteraction.cs",
-        "tests/TwitchSdk.Tests/EventSubMonetizationInteractionTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-monetization-interaction.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.MonetizationInteraction.cs",
+        "src/TwitchDock.EventSub/Events/MonetizationInteractionEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.MonetizationInteraction.cs",
+        "tests/TwitchDock.Tests/EventSubMonetizationInteractionTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-monetization-interaction.json",
         "docs/eventsub-monetization-interaction.md"
       ]
     },
@@ -14943,13 +14943,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14961,13 +14961,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -14979,11 +14979,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -14995,11 +14995,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -15011,13 +15011,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -15029,13 +15029,13 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
-        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
-        "src/TwitchSdk.Chat/TwitchChatClient.cs",
-        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "src/TwitchDock.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchDock.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchDock.Chat/TwitchChatClient.cs",
+        "tests/TwitchDock.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-chat-automod.json",
         "docs/eventsub-chat-automod.md"
       ]
     },
@@ -15047,12 +15047,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15064,12 +15064,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15081,12 +15081,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15098,12 +15098,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15115,12 +15115,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15132,12 +15132,12 @@
       "availabilityReview": "game-or-organization-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15149,12 +15149,12 @@
       "availabilityReview": "extension-owner",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15166,12 +15166,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15183,12 +15183,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15200,12 +15200,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15217,12 +15217,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15234,12 +15234,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15251,12 +15251,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15268,11 +15268,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -15284,11 +15284,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -15300,11 +15300,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -15316,11 +15316,11 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
-        "src/TwitchSdk.EventSub/Events/ModerationChannelEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.ModerationChannel.cs",
-        "tests/TwitchSdk.Tests/EventSubModerationChannelTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-moderation-channel.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.ModerationChannel.cs",
+        "src/TwitchDock.EventSub/Events/ModerationChannelEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.ModerationChannel.cs",
+        "tests/TwitchDock.Tests/EventSubModerationChannelTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-moderation-channel.json",
         "docs/eventsub-moderation-channel.md"
       ]
     },
@@ -15332,10 +15332,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/StreamEvents.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-stream.json",
+        "src/TwitchDock.EventSub/Events/StreamEvents.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-stream.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15347,10 +15347,10 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Events/StreamEvents.cs",
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-stream.json",
+        "src/TwitchDock.EventSub/Events/StreamEvents.cs",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.Stream.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-stream.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15362,12 +15362,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15379,12 +15379,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15396,12 +15396,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     },
@@ -15413,12 +15413,12 @@
       "availabilityReview": "public",
       "status": "complete",
       "evidence": [
-        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
-        "src/TwitchSdk.EventSub/Events/CommunitySystemEvents.cs",
-        "src/TwitchSdk.EventSub/EventSubEvents.CommunitySystem.cs",
-        "tests/TwitchSdk.Tests/EventSubCommunitySystemTests.cs",
-        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
-        "tests/TwitchSdk.Tests/Fixtures/eventsub-community-system.json",
+        "src/TwitchDock.EventSub/Subscriptions/EventSubSubscriptions.CommunitySystem.cs",
+        "src/TwitchDock.EventSub/Events/CommunitySystemEvents.cs",
+        "src/TwitchDock.EventSub/EventSubEvents.CommunitySystem.cs",
+        "tests/TwitchDock.Tests/EventSubCommunitySystemTests.cs",
+        "tests/TwitchDock.Tests/EventSubTypedTests.cs",
+        "tests/TwitchDock.Tests/Fixtures/eventsub-community-system.json",
         "docs/eventsub-community-system.md"
       ]
     }

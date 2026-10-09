@@ -9,14 +9,16 @@ The [project plan](project-plan.md) targets a complete, stable SDK. The current 
 - All OAuth flows including device code polling and OpenID Connect, hosted token validation, typed EventSub with router and webhook handler, chat over EventSub and IRC, dependency injection.
 - Quality gates: unit and contract tests on both frameworks, Twitch CLI integration tests, public API snapshots, AOT analyzers and native AOT smoke runs, coverage release gate, weekly API drift check, Dependabot.
 - Documentation for every group, samples and release process.
+- Selected real-credential API/authentication/chat checks ([report](live-verification.md)), bilingual beginner tutorials and interactive chat login.
+- Public [GitHub repository](https://github.com/dermixer1305/TwitchDock.NET), package repository metadata and private vulnerability reporting.
 
 ## Remaining before 1.0.0
 
 These steps need the maintainer's accounts; the checklist with details is in [releases](releases.md#rc-to-100-checklist).
 
 1. **Live verification** with real Twitch credentials across the main flows (OAuth grants, Helix reads and writes, EventSub WebSocket and webhooks, conduits, IRC). Fix and test every difference from the documentation; record intended API changes in the changelog.
-2. **Repository**: create the GitHub repository, push, get every CI job green on GitHub, enable private vulnerability reporting, add repository URLs to the package metadata and make README links resolve on nuget.org.
-3. **Publication**: check and reserve the `TwitchSdk.*` package IDs (or choose others), publish the release candidate, collect feedback, then release 1.0.0.
+2. **Feedback**: distribute the GitHub release candidate, keep CI green and resolve issues reported by early users.
+3. **NuGet publication**: check `TwitchDock.*` package ID availability and ownership, configure publishing separately, collect feedback, then release 1.0.0. A GitHub release does not publish to nuget.org.
 
 ## After 1.0.0
 

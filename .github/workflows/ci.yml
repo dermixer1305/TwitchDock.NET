@@ -1,7 +1,9 @@
 name: Build and test
 on:
   push:
+    branches: ['**']
   pull_request:
+  workflow_call:
 permissions:
   contents: read
 # Actions are pinned to full commit SHAs (tag in the trailing comment); checkouts do not persist the token in .git/config.
@@ -21,10 +23,10 @@ jobs:
           dotnet-version: |
             8.0.x
             10.0.x
-      - run: dotnet restore TwitchSdk.slnx
-      - run: dotnet build TwitchSdk.slnx -c Release --no-restore
+      - run: dotnet restore TwitchDock.slnx
+      - run: dotnet build TwitchDock.slnx -c Release --no-restore
       # Includes contract tests and the public API snapshot (breaking-change check).
-      - run: dotnet test tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj -c Release -f ${{ matrix.framework }} --no-build --logger trx
+      - run: dotnet test tests/TwitchDock.Tests/TwitchDock.Tests.csproj -c Release -f ${{ matrix.framework }} --no-build --logger trx
       - name: Validate coverage evidence and the release gate
         shell: pwsh
         run: ./tools/Test-ApiCoverage.ps1 -RequireComplete
@@ -58,7 +60,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/twitch-cli"
           tar -xzf "$archive" -C "$RUNNER_TEMP/twitch-cli"
           echo "TWITCH_CLI=$(find "$RUNNER_TEMP/twitch-cli" -type f -name twitch | head -n 1)" >> "$GITHUB_ENV"
-      - run: dotnet test tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj -c Release --logger trx
+      - run: dotnet test tests/TwitchDock.IntegrationTests/TwitchDock.IntegrationTests.csproj -c Release --logger trx
   pack:
     runs-on: ubuntu-latest
     steps:
@@ -70,16 +72,16 @@ jobs:
           dotnet-version: |
             8.0.x
             10.0.x
-      - run: dotnet pack TwitchSdk.slnx -c Release -o artifacts/packages
-      # tests/TwitchSdk.PackageSmoke/NuGet.config maps TwitchSdk.* to artifacts/packages only.
-      - run: dotnet restore tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj
-      - run: dotnet run --project tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f net8.0 --no-restore
-      - run: dotnet run --project tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f net10.0 --no-restore
+      - run: dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
+      # tests/TwitchDock.PackageSmoke/NuGet.config maps TwitchDock.* to artifacts/packages only.
+      - run: dotnet restore tests/TwitchDock.PackageSmoke/TwitchDock.PackageSmoke.csproj
+      - run: dotnet run --project tests/TwitchDock.PackageSmoke/TwitchDock.PackageSmoke.csproj -c Release -f net8.0 --no-restore
+      - run: dotnet run --project tests/TwitchDock.PackageSmoke/TwitchDock.PackageSmoke.csproj -c Release -f net10.0 --no-restore
       - name: Native AOT smoke test
         run: |
           for framework in net8.0 net10.0; do
-            dotnet publish tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f "$framework" -r linux-x64 -p:PublishAot=true -o "artifacts/aot/$framework"
-            "./artifacts/aot/$framework/TwitchSdk.PackageSmoke"
+            dotnet publish tests/TwitchDock.PackageSmoke/TwitchDock.PackageSmoke.csproj -c Release -f "$framework" -r linux-x64 -p:PublishAot=true -o "artifacts/aot/$framework"
+            "./artifacts/aot/$framework/TwitchDock.PackageSmoke"
           done
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

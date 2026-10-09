@@ -20,9 +20,9 @@ All twelve extension endpoints are available through `helix.Extensions` (`Extens
 JWT endpoints expect `Authorization: Bearer <JWT>` plus `Client-Id: <extension client ID>`. `ExtensionJwtTokenProvider` signs a new token for every request, so the client needs no token cache or refresh logic:
 
 ```csharp
-using TwitchSdk.Core;
-using TwitchSdk.Helix;
-using TwitchSdk.Helix.Extensions;
+using TwitchDock.Core;
+using TwitchDock.Helix;
+using TwitchDock.Helix.Extensions;
 
 var extensionClientId = Environment.GetEnvironmentVariable("TWITCH_EXTENSION_CLIENT_ID")
     ?? throw new InvalidOperationException("Set TWITCH_EXTENSION_CLIENT_ID.");
@@ -43,7 +43,7 @@ var extension = await ebs.Extensions.GetExtensionsAsync(extensionClientId, cance
 Rules worth knowing:
 
 - **Client ID.** `TwitchHttpOptions.ClientId` must equal the provider's `ExtensionClientId`. Tokens carry that client ID and the transport rejects a mismatch with `TwitchAuthorizationException` before sending anything.
-- **Separate authorizations.** Keep the JWT client apart from your OAuth client (the one `AddTwitchSdk` registers). Register a second `TwitchHttpClient`/`HelixClient` pair for the EBS, for example as a keyed service. Calling a JWT endpoint on the OAuth client fails locally: known app/user tokens are rejected (the exception text names the other OAuth token kind, but the fix is to use the JWT client). Without this check Twitch would answer 401 and trigger a needless OAuth refresh. Calling an OAuth endpoint on the JWT client is sent and rejected by Twitch with 401.
+- **Separate authorizations.** Keep the JWT client apart from your OAuth client (the one `AddTwitchDock` registers). Register a second `TwitchHttpClient`/`HelixClient` pair for the EBS, for example as a keyed service. Calling a JWT endpoint on the OAuth client fails locally: known app/user tokens are rejected (the exception text names the other OAuth token kind, but the fix is to use the JWT client). Without this check Twitch would answer 401 and trigger a needless OAuth refresh. Calling an OAuth endpoint on the JWT client is sent and rejected by Twitch with 401.
 - **Claims.** Every token contains `exp`, `user_id` (the extension owner) and `role: "external"`, signed with HS256 using the base64-decoded secret. `SendExtensionChatMessageAsync` adds `channel_id` = broadcaster; `SendExtensionPubSubMessageAsync` adds `channel_id` (broadcaster or `all`) and `pubsub_perms.send` = the message targets. These request-specific claims are scoped to that call only, including concurrent calls.
 - **Lifetime.** The default lifetime is three minutes; pass 1 second to 1 hour as `lifetime`. Supply a `TimeProvider` for tests. Tokens have `TwitchTokenKind.Unknown`, so the SDK performs no scope preflight for them and validates request inputs instead; Twitch verifies the signature, owner and roles.
 - **401 handling.** After HTTP 401 the provider signs a new token. The transport retries once only if that token differs (for example after the clock moved past an expiry); otherwise the 401 surfaces as `TwitchApiException`.

@@ -76,7 +76,7 @@ await helix.DeleteEventSubSubscriptionAsync("subscription-id", cancellationToken
 
 Listing supports exactly one optional filter among `Status`, `Type`, `UserId`, `SubscriptionId` and `ConduitId`, plus an optional `After` cursor. Status and type remain strings to accept future Twitch values. Manual pages expose `Total`, `TotalCost`, `MaxTotalCost` and pagination; enumeration yields subscriptions in Twitch's oldest-first order. Use the same token kind as the transport: user token for WebSockets, app token for webhooks/conduits. Listing and deleting cannot infer the transport from an opaque subscription ID, so Twitch enforces that relationship. Deletion returns no value for HTTP 204 and throws for HTTP 404.
 
-Prefer the typed specs: `helix.SubscribeWebSocketAsync(EventSubSubscriptions.StreamOnlineV1("123"), sessionId, ct)` or `helix.CreateEventSubSubscriptionAsync(spec, transport, ct)` from `TwitchSdk.EventSub` build the documented condition and check the subscription's scopes and authorizing user ([EventSub](eventsub.md)). The untyped creation method remains available for raw requests:
+Prefer the typed specs: `helix.SubscribeWebSocketAsync(EventSubSubscriptions.StreamOnlineV1("123"), sessionId, ct)` or `helix.CreateEventSubSubscriptionAsync(spec, transport, ct)` from `TwitchDock.EventSub` build the documented condition and check the subscription's scopes and authorizing user ([EventSub](eventsub.md)). The untyped creation method remains available for raw requests:
 
 ```csharp
 var created = await helix.CreateEventSubSubscriptionAsync(new()

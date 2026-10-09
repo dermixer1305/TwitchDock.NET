@@ -1,0 +1,15 @@
+static class TwitchDock.DependencyInjection.ServiceCollectionExtensions
+    static AddTwitchDock(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchDock.Core.TwitchHttpOptions options, System.Func<System.IServiceProvider, TwitchDock.Core.IAccessTokenProvider> tokenProviderFactory): Microsoft.Extensions.DependencyInjection.IServiceCollection
+static class TwitchDock.DependencyInjection.TwitchIrcServiceCollectionExtensions
+    static AddTwitchIrc(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchDock.Chat.Irc.TwitchIrcOptions options): Microsoft.Extensions.DependencyInjection.IServiceCollection
+sealed class TwitchDock.DependencyInjection.TwitchTokenValidationOptions
+    .ctor()
+    ExpectedClientId: System.String { get; init; }
+    MaxConsecutiveTransientFailures: System.Int32 { get; init; }
+    OnValidated: System.Func<TwitchDock.Authentication.TokenValidation, System.Threading.CancellationToken, System.Threading.Tasks.Task> { get; init; }
+    TransientRetryDelay: System.TimeSpan { get; init; }
+sealed class TwitchDock.DependencyInjection.TwitchTokenValidationService : Microsoft.Extensions.Hosting.BackgroundService, Microsoft.Extensions.Hosting.IHostedService, System.IDisposable
+    .ctor(TwitchDock.Authentication.TwitchOAuthClient oauth, TwitchDock.Core.IAccessTokenProvider tokens, TwitchDock.DependencyInjection.TwitchTokenValidationOptions options, System.TimeProvider timeProvider = null, Microsoft.Extensions.Logging.ILogger<TwitchDock.DependencyInjection.TwitchTokenValidationService> logger = null)
+    virtual protected ExecuteAsync(System.Threading.CancellationToken stoppingToken): System.Threading.Tasks.Task
+static class TwitchDock.DependencyInjection.TwitchTokenValidationServiceCollectionExtensions
+    static AddTwitchTokenValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchDock.DependencyInjection.TwitchTokenValidationOptions options): Microsoft.Extensions.DependencyInjection.IServiceCollection

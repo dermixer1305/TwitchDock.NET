@@ -1,9 +1,10 @@
-# TwitchSdk documentation
+# TwitchDock documentation
 
 Version 1.0.0-rc.1. Start with the [quickstart](quickstart.md), then pick the reference for the API group you need. Every reference lists the methods, parameters, authorization rules, errors and an example, reviewed against the pinned official Twitch documentation of 2026-10-09.
 
 ## Getting started
 
+- [English beginner tutorial](tutorial.md) / [Deutsches Einsteigertutorial](tutorial.de.md): app registration, API calls, interactive chat and package installation
 - [Quickstart](quickstart.md): setup, app token, users, streams, chat over EventSub, webhooks, dependency injection and hosting
 - [Authentication](authentication.md): every OAuth flow, OpenID Connect, refresh, hourly validation, revocation, scope preflight
 - [Samples](samples.md): quickstart console app, EventSub chat bot, ASP.NET Core webhook host
@@ -49,12 +50,13 @@ Version 1.0.0-rc.1. Start with the [quickstart](quickstart.md), then pick the re
 
 ## Dependency injection and hosting
 
-- `AddTwitchSdk`, `AddTwitchTokenValidation` and `AddTwitchIrc`: [quickstart](quickstart.md#dependency-injection-and-hosting)
+- `AddTwitchDock`, `AddTwitchTokenValidation` and `AddTwitchIrc`: [quickstart](quickstart.md#dependency-injection-and-hosting)
 - Hosted hourly token validation: [authentication](authentication.md#validation-startup-and-hourly)
 - ASP.NET Core webhook endpoint: [EventSub webhooks](eventsub.md#webhooks) and the [webhook host sample](samples.md#webhook-host)
 
 ## Project
 
+- [Live verification / Live-Prüfung](live-verification.md): exact scope of the real Twitch tests and remaining checks
 - [Architecture](architecture.md): modules, conventions, JSON defaults, EventSub semantics, native AOT, API snapshots
 - [Testing](testing.md): unit, contract, integration (Twitch CLI), package smoke, native AOT, public API snapshots, coverage validation
 - [API coverage](coverage.md): every Helix endpoint and EventSub type with status, availability and evidence (generated from [api/coverage.json](api/coverage.json))

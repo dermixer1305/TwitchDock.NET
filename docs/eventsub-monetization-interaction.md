@@ -1,6 +1,6 @@
 # EventSub monetization and interaction
 
-Typed subscriptions and events for Bits, subscriptions, Channel Points, custom Power-ups, polls and predictions. Each `EventSubSubscriptions` factory builds the documented condition and records the authorization Twitch checks. Each `EventSubEvents` definition with the same name binds the type and version to its event class in `TwitchSdk.EventSub.Events`.
+Typed subscriptions and events for Bits, subscriptions, Channel Points, custom Power-ups, polls and predictions. Each `EventSubSubscriptions` factory builds the documented condition and records the authorization Twitch checks. Each `EventSubEvents` definition with the same name binds the type and version to its event class in `TwitchDock.EventSub.Events`.
 
 Every type here takes `broadcaster_user_id` and is authorized by that broadcaster: for WebSocket subscriptions the user token must belong to the broadcaster and carry the listed scope. For webhook and conduit subscriptions an app token is used, and Twitch checks that the broadcaster granted the scope to your client. All types accept WebSocket, webhook and conduit transports.
 
@@ -44,7 +44,7 @@ Every type here takes `broadcaster_user_id` and is authorized by that broadcaste
 ## Example
 
 ```csharp
-using TwitchSdk.EventSub;
+using TwitchDock.EventSub;
 
 var router = new EventSubEventRouter()
     .On(EventSubEvents.ChannelCheerV1, (cheer, _, ct) =>

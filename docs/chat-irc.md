@@ -1,6 +1,6 @@
 # Chat over IRC
 
-`TwitchSdk.Chat.Irc` implements Twitch chat over IRCv3: a parser and serializer (`IrcMessage`), typed views of the Twitch commands, a router, and `TwitchIrcClient`, which owns the connection lifecycle (login, rejoin, keepalive, reconnects and rate limits). It needs no extra packages.
+`TwitchDock.Chat.Irc` implements Twitch chat over IRCv3: a parser and serializer (`IrcMessage`), typed views of the Twitch commands, a router, and `TwitchIrcClient`, which owns the connection lifecycle (login, rejoin, keepalive, reconnects and rate limits). It needs no extra packages.
 
 ## IRC or EventSub + Helix?
 
@@ -119,8 +119,8 @@ Callbacks block the receive loop while they run. A callback that awaits `SendMes
 ## Example bot
 
 ```csharp
-using TwitchSdk.Chat.Irc;
-using TwitchSdk.Core;
+using TwitchDock.Chat.Irc;
+using TwitchDock.Core;
 
 // A user token for the bot account with chat:read and chat:edit, e.g. a RefreshingTokenProvider.
 IAccessTokenProvider tokens = provider.GetRequiredService<IAccessTokenProvider>();
@@ -159,4 +159,4 @@ var router = new IrcMessageRouter()
 await irc.RunAsync(router.DispatchAsync, cancellationToken);
 ```
 
-For tests, inject a fake `IIrcConnection` through `connectionFactory` and a manual `TimeProvider`. That makes keepalive, backoff and rate limits deterministic. See `tests/TwitchSdk.Tests/IrcClientTests.cs`.
+For tests, inject a fake `IIrcConnection` through `connectionFactory` and a manual `TimeProvider`. That makes keepalive, backoff and rate limits deterministic. See `tests/TwitchDock.Tests/IrcClientTests.cs`.

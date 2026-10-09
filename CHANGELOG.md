@@ -2,13 +2,21 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
-## 1.0.0-rc.1 (unreleased)
+## 1.0.0-rc.1 (2026-10-09)
 
-Release candidate. Every Helix endpoint (149) and EventSub type/version (83) in the pinned official documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Live verification with real credentials and publication are still open ([roadmap](docs/roadmap.md)).
+First public release candidate under the TwitchDock.NET name. Every Helix endpoint (149) and EventSub type/version (83) in the pinned documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Selected real-credential authentication, API and chat checks passed; broader live verification and nuget.org publication remain open ([report](docs/live-verification.md), [roadmap](docs/roadmap.md)).
+
+### Publication and onboarding
+
+- Renamed packages, namespaces, projects and `AddTwitchSdk` from the unpublished `TwitchSdk` name to `TwitchDock` / `AddTwitchDock`. Live-test and API-snapshot environment variables now use the `TWITCHDOCK_` prefix.
+- English and German READMEs, step-by-step tutorials and release notes; repository metadata and private security reporting links.
+- The chat sample supports interactive device login without a pre-supplied token, defaults to the user's own channel, and accepts `!ping` from that account for a single-account test.
+- GitHub releases attach all six NuGet-format packages and SHA-256 checksums after the full CI checks succeed. Publishing to nuget.org remains a separate action.
+- CLI webhook integration tests explicitly bind IPv4 loopback so the Linux listener matches the Twitch CLI's IPv4 connection.
 
 ### Breaking changes since 0.1.0-alpha.1
 
-- `TwitchSdk.Chat.ChatMessage` and its companion types (`ChatMessageContent`, `ChatFragment`, `ChatBadge`, `ChatCheer`, `ChatCheermote`, `ChatEmote`, `ChatMention`, `ChatGif`, `ChatReply`, `ChatJsonContext`) were removed. `TwitchChatClient.TryReadMessage` now returns EventSub's `ChannelChatMessageEvent`; property names are unchanged, nested types are now `ChatMessageBody`, `ChatMessageFragment`, `ChatMessageBadge` and so on ([migration notes](docs/eventsub-chat-automod.md#chat-module-0x-breaking-change)).
+- `TwitchDock.Chat.ChatMessage` and its companion types (`ChatMessageContent`, `ChatFragment`, `ChatBadge`, `ChatCheer`, `ChatCheermote`, `ChatEmote`, `ChatMention`, `ChatGif`, `ChatReply`, `ChatJsonContext`) were removed. `TwitchChatClient.TryReadMessage` now returns EventSub's `ChannelChatMessageEvent`; property names are unchanged, nested types are now `ChatMessageBody`, `ChatMessageFragment`, `ChatMessageBadge` and so on ([migration notes](docs/eventsub-chat-automod.md#chat-module-0x-breaking-change)).
 - `TwitchChatClient.SubscribeAsync` now subscribes through the typed `channel.chat.message` spec, so a token without `user:read:chat`, an app token or another user's token fails with `TwitchAuthorizationException` before the request.
 - `ScheduleVacation.StartTime` and `EndTime` are nullable; an empty vacation object reads as null timestamps.
 - Null request lists now mean "no filter", the same as empty lists, and response properties with defaults keep them when Twitch omits a field.
@@ -62,7 +70,7 @@ Release candidate. Every Helix endpoint (149) and EventSub type/version (83) in 
 
 ### Chat
 
-- IRC transport in `TwitchSdk.Chat.Irc`: `TwitchIrcClient` (login with one refresh, rejoin, keepalive, reconnects, rate limits), `IrcMessage` IRCv3 parser and serializer, typed views, `IrcMessageRouter`, rate limiters, WebSocket and TCP connections.
+- IRC transport in `TwitchDock.Chat.Irc`: `TwitchIrcClient` (login with one refresh, rejoin, keepalive, reconnects, rate limits), `IrcMessage` IRCv3 parser and serializer, typed views, `IrcMessageRouter`, rate limiters, WebSocket and TCP connections.
 
 ### DependencyInjection
 

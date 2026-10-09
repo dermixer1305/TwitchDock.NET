@@ -1,36 +1,38 @@
 # Samples
 
-The samples live in `samples/`, are part of `TwitchSdk.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly (packages are not on NuGet yet). They read every credential from environment variables; never put tokens or secrets into source, launch profiles or command history.
+The samples live in `samples/`, are part of `TwitchDock.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly (packages are not on NuGet yet). Credentials come from environment variables or interactive device authorization; tokens are never printed or saved. Follow the [English tutorial](tutorial.md) or [deutsche Anleitung](tutorial.de.md).
 
 | Sample | Shows |
 | --- | --- |
-| [TwitchSdk.Quickstart](../samples/TwitchSdk.Quickstart/Program.cs) | Dependency injection, an app token through client credentials, token validation, Get Users |
-| [TwitchSdk.ChatBot](../samples/TwitchSdk.ChatBot/Program.cs) | EventSub WebSocket chat bot with a typed router, replies through Helix, hourly validation |
-| [TwitchSdk.WebhookHost](../samples/TwitchSdk.WebhookHost/Program.cs) | ASP.NET Core minimal API receiving EventSub webhooks through `EventSubWebhookHandler` |
+| [TwitchDock.Quickstart](../samples/TwitchDock.Quickstart/Program.cs) | Dependency injection, an app token through client credentials, token validation, Get Users |
+| [TwitchDock.ChatBot](../samples/TwitchDock.ChatBot/Program.cs) | EventSub WebSocket chat bot with a typed router, replies through Helix, hourly validation |
+| [TwitchDock.WebhookHost](../samples/TwitchDock.WebhookHost/Program.cs) | ASP.NET Core minimal API receiving EventSub webhooks through `EventSubWebhookHandler` |
 
 ## Quickstart
 
 ```sh
 export TWITCH_CLIENT_ID=...       # PowerShell: $env:TWITCH_CLIENT_ID = '...'
 export TWITCH_CLIENT_SECRET=...
-dotnet run --project samples/TwitchSdk.Quickstart -f net10.0 -- twitchdev
+dotnet run --project samples/TwitchDock.Quickstart -f net10.0 -- twitchdev
 ```
 
 Acquires an app token, validates it, checks its client ID and prints the user ID and display name for the login given as argument (default `twitchdev`).
 
 ## Chat bot
 
+For interactive onboarding, set only `TWITCH_CLIENT_ID` and run the sample. Open its Twitch URL, grant the chat permissions, then send `!ping` in your own channel to receive `pong`. The same account can send the command. Use `--help` for a summary. No token is printed or saved; the sample is intended for short sessions and does not refresh expired tokens.
+
 Connects to EventSub over WebSocket, subscribes to `channel.chat.message` (`EventSubSubscriptions.ChannelChatMessageV1`), logs chat through an `EventSubEventRouter` and answers `!ping` with `pong` as a reply through `helix.SendChatMessageAsync`.
 
 | Variable | Value |
 | --- | --- |
 | `TWITCH_CLIENT_ID` | Client ID the token was issued to |
-| `TWITCH_ACCESS_TOKEN` | User access token of the bot account with `user:read:chat` and `user:write:chat` |
-| `TWITCH_BOT_USER_ID` | User ID of the bot account (the token's user) |
-| `TWITCH_BROADCASTER_ID` | User ID of the channel to join |
+| `TWITCH_ACCESS_TOKEN` | Optional user token with `user:read:chat` and `user:write:chat`; otherwise an interactive Twitch device login starts |
+| `TWITCH_BOT_USER_ID` | Optional; defaults to the token's user ID and must match it if supplied |
+| `TWITCH_BROADCASTER_ID` | Optional channel ID; defaults to the token's user ID (your own channel) |
 
 ```sh
-dotnet run --project samples/TwitchSdk.ChatBot -f net10.0
+dotnet run --project samples/TwitchDock.ChatBot -f net10.0
 ```
 
 Get a token with the [device code flow](authentication.md#device-code) or the authorization code flow. The bot first calls `TwitchOAuthClient.ValidateAsync`, rejects a token for another client or user, and builds the `AccessToken` from the validation result. That gives the SDK the token's scopes and user ID, so a missing scope or a wrong account fails locally with `TwitchAuthorizationException` before any subscription or message is sent. It runs `TokenValidationLoop` next to the WebSocket client to validate hourly, as Twitch requires; the sample uses a fixed token, so it stops when the token expires or is revoked. A long-running bot would use `RefreshingTokenProvider` with a refresh token ([authentication](authentication.md#token-providers-and-refresh)). Check `IsSent` and `DropReason` on send results: HTTP success does not guarantee delivery. Ctrl+C cancels both loops.
@@ -49,7 +51,7 @@ Try it locally with the [Twitch CLI](testing.md#integration-tests-twitch-cli), n
 
 ```sh
 export TWITCH_EVENTSUB_SECRET=local-test-secret
-dotnet run --project samples/TwitchSdk.WebhookHost -f net10.0 -- --urls http://localhost:5000
+dotnet run --project samples/TwitchDock.WebhookHost -f net10.0 -- --urls http://localhost:5000
 # in a second shell
 twitch event verify-subscription stream.online -F http://localhost:5000/eventsub -s local-test-secret
 twitch event trigger stream.online -F http://localhost:5000/eventsub -s local-test-secret

@@ -8,9 +8,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
-    <!-- Release candidate: every generally available API meets the definition of done; live-credential verification and publication remain. -->
+    <!-- Release candidate: pinned API coverage is complete; broader live verification remains. -->
     <Version>1.0.0-rc.1</Version>
-    <Authors>TwitchSdk contributors</Authors>
+    <Authors>TwitchDock contributors</Authors>
+    <RepositoryUrl>https://github.com/dermixer1305/TwitchDock.NET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/dermixer1305/TwitchDock.NET</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>Independent, asynchronous Twitch SDK for modern .NET.</Description>
