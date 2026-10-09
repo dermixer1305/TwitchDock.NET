@@ -89,6 +89,12 @@ namespace TwitchSdk.Helix;
 [JsonSerializable(typeof(HelixPage<CustomPowerUp>))]
 // </group:chat-a>
 // <group:chat-b>
+[JsonSerializable(typeof(HelixPage<ChatSettings>))]
+[JsonSerializable(typeof(UpdateChatSettingsRequest))]
+[JsonSerializable(typeof(SendChatAnnouncementRequest))]
+[JsonSerializable(typeof(HelixPage<PinnedChatMessage>))]
+[JsonSerializable(typeof(HelixPage<UserChatColor>))]
+[JsonSerializable(typeof(HelixPage<SharedChatSession>))]
 // </group:chat-b>
 // <group:extensions>
 // </group:extensions>
