@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using TwitchSdk.Core;
 using TwitchSdk.EventSub;
+using TwitchSdk.EventSub.Events;
 using TwitchSdk.Helix;
 using TwitchSdk.Helix.Models;
 
@@ -12,27 +14,25 @@ public sealed class TwitchChatClient(HelixClient helix)
     public Task<HelixPage<SendChatMessageResult>> SendAsync(SendChatMessageRequest request, CancellationToken cancellationToken = default)
         => _helix.SendChatMessageAsync(request, cancellationToken);
 
-    /// <summary>Subscribe after a WebSocket welcome using a user token with user:read:chat.</summary>
+    /// <summary>
+    /// Subscribes a WebSocket session to channel.chat.message v1 after its welcome message. Requires a user token for <paramref name="userId"/>
+    /// with user:read:chat; the scope and user are preflighted before the request is sent.
+    /// </summary>
     public Task<EventSubSubscriptionsResponse> SubscribeAsync(string broadcasterId, string userId, string sessionId, CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(broadcasterId);
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
         ArgumentException.ThrowIfNullOrWhiteSpace(sessionId);
-        return _helix.CreateEventSubSubscriptionAsync(new()
-        {
-            Type = "channel.chat.message", Version = "1",
-            Condition = new Dictionary<string, string> { ["broadcaster_user_id"] = broadcasterId, ["user_id"] = userId },
-            Transport = new() { Method = "websocket", SessionId = sessionId }
-        }, cancellationToken);
+        return _helix.SubscribeWebSocketAsync(EventSubSubscriptions.ChannelChatMessageV1(broadcasterId, userId), sessionId, cancellationToken);
     }
 
-    /// <summary>Returns false for other types, versions, and revocations; retain those in the host's EventSub handler.</summary>
-    public static bool TryReadMessage(EventSubMessage message, out ChatMessage? chatMessage)
+    /// <summary>
+    /// Reads a channel.chat.message v1 notification. Returns false for other types, versions, and revocations; retain those in the host's
+    /// EventSub handler.
+    /// </summary>
+    public static bool TryReadMessage(EventSubMessage message, [NotNullWhen(true)] out ChannelChatMessageEvent? chatMessage)
     {
         ArgumentNullException.ThrowIfNull(message);
-        chatMessage = null;
-        if (message.Metadata.MessageType != "notification" || message.Metadata.SubscriptionType != "channel.chat.message" || message.Metadata.SubscriptionVersion != "1") return false;
-        chatMessage = message.ReadEvent(ChatJsonContext.Default.ChatMessage);
-        return true;
+        return message.TryReadEvent(EventSubEvents.ChannelChatMessageV1, out chatMessage);
     }
 }

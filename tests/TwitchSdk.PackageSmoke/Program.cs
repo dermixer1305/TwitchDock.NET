@@ -54,11 +54,14 @@ var subscriptions = await helix.CreateEventSubSubscriptionAsync(new()
     Transport = new() { Method = "websocket", SessionId = "session1" }
 });
 if (subscriptions.Data.Single().Transport.SessionId != "session1") throw new InvalidOperationException("Subscription contract failed.");
-var chat = JsonSerializer.Deserialize("""
-    {"broadcaster_user_id":"1","broadcaster_user_login":"channel","broadcaster_user_name":"Channel",
-     "chatter_user_id":"2","chatter_user_login":"tester","chatter_user_name":"Tester","message_id":"m","message":{"text":"hello","fragments":[]}}
-    """, ChatJsonContext.Default.ChatMessage);
-if (chat?.Message.Text != "hello") throw new InvalidOperationException("Chat contract failed.");
+var chatNotification = EventSubMessage.Parse("""
+    {"metadata":{"message_id":"n","message_type":"notification","message_timestamp":"2026-10-09T12:00:00Z","subscription_type":"channel.chat.message","subscription_version":"1"},
+     "payload":{"subscription":{"id":"s","status":"enabled","type":"channel.chat.message","version":"1","condition":{"broadcaster_user_id":"1","user_id":"2"},"transport":{"method":"websocket","session_id":"session1"}},
+     "event":{"broadcaster_user_id":"1","broadcaster_user_login":"channel","broadcaster_user_name":"Channel",
+     "chatter_user_id":"2","chatter_user_login":"tester","chatter_user_name":"Tester","message_id":"m","message":{"text":"hello","fragments":[]},
+     "message_type":"text","color":"","badges":[]}}}
+    """u8);
+if (!TwitchChatClient.TryReadMessage(chatNotification, out var chat) || chat.Message.Text != "hello") throw new InvalidOperationException("Chat contract failed.");
 var message = EventSubMessage.Parse("""
     {"metadata":{"message_id":"m","message_type":"session_keepalive","message_timestamp":"2026-10-09T12:00:00Z"},"payload":{}}
     """u8);

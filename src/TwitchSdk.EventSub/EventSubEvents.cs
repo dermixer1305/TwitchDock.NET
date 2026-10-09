@@ -29,6 +29,27 @@ public static partial class EventSubEvents
         yield return StreamOnlineV1;
         yield return StreamOfflineV1;
         // <group:chat-automod>
+        yield return AutomodMessageHoldV1;
+        yield return AutomodMessageHoldV2;
+        yield return AutomodMessageUpdateV1;
+        yield return AutomodMessageUpdateV2;
+        yield return AutomodSettingsUpdateV1;
+        yield return AutomodTermsUpdateV1;
+        yield return ChannelChatClearV1;
+        yield return ChannelChatClearUserMessagesV1;
+        yield return ChannelChatMessageV1;
+        yield return ChannelChatMessageDeleteV1;
+        yield return ChannelChatNotificationV1;
+        yield return ChannelChatSettingsUpdateV1;
+        yield return ChannelChatUserMessageHoldV1;
+        yield return ChannelChatUserMessageUpdateV1;
+        yield return ChannelSharedChatBeginV1;
+        yield return ChannelSharedChatUpdateV1;
+        yield return ChannelSharedChatEndV1;
+        yield return ChannelSuspiciousUserMessageV1;
+        yield return ChannelSuspiciousUserUpdateV1;
+        yield return ChannelWarningAcknowledgeV1;
+        yield return ChannelWarningSendV1;
         // </group:chat-automod>
         // <group:moderation-channel>
         yield return ChannelUpdateV2;

@@ -1,0 +1,346 @@
+{
+  "automod.message.hold@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "blahblah", "broadcaster_user_name": "blah",
+    "user_id": "456789012", "user_login": "baduserbla", "user_name": "baduser",
+    "message_id": "bad-message-id",
+    "message": {
+      "text": "This is a bad message Kappa cheer100",
+      "fragments": [
+        { "text": "This is a bad message ", "emote": null, "cheermote": null },
+        { "text": "Kappa", "emote": { "id": "25", "emote_set_id": "0" }, "cheermote": null },
+        { "text": "cheer100", "emote": null, "cheermote": { "prefix": "cheer", "bits": 100, "tier": 1 } }
+      ]
+    },
+    "category": "aggressive", "level": 4, "held_at": "2022-12-02T15:00:00.00Z"
+  },
+  "automod.message.hold@1 official": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "blah", "broadcaster_user_login": "blahblah",
+    "user_id": "456789012", "user_name": "baduser", "user_login": "baduserbla",
+    "message_id": "bad-message-id", "message": "This is a bad message… ", "level": 5, "category": "aggressive", "held_at": "2022-12-02T15:00:00.00Z",
+    "fragments": {
+      "emotes": [ { "text": "badtextemote1", "id": "emote-123", "set-id": "set-emote-1" } ],
+      "cheermotes": [ { "text": "badtextcheermote1", "amount": 1000, "prefix": "prefix", "tier": 1 } ]
+    }
+  },
+  "automod.message.hold@2": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "blah", "broadcaster_user_name": "blahblah",
+    "user_id": "4242", "user_login": "baduser", "user_name": "badbaduser",
+    "message_id": "bad-message-id",
+    "message": {
+      "text": "This is a bad message Kappa pogchamp",
+      "fragments": [
+        { "type": "text", "text": "This is a bad message ", "cheermote": null, "emote": null },
+        { "type": "emote", "text": "Kappa", "cheermote": null, "emote": { "id": "25", "emote_set_id": "0" } },
+        { "type": "cheermote", "text": "pogchamp", "cheermote": { "prefix": "pogchamp", "bits": 1000, "tier": 1 }, "emote": null }
+      ]
+    },
+    "reason": "automod",
+    "automod": { "category": "aggressive", "level": 1, "boundaries": [ { "start_pos": 0, "end_pos": 10 }, { "start_pos": 20, "end_pos": 30 } ] },
+    "blocked_term": {
+      "terms_found": [
+        { "term_id": "123", "boundary": { "start_pos": 0, "end_pos": 30 }, "owner_broadcaster_user_id": "1337", "owner_broadcaster_user_login": "blah", "owner_broadcaster_user_name": "blahblah" }
+      ]
+    },
+    "held_at": "2022-12-02T15:00:00.00Z"
+  },
+  "automod.message.update@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "blahblah", "broadcaster_user_name": "blah",
+    "user_id": "456789012", "user_login": "baduserbla", "user_name": "baduser",
+    "moderator_user_id": "9001", "moderator_user_name": "The_Mod", "moderator_user_login": "the_mod",
+    "message_id": "bad-message-id",
+    "message": {
+      "text": "This is a bad message cheer100",
+      "fragments": [
+        { "text": "This is a bad message ", "emote": null, "cheermote": null },
+        { "text": "Kappa", "emote": { "id": "25", "emote_set_id": "0" }, "cheermote": null },
+        { "text": "cheer100", "emote": null, "cheermote": { "prefix": "cheer", "bits": 100, "tier": 1 } }
+      ]
+    },
+    "category": "aggressive", "level": 3, "status": "Approved", "held_at": "2022-12-02T15:00:00.00Z"
+  },
+  "automod.message.update@2": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "blah", "broadcaster_user_name": "blahblah",
+    "user_id": "4242", "user_login": "baduser", "user_name": "badbaduser",
+    "moderator_user_id": "9001", "moderator_user_name": "The_Mod", "moderator_user_login": "the_mod",
+    "message_id": "bad-message-id",
+    "message": {
+      "text": "This is a bad message Kappa pogchamp",
+      "fragments": [
+        { "text": "This is a bad message ", "type": "text", "emote": null, "cheermote": null },
+        { "text": "Kappa", "type": "emote", "emote": { "id": "25", "emote_set_id": "0" }, "cheermote": null },
+        { "text": "pogchamp", "type": "cheermote", "emote": null, "cheermote": { "prefix": "pogchamp", "bits": 1000, "tier": 1 } }
+      ]
+    },
+    "status": "approved", "held_at": "2022-12-02T15:00:00.00Z",
+    "reason": "blocked_term",
+    "automod": { "category": "swearing", "level": 2, "boundaries": [ { "start_pos": 5, "end_pos": 9 } ] },
+    "blocked_term": {
+      "terms_found": [
+        { "term_id": "123", "boundary": { "start_pos": 0, "end_pos": 30 }, "owner_broadcaster_user_id": "1337", "owner_broadcaster_user_login": "blah", "owner_broadcaster_user_name": "blahblah" }
+      ]
+    }
+  },
+  "automod.message.update@2 official": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "blah", "broadcaster_user_name": "blahblah",
+    "moderator_user_id": "9001", "moderator_user_login": "the_mod", "moderator_user_name": "The_Mod",
+    "user_id": "4242", "user_login": "baduser", "user_name": "badbaduser",
+    "message_id": "bad-message-id",
+    "message": {
+      "text": "This is a bad message… pogchamp",
+      "fragments": [
+        { "type": "text", "text": "This is a bad message… ", "cheermote": null, "emote": null },
+        { "type": "cheermote", "text": "pogchamp", "cheermote": { "prefix": "pogchamp", "bits": 1000, "tier": 1 }, "emote": null }
+      ]
+    },
+    "reason": "automod",
+    "automod": null,
+    "blocked_term": {
+      "terms_found": [
+        { "term_id": "123", "owner_broadcaster_user_id": "1337", "owner_broadcaster_user_login": "blah", "owner_broadcaster_user_name": "blahblah", "boundary": { "start_pos": 0, "end_pos": 30 } }
+      ]
+    },
+    "status": "approved",
+    "held_at": "2022-12-02T15:00:00.00Z"
+  },
+  "automod.settings.update@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "CoolUser", "broadcaster_user_login": "cooluser",
+    "moderator_user_id": "9001", "moderator_user_name": "CoolMod", "moderator_user_login": "coolmod",
+    "bullying": 3, "overall_level": null, "disability": 3, "race_ethnicity_or_religion": 3, "misogyny": 3,
+    "sexuality_sex_or_gender": 3, "aggression": 3, "sex_based_terms": 30, "swearing": 0
+  },
+  "automod.terms.update@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "blah", "broadcaster_user_login": "blahblah",
+    "moderator_user_id": "9001", "moderator_user_login": "the_mod", "moderator_user_name": "The_Mod",
+    "action": "add_blocked", "from_automod": true, "terms": [ "automodterm1", "automodterm2", "automodterm3" ]
+  },
+  "channel.chat.clear@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user"
+  },
+  "channel.chat.clear_user_messages@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "target_user_id": "7734", "target_user_name": "Uncool_viewer", "target_user_login": "uncool_viewer"
+  },
+  "channel.chat.message@1": {
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "chatter_user_id": "4145994", "chatter_user_login": "viewer32", "chatter_user_name": "viewer32",
+    "message_id": "cc106a89-1814-919d-454c-f4f2f970aae7",
+    "message": {
+      "text": "Hi chat cheer100 Kappa @streamer33 wave",
+      "fragments": [
+        { "type": "text", "text": "Hi chat ", "cheermote": null, "emote": null, "mention": null, "gif": null },
+        { "type": "cheermote", "text": "cheer100", "cheermote": { "prefix": "cheer", "bits": 100, "tier": 1 }, "emote": null, "mention": null, "gif": null },
+        { "type": "emote", "text": "Kappa", "cheermote": null, "emote": { "id": "25", "emote_set_id": "0", "owner_id": "0", "format": [ "static", "animated" ] }, "mention": null, "gif": null },
+        { "type": "mention", "text": "@streamer33", "cheermote": null, "emote": null, "mention": { "user_id": "112233", "user_name": "streamer33", "user_login": "streamer33" }, "gif": null },
+        { "type": "gif", "text": "wave", "cheermote": null, "emote": null, "mention": null, "gif": { "id": "gif-1", "url": "https://media.example.org/gif-1.gif?token=abc" } }
+      ]
+    },
+    "color": "#00FF7F",
+    "badges": [
+      { "set_id": "moderator", "id": "1", "info": "" },
+      { "set_id": "subscriber", "id": "12", "info": "16" }
+    ],
+    "message_type": "power_ups_message_effect",
+    "cheer": { "bits": 100 },
+    "reply": {
+      "parent_message_id": "parent-1", "parent_message_body": "first message", "parent_user_id": "77", "parent_user_name": "Parent", "parent_user_login": "parent",
+      "thread_message_id": "thread-1", "thread_user_id": "78", "thread_user_name": "Thread", "thread_user_login": "thread"
+    },
+    "channel_points_custom_reward_id": "reward-1",
+    "channel_points_animation_id": "rainbow-eclipse",
+    "source_broadcaster_user_id": "112233", "source_broadcaster_user_login": "streamer33", "source_broadcaster_user_name": "streamer33",
+    "source_message_id": "e03f6d5d-8ec8-4c63-b473-9e5fe61e289b",
+    "source_badges": [ { "set_id": "subscriber", "id": "3", "info": "3" } ],
+    "is_source_only": false
+  },
+  "channel.chat.message@1 official": {
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "chatter_user_id": "4145994", "chatter_user_login": "viewer32", "chatter_user_name": "viewer32",
+    "message_id": "cc106a89-1814-919d-454c-f4f2f970aae7",
+    "message": { "text": "Hi chat", "fragments": [ { "type": "text", "text": "Hi chat", "cheermote": null, "emote": null, "mention": null } ] },
+    "color": "#00FF7F",
+    "badges": [ { "set_id": "moderator", "id": "1", "info": "" }, { "set_id": "subscriber", "id": "12", "info": "16" }, { "set_id": "sub-gifter", "id": "1", "info": "" } ],
+    "message_type": "text", "cheer": null, "reply": null, "channel_points_custom_reward_id": null,
+    "source_broadcaster_user_id": null, "source_broadcaster_user_login": null, "source_broadcaster_user_name": null,
+    "source_message_id": null, "source_badges": null
+  },
+  "channel.chat.message_delete@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "target_user_id": "7734", "target_user_name": "Uncool_viewer", "target_user_login": "uncool_viewer",
+    "message_id": "ab24e0b0-2260-4bac-94e4-05eedd4ecd0e"
+  },
+  "channel.chat.notification@1": {
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "chatter_user_id": "49912639", "chatter_user_login": "viewer23", "chatter_user_name": "viewer23",
+    "chatter_is_anonymous": false, "color": "#FF0000",
+    "badges": [ { "set_id": "subscriber", "id": "12", "info": "10" } ],
+    "system_message": "viewer23 subscribed at Tier 1. They've subscribed for 10 months!",
+    "message_id": "d62235c8-47ff-a4f4-84e8-5a29a65a9c03",
+    "message": {
+      "text": "Kappa cheer1 @streamer hi",
+      "fragments": [
+        { "type": "emote", "text": "Kappa", "cheermote": null, "emote": { "id": "25", "emote_set_id": "0", "owner_id": "0", "format": [ "static" ] }, "mention": null },
+        { "type": "cheermote", "text": "cheer1", "cheermote": { "prefix": "cheer", "bits": 1, "tier": 1 }, "emote": null, "mention": null },
+        { "type": "mention", "text": "@streamer", "cheermote": null, "emote": null, "mention": { "user_id": "1971641", "user_name": "streamer", "user_login": "streamer" } },
+        { "type": "text", "text": " hi", "cheermote": null, "emote": null, "mention": null }
+      ]
+    },
+    "notice_type": "resub",
+    "sub": { "sub_tier": "1000", "is_prime": true, "duration_months": 1 },
+    "resub": {
+      "cumulative_months": 10, "duration_months": 0, "streak_months": null, "sub_tier": "1000", "is_prime": false, "is_gift": true,
+      "gifter_is_anonymous": false, "gifter_user_id": "555", "gifter_user_name": "Gifter", "gifter_user_login": "gifter"
+    },
+    "sub_gift": {
+      "duration_months": 3, "cumulative_total": null, "recipient_user_id": "666", "recipient_user_name": "Recipient", "recipient_user_login": "recipient",
+      "sub_tier": "2000", "community_gift_id": "community-1"
+    },
+    "community_sub_gift": { "id": "community-1", "total": 5, "sub_tier": "3000", "cumulative_total": 25 },
+    "gift_paid_upgrade": { "gifter_is_anonymous": true, "gifter_user_id": null, "gifter_user_name": null, "gifter_user_login": null },
+    "prime_paid_upgrade": { "sub_tier": "1000" },
+    "pay_it_forward": { "gifter_is_anonymous": false, "gifter_user_id": "555", "gifter_user_name": "Gifter", "gifter_user_login": "gifter" },
+    "raid": { "user_id": "777", "user_name": "Raider", "user_login": "raider", "viewer_count": 1234, "profile_image_url": "https://static-cdn.example.org/raider.png" },
+    "unraid": {},
+    "announcement": { "color": "PRIMARY" },
+    "bits_badge_tier": { "tier": 1000 },
+    "charity_donation": { "charity_name": "Example Charity", "amount": { "value": 550, "decimal_place": 2, "currency": "USD" } },
+    "watch_streak": { "streak_count": 7, "channel_points_awarded": 450 },
+    "modiversary": { "months": 12 },
+    "gifted_drops_summary": { "recipient_count": 20 },
+    "shared_chat_sub": { "sub_tier": "2000", "is_prime": false, "duration_months": 6 },
+    "shared_chat_resub": {
+      "cumulative_months": 4, "duration_months": 1, "streak_months": 2, "sub_tier": "3000", "is_prime": null, "is_gift": false,
+      "gifter_is_anonymous": null, "gifter_user_id": null, "gifter_user_name": null, "gifter_user_login": null
+    },
+    "shared_chat_sub_gift": {
+      "duration_months": 1, "cumulative_total": 9, "recipient_user_id": "888", "recipient_user_name": "Other", "recipient_user_login": "other",
+      "sub_tier": "1000", "community_gift_id": null
+    },
+    "shared_chat_community_sub_gift": { "id": "community-2", "total": 1, "sub_tier": "1000", "cumulative_total": null },
+    "shared_chat_gift_paid_upgrade": { "gifter_is_anonymous": false, "gifter_user_id": "555", "gifter_user_name": "Gifter", "gifter_user_login": "gifter" },
+    "shared_chat_prime_paid_upgrade": { "sub_tier": "2000" },
+    "shared_chat_pay_it_forward": { "gifter_is_anonymous": true, "gifter_user_id": null, "gifter_user_name": null, "gifter_user_login": null },
+    "shared_chat_raid": { "user_id": "999", "user_name": "OtherRaider", "user_login": "otherraider", "viewer_count": 3, "profile_image_url": "https://static-cdn.example.org/other.png" },
+    "shared_chat_unraid": {},
+    "shared_chat_announcement": { "color": "BLUE" },
+    "shared_chat_bits_badge_tier": { "tier": 100 },
+    "shared_chat_charity_donation": { "charity_name": "Other Charity", "amount": { "value": 1000, "decimal_place": 0, "currency": "JPY" } },
+    "shared_chat_modiversary": { "months": 24 },
+    "shared_chat_gifted_drops_summary": { "recipient_count": 2 },
+    "source_broadcaster_user_id": "112233", "source_broadcaster_user_login": "streamer33", "source_broadcaster_user_name": "streamer33",
+    "source_message_id": "2be7193d-0366-4453-b6ec-b288ce9f2c39",
+    "source_badges": [ { "set_id": "subscriber", "id": "3", "info": "3" } ],
+    "is_source_only": true
+  },
+  "channel.chat.notification@1 shared_chat_resub": {
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "chatter_user_id": "49912639", "chatter_user_login": "viewer23", "chatter_user_name": "viewer23",
+    "chatter_is_anonymous": false, "color": "", "badges": [],
+    "system_message": "viewer23 subscribed at Tier 1. They've subscribed for 10 months!",
+    "message_id": "d62235c8-47ff-a4f4--84e8-5a29a65a9c03",
+    "message": { "text": "", "fragments": [] },
+    "notice_type": "shared_chat_resub",
+    "sub": null, "resub": null, "sub_gift": null, "community_sub_gift": null, "gift_paid_upgrade": null, "prime_paid_upgrade": null,
+    "pay_it_forward": null, "raid": null, "unraid": null, "announcement": null, "bits_badge_tier": null, "charity_donation": null,
+    "watch_streak": null, "modiversary": null, "gifted_drops_summary": null, "shared_chat_sub": null,
+    "shared_chat_resub": {
+      "cumulative_months": 10, "duration_months": 0, "streak_months": null, "sub_tier": "1000", "is_gift": false,
+      "gifter_is_anonymous": null, "gifter_user_id": null, "gifter_user_name": null, "gifter_user_login": null
+    },
+    "shared_chat_sub_gift": null, "shared_chat_community_sub_gift": null, "shared_chat_gift_paid_upgrade": null,
+    "shared_chat_prime_paid_upgrade": null, "shared_chat_pay_it_forward": null, "shared_chat_raid": null, "shared_chat_unraid": null,
+    "shared_chat_announcement": null, "shared_chat_bits_badge_tier": null, "shared_chat_charity_donation": null,
+    "shared_chat_modiversary": null, "shared_chat_gifted_drops_summary": null,
+    "source_broadcaster_user_id": "112233", "source_broadcaster_user_login": "streamer33", "source_broadcaster_user_name": "streamer33",
+    "source_message_id": "2be7193d-0366-4453-b6ec-b288ce9f2c39",
+    "source_badges": [ { "set_id": "subscriber", "id": "3", "info": "3" } ],
+    "is_source_only": true
+  },
+  "channel.chat_settings.update@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "emote_mode": true, "follower_mode": false, "follower_mode_duration_minutes": null,
+    "slow_mode": true, "slow_mode_wait_time_seconds": 10, "subscriber_mode": false, "unique_chat_mode": false
+  },
+  "channel.chat.user_message_hold@1": {
+    "broadcaster_user_id": "123", "broadcaster_user_login": "bob", "broadcaster_user_name": "Bob",
+    "user_id": "456", "user_login": "tom", "user_name": "Tommy",
+    "message_id": "789",
+    "message": {
+      "text": "hey world",
+      "fragments": [
+        { "type": "emote", "text": "hey world", "cheermote": null, "emote": { "id": "foo", "emote_set_id": "7" } },
+        { "type": "cheermote", "text": "bye world", "cheermote": { "prefix": "prefix", "bits": 100, "tier": 1 }, "emote": null },
+        { "type": "text", "text": "surprise", "cheermote": null, "emote": null }
+      ]
+    }
+  },
+  "channel.chat.user_message_update@1": {
+    "broadcaster_user_id": "123", "broadcaster_user_login": "bob", "broadcaster_user_name": "Bob",
+    "user_id": "456", "user_login": "tom", "user_name": "Tommy",
+    "status": "approved",
+    "message_id": "789",
+    "message": {
+      "text": "hey world",
+      "fragments": [
+        { "type": "emote", "text": "hey world", "cheermote": null, "emote": { "id": "foo", "emote_set_id": "7" } },
+        { "type": "cheermote", "text": "bye world", "cheermote": { "prefix": "prefix", "bits": 100, "tier": 1 }, "emote": null },
+        { "type": "text", "text": "surprise", "cheermote": null, "emote": null }
+      ]
+    }
+  },
+  "channel.shared_chat.begin@1": {
+    "session_id": "2b64a92a-dbb8-424e-b1c3-304423ba1b6f",
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "host_broadcaster_user_id": "1971641", "host_broadcaster_user_login": "streamer", "host_broadcaster_user_name": "streamer",
+    "participants": [
+      { "broadcaster_user_id": "1971641", "broadcaster_user_name": "streamer", "broadcaster_user_login": "streamer" },
+      { "broadcaster_user_id": "112233", "broadcaster_user_name": "streamer33", "broadcaster_user_login": "streamer33" }
+    ]
+  },
+  "channel.shared_chat.update@1": {
+    "session_id": "2b64a92a-dbb8-424e-b1c3-304423ba1b6f",
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "host_broadcaster_user_id": "1971641", "host_broadcaster_user_login": "streamer", "host_broadcaster_user_name": "streamer",
+    "participants": [
+      { "broadcaster_user_id": "1971641", "broadcaster_user_name": "streamer", "broadcaster_user_login": "streamer" },
+      { "broadcaster_user_id": "112233", "broadcaster_user_name": "streamer33", "broadcaster_user_login": "streamer33" },
+      { "broadcaster_user_id": "332211", "broadcaster_user_name": "streamer11", "broadcaster_user_login": "streamer11" }
+    ]
+  },
+  "channel.shared_chat.end@1": {
+    "session_id": "2b64a92a-dbb8-424e-b1c3-304423ba1b6f",
+    "broadcaster_user_id": "1971641", "broadcaster_user_login": "streamer", "broadcaster_user_name": "streamer",
+    "host_broadcaster_user_id": "1971641", "host_broadcaster_user_login": "streamer", "host_broadcaster_user_name": "streamer"
+  },
+  "channel.suspicious_user.message@1": {
+    "broadcaster_user_id": "1050263432", "broadcaster_user_name": "dcf9dd9336034d23b65", "broadcaster_user_login": "dcf9dd9336034d23b65",
+    "user_id": "1050263434", "user_name": "4a46e2cf2e2f4d6a9e6", "user_login": "4a46e2cf2e2f4d6a9e6",
+    "low_trust_status": "active_monitoring",
+    "shared_ban_channel_ids": [ "100", "200" ],
+    "types": [ "ban_evader" ],
+    "ban_evasion_evaluation": "likely",
+    "message": {
+      "message_id": "101010",
+      "text": "bad stuff pogchamp",
+      "fragments": [
+        { "type": "emote", "text": "bad stuff", "cheermote": null, "emote": { "id": "899", "emote_set_id": "1" } },
+        { "type": "cheermote", "text": "pogchamp", "cheermote": { "prefix": "pogchamp", "bits": 100, "tier": 1 }, "emote": null }
+      ]
+    }
+  },
+  "channel.suspicious_user.update@1": {
+    "broadcaster_user_id": "1050263435", "broadcaster_user_name": "77f111cbb75341449f5", "broadcaster_user_login": "77f111cbb75341449f5",
+    "moderator_user_id": "1050263436", "moderator_user_name": "29087e59dfc441968f6", "moderator_user_login": "29087e59dfc441968f6",
+    "user_id": "1050263437", "user_name": "06fbcc75952245c5a87", "user_login": "06fbcc75952245c5a87",
+    "low_trust_status": "restricted"
+  },
+  "channel.warning.acknowledge@1": {
+    "broadcaster_user_id": "423374343", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev"
+  },
+  "channel.warning.send@1": {
+    "broadcaster_user_id": "423374343", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "moderator_user_id": "424596340", "moderator_user_login": "quotrok", "moderator_user_name": "quotrok",
+    "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev",
+    "reason": "cut it out", "chat_rules_cited": [ "Be kind", "No spam" ]
+  }
+}

@@ -194,7 +194,9 @@ public sealed class EventSubTests
         var message = EventSubMessage.Parse("""
             {"metadata":{"message_id":"event","message_type":"notification","message_timestamp":"2026-10-09T12:00:00.123456789Z",
              "subscription_type":"channel.chat.message","subscription_version":"1"},
-             "payload":{"event":{"broadcaster_user_id":"1","broadcaster_user_login":"channel","broadcaster_user_name":"Channel",
+             "payload":{"subscription":{"id":"s1","status":"enabled","type":"channel.chat.message","version":"1","condition":{"broadcaster_user_id":"1","user_id":"2"},
+             "transport":{"method":"websocket","session_id":"x"},"created_at":"2026-10-09T12:00:00Z","cost":0},
+             "event":{"broadcaster_user_id":"1","broadcaster_user_login":"channel","broadcaster_user_name":"Channel",
              "chatter_user_id":"2","chatter_user_login":"person","chatter_user_name":"Person","message_id":"chat",
              "message":{"text":"hi","fragments":[{"type":"gif","text":"hi","gif":{"id":"gif-1","url":"https://example.org/gif"}}]},"message_type":"future_kind",
              "source_broadcaster_user_id":"3","source_message_id":"source","source_badges":[],"is_source_only":false}}}
