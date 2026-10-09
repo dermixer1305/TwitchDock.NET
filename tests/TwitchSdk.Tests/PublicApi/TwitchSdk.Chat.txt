@@ -1,0 +1,5 @@
+sealed class TwitchSdk.Chat.TwitchChatClient
+    .ctor(TwitchSdk.Helix.HelixClient helix)
+    SendAsync(TwitchSdk.Helix.Models.SendChatMessageRequest request, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Core.HelixPage<TwitchSdk.Helix.Models.SendChatMessageResult>>
+    SubscribeAsync(System.String broadcasterId, System.String userId, System.String sessionId, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Helix.Models.EventSubSubscriptionsResponse>
+    static TryReadMessage(TwitchSdk.EventSub.EventSubMessage message, out TwitchSdk.EventSub.Events.ChannelChatMessageEvent chatMessage): System.Boolean

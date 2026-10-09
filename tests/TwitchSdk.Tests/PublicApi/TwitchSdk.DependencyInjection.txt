@@ -1,0 +1,13 @@
+static class TwitchSdk.DependencyInjection.ServiceCollectionExtensions
+    static AddTwitchSdk(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchSdk.Core.TwitchHttpOptions options, System.Func<System.IServiceProvider, TwitchSdk.Core.IAccessTokenProvider> tokenProviderFactory): Microsoft.Extensions.DependencyInjection.IServiceCollection
+sealed class TwitchSdk.DependencyInjection.TwitchTokenValidationOptions
+    .ctor()
+    ExpectedClientId: System.String { get; init; }
+    MaxConsecutiveTransientFailures: System.Int32 { get; init; }
+    OnValidated: System.Func<TwitchSdk.Authentication.TokenValidation, System.Threading.CancellationToken, System.Threading.Tasks.Task> { get; init; }
+    TransientRetryDelay: System.TimeSpan { get; init; }
+sealed class TwitchSdk.DependencyInjection.TwitchTokenValidationService : Microsoft.Extensions.Hosting.BackgroundService, Microsoft.Extensions.Hosting.IHostedService, System.IDisposable
+    .ctor(TwitchSdk.Authentication.TwitchOAuthClient oauth, TwitchSdk.Core.IAccessTokenProvider tokens, TwitchSdk.DependencyInjection.TwitchTokenValidationOptions options, System.TimeProvider timeProvider = null, Microsoft.Extensions.Logging.ILogger<TwitchSdk.DependencyInjection.TwitchTokenValidationService> logger = null)
+    virtual protected ExecuteAsync(System.Threading.CancellationToken stoppingToken): System.Threading.Tasks.Task
+static class TwitchSdk.DependencyInjection.TwitchTokenValidationServiceCollectionExtensions
+    static AddTwitchTokenValidation(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchSdk.DependencyInjection.TwitchTokenValidationOptions options): Microsoft.Extensions.DependencyInjection.IServiceCollection
