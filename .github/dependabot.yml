@@ -5,7 +5,32 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Wait a week before proposing a new release, so a compromised or broken version is usually pulled first.
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope
+    ignore:
+      # The libraries also target net8.0. Staying on the 8.x Microsoft.Extensions line keeps the lowest dependency
+      # versions for .NET 8 consumers; .NET 10 applications can still resolve newer versions themselves.
+      - dependency-name: 'Microsoft.Extensions.*'
+        update-types: ['version-update:semver-major']
+      # The package smoke test consumes this repository's own freshly packed packages ($(Version)), never a published one.
+      - dependency-name: 'TwitchDock.*'
+    groups:
+      microsoft-extensions:
+        patterns: ['Microsoft.Extensions.*']
+      test-tooling:
+        patterns: ['xunit*', 'Microsoft.NET.Test.Sdk']
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: ci
+    groups:
+      github-actions:
+        patterns: ['*']

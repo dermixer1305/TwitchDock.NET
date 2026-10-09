@@ -73,4 +73,4 @@ Never commit NuGet keys or Twitch credentials.
 
 The weekly `api-drift` workflow refreshes the pinned inventory from Twitch's documentation. Changed entries become needs-review, new entries become inventoried, and removed entries stop the importer for manual review. Resolve changes in code, tests and documentation before marking them complete again.
 
-Dependabot proposes dependency and GitHub Actions updates. Keep checks green, review public API changes and use the versioning rules above. See [CONTRIBUTING.md](../CONTRIBUTING.md).
+Dependabot proposes dependency and GitHub Actions updates weekly, grouped (Microsoft.Extensions, test tooling, actions) and only for releases at least seven days old. Microsoft.Extensions stays on the 8.x line so .NET 8 consumers keep the lowest dependency versions; moving to a newer major line is a deliberate versioning decision. Keep checks green, review public API changes and use the versioning rules above. See [CONTRIBUTING.md](../CONTRIBUTING.md).
