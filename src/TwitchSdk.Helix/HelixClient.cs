@@ -44,6 +44,9 @@ public sealed class HelixClient(TwitchHttpClient transport)
     // <group:chat-b>
     // </group:chat-b>
     // <group:extensions>
+    /// <summary>EBS JWT endpoints require a separate client built on ExtensionJwtTokenProvider; see docs/helix-extensions.md.</summary>
+    public ExtensionsClient Extensions { get; } = new(transport);
+    public EntitlementsClient Entitlements { get; } = new(transport);
     // </group:extensions>
     // <group:guest-star>
     public GuestStarClient GuestStar { get; } = new(transport);

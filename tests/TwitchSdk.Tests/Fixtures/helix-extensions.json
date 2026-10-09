@@ -1,0 +1,234 @@
+{
+  "get-extension-configuration-segment": {
+    "data": [
+      {
+        "segment": "broadcaster",
+        "broadcaster_id": "41245072",
+        "content": "{\"foo\":\"bar\"}",
+        "version": "0.0.2"
+      },
+      {
+        "segment": "global",
+        "content": "hello config!",
+        "version": "0.0.1"
+      }
+    ]
+  },
+  "get-extension-live-channels": {
+    "data": [
+      {
+        "broadcaster_id": "252766116",
+        "broadcaster_name": "swoosh_xii",
+        "game_name": "Tom Clancy's Rainbow Six Siege",
+        "game_id": "460630",
+        "title": "[PS4] ITA/ENG UNRANKED CHILLIN'"
+      },
+      {
+        "broadcaster_id": "11355",
+        "broadcaster_name": "quiet",
+        "game_name": "Just Chatting",
+        "game_id": "509658",
+        "title": ""
+      }
+    ],
+    "pagination": "YVc1emRHRnNiRjlqYUdGdWJtVnNYMmxrUFRFd01qSTVOVFE0TWpNbmNHRm5aVDB5"
+  },
+  "get-extension-secrets": {
+    "data": [
+      {
+        "format_version": 1,
+        "secrets": [
+          {
+            "content": "c2VjcmV0LW9uZS1zeW50aGV0aWMtZml4dHVyZQ==",
+            "active_at": "2026-10-09T11:00:00Z",
+            "expires_at": "2026-11-09T11:00:00Z"
+          },
+          {
+            "content": "c2VjcmV0LXR3by1zeW50aGV0aWMtZml4dHVyZQ==",
+            "active_at": "2026-10-09T12:05:00.123456Z",
+            "expires_at": "2026-11-09T12:05:00Z"
+          }
+        ]
+      }
+    ]
+  },
+  "create-extension-secret": {
+    "data": [
+      {
+        "format_version": 1,
+        "secrets": [
+          {
+            "content": "bmV3LXNlY3JldC1zeW50aGV0aWMtZml4dHVyZQ==",
+            "active_at": "2026-10-09T12:10:00Z",
+            "expires_at": "2126-10-09T12:10:00Z"
+          }
+        ]
+      }
+    ]
+  },
+  "get-extensions": {
+    "data": [
+      {
+        "author_name": "Twitch Developer Experience",
+        "bits_enabled": true,
+        "can_install": false,
+        "configuration_location": "hosted",
+        "description": "An extension for testing all the features that we add to extensions",
+        "eula_tos_url": "https://example.org/eula",
+        "has_chat_support": true,
+        "icon_url": "https://example.org/icon-100.png",
+        "icon_urls": {
+          "100x100": "https://example.org/icon-100.png",
+          "24x24": "https://example.org/icon-24.png",
+          "300x200": "https://example.org/icon-300.png"
+        },
+        "id": "pgn0bjv51x8p8qmtc1ssbk6gpzsqfm",
+        "name": "Official Developers Demo",
+        "privacy_policy_url": "https://example.org/privacy",
+        "request_identity_link": false,
+        "screenshot_urls": [
+          "https://example.org/screenshot-1.png",
+          "https://example.org/screenshot-2.png"
+        ],
+        "state": "InTest",
+        "subscriptions_support_level": "optional",
+        "summary": "Test ALL the extensions features!",
+        "support_email": "support@example.org",
+        "version": "0.0.9",
+        "viewer_summary": "Test ALL the extensions features!",
+        "views": {
+          "mobile": {
+            "viewer_url": "https://example.org/mobile.html"
+          },
+          "panel": {
+            "viewer_url": "https://example.org/panel.html",
+            "height": 300,
+            "can_link_external_content": false
+          },
+          "video_overlay": {
+            "viewer_url": "https://example.org/overlay.html",
+            "can_link_external_content": false
+          },
+          "component": {
+            "viewer_url": "https://example.org/component.html",
+            "aspect_ratio_x": 16,
+            "aspect_ratio_y": 9,
+            "autoscale": true,
+            "scale_pixels": 1024,
+            "target_height": 100,
+            "can_link_external_content": true
+          },
+          "config": {
+            "viewer_url": "https://example.org/config.html",
+            "can_link_external_content": false
+          }
+        },
+        "allowlisted_config_urls": [
+          "https://example.org/config-allowed"
+        ],
+        "allowlisted_panel_urls": [
+          "https://example.org/panel-allowed",
+          "https://example.org/panel-allowed-2"
+        ]
+      }
+    ]
+  },
+  "get-released-extensions": {
+    "data": [
+      {
+        "author_name": "Twitch Developer Experience",
+        "bits_enabled": false,
+        "can_install": true,
+        "configuration_location": "none",
+        "description": "Released demo",
+        "eula_tos_url": "",
+        "has_chat_support": false,
+        "icon_url": "https://example.org/icon-100.png",
+        "icon_urls": {
+          "24x24": "https://example.org/icon-24.png"
+        },
+        "id": "pgn0bjv51x8p8qmtc1ssbk6gpzsqfm",
+        "name": "Official Developers Demo",
+        "privacy_policy_url": "",
+        "request_identity_link": true,
+        "screenshot_urls": [],
+        "state": "Released",
+        "subscriptions_support_level": "none",
+        "summary": "Released demo",
+        "support_email": "support@example.org",
+        "version": "0.0.10",
+        "viewer_summary": "Released demo",
+        "views": {
+          "mobile": {
+            "viewer_url": "https://example.org/mobile.html"
+          },
+          "panel": {
+            "viewer_url": "https://example.org/panel.html",
+            "height": 500,
+            "can_link_external_content": true
+          },
+          "video_overlay": {
+            "viewer_url": "https://example.org/overlay.html",
+            "can_link_external_content": true
+          },
+          "component": {
+            "viewer_url": "https://example.org/component.html",
+            "aspect_ratio_x": 4,
+            "aspect_ratio_y": 3,
+            "autoscale": false,
+            "scale_pixels": 0,
+            "target_height": 50,
+            "can_link_external_content": false
+          },
+          "config": {
+            "viewer_url": "https://example.org/config.html",
+            "can_link_external_content": true
+          }
+        },
+        "allowlisted_config_urls": [],
+        "allowlisted_panel_urls": []
+      }
+    ]
+  },
+  "get-extension-bits-products": {
+    "data": [
+      {
+        "sku": "1010",
+        "cost": {
+          "amount": 990,
+          "type": "bits"
+        },
+        "in_development": true,
+        "display_name": "Rusty Crate 2",
+        "expiration": "2027-01-01T00:00:00Z",
+        "is_broadcast": true
+      },
+      {
+        "sku": "power.up-1_b",
+        "cost": {
+          "amount": 10000,
+          "type": "bits"
+        },
+        "in_development": false,
+        "display_name": "Power up",
+        "expiration": "2026-10-01T08:30:00.5Z",
+        "is_broadcast": false
+      }
+    ]
+  },
+  "update-extension-bits-product": {
+    "data": [
+      {
+        "sku": "1010",
+        "cost": {
+          "amount": 990,
+          "type": "bits"
+        },
+        "in_development": true,
+        "display_name": "Rusty Crate 2",
+        "expiration": "2027-01-01T00:00:00Z",
+        "is_broadcast": true
+      }
+    ]
+  }
+}

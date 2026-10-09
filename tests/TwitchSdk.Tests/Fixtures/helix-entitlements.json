@@ -1,0 +1,62 @@
+{
+  "get-drops-entitlements": {
+    "data": [
+      {
+        "id": "fb78259e-fb81-4d1b-8333-34a06ffc24c0",
+        "benefit_id": "74c52265-e214-48a6-91b9-23b6014e8041",
+        "timestamp": "2019-01-28T04:17:53.325Z",
+        "user_id": "25009227",
+        "game_id": "33214",
+        "fulfillment_status": "CLAIMED",
+        "last_updated": "2019-01-28T04:17:53.325Z"
+      },
+      {
+        "id": "862750a5-265e-4ab6-9f0a-c64df3d54dd0",
+        "benefit_id": "74c52265-e214-48a6-91b9-23b6014e8041",
+        "timestamp": "2019-01-28T04:16:53.325Z",
+        "user_id": "25009227",
+        "game_id": "33214",
+        "fulfillment_status": "FULFILLED",
+        "last_updated": "2021-06-15T04:16:53.3256543Z"
+      }
+    ],
+    "pagination": {
+      "cursor": "eyJiIjpudWxsLCJhIjp7IkN1cnNvciI6ImV5SnBaQ0k2SW1aaU56Z3lOVGxsTFdaaU9ERXROR1F4WWkwNE16TXpMVE0wWVRBMlptWmpNalJqTUNJc0ltTmhJam9pTWpBeE9TMHdNUzB5T0ZRd05Eb3hOem8xTXk0ek1qVmFJbjA9In19"
+    }
+  },
+  "update-drops-entitlements": {
+    "data": [
+      {
+        "status": "SUCCESS",
+        "ids": [
+          "fb78259e-fb81-4d1b-8333-34a06ffc24c0",
+          "862750a5-265e-4ab6-9f0a-c64df3d54dd0"
+        ]
+      },
+      {
+        "status": "INVALID_ID",
+        "ids": [
+          "not-an-id"
+        ]
+      },
+      {
+        "status": "NOT_FOUND",
+        "ids": [
+          "d8879baa-3966-4d10-8856-15fdd62cce02"
+        ]
+      },
+      {
+        "status": "UNAUTHORIZED",
+        "ids": [
+          "1d43a1b1-1bf8-4f2b-a46a-d1d2c0b0b5f0"
+        ]
+      },
+      {
+        "status": "UPDATE_FAILED",
+        "ids": [
+          "e4b7f2c9-5b2e-4f0e-8c2a-2a3b4c5d6e7f"
+        ]
+      }
+    ]
+  }
+}

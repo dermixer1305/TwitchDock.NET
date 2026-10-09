@@ -117,6 +117,19 @@ namespace TwitchSdk.Helix;
 [JsonSerializable(typeof(HelixPage<SharedChatSession>))]
 // </group:chat-b>
 // <group:extensions>
+[JsonSerializable(typeof(HelixPage<ExtensionConfigurationSegment>))]
+[JsonSerializable(typeof(SetExtensionConfigurationSegmentRequest))]
+[JsonSerializable(typeof(SetExtensionRequiredConfigurationRequest))]
+[JsonSerializable(typeof(SendExtensionPubSubMessageRequest))]
+[JsonSerializable(typeof(ExtensionLiveChannelsResponse))]
+[JsonSerializable(typeof(HelixPage<ExtensionSecretSet>))]
+[JsonSerializable(typeof(SendExtensionChatMessageRequest))]
+[JsonSerializable(typeof(HelixPage<TwitchExtension>))]
+[JsonSerializable(typeof(HelixPage<ExtensionBitsProduct>))]
+[JsonSerializable(typeof(UpdateExtensionBitsProductRequest))]
+[JsonSerializable(typeof(HelixPage<DropsEntitlement>))]
+[JsonSerializable(typeof(HelixPage<DropsEntitlementUpdate>))]
+[JsonSerializable(typeof(UpdateDropsEntitlementsRequest))]
 // </group:extensions>
 // <group:guest-star>
 [JsonSerializable(typeof(HelixPage<GuestStarChannelSettings>))]
