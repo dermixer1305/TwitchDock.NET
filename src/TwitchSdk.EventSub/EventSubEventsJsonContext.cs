@@ -10,6 +10,24 @@ namespace TwitchSdk.EventSub;
 // <group:chat-automod>
 // </group:chat-automod>
 // <group:moderation-channel>
+[JsonSerializable(typeof(ChannelUpdateEvent))]
+[JsonSerializable(typeof(ChannelFollowEvent))]
+[JsonSerializable(typeof(ChannelAdBreakBeginEvent))]
+[JsonSerializable(typeof(ChannelRaidEvent))]
+[JsonSerializable(typeof(ChannelBanEvent))]
+[JsonSerializable(typeof(ChannelUnbanEvent))]
+[JsonSerializable(typeof(ChannelUnbanRequestCreateEvent))]
+[JsonSerializable(typeof(ChannelUnbanRequestResolveEvent))]
+[JsonSerializable(typeof(ChannelModerateEvent))]
+[JsonSerializable(typeof(ChannelModerateEventV2))]
+[JsonSerializable(typeof(ChannelModeratorAddEvent))]
+[JsonSerializable(typeof(ChannelModeratorRemoveEvent))]
+[JsonSerializable(typeof(ChannelVipAddEvent))]
+[JsonSerializable(typeof(ChannelVipRemoveEvent))]
+[JsonSerializable(typeof(ChannelShieldModeBeginEvent))]
+[JsonSerializable(typeof(ChannelShieldModeEndEvent))]
+[JsonSerializable(typeof(ChannelShoutoutCreateEvent))]
+[JsonSerializable(typeof(ChannelShoutoutReceiveEvent))]
 // </group:moderation-channel>
 // <group:monetization-interaction>
 // </group:monetization-interaction>
