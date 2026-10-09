@@ -1,0 +1,150 @@
+{
+  "channel.charity_campaign.donate@1": {
+    "id": "a1b2c3-aabb-4455-d1e2f3", "campaign_id": "123-abc-456-def",
+    "broadcaster_user_id": "123456", "broadcaster_user_name": "SunnySideUp", "broadcaster_user_login": "sunnysideup",
+    "user_id": "654321", "user_login": "generoususer1", "user_name": "GenerousUser1",
+    "charity_name": "Example name", "charity_description": "Example description",
+    "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png", "charity_website": "https://www.example.com",
+    "amount": { "value": 10000, "decimal_places": 2, "currency": "USD" }
+  },
+  "channel.charity_campaign.start@1": {
+    "id": "123-abc-456-def", "broadcaster_id": "123456", "broadcaster_name": "SunnySideUp", "broadcaster_login": "sunnysideup",
+    "charity_name": "Example name", "charity_description": "Example description",
+    "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png", "charity_website": "https://www.example.com",
+    "current_amount": { "value": 0, "decimal_places": 2, "currency": "USD" },
+    "target_amount": { "value": 1500000, "decimal_places": 2, "currency": "USD" },
+    "started_at": "2022-07-26T17:00:03.17106713Z"
+  },
+  "channel.charity_campaign.progress@1": {
+    "id": "123-abc-456-def", "broadcaster_id": "123456", "broadcaster_name": "SunnySideUp", "broadcaster_login": "sunnysideup",
+    "charity_name": "Example name", "charity_description": "Example description",
+    "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png", "charity_website": "https://www.example.com",
+    "current_amount": { "value": 260000, "decimal_places": 2, "currency": "USD" },
+    "target_amount": { "value": 1500000, "decimal_places": 2, "currency": "USD" }
+  },
+  "channel.charity_campaign.stop@1": {
+    "id": "123-abc-456-def", "broadcaster_id": "123456", "broadcaster_name": "SunnySideUp", "broadcaster_login": "sunnysideup",
+    "charity_name": "Example name", "charity_description": "Example description",
+    "charity_logo": "https://abc.cloudfront.net/ppgf/1000/100.png", "charity_website": "https://www.example.com",
+    "current_amount": { "value": 3000000000, "decimal_places": 0, "currency": "JPY" },
+    "target_amount": { "value": 1500000, "decimal_places": 2, "currency": "USD" },
+    "stopped_at": "2022-07-26T22:00:03.17106713Z"
+  },
+  "channel.goal.begin@1": {
+    "id": "12345-cool-event", "broadcaster_user_id": "141981764", "broadcaster_user_name": "TwitchDev", "broadcaster_user_login": "twitchdev",
+    "type": "subscription", "description": "Help me get partner!", "current_amount": 100, "target_amount": 220,
+    "started_at": "2021-07-15T17:16:03.17106713Z"
+  },
+  "channel.goal.progress@1": {
+    "id": "12345-cool-event", "broadcaster_user_id": "141981764", "broadcaster_user_name": "TwitchDev", "broadcaster_user_login": "twitchdev",
+    "type": "follow", "description": "", "current_amount": 120, "target_amount": 220,
+    "started_at": "2021-07-15T17:16:03.17106713Z"
+  },
+  "channel.goal.end@1": {
+    "id": "12345-abc-678-defgh", "broadcaster_user_id": "141981764", "broadcaster_user_name": "TwitchDev", "broadcaster_user_login": "twitchdev",
+    "type": "new_cheerer", "description": "Help me get partner!", "is_achieved": true, "current_amount": 220, "target_amount": 220,
+    "started_at": "2021-07-15T17:16:03.17106713Z", "ended_at": "2021-07-16T17:16:03.17106713Z"
+  },
+  "channel.hype_train.begin@2": {
+    "id": "1b0AsbInCHZW2SQFQkCzqN07Ib2", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "total": 137, "progress": 137, "goal": 500,
+    "top_contributions": [
+      { "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "bits", "total": 50 },
+      { "user_id": "456", "user_login": "kappa", "user_name": "Kappa", "type": "subscription", "total": 2500 }
+    ],
+    "shared_train_participants": [
+      { "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User" },
+      { "broadcaster_user_id": "1338", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User" }
+    ],
+    "level": 1, "started_at": "2020-07-15T17:16:03.17106713Z", "expires_at": "2020-07-15T17:16:11.17106713Z",
+    "is_shared_train": true, "type": "golden_kappa", "all_time_high_level": 4, "all_time_high_total": 4294967296
+  },
+  "channel.hype_train.progress@2": {
+    "id": "1b0AsbInCHZW2SQFQkCzqN07Ib2", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "total": 700, "progress": 200, "goal": 1800,
+    "top_contributions": [{ "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "other", "total": 50 }],
+    "shared_train_participants": null,
+    "level": 2, "started_at": "2020-07-15T17:16:03.17106713Z", "expires_at": "2020-07-15T17:16:11.17106713Z",
+    "is_shared_train": false, "type": "regular"
+  },
+  "channel.hype_train.end@2": {
+    "id": "1b0AsbInCHZW2SQFQkCzqN07Ib2", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "total": 137,
+    "top_contributions": [{ "user_id": "123", "user_login": "pogchamp", "user_name": "PogChamp", "type": "bits", "total": 50 }],
+    "shared_train_participants": [{ "broadcaster_user_id": "1338", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User" }],
+    "level": 1, "started_at": "2020-07-15T17:16:03.17106713Z", "ended_at": "2020-07-15T17:16:11.17106713Z",
+    "cooldown_ends_at": "2020-07-16T17:16:11.17106713Z", "is_shared_train": true, "type": "treasure"
+  },
+  "user.authorization.grant@1": {
+    "client_id": "crq72vsaoijkc83xx42hz6i37", "user_id": "1337", "user_login": "cool_user", "user_name": "Cool_User"
+  },
+  "user.authorization.revoke@1": {
+    "client_id": "crq72vsaoijkc83xx42hz6i37", "user_id": "1337", "user_login": null, "user_name": null
+  },
+  "user.update@1": {
+    "user_id": "1337", "user_login": "cool_user", "user_name": "Cool_User",
+    "email": "user@email.com", "email_verified": true, "description": "cool description"
+  },
+  "user.whisper.message@1": {
+    "from_user_id": "423374343", "from_user_login": "glowillig", "from_user_name": "glowillig",
+    "to_user_id": "424596340", "to_user_login": "quotrok", "to_user_name": "quotrok",
+    "whisper_id": "some-whisper-id", "whisper": { "text": "a secret" }
+  },
+  "conduit.shard.disabled@1": {
+    "conduit_id": "bfcfc993-26b1-b876-44d9-afe75a379dac", "shard_id": "4", "status": "websocket_disconnected",
+    "transport": {
+      "method": "websocket", "callback": null, "session_id": "ad1c9fc3-0d99-4eb7-8a04-8608e8ff9ec9",
+      "connected_at": "2020-11-10T14:32:18.730260295Z", "disconnected_at": "2020-11-11T14:32:18.730260295Z"
+    }
+  },
+  "drop.entitlement.grant@1": [
+    {
+      "id": "bf7c8577-e3e3-4881-a78a-e9446641d45d",
+      "data": {
+        "organization_id": "9001", "category_id": "9002", "category_name": "Fortnite", "campaign_id": "9003",
+        "user_id": "1234", "user_name": "Cool_User", "user_login": "cool_user",
+        "entitlement_id": "fb78259e-fb81-4d1b-8333-34a06ffc24c0", "benefit_id": "74c52265-e214-48a6-91b9-23b6014e8041",
+        "created_at": "2019-01-28T04:17:53.325Z"
+      }
+    },
+    {
+      "id": "bf7c8577-e3e3-4881-a78a-e9446641d45c",
+      "data": {
+        "organization_id": "9001", "category_id": "9002", "category_name": "Fortnite", "campaign_id": "9003",
+        "user_id": "12345", "user_name": "Cooler_User", "user_login": "cooler_user",
+        "entitlement_id": "fb78259e-fb81-4d1b-8333-34a06ffc24c1", "benefit_id": "74c52265-e214-48a6-91b9-23b6014e8041",
+        "created_at": "2019-01-28T04:17:54.325Z"
+      }
+    }
+  ],
+  "extension.bits_transaction.create@1": {
+    "id": "bits-tx-id", "extension_client_id": "deadbeef",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "user_name": "Coolest_User", "user_login": "coolest_user", "user_id": "1236",
+    "product": { "name": "great_product", "sku": "skuskusku", "bits": 1234, "in_development": false }
+  },
+  "channel.guest_star_session.begin@beta": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "moderator_user_id": "1338", "moderator_user_name": "Cool_Mod", "moderator_user_login": "cool_mod",
+    "session_id": "2KFRQbFtpmfyD3IevNRnCzOPRJI", "started_at": "2023-04-11T16:20:03.17106713Z"
+  },
+  "channel.guest_star_session.end@beta": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "moderator_user_id": "1338", "moderator_user_name": "Cool_Mod", "moderator_user_login": "cool_mod",
+    "session_id": "2KFRQbFtpmfyD3IevNRnCzOPRJI", "started_at": "2023-04-11T16:20:03.17106713Z", "ended_at": "2023-04-11T17:51:29.153485Z",
+    "host_user_id": "1337", "host_user_name": "Cool_User", "host_user_login": "cool_user"
+  },
+  "channel.guest_star_guest.update@beta": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "session_id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
+    "moderator_user_id": "1312", "moderator_user_name": "Cool_Mod", "moderator_user_login": "cool_mod",
+    "guest_user_id": "1234", "guest_user_name": "Cool_Guest", "guest_user_login": "cool_guest",
+    "slot_id": "1", "state": "live",
+    "host_user_id": "1337", "host_user_name": "Cool_User", "host_user_login": "cool_user",
+    "host_video_enabled": true, "host_audio_enabled": false, "host_volume": 100
+  },
+  "channel.guest_star_settings.update@beta": {
+    "broadcaster_user_id": "1337", "broadcaster_user_name": "Cool_User", "broadcaster_user_login": "cool_user",
+    "is_moderator_send_live_enabled": true, "slot_count": 5, "is_browser_source_audio_enabled": true, "group_layout": "tiled"
+  }
+}
