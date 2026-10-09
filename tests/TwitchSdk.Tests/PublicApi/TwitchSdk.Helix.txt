@@ -241,6 +241,7 @@ static class TwitchSdk.Helix.Extensions.ExtensionJwt
     static CreateForPubSub(TwitchSdk.Helix.Extensions.ExtensionSecret secret, System.String ownerUserId, System.String channelId, System.Collections.Generic.IEnumerable<System.String> sendTargets, System.TimeSpan? lifetime = null, System.TimeProvider timeProvider = null): System.String
     static DefaultLifetime: System.TimeSpan { get; }
     static MaximumLifetime: System.TimeSpan { get; }
+    static MinimumLifetime: System.TimeSpan { get; }
 sealed class TwitchSdk.Helix.Extensions.ExtensionJwtTokenProvider : TwitchSdk.Core.IAccessTokenProvider
     .ctor(System.String extensionClientId, System.String ownerUserId, TwitchSdk.Helix.Extensions.ExtensionSecret secret, System.TimeSpan? lifetime = null, System.TimeProvider timeProvider = null)
     ExtensionClientId: System.String { get; }

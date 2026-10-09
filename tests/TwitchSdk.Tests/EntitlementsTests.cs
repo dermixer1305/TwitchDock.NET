@@ -106,7 +106,6 @@ public sealed class EntitlementsTests
             Assert.Equal(++step switch
             {
                 1 => "{\"entitlement_ids\":[\"fb78259e-fb81-4d1b-8333-34a06ffc24c0\",\"862750a5-265e-4ab6-9f0a-c64df3d54dd0\"],\"fulfillment_status\":\"FULFILLED\"}",
-                2 => "{\"entitlement_ids\":[]}",
                 _ => "{}"
             }, await request.Content!.ReadAsStringAsync(ct));
             return TestHttpHandler.Json(Fixture("update-drops-entitlements"));
@@ -120,9 +119,9 @@ public sealed class EntitlementsTests
             new[] { DropsEntitlementUpdateStatuses.Success, DropsEntitlementUpdateStatuses.InvalidId, DropsEntitlementUpdateStatuses.NotFound, DropsEntitlementUpdateStatuses.Unauthorized, DropsEntitlementUpdateStatuses.UpdateFailed },
             result.Data.Select(group => group.Status));
         Assert.Equal(2, result.Data[0].Ids.Count);
-        await client.UpdateDropsEntitlementsAsync(new() { EntitlementIds = [] });
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateDropsEntitlementsAsync(new() { EntitlementIds = [] }));
         await client.UpdateDropsEntitlementsAsync(new());
-        Assert.Equal(3, step);
+        Assert.Equal(2, step);
     }
 
     [Fact]

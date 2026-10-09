@@ -20,6 +20,9 @@ public static class ExtensionJwt
     /// <summary>Lifetime applied when none is specified. Short-lived tokens limit the impact of a leaked token.</summary>
     public static TimeSpan DefaultLifetime { get; } = TimeSpan.FromMinutes(3);
 
+    /// <summary>The shortest lifetime this SDK issues, leaving room for rate-limit waits before the request is sent.</summary>
+    public static TimeSpan MinimumLifetime { get; } = TimeSpan.FromSeconds(30);
+
     /// <summary>The longest lifetime this SDK issues. Tokens are cheap to sign, so prefer issuing a new one per request.</summary>
     public static TimeSpan MaximumLifetime { get; } = TimeSpan.FromHours(1);
 
@@ -63,8 +66,9 @@ public static class ExtensionJwt
     internal static TimeSpan ValidateLifetime(TimeSpan? lifetime)
     {
         var value = lifetime ?? DefaultLifetime;
-        if (value < TimeSpan.FromSeconds(1) || value > MaximumLifetime)
-            throw new ArgumentOutOfRangeException(nameof(lifetime), "The JWT lifetime must be between one second and one hour.");
+        // A request may wait for rate-limit resets after the token is issued, so very short lifetimes risk arriving expired.
+        if (value < MinimumLifetime || value > MaximumLifetime)
+            throw new ArgumentOutOfRangeException(nameof(lifetime), "The JWT lifetime must be between 30 seconds and one hour.");
         return value;
     }
 

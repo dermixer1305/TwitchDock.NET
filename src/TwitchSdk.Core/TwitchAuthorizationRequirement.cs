@@ -20,13 +20,15 @@ public sealed class TwitchAuthorizationRequirement
     public bool AllowUserToken { get; }
     public string? RequiredUserId { get; }
 
+    private const string NoOAuthToken = "This operation does not accept OAuth tokens; it requires a different credential such as an Extension JWT.";
+
     public void Validate(AccessToken token)
     {
         ArgumentNullException.ThrowIfNull(token);
         if (token.Kind == TwitchTokenKind.App && !AllowAppToken)
-            throw new TwitchAuthorizationException("This operation requires a user access token.");
+            throw new TwitchAuthorizationException(AllowUserToken ? "This operation requires a user access token." : NoOAuthToken);
         if (token.Kind == TwitchTokenKind.User && !AllowUserToken)
-            throw new TwitchAuthorizationException("This operation requires an app access token.");
+            throw new TwitchAuthorizationException(AllowAppToken ? "This operation requires an app access token." : NoOAuthToken);
         if (token.Kind != TwitchTokenKind.User) return;
         if (RequiredUserId is not null && token.UserId is not null && RequiredUserId != token.UserId)
             throw new TwitchAuthorizationException("The user ID does not match the authenticated user.");

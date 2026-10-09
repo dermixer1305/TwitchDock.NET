@@ -79,9 +79,9 @@ public sealed class ExtensionsTests
         Assert.Throws<ArgumentNullException>(() => ExtensionJwt.CreateExternal(null!, OwnerId));
         Assert.Throws<ArgumentException>(() => ExtensionJwt.CreateExternal(Secret, " "));
         Assert.Throws<ArgumentException>(() => ExtensionJwt.CreateExternal(Secret, OwnerId, channelId: ""));
-        Assert.Throws<ArgumentOutOfRangeException>(() => ExtensionJwt.CreateExternal(Secret, OwnerId, lifetime: TimeSpan.FromMilliseconds(999)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ExtensionJwt.CreateExternal(Secret, OwnerId, lifetime: TimeSpan.FromSeconds(29)));
         Assert.Throws<ArgumentOutOfRangeException>(() => ExtensionJwt.CreateExternal(Secret, OwnerId, lifetime: TimeSpan.FromHours(1) + TimeSpan.FromTicks(1)));
-        Assert.NotEmpty(ExtensionJwt.CreateExternal(Secret, OwnerId, lifetime: TimeSpan.FromSeconds(1)));
+        Assert.NotEmpty(ExtensionJwt.CreateExternal(Secret, OwnerId, lifetime: ExtensionJwt.MinimumLifetime));
         Assert.Throws<ArgumentNullException>(() => ExtensionJwt.CreateForPubSub(Secret, OwnerId, "1", null!));
         Assert.Throws<ArgumentException>(() => ExtensionJwt.CreateForPubSub(Secret, OwnerId, " ", ["broadcast"]));
         foreach (var (channel, targets) in new (string, string[])[]

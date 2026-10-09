@@ -50,7 +50,7 @@ public sealed class EntitlementsClient(TwitchHttpClient transport)
         ArgumentNullException.ThrowIfNull(request);
         if (request.EntitlementIds is { } ids)
         {
-            if (ids.Count > MaximumIds) throw new ArgumentException("At most 100 entitlement IDs are allowed.", nameof(request));
+            if (ids.Count is 0 or > MaximumIds) throw new ArgumentException("Specify 1 to 100 entitlement IDs, or omit the list.", nameof(request));
             foreach (var id in ids) ArgumentException.ThrowIfNullOrWhiteSpace(id);
         }
         ValidateStatus(request.FulfillmentStatus);
