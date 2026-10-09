@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text;
 
 namespace TwitchSdk.Chat.Irc;
@@ -18,8 +19,24 @@ public interface IIrcConnection : IAsyncDisposable
     /// </summary>
     Task<string?> ReceiveLineAsync(CancellationToken cancellationToken);
 
-    /// <summary>Sends one line. Implementations append CR LF and must reject lines that contain CR or LF.</summary>
+    /// <summary>
+    /// Sends one line. Implementations append CR LF and must reject lines that contain CR, LF or NUL with <see cref="ArgumentException"/>.
+    /// Any other failure, including cancellation, may leave part of the line on the wire; the client then discards the connection.
+    /// </summary>
     Task SendLineAsync(string line, CancellationToken cancellationToken);
+}
+
+/// <summary>Endpoint checks shared by the options and the transports.</summary>
+internal static class IrcEndpoint
+{
+    /// <summary>
+    /// True for IP literal loopback addresses and the host <c>localhost</c>, so plain-text endpoints stay on this machine. Other names are
+    /// rejected even when hosts files usually map them to loopback (for example <c>localhost.localdomain</c> or <c>ip6-localhost</c>), because
+    /// their resolution is outside the client's control. <see cref="Uri"/> itself normalizes the name <c>loopback</c> to <c>localhost</c>.
+    /// </summary>
+    public static bool IsLoopbackHost(Uri uri)
+        => uri.IsAbsoluteUri && (string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase)
+            || (IPAddress.TryParse(uri.DnsSafeHost, out var address) && IPAddress.IsLoopback(address)));
 }
 
 /// <summary>Splits a byte stream into UTF-8 lines on LF, dropping a preceding CR. Oversized lines are discarded up to their terminator.</summary>
@@ -84,7 +101,7 @@ internal sealed class IrcLineDecoder
     internal static byte[] EncodeLine(string line)
     {
         ArgumentNullException.ThrowIfNull(line);
-        if (line.AsSpan().IndexOfAny('\r', '\n') >= 0) throw new ArgumentException("An IRC line must not contain CR or LF.", nameof(line));
+        if (line.AsSpan().IndexOfAny('\r', '\n', '\0') >= 0) throw new ArgumentException("An IRC line must not contain CR, LF or NUL.", nameof(line));
         var bytes = new byte[Encoding.UTF8.GetByteCount(line) + 2];
         var written = Encoding.UTF8.GetBytes(line, bytes);
         bytes[written] = (byte)'\r';

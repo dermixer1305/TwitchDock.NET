@@ -5,6 +5,7 @@ namespace TwitchSdk.Chat.Irc;
 /// <summary>
 /// The default IRC transport over <see cref="ClientWebSocket"/>. A WebSocket message may carry several CR LF separated lines
 /// and a line may span messages; lines longer than the configured cap are discarded.
+/// Plain <c>ws://</c> is only accepted on loopback IP addresses and <c>localhost</c>, for example local test servers.
 /// </summary>
 public sealed class WebSocketIrcConnection : IIrcConnection
 {
@@ -18,11 +19,15 @@ public sealed class WebSocketIrcConnection : IIrcConnection
     /// <param name="maxLineBytes">The largest accepted line in bytes, at least 512.</param>
     public WebSocketIrcConnection(int maxLineBytes = DefaultMaxLineBytes) => _decoder = new IrcLineDecoder(maxLineBytes);
 
+    /// <summary>The number of oversized received lines discarded so far.</summary>
+    internal int DiscardedLines => _decoder.DiscardedLines;
+
     /// <inheritdoc />
     public Task ConnectAsync(Uri uri, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(uri);
-        if (uri.Scheme is not ("ws" or "wss")) throw new ArgumentException("A WebSocket IRC endpoint must use ws:// or wss://.", nameof(uri));
+        if (!uri.IsAbsoluteUri || !(uri.Scheme == "wss" || (uri.Scheme == "ws" && IrcEndpoint.IsLoopbackHost(uri))))
+            throw new ArgumentException("A WebSocket IRC endpoint must use wss://, or ws:// on a loopback IP address or localhost.", nameof(uri));
         return _socket.ConnectAsync(uri, cancellationToken);
     }
 

@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Runtime.ExceptionServices;
+using System.Security.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using TwitchSdk.Core;
@@ -18,7 +19,18 @@ public sealed class TwitchIrcClient
 {
     /// <summary>The longest chat message Twitch accepts, in Unicode code points.</summary>
     public const int MaxMessageLength = 500;
-    private const string PingLine = "PING :tmi.twitch.tv";
+
+    /// <summary>A connection must stay up this many seconds before the reconnect backoff resets.</summary>
+    internal const int StableSessionSeconds = 30;
+
+    /// <summary>A RECONNECT within this many seconds of login counts as a failed connection and waits for the backoff.</summary>
+    internal const int RapidReconnectSeconds = 10;
+
+    private const int MaxPongOriginLength = 256;
+    private const string DefaultPingOrigin = "tmi.twitch.tv";
+    private const string PingLine = "PING :" + DefaultPingOrigin;
+    private static readonly TimeSpan StableSessionDuration = TimeSpan.FromSeconds(StableSessionSeconds);
+    private static readonly TimeSpan RapidReconnectWindow = TimeSpan.FromSeconds(RapidReconnectSeconds);
     private static readonly TwitchAuthorizationRequirement ReadRequirement = new([TwitchScopes.ChatRead]);
     private static readonly TwitchAuthorizationRequirement EditRequirement = new([TwitchScopes.ChatEdit]);
 
@@ -34,6 +46,8 @@ public sealed class TwitchIrcClient
     private readonly IrcSlidingWindowRateLimiter _authLimiter;
     private readonly SemaphoreSlim _sendLock = new(1, 1);
     private readonly HashSet<string> _channels = new(StringComparer.Ordinal);
+    // JOINs requested by JoinAsync that still wait for a rate-limit permit, keyed by channel. Guarded by the _channels lock.
+    private readonly Dictionary<string, PendingJoin> _pendingJoins = new(StringComparer.Ordinal);
     private Session? _session;
     private int _running;
 
@@ -73,13 +87,15 @@ public sealed class TwitchIrcClient
     /// <summary>
     /// Connects and processes messages until cancelled. Every message except PING and PONG is passed to <paramref name="onMessage"/>,
     /// starting with the login replies (CAP ACK and the <c>001</c> welcome) of each connection; RECONNECT is passed on before reconnecting.
-    /// Malformed lines are skipped.
+    /// Malformed lines are skipped. The reconnect backoff only resets after a connection stayed up for 30 seconds, and a RECONNECT
+    /// within 10 seconds of login waits for the backoff, so a server that accepts and then drops connections is not hammered.
     /// </summary>
     /// <param name="onMessage">Handles messages sequentially. Exceptions stop the client and propagate to the caller.</param>
     /// <param name="cancellationToken">Stops the client.</param>
     /// <exception cref="TwitchIrcAuthenticationException">Twitch rejected the login, also after one token refresh.</exception>
     /// <exception cref="TwitchAuthorizationException">The token is an app token or lacks <c>chat:read</c>.</exception>
     /// <exception cref="TwitchIrcException">Twitch rejected a requested capability.</exception>
+    /// <exception cref="OperationCanceledException">The client was stopped with <paramref name="cancellationToken"/>.</exception>
     public async Task RunAsync(Func<IrcMessage, CancellationToken, Task> onMessage, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(onMessage);
@@ -90,7 +106,7 @@ public sealed class TwitchIrcClient
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                (Session Session, IReadOnlyList<IrcMessage> Replies) login;
+                Login login;
                 try
                 {
                     login = await LoginAsync(cancellationToken).ConfigureAwait(false);
@@ -102,14 +118,19 @@ public sealed class TwitchIrcClient
                     await Task.Delay(delay, _time, cancellationToken).ConfigureAwait(false);
                     continue;
                 }
-                failures = 0;
-                if (await RunSessionAsync(login.Session, login.Replies, onMessage, cancellationToken).ConfigureAwait(false))
+                var started = _time.GetTimestamp();
+                var reconnectRequested = await RunSessionAsync(login, onMessage, cancellationToken).ConfigureAwait(false);
+                var lasted = _time.GetElapsedTime(started);
+                // Only a connection that stayed up resets the backoff; otherwise accept-then-drop servers would be retried every second.
+                if (lasted >= StableSessionDuration) failures = 0;
+                if (reconnectRequested && lasted >= RapidReconnectWindow)
                 {
                     _logger.LogInformation("Twitch IRC requested a reconnect.");
                     continue;
                 }
                 var retry = Backoff(++failures);
-                _logger.LogWarning("Twitch IRC connection lost; reconnecting in {Delay}.", retry);
+                if (reconnectRequested) _logger.LogWarning("Twitch IRC requested a reconnect right after login; reconnecting in {Delay}.", retry);
+                else _logger.LogWarning("Twitch IRC connection lost; reconnecting in {Delay}.", retry);
                 await Task.Delay(retry, _time, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -117,6 +138,12 @@ public sealed class TwitchIrcClient
         {
             ExceptionDispatchInfo.Capture(ex.InnerException!).Throw();
             throw;
+        }
+        catch (Exception ex) when (cancellationToken.IsCancellationRequested && ex is not OperationCanceledException
+            && (IsTransientFailure(ex) || ex is ObjectDisposedException))
+        {
+            // Transports may report their own cancellation as a failure, for example an aborted socket read as IOException on .NET 8.
+            throw new OperationCanceledException("The IRC client was stopped.", ex, cancellationToken);
         }
         finally
         {
@@ -126,48 +153,84 @@ public sealed class TwitchIrcClient
 
     /// <summary>
     /// Joins a channel and keeps it joined across reconnects. JOIN is rate limited; while disconnected the channel is joined after the next login.
-    /// Joining a channel that is already joined does nothing.
+    /// Joining a channel that is already joined does nothing; joining one whose JOIN still waits for the rate limit waits as well.
     /// </summary>
     /// <param name="channel">The channel login, with or without <c>#</c>; case-insensitive.</param>
-    /// <param name="cancellationToken">Cancels a rate-limit wait; the channel is then not joined.</param>
+    /// <param name="cancellationToken">Cancels the rate-limit wait. The channel is then not joined, unless another pending JoinAsync call asked for it too.</param>
     public async Task JoinAsync(string channel, CancellationToken cancellationToken = default)
     {
         var name = NormalizeChannelName(channel);
-        lock (_channels) if (!_channels.Add(name)) return;
-        if (Volatile.Read(ref _session) is null) return;
+        PendingJoin claim;
+        lock (_channels)
+        {
+            if (_channels.Add(name))
+            {
+                if (Volatile.Read(ref _session) is null) return;
+                _pendingJoins[name] = claim = new PendingJoin();
+            }
+            else if (_pendingJoins.TryGetValue(name, out var pending))
+            {
+                // Share the pending JOIN so the first caller's cancellation does not drop a channel this caller asked for.
+                claim = pending;
+                claim.Claims++;
+            }
+            else return;
+        }
         try
         {
             await _joinLimiter.AcquireAsync(cancellationToken).ConfigureAwait(false);
         }
         catch (OperationCanceledException)
         {
-            lock (_channels) _channels.Remove(name);
+            lock (_channels)
+            {
+                // Remove the channel only when this was the last claim on a JOIN that is still pending.
+                if (_pendingJoins.TryGetValue(name, out var pending) && pending == claim && --claim.Claims == 0)
+                {
+                    _pendingJoins.Remove(name);
+                    _channels.Remove(name);
+                }
+            }
             throw;
         }
-        lock (_channels) if (!_channels.Contains(name)) return;
-        if (Volatile.Read(ref _session) is not { } session) return;
-        // A failed connection is reported by RunAsync; the channel is rejoined after the reconnect.
-        await TrySendAsync(session, "JOIN #" + name, cancellationToken).ConfigureAwait(false);
+        Session? session;
+        lock (_channels)
+        {
+            // The first claimant with a permit sends the JOIN; the others are done. PartAsync may also have dropped the channel meanwhile.
+            if (!_pendingJoins.TryGetValue(name, out var pending) || pending != claim) return;
+            _pendingJoins.Remove(name);
+            session = Volatile.Read(ref _session);
+        }
+        // Once a permit is taken the JOIN is no longer cancellable. A failed connection is reported by RunAsync and the channel rejoined afterwards.
+        if (session is not null) await TrySendAsync(session, "JOIN #" + name, CancellationToken.None, () => IsJoined(name)).ConfigureAwait(false);
     }
 
     /// <summary>Leaves a channel and stops rejoining it. Does nothing when the channel is not joined.</summary>
     /// <param name="channel">The channel login, with or without <c>#</c>; case-insensitive.</param>
-    /// <param name="cancellationToken">Cancels the send.</param>
+    /// <param name="cancellationToken">Cancels waiting to send PART; the channel is still not rejoined after reconnects.</param>
     public async Task PartAsync(string channel, CancellationToken cancellationToken = default)
     {
         var name = NormalizeChannelName(channel);
-        lock (_channels) if (!_channels.Remove(name)) return;
-        if (Volatile.Read(ref _session) is { } session) await TrySendAsync(session, "PART #" + name, cancellationToken).ConfigureAwait(false);
+        lock (_channels)
+        {
+            if (!_channels.Remove(name)) return;
+            _pendingJoins.Remove(name);
+        }
+        if (Volatile.Read(ref _session) is { } session)
+            await TrySendAsync(session, "PART #" + name, cancellationToken, () => IsParted(name)).ConfigureAwait(false);
     }
 
     /// <summary>Sends a chat message, waiting for the message rate limit when necessary.</summary>
     /// <param name="channel">The channel login, with or without <c>#</c>; case-insensitive.</param>
     /// <param name="message">1 to 500 Unicode code points without CR, LF or NUL. A leading <c>/me </c> is not translated.</param>
     /// <param name="replyParentMessageId">The ID of the message to reply to, sent as the <c>reply-parent-msg-id</c> tag.</param>
-    /// <param name="cancellationToken">Cancels the rate-limit wait or the send.</param>
+    /// <param name="cancellationToken">Cancels waiting for the rate limit or for earlier sends; a line that is being written is not interrupted.</param>
     /// <exception cref="InvalidOperationException">No logged-in connection is active.</exception>
     /// <exception cref="TwitchAuthorizationException">The token's known scopes lack <c>chat:edit</c>.</exception>
-    /// <exception cref="TwitchIrcException">The connection failed while sending; the message may not have been delivered.</exception>
+    /// <exception cref="TwitchIrcException">
+    /// The connection failed while sending, or the write did not complete within <see cref="TwitchIrcOptions.KeepaliveTimeout"/>;
+    /// the message may not have been delivered and the client reconnects.
+    /// </exception>
     public Task SendMessageAsync(string channel, string message, string? replyParentMessageId = null, CancellationToken cancellationToken = default)
     {
         var name = NormalizeChannelName(channel);
@@ -186,9 +249,10 @@ public sealed class TwitchIrcClient
     /// <summary>
     /// Sends a raw message, for example a PRIVMSG with a <c>client-nonce</c> tag. PRIVMSG and JOIN count against their rate limits
     /// (JOIN once per comma-separated channel), but raw JOIN and PART do not change <see cref="JoinedChannels"/>. Login commands are rejected.
+    /// The token cancels waiting for the rate limit or for earlier sends; a line that is being written is not interrupted.
     /// </summary>
     /// <exception cref="InvalidOperationException">No logged-in connection is active.</exception>
-    /// <exception cref="TwitchIrcException">The connection failed while sending.</exception>
+    /// <exception cref="TwitchIrcException">The connection failed or timed out while sending; the client reconnects.</exception>
     public Task SendRawAsync(IrcMessage message, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(message);
@@ -230,6 +294,17 @@ public sealed class TwitchIrcClient
             throw new ArgumentException($"Chat messages may contain at most {MaxMessageLength} Unicode code points.", nameof(message));
     }
 
+    private bool IsJoined(string channel)
+    {
+        lock (_channels) return _channels.Contains(channel);
+    }
+
+    /// <summary>True unless the channel was joined again and its JOIN already went out, in which case a late PART would undo it.</summary>
+    private bool IsParted(string channel)
+    {
+        lock (_channels) return !_channels.Contains(channel) || _pendingJoins.ContainsKey(channel);
+    }
+
     private async Task SendLimitedAsync(string line, IrcSlidingWindowRateLimiter? limiter, int permits, TwitchAuthorizationRequirement? requirement, CancellationToken ct)
     {
         // Fail fast before waiting for a permit; check again afterwards because a reconnect may have replaced the session and token.
@@ -251,7 +326,7 @@ public sealed class TwitchIrcClient
     private Session CurrentSession()
         => Volatile.Read(ref _session) ?? throw new InvalidOperationException("The IRC client is not connected. Start RunAsync and retry after it has logged in.");
 
-    private async Task<(Session Session, IReadOnlyList<IrcMessage> Replies)> LoginAsync(CancellationToken ct)
+    private async Task<Login> LoginAsync(CancellationToken ct)
     {
         var token = await _tokens.GetTokenAsync(ct).ConfigureAwait(false);
         ReadRequirement.Validate(token);
@@ -272,7 +347,7 @@ public sealed class TwitchIrcClient
             if (result.FailureNotice is null)
             {
                 _logger.LogDebug("Logged in to Twitch IRC as {Login}.", _login);
-                return (new Session(connection, token), result.Replies);
+                return new Login(connection, token, result.Replies);
             }
             await connection.DisposeAsync().ConfigureAwait(false);
             var notice = result.FailureNotice;
@@ -317,24 +392,28 @@ public sealed class TwitchIrcClient
         }
     }
 
-    private async Task<bool> RunSessionAsync(Session session, IReadOnlyList<IrcMessage> replies, Func<IrcMessage, CancellationToken, Task> onMessage, CancellationToken ct)
+    /// <summary>Processes one logged-in connection. Returns true when Twitch asked for a reconnect and false when the connection was lost.</summary>
+    private async Task<bool> RunSessionAsync(Login login, Func<IrcMessage, CancellationToken, Task> onMessage, CancellationToken ct)
     {
-        using var lifetime = CancellationTokenSource.CreateLinkedTokenSource(ct);
-        // Publish before taking the rejoin snapshot so a concurrent JoinAsync either lands in the snapshot or sends itself.
-        Volatile.Write(ref _session, session);
-        var rejoin = RejoinAsync(session, lifetime.Token);
+        var session = new Session(login.Connection, login.Token, ct);
+        var rejoin = Task.CompletedTask;
         Task<string?>? pending = null;
         try
         {
-            foreach (var reply in replies) await DispatchAsync(reply, onMessage, ct).ConfigureAwait(false);
+            // Publish before taking the rejoin snapshot so a concurrent JoinAsync either lands in the snapshot or sends itself.
+            Volatile.Write(ref _session, session);
+            rejoin = RejoinAsync(session);
+            foreach (var reply in login.Replies) await DispatchAsync(reply, onMessage, ct).ConfigureAwait(false);
             var awaitingPong = false;
+            var discarded = 0;
             while (true)
             {
-                pending ??= session.Connection.ReceiveLineAsync(lifetime.Token);
+                pending ??= session.Connection.ReceiveLineAsync(session.Lifetime);
                 string? line;
                 try
                 {
-                    line = await pending.WaitAsync(awaitingPong ? _options.KeepaliveTimeout : _options.KeepaliveInterval, _time, ct).ConfigureAwait(false);
+                    // The session token also ends the wait when a failed or stuck send tears the connection down.
+                    line = await pending.WaitAsync(awaitingPong ? _options.KeepaliveTimeout : _options.KeepaliveInterval, _time, session.Lifetime).ConfigureAwait(false);
                 }
                 catch (TimeoutException) when (!awaitingPong)
                 {
@@ -349,6 +428,7 @@ public sealed class TwitchIrcClient
                 }
                 pending = null;
                 awaitingPong = false;
+                discarded = ReportDiscardedLines(session.Connection, discarded);
                 if (line is null) return false;
                 var result = await HandleLineAsync(session, line, onMessage, ct).ConfigureAwait(false);
                 if (result != LineResult.Continue) return result == LineResult.Reconnect;
@@ -356,12 +436,7 @@ public sealed class TwitchIrcClient
         }
         finally
         {
-            Interlocked.CompareExchange(ref _session, null, session);
-            lifetime.Cancel();
-            await session.Connection.DisposeAsync().ConfigureAwait(false);
-            await ObserveAsync(rejoin).ConfigureAwait(false);
-            // A transport may complete an abandoned receive only after disposal; observe it without waiting.
-            _ = pending?.ContinueWith(static t => _ = t.Exception, CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+            await CloseSessionAsync(session, rejoin, pending).ConfigureAwait(false);
         }
     }
 
@@ -387,24 +462,45 @@ public sealed class TwitchIrcClient
         }
     }
 
-    private async Task RejoinAsync(Session session, CancellationToken ct)
+    private async Task RejoinAsync(Session session)
     {
         string[] channels;
         lock (_channels) channels = _channels.ToArray();
         foreach (var channel in channels)
         {
-            await _joinLimiter.AcquireAsync(ct).ConfigureAwait(false);
-            lock (_channels) if (!_channels.Contains(channel)) continue;
-            await SendAsync(session, "JOIN #" + channel, ct).ConfigureAwait(false);
+            if (!IsJoined(channel)) continue;
+            await _joinLimiter.AcquireAsync(session.Lifetime).ConfigureAwait(false);
+            // Checked again under the send lock, so a concurrent PartAsync is never followed by a stale JOIN.
+            await SendAsync(session, "JOIN #" + channel, session.Lifetime, () => IsJoined(channel)).ConfigureAwait(false);
         }
     }
 
-    private async Task SendAsync(Session session, string line, CancellationToken ct)
+    /// <summary>
+    /// Writes one line under the send lock. <paramref name="waitToken"/> only cancels waiting for the lock: an interrupted write can leave
+    /// part of a line on the stream, so the write runs on the session token and is bounded by <see cref="TwitchIrcOptions.KeepaliveTimeout"/>.
+    /// A write that fails, times out or is cancelled ends the session, and RunAsync reconnects.
+    /// An optional condition is evaluated under the send lock right before writing; the line is skipped when it returns false.
+    /// </summary>
+    private async Task SendAsync(Session session, string line, CancellationToken waitToken, Func<bool>? condition = null)
     {
-        await _sendLock.WaitAsync(ct).ConfigureAwait(false);
+        await _sendLock.WaitAsync(waitToken).ConfigureAwait(false);
         try
         {
-            await session.Connection.SendLineAsync(line, ct).ConfigureAwait(false);
+            session.Lifetime.ThrowIfCancellationRequested();
+            if (condition is not null && !condition()) return;
+            Task? send = null;
+            try
+            {
+                send = session.Connection.SendLineAsync(line, session.Lifetime);
+                await send.WaitAsync(_options.KeepaliveTimeout, _time, session.Lifetime).ConfigureAwait(false);
+            }
+            catch (Exception ex) when (ex is not ArgumentException)
+            {
+                if (!session.Lifetime.IsCancellationRequested) _logger.LogWarning(ex, "Twitch IRC send failed; closing the connection.");
+                Forget(session.CancelAsync());
+                if (send is { IsCompleted: false }) Forget(send);
+                throw;
+            }
         }
         finally
         {
@@ -412,11 +508,12 @@ public sealed class TwitchIrcClient
         }
     }
 
-    private async Task<bool> TrySendAsync(Session session, string line, CancellationToken ct)
+    /// <summary>Sends on behalf of the client. Returns false when the connection failed; RunAsync reports and recovers from that.</summary>
+    private async Task<bool> TrySendAsync(Session session, string line, CancellationToken ct, Func<bool>? condition = null)
     {
         try
         {
-            await SendAsync(session, line, ct).ConfigureAwait(false);
+            await SendAsync(session, line, ct, condition).ConfigureAwait(false);
             return true;
         }
         catch (Exception ex) when (IsConnectionFailure(ex, ct) || ex is ObjectDisposedException)
@@ -438,6 +535,32 @@ public sealed class TwitchIrcClient
         }
     }
 
+    /// <summary>Tears a session down. Every step runs even when an earlier one fails, and none replaces the exception that ended the session.</summary>
+    private async Task CloseSessionAsync(Session session, Task rejoin, Task<string?>? pending)
+    {
+        Interlocked.CompareExchange(ref _session, null, session);
+        try
+        {
+            await session.CancelAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Cancelling the Twitch IRC session failed.");
+        }
+        try
+        {
+            await session.Connection.DisposeAsync().ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Disposing the Twitch IRC connection failed.");
+        }
+        await ObserveAsync(rejoin).ConfigureAwait(false);
+        // A transport may complete an abandoned receive only after disposal; observe it without waiting.
+        if (pending is not null) Forget(pending);
+        session.Dispose();
+    }
+
     private async Task ObserveAsync(Task task)
     {
         try
@@ -454,6 +577,23 @@ public sealed class TwitchIrcClient
         }
     }
 
+    private int ReportDiscardedLines(IIrcConnection connection, int reported)
+    {
+        var discarded = connection switch
+        {
+            TcpIrcConnection tcp => tcp.DiscardedLines,
+            WebSocketIrcConnection webSocket => webSocket.DiscardedLines,
+            _ => reported,
+        };
+        if (discarded > reported)
+            _logger.LogWarning("Twitch IRC discarded {Count} received line(s) longer than the transport's line limit.", discarded - reported);
+        return discarded;
+    }
+
+    /// <summary>Observes a task that nobody awaits, so its failure does not surface as an unobserved exception.</summary>
+    private static void Forget(Task task)
+        => _ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+
     private static string PassLine(AccessToken token)
     {
         var value = token.Value.StartsWith("oauth:", StringComparison.OrdinalIgnoreCase) ? token.Value[6..] : token.Value;
@@ -462,25 +602,79 @@ public sealed class TwitchIrcClient
         return "PASS oauth:" + value;
     }
 
+    /// <summary>Echoes the PING origin, truncated so an oversized origin can neither exceed the line limit nor stop the client.</summary>
     private static string Pong(IrcMessage ping)
-        => new IrcMessage("PONG", [ping.GetParameter(ping.Parameters.Count - 1) is { Length: > 0 } origin ? origin : "tmi.twitch.tv"], lastParameterIsTrailing: true).Serialize();
+    {
+        var origin = ping.GetParameter(ping.Parameters.Count - 1);
+        if (string.IsNullOrEmpty(origin)) return "PONG :" + DefaultPingOrigin;
+        if (origin.Length > MaxPongOriginLength)
+            origin = origin[..(char.IsHighSurrogate(origin[MaxPongOriginLength - 1]) ? MaxPongOriginLength - 1 : MaxPongOriginLength)];
+        // A parsed parameter never contains CR, LF or NUL, so the line is always valid.
+        return "PONG :" + origin;
+    }
 
     private TimeSpan Backoff(int failures)
         => TimeSpan.FromSeconds(Math.Min(_options.MaxReconnectDelay.TotalSeconds, Math.Pow(2, Math.Min(failures - 1, 20))));
 
     /// <summary>Transport failures, internal timeouts and transient token endpoint failures are retried; everything else stops the client.</summary>
-    private static bool IsConnectionFailure(Exception exception, CancellationToken ct)
-        => !ct.IsCancellationRequested && (exception is WebSocketException or IOException or SocketException or OperationCanceledException or TimeoutException
-            || exception is HttpRequestException { StatusCode: null or HttpStatusCode.TooManyRequests or >= HttpStatusCode.InternalServerError });
+    private static bool IsConnectionFailure(Exception exception, CancellationToken ct) => !ct.IsCancellationRequested && IsTransientFailure(exception);
+
+    private static bool IsTransientFailure(Exception exception)
+        => exception is WebSocketException or IOException or SocketException or OperationCanceledException or TimeoutException
+            || (exception is AuthenticationException authentication && TcpIrcConnection.IsTransientHandshakeFailure(authentication))
+            || exception is HttpRequestException { StatusCode: null or HttpStatusCode.TooManyRequests or >= HttpStatusCode.InternalServerError };
 
     private enum LineResult { Continue, Reconnect, ConnectionLost }
 
     private sealed record Handshake(string? FailureNotice, IReadOnlyList<IrcMessage> Replies);
 
-    private sealed class Session(IIrcConnection connection, AccessToken token)
+    private sealed record Login(IIrcConnection Connection, AccessToken Token, IReadOnlyList<IrcMessage> Replies);
+
+    private sealed class PendingJoin
     {
-        public IIrcConnection Connection { get; } = connection;
-        public AccessToken Token { get; } = token;
+        public int Claims { get; set; } = 1;
+    }
+
+    /// <summary>One logged-in connection. Its lifetime token ends when the session closes, the client stops or a send fails.</summary>
+    private sealed class Session : IDisposable
+    {
+        private readonly CancellationTokenSource _lifetime;
+        private readonly object _sync = new();
+        private Task? _cancellation;
+        private bool _disposed;
+
+        public Session(IIrcConnection connection, AccessToken token, CancellationToken stop)
+        {
+            Connection = connection;
+            Token = token;
+            _lifetime = CancellationTokenSource.CreateLinkedTokenSource(stop);
+            Lifetime = _lifetime.Token;
+        }
+
+        public IIrcConnection Connection { get; }
+
+        public AccessToken Token { get; }
+
+        public CancellationToken Lifetime { get; }
+
+        /// <summary>
+        /// Ends the session. The token is cancelled immediately but its callbacks run asynchronously, so a sender that holds the send lock
+        /// never runs the receive loop's teardown inline. Repeated calls return the first cancellation.
+        /// </summary>
+        public Task CancelAsync()
+        {
+            lock (_sync) return _disposed ? Task.CompletedTask : (_cancellation ??= _lifetime.CancelAsync());
+        }
+
+        public void Dispose()
+        {
+            lock (_sync)
+            {
+                if (_disposed) return;
+                _disposed = true;
+            }
+            _lifetime.Dispose();
+        }
     }
 
     private sealed class CallbackException(Exception inner) : Exception("IRC callback failed.", inner);
