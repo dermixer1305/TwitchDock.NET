@@ -92,7 +92,7 @@ var signInUri = TwitchOAuthClient.CreateOpenIdAuthorizationUri(clientId, redirec
 // Callback (the default response type is the authorization code flow):
 var code = TwitchOAuthCallbacks.ParseAuthorizationCode(callbackUri, storedState).Code;
 var oidcToken = await oauth.ExchangeCodeAsync(clientId, clientSecret, code, redirectUri, cancellationToken);
-var claims = await oauth.ValidateIdTokenAsync(oidcToken.IdToken!, clientId, storedNonce, cancellationToken);
+var claims = await oauth.ValidateIdTokenAsync(oidcToken.IdToken!, clientId, storedNonce, oidcToken.AccessToken, cancellationToken);
 Console.WriteLine($"Signed in as {claims.PreferredUsername} (user ID {claims.Subject})");
 
 var userInfo = await oauth.GetUserInfoAsync(oidcToken.AccessToken, cancellationToken);
@@ -100,7 +100,9 @@ var userInfo = await oauth.GetUserInfoAsync(oidcToken.AccessToken, cancellationT
 
 `CreateOpenIdAuthorizationUri` adds the `openid` scope when it is missing. `OpenIdResponseType.IdToken` and `TokenIdToken` select the implicit variants; `ParseImplicitGrant` then returns `IdToken`.
 
-`ValidateIdTokenAsync` verifies the RS256 signature against Twitch's published keys (cached; an unknown key ID triggers at most one key refresh per five minutes), the issuer (`TwitchOAuthClient.OpenIdIssuer`), the audience (and `azp` when there are several audiences), expiry and issue time with five minutes of clock skew, the nonce in constant time when you pass one, and a nonempty subject. Any failure throws `TwitchIdTokenException`; never use claims from a token that failed validation. Optional claims (email, picture, preferred username, update time) are present only when requested and granted.
+`ValidateIdTokenAsync(idToken, clientId, expectedNonce, accessToken?)` requires the nonce you stored for the authorization request and compares it in constant time. It verifies the RS256 signature against Twitch's published keys, the issuer (`TwitchOAuthClient.OpenIdIssuer`), the audience and a present `azp`, expiry and issue time with five minutes of clock skew, `at_hash` when you pass the access token from the same response, and a nonempty subject; tokens over 16 KiB are rejected before parsing. Only for flows that sent no nonce, use the explicitly named `ValidateIdTokenWithoutNonceAsync`. Any failure throws `TwitchIdTokenException`; never use claims from a token that failed validation. Optional claims (email, picture, preferred username, update time) are present only when requested and granted.
+
+Signing keys are cached in an `OpenIdSigningKeyCache` shared by all `TwitchOAuthClient` instances (`OpenIdSigningKeyCache.Shared` unless you pass your own, which matters because DI creates a typed client per resolution): one fetch at a time, keys expire after an hour, an unknown key ID triggers at most one refresh per five minutes, and failed fetches are remembered for 30 seconds.
 
 ## Token providers and refresh
 

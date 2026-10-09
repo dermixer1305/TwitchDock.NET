@@ -12,7 +12,20 @@ Release candidate. Every Helix endpoint (149) and EventSub type/version (83) in 
 - `TwitchChatClient.SubscribeAsync` now subscribes through the typed `channel.chat.message` spec, so a token without `user:read:chat`, an app token or another user's token fails with `TwitchAuthorizationException` before the request.
 - `ScheduleVacation.StartTime` and `EndTime` are nullable; an empty vacation object reads as null timestamps.
 - Null request lists now mean "no filter", the same as empty lists, and response properties with defaults keep them when Twitch omits a field.
-- `TwitchOAuthClient` takes an optional `TimeProvider` constructor parameter (source compatible, binary breaking).
+- `TwitchOAuthClient` takes optional `TimeProvider` and `OpenIdSigningKeyCache` constructor parameters (source compatible, binary breaking).
+- `ValidateIdTokenAsync` requires the expected nonce; flows without a nonce use `ValidateIdTokenWithoutNonceAsync`. `ImplicitGrantCallback.AccessToken` is nullable for ID-token-only responses.
+- `TwitchHttpClient` accepts only allow-listed endpoint paths (`[A-Za-z0-9_-]` segments separated by `/`).
+- `MessageDeduplicator` evicts the oldest ID when full (100,000 IDs, eleven minutes by default); the previous fail-closed behavior is `throwWhenFull: true` and raises `EventSubDeduplicationException`.
+
+### Security and robustness (review follow-ups)
+
+- Fixed a bearer-token exfiltration path: leading whitespace or control characters in an endpoint path could resolve to another host. The resolved URI must now keep the configured origin.
+- OpenID Connect: required nonce, `at_hash` and `azp` checks, 16 KiB token limit, and a shared signing-key cache with single-flight refresh, one-hour key expiry and negative caching.
+- EventSub: undeserializable events are reported through `EventSubEventRouter.OnDeserializationError` instead of stopping the client; the webhook handler checks the message-type header against the signed body; WebSocket session migration survives the old socket closing first; reconnect backoff has jitter; connections accept plain `ws://` only for loopback addresses.
+- `RefreshingTokenProvider` runs refresh and persistence independent of the caller's cancellation (bounded by a timeout) and briefly replays a failed refresh instead of hammering the token endpoint.
+- Response size caps (`TwitchHttpOptions.MaxResponseContentBytes`, 32 MiB; OAuth 1 MiB), `TwitchApiException.RetryAfter` for 429s that are not retried, `TwitchHttpOptions.EnsureValid()` called at registration, device polling defaults for missing `expires_in`/`interval`.
+- IRC: reconnect backoff grows for accept-then-drop servers and fast RECONNECTs, writes are bounded by the keepalive timeout and no longer use the caller's cancellation, transient TLS handshake failures are retried, join/part races and long PING origins are handled, loopback-only plain endpoints, bounded connection disposal.
+- CI: actions pinned to commit SHAs without persisted credentials, and the Twitch CLI download is verified against the release checksums.
 
 ### Core
 
