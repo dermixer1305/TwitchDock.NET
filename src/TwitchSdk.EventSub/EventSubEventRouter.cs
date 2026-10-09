@@ -16,7 +16,7 @@ public sealed class EventSubEventRouter
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(handler);
-        if (!_handlers.TryAdd((definition.Type, definition.Version), (payload, ct) => handler(definition.Deserialize(payload.Event), payload.Subscription!, ct)))
+        if (!_handlers.TryAdd((definition.Type, definition.Version), (payload, ct) => handler(definition.Deserialize(payload.EventData), payload.Subscription!, ct)))
             throw new InvalidOperationException($"A handler for {definition} is already registered.");
         return this;
     }

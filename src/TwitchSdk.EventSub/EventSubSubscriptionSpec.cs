@@ -28,6 +28,8 @@ public sealed class EventSubSubscriptionSpec
     /// <summary>The condition user whose token must authorize a WebSocket subscription; null when no specific user is required.</summary>
     public string? AuthorizingUserId { get; init; }
     public EventSubTransports Transports { get; init; } = EventSubTransports.All;
+    /// <summary>Sends is_batching_enabled=true, which batched types such as drop.entitlement.grant require.</summary>
+    public bool IsBatchingEnabled { get; init; }
 
     public override string ToString() => $"{Type}@{Version}";
 }

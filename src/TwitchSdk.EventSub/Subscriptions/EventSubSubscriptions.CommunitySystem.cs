@@ -101,7 +101,7 @@ public static partial class EventSubSubscriptions
     {
         Type = "drop.entitlement.grant", Version = "1",
         Condition = Create(Required("organization_id", organizationId), Optional("category_id", categoryId), Optional("campaign_id", campaignId)),
-        Transports = CommunitySystemSpecs.AppTokenTransports,
+        Transports = CommunitySystemSpecs.AppTokenTransports, IsBatchingEnabled = true,
     };
 
     /// <summary>

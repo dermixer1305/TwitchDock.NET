@@ -9,6 +9,8 @@ public sealed class CreateEventSubSubscriptionRequest
     public required string Version { get; init; }
     public required IReadOnlyDictionary<string, string> Condition { get; init; }
     public required EventSubTransportRequest Transport { get; init; }
+    /// <summary>Required (true) for batched subscription types such as drop.entitlement.grant; omitted when null.</summary>
+    public bool? IsBatchingEnabled { get; init; }
 }
 
 /// <summary>Only the fields belonging to the selected method may be supplied.</summary>

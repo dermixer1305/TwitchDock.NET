@@ -28,6 +28,7 @@ public static class HelixEventSubExtensions
         var request = new CreateEventSubSubscriptionRequest
         {
             Type = subscription.Type, Version = subscription.Version, Condition = subscription.Condition, Transport = transport,
+            IsBatchingEnabled = subscription.IsBatchingEnabled ? true : null,
         };
         var userRequirement = new TwitchAuthorizationRequirement(subscription.RequiredScopes, requiredUserId: subscription.AuthorizingUserId,
             anyUserScopes: subscription.AnyOfScopes);

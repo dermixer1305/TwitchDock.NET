@@ -120,6 +120,37 @@ public sealed class EventSubTypedTests
     }
 
     [Fact]
+    public async Task BatchedEventsPropertyIsReadByTryReadEventAndRouter()
+    {
+        var batch = ContractAssertions.Fixture("eventsub-community-system.json", "drop.entitlement.grant@1");
+        var payload = JsonSerializer.Deserialize(Encoding.UTF8.GetBytes($$"""{"subscription":{"id":"s1","status":"enabled","type":"drop.entitlement.grant","version":"1","condition":{"organization_id":"9001"},"transport":{"method":"webhook","callback":"https://example.com"},"created_at":"2026-10-09T12:00:00Z","cost":0},"events":{{batch}}}"""), EventSubJsonContext.Default.EventSubPayload)!;
+        Assert.True(payload.TryReadEvent(EventSubEvents.DropEntitlementGrantV1, out var drops));
+        Assert.NotEmpty(drops);
+        IReadOnlyList<DropEntitlementGrantEvent>? routed = null;
+        var router = new EventSubEventRouter().On(EventSubEvents.DropEntitlementGrantV1, (evt, _, _) => { routed = evt; return Task.CompletedTask; });
+        Assert.True(await router.DispatchAsync("notification", payload));
+        Assert.Equal(drops.Count, routed!.Count);
+    }
+
+    [Fact]
+    public async Task BatchedSubscriptionsSendIsBatchingEnabledAndOthersOmitIt()
+    {
+        var bodies = new List<JsonElement>();
+        using var http = new HttpClient(new TestHttpHandler(async (request, ct) =>
+        {
+            using var body = JsonDocument.Parse(await request.Content!.ReadAsStringAsync(ct));
+            bodies.Add(body.RootElement.Clone());
+            return TestHttpHandler.Json("""{"data":[],"total":1,"total_cost":0,"max_total_cost":10}""", System.Net.HttpStatusCode.Accepted);
+        }));
+        var helix = Helix(http, new("app", kind: TwitchTokenKind.App));
+        var webhook = new EventSubTransportRequest { Method = "webhook", Callback = "https://example.com/callback", Secret = Secret };
+        await helix.CreateEventSubSubscriptionAsync(EventSubSubscriptions.DropEntitlementGrantV1("9001"), webhook);
+        await helix.CreateEventSubSubscriptionAsync(EventSubSubscriptions.StreamOnlineV1("1"), webhook);
+        Assert.True(bodies[0].GetProperty("is_batching_enabled").GetBoolean());
+        Assert.False(bodies[1].TryGetProperty("is_batching_enabled", out _));
+    }
+
+    [Fact]
     public async Task WebhookHandlerAnswersChallengeDispatchesOnceAndRejectsForgeries()
     {
         var received = 0;

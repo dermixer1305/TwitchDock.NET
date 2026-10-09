@@ -15,7 +15,8 @@ public sealed class StreamOnlineEvent
 /// <summary>stream.offline v1.</summary>
 public sealed class StreamOfflineEvent
 {
-    public required string Id { get; init; }
+    /// <summary>Documented by Twitch, but historically absent from delivered payloads; null when omitted.</summary>
+    public string? Id { get; init; }
     public required string BroadcasterUserId { get; init; }
     public required string BroadcasterUserLogin { get; init; }
     public required string BroadcasterUserName { get; init; }
