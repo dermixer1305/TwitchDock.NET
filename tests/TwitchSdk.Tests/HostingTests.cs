@@ -68,6 +68,28 @@ public sealed class HostingTests
     }
 
     [Fact]
+    public async Task HostedServiceRetriesWhenTokenAcquisitionTimesOut()
+    {
+        var time = new ManualTimeProvider();
+        var acquisitions = 0;
+        using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json(Valid))));
+        using var provider = new RefreshingTokenProvider((_, _) => Interlocked.Increment(ref acquisitions) == 1
+            ? Task.FromException<OAuthTokenResponse>(new TimeoutException("Token acquisition did not finish within 30 seconds."))
+            : Task.FromResult(new OAuthTokenResponse { AccessToken = "token", ExpiresIn = 3600 }), timeProvider: time);
+        var validated = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var service = new TwitchTokenValidationService(new TwitchOAuthClient(http), provider,
+            new() { ExpectedClientId = "client", TransientRetryDelay = TimeSpan.FromSeconds(20), OnValidated = (_, _) => { validated.TrySetResult(); return Task.CompletedTask; } }, time);
+        await service.StartAsync(CancellationToken.None);
+        // The retry delay (20 s), not the provider's 30 s acquisition timeout.
+        await ManualTimeProvider.WaitUntilAsync(() => time.TimerCount == 1 && time.NextTimerDueIn == TimeSpan.FromSeconds(20));
+        Assert.Equal(1, Volatile.Read(ref acquisitions));
+        time.Advance(TimeSpan.FromSeconds(20));
+        await validated.Task.WaitAsync(TimeSpan.FromSeconds(5));
+        Assert.Equal(2, acquisitions);
+        await service.StopAsync(CancellationToken.None);
+    }
+
+    [Fact]
     public async Task HostedServiceGivesUpAfterTheConfiguredTransientFailures()
     {
         using var http = new HttpClient(new TestHttpHandler((_, _) => throw new HttpRequestException("network down")));

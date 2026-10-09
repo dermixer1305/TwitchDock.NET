@@ -17,7 +17,8 @@ public sealed class AuthorizationCodeCallback
 
 public sealed class ImplicitGrantCallback
 {
-    public required string AccessToken { get; init; }
+    /// <summary>The access token; null for an id_token-only response (OpenIdResponseType.IdToken).</summary>
+    public string? AccessToken { get; init; }
     /// <summary>Present when the openid scope was requested with an id_token response type.</summary>
     public string? IdToken { get; init; }
     public IReadOnlyList<string> Scopes { get; init => field = value ?? []; } = [];
@@ -50,7 +51,8 @@ public static class TwitchOAuthCallbacks
             throw new TwitchOAuthCallbackException("The redirect did not contain a token.");
         return new()
         {
-            AccessToken = accessToken ?? "", IdToken = idToken, Scopes = SplitScopes(fragment.GetValueOrDefault("scope")),
+            AccessToken = string.IsNullOrWhiteSpace(accessToken) ? null : accessToken,
+            IdToken = string.IsNullOrWhiteSpace(idToken) ? null : idToken, Scopes = SplitScopes(fragment.GetValueOrDefault("scope")),
             TokenType = fragment.GetValueOrDefault("token_type") ?? "bearer",
         };
     }
@@ -78,8 +80,9 @@ public static class TwitchOAuthCallbacks
             var separator = pair.IndexOf('=');
             var name = Unescape(separator < 0 ? pair : pair[..separator]);
             var value = separator < 0 ? "" : Unescape(pair[(separator + 1)..]);
-            // A repeated parameter is ambiguous and may indicate tampering.
-            if (!values.TryAdd(name, value)) throw new TwitchOAuthCallbackException($"The redirect repeats the {name} parameter.");
+            // A repeated parameter is ambiguous and may indicate tampering. This runs before the state check, so the message
+            // must not echo attacker-controlled text.
+            if (!values.TryAdd(name, value)) throw new TwitchOAuthCallbackException("The redirect repeats a parameter.");
         }
         return values;
     }

@@ -26,6 +26,30 @@ public sealed class DependencyInjectionTests
     }
 
     [Fact]
+    public void InvalidOptionsFailAtRegistration()
+    {
+        var error = Assert.Throws<ArgumentOutOfRangeException>(() => new ServiceCollection().AddTwitchSdk(new() { ClientId = "test", MaxRetryDelay = TimeSpan.Zero },
+            _ => new StaticAccessTokenProvider(new("token"))));
+        Assert.Equal(nameof(TwitchHttpOptions.MaxRetryDelay), error.ParamName);
+        Assert.Throws<ArgumentException>(() => new ServiceCollection().AddTwitchSdk(new() { ClientId = " " }, _ => new StaticAccessTokenProvider(new("token"))));
+    }
+
+    [Fact]
+    public async Task OAuthClientsCreatedPerUseShareTheRegisteredSigningKeyCache()
+    {
+        using var fx = new OpenIdFixture();
+        var services = new ServiceCollection();
+        services.AddSingleton<TimeProvider>(fx.Time);
+        services.AddSingleton(fx.Cache);
+        services.AddTwitchSdk(new() { ClientId = "client" }, _ => new StaticAccessTokenProvider(new("token")));
+        services.AddHttpClient<TwitchOAuthClient>().ConfigurePrimaryHttpMessageHandler(fx.CreateHandler);
+        using var provider = services.BuildServiceProvider(new ServiceProviderOptions { ValidateOnBuild = true, ValidateScopes = true });
+        var token = fx.Token();
+        for (var i = 0; i < 3; i++) await provider.GetRequiredService<TwitchOAuthClient>().ValidateIdTokenAsync(token, "client", "n1");
+        Assert.Equal(1, fx.Fetches);
+    }
+
+    [Fact]
     public void RegistersOneIrcClientUsingTheSharedTokenProvider()
     {
         var services = new ServiceCollection();

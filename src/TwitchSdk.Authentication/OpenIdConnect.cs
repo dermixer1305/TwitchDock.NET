@@ -36,7 +36,10 @@ public sealed class OpenIdUserInfo
     public DateTimeOffset? UpdatedAt { get; init; }
 }
 
-/// <summary>Claims of an ID token whose signature, issuer, audience, lifetime and nonce were verified.</summary>
+/// <summary>
+/// Claims of an ID token whose signature, issuer, audience, authorized party and lifetime were verified, as well as the nonce
+/// (unless validated with ValidateIdTokenWithoutNonceAsync) and the at_hash (when an access token was supplied).
+/// </summary>
 public sealed class OpenIdTokenClaims
 {
     public required string Subject { get; init; }
@@ -55,14 +58,17 @@ public sealed class OpenIdTokenClaims
 }
 
 /// <summary>An ID token failed validation. Never trust its claims.</summary>
-public sealed class TwitchIdTokenException(string message) : Exception(message);
+public sealed class TwitchIdTokenException : Exception
+{
+    public TwitchIdTokenException(string message) : base(message) { }
+    public TwitchIdTokenException(string message, Exception innerException) : base(message, innerException) { }
+}
 
 public sealed partial class TwitchOAuthClient
 {
     public const string OpenIdIssuer = "https://id.twitch.tv/oauth2";
+    private const int MaxIdTokenLength = 16 * 1024;
     private static readonly TimeSpan ClockSkew = TimeSpan.FromMinutes(5);
-    private static readonly TimeSpan KeyRefreshInterval = TimeSpan.FromMinutes(5);
-    private SigningKeys? _signingKeys;
 
     /// <summary>Creates an OpenID Connect authorization URI. The openid scope is added when missing; store state and nonce in the session.</summary>
     public static Uri CreateOpenIdAuthorizationUri(string clientId, Uri redirectUri, IEnumerable<string> scopes, string state, string nonce,
@@ -98,23 +104,55 @@ public sealed partial class TwitchOAuthClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
         using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Authority, "userinfo"));
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        using var response = await SendAsync(request, cancellationToken).ConfigureAwait(false);
         return await ReadAsync(response, OAuthJsonContext.Default.OpenIdUserInfo, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
-    /// Verifies the RS256 signature against Twitch's published keys and checks issuer, audience, expiry, issue time and nonce.
-    /// Pass the nonce stored for the authorization request whenever one was sent.
+    /// Verifies the RS256 signature against Twitch's published keys and checks issuer, audience, authorized party, expiry,
+    /// issue time and the nonce stored for the authorization request.
     /// </summary>
-    public async Task<OpenIdTokenClaims> ValidateIdTokenAsync(string idToken, string clientId, string? expectedNonce = null, CancellationToken cancellationToken = default)
+    /// <param name="idToken">The compact JWS ID token, at most 16 KiB.</param>
+    /// <param name="clientId">Your client ID; it must be an audience and, when present, the authorized party (azp).</param>
+    /// <param name="expectedNonce">The nonce sent with the authorization request. Use <see cref="ValidateIdTokenWithoutNonceAsync"/> only for flows that sent none.</param>
+    /// <param name="accessToken">The access token issued with the ID token; when given and the token has an at_hash claim, the hash must match.</param>
+    /// <param name="cancellationToken">Cancels a signing key fetch.</param>
+    /// <exception cref="TwitchIdTokenException">The token is invalid or its signing keys are unavailable.</exception>
+    public Task<OpenIdTokenClaims> ValidateIdTokenAsync(string idToken, string clientId, string expectedNonce, string? accessToken = null,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(expectedNonce);
+        ValidateIdTokenArguments(idToken, clientId, accessToken);
+        return ValidateIdTokenCoreAsync(idToken, clientId, expectedNonce, accessToken, cancellationToken);
+    }
+
+    /// <summary>
+    /// Validates like <see cref="ValidateIdTokenAsync"/> but without a nonce check, for flows whose authorization request carried
+    /// no nonce (for example an authorization code redeemed directly by the server). A nonce in the token is ignored.
+    /// </summary>
+    /// <exception cref="TwitchIdTokenException">The token is invalid or its signing keys are unavailable.</exception>
+    public Task<OpenIdTokenClaims> ValidateIdTokenWithoutNonceAsync(string idToken, string clientId, string? accessToken = null, CancellationToken cancellationToken = default)
+    {
+        ValidateIdTokenArguments(idToken, clientId, accessToken);
+        return ValidateIdTokenCoreAsync(idToken, clientId, null, accessToken, cancellationToken);
+    }
+
+    private static void ValidateIdTokenArguments(string idToken, string clientId, string? accessToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(idToken);
         ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
+        if (accessToken is not null) ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
+    }
+
+    private async Task<OpenIdTokenClaims> ValidateIdTokenCoreAsync(string idToken, string clientId, string? expectedNonce, string? accessToken, CancellationToken cancellationToken)
+    {
+        // Bound the decoding work (and key fetches) an oversized, attacker-supplied token could cause.
+        if (idToken.Length > MaxIdTokenLength) throw new TwitchIdTokenException("The ID token exceeds the 16 KiB limit.");
         var parts = idToken.Split('.');
         if (parts.Length != 3) throw new TwitchIdTokenException("The ID token is not a compact JWS.");
         var header = DeserializeSegment(parts[0], OAuthJsonContext.Default.IdTokenHeader);
         if (header.Alg != "RS256") throw new TwitchIdTokenException("The ID token must be signed with RS256.");
-        var key = await GetSigningKeyAsync(header.Kid, cancellationToken).ConfigureAwait(false);
+        var key = await _signingKeys.GetKeyAsync(header.Kid, FetchSigningKeysAsync, cancellationToken).ConfigureAwait(false);
         using (var rsa = RSA.Create(key))
         {
             if (!rsa.VerifyData(Encoding.ASCII.GetBytes(parts[0] + "." + parts[1]), DecodeSegment(parts[2]), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1))
@@ -123,7 +161,8 @@ public sealed partial class TwitchOAuthClient
         var payload = DeserializeSegment(parts[1], OAuthJsonContext.Default.IdTokenPayload);
         if (payload.Iss != OpenIdIssuer) throw new TwitchIdTokenException("The ID token was not issued by Twitch.");
         var audiences = ReadAudiences(payload.Aud);
-        if (!audiences.Contains(clientId, StringComparer.Ordinal) || (audiences.Count > 1 && payload.Azp != clientId))
+        // azp is required with several audiences and must name this client whenever it is present.
+        if (!audiences.Contains(clientId, StringComparer.Ordinal) || ((audiences.Count > 1 || payload.Azp is not null) && payload.Azp != clientId))
             throw new TwitchIdTokenException("The ID token was issued for a different client.");
         var now = _time.GetUtcNow();
         var expiresAt = DateTimeOffset.FromUnixTimeSeconds(payload.Exp);
@@ -131,6 +170,8 @@ public sealed partial class TwitchOAuthClient
         if (expiresAt + ClockSkew <= now) throw new TwitchIdTokenException("The ID token has expired.");
         if (issuedAt - ClockSkew > now) throw new TwitchIdTokenException("The ID token was issued in the future.");
         if (expectedNonce is not null && !ValidateState(expectedNonce, payload.Nonce)) throw new TwitchIdTokenException("The ID token nonce does not match.");
+        if (accessToken is not null && payload.AtHash is not null && !AccessTokenHashMatches(accessToken, payload.AtHash))
+            throw new TwitchIdTokenException("The ID token was not issued with this access token (at_hash mismatch).");
         if (string.IsNullOrEmpty(payload.Sub)) throw new TwitchIdTokenException("The ID token has no subject.");
         return new()
         {
@@ -140,22 +181,22 @@ public sealed partial class TwitchOAuthClient
         };
     }
 
-    private async Task<RSAParameters> GetSigningKeyAsync(string? kid, CancellationToken ct)
+    private async Task<IReadOnlyList<(string? Kid, RSAParameters Key)>> FetchSigningKeysAsync(CancellationToken ct)
     {
-        var keys = Volatile.Read(ref _signingKeys);
-        var now = _time.GetUtcNow();
-        if (keys is not null && keys.TryFind(kid, out var cached)) return cached;
-        // Unknown key IDs trigger a refresh after key rotation, rate limited to avoid fetch storms.
-        if (keys is null || now - keys.FetchedAt >= KeyRefreshInterval)
-        {
-            using var response = await _http.GetAsync(new Uri(Authority, "keys"), ct).ConfigureAwait(false);
-            var set = await ReadAsync(response, OAuthJsonContext.Default.JsonWebKeySet, ct).ConfigureAwait(false);
-            keys = new SigningKeys(set.Keys.Where(k => k.Kty == "RSA" && k.Use is null or "sig" && !string.IsNullOrEmpty(k.N) && !string.IsNullOrEmpty(k.E))
-                .Select(k => (k.Kid, new RSAParameters { Modulus = DecodeSegment(k.N!), Exponent = DecodeSegment(k.E!) })).ToList(), now);
-            Volatile.Write(ref _signingKeys, keys);
-            if (keys.TryFind(kid, out var fresh)) return fresh;
-        }
-        throw new TwitchIdTokenException("No Twitch signing key matches the ID token.");
+        using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Authority, "keys"));
+        using var response = await SendAsync(request, ct).ConfigureAwait(false);
+        var set = await ReadAsync(response, OAuthJsonContext.Default.JsonWebKeySet, ct).ConfigureAwait(false);
+        return set.Keys.Where(k => k.Kty == "RSA" && k.Use is null or "sig" && !string.IsNullOrEmpty(k.N) && !string.IsNullOrEmpty(k.E))
+            .Select(k => (k.Kid, new RSAParameters { Modulus = DecodeSegment(k.N!), Exponent = DecodeSegment(k.E!) })).ToList();
+    }
+
+    /// <summary>at_hash is the base64url encoding of the left half of SHA-256 over the ASCII access token (OpenID Connect Core 3.2.2.9).</summary>
+    private static bool AccessTokenHashMatches(string accessToken, string atHash)
+    {
+        Span<byte> hash = stackalloc byte[SHA256.HashSizeInBytes];
+        SHA256.HashData(Encoding.ASCII.GetBytes(accessToken), hash);
+        var expected = Convert.ToBase64String(hash[..(hash.Length / 2)]).TrimEnd('=').Replace('+', '-').Replace('/', '_');
+        return CryptographicOperations.FixedTimeEquals(Encoding.ASCII.GetBytes(expected), Encoding.ASCII.GetBytes(atHash));
     }
 
     private static IReadOnlyList<string> ReadAudiences(JsonElement aud) => aud.ValueKind switch
@@ -198,17 +239,5 @@ public sealed partial class TwitchOAuthClient
         base64 = base64.PadRight(base64.Length + (4 - base64.Length % 4) % 4, '=');
         try { return Convert.FromBase64String(base64); }
         catch (FormatException) { throw new TwitchIdTokenException("The ID token is not valid base64url."); }
-    }
-
-    private sealed class SigningKeys(IReadOnlyList<(string? Kid, RSAParameters Key)> keys, DateTimeOffset fetchedAt)
-    {
-        public DateTimeOffset FetchedAt { get; } = fetchedAt;
-
-        public bool TryFind(string? kid, out RSAParameters key)
-        {
-            var match = kid is null ? (keys.Count == 1 ? keys[0] : default) : keys.FirstOrDefault(k => k.Kid == kid);
-            key = match.Key;
-            return match.Key.Modulus is not null;
-        }
     }
 }

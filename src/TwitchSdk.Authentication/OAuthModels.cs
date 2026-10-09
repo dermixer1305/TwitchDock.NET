@@ -10,7 +10,10 @@ public sealed class OAuthTokenResponse
     public int ExpiresIn { get; init; }
     public IReadOnlyList<string> Scope { get; init => field = value ?? []; } = [];
     public string TokenType { get; init => field = value ?? "bearer"; } = "bearer";
-    /// <summary>Present for authorization-code grants that requested the openid scope. Validate with ValidateIdTokenAsync.</summary>
+    /// <summary>
+    /// Present for authorization-code grants that requested the openid scope. Validate with ValidateIdTokenAsync, or
+    /// ValidateIdTokenWithoutNonceAsync when the authorization request carried no nonce.
+    /// </summary>
     public string? IdToken { get; init; }
     [JsonIgnore] public TwitchTokenKind Kind { get; internal set; }
     [JsonIgnore] public string? ClientId { get; internal set; }

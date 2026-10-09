@@ -138,49 +138,243 @@ public sealed class OAuthFlowTests
     [Fact]
     public async Task IdTokenValidationVerifiesSignatureAndClaims()
     {
-        using var rsa = RSA.Create(2048);
-        var time = new ManualTimeProvider();
-        var now = time.GetUtcNow().ToUnixTimeSeconds();
-        var keyFetches = 0;
-        using var http = new HttpClient(new TestHttpHandler((request, _) =>
-        {
-            Assert.Equal("https://id.twitch.tv/oauth2/keys", request.RequestUri!.AbsoluteUri);
-            Interlocked.Increment(ref keyFetches);
-            var key = rsa.ExportParameters(false);
-            return Task.FromResult(TestHttpHandler.Json($$"""{"keys":[{"alg":"RS256","e":"{{B64(key.Exponent!)}}","kid":"1","kty":"RSA","n":"{{B64(key.Modulus!)}}","use":"sig"}]}"""));
-        }));
-        var oauth = new TwitchOAuthClient(http, time);
-        string Token(string payload, string alg = "RS256", string kid = "1") => Sign(rsa, $$"""{"alg":"{{alg}}","kid":"{{kid}}","typ":"JWT"}""", payload);
-        var valid = $$"""{"iss":"https://id.twitch.tv/oauth2","sub":"713936733","aud":"client","exp":{{now + 900}},"iat":{{now}},"nonce":"n1","azp":"client","email":"a@example.org","email_verified":true,"preferred_username":"user"}""";
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        var valid = fx.Payload(claims: ""","azp":"client","email":"a@example.org","preferred_username":"user","email_verified":true""");
 
-        var claims = await oauth.ValidateIdTokenAsync(Token(valid), "client", "n1");
+        var claims = await oauth.ValidateIdTokenAsync(fx.Token(valid), "client", "n1");
         Assert.Equal(("713936733", "a@example.org", "user"), (claims.Subject, claims.Email, claims.PreferredUsername));
-        await oauth.ValidateIdTokenAsync(Token(valid), "client");
-        Assert.Equal(1, keyFetches);
+        await oauth.ValidateIdTokenWithoutNonceAsync(fx.Token(valid), "client");
+        Assert.Equal(1, fx.Fetches);
 
-        var tampered = Token(valid)[..^4] + "AAAA";
+        var tampered = fx.Token(valid)[..^4] + "AAAA";
         await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(tampered, "client", "n1"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid), "other", "n1"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid), "client", "n2"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid, alg: "none"), "client"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid.Replace("https://id.twitch.tv/oauth2", "https://evil.example")), "client"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync("not-a-jwt", "client"));
-        time.Advance(TimeSpan.FromMinutes(21));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid), "client", "n1"));
-        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(Token(valid, kid: "rotated"), "client"));
-        Assert.Equal(2, keyFetches);
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(valid), "other", "n1"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(valid), "client", "n2"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenWithoutNonceAsync(fx.Token(valid, alg: "none"), "client"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenWithoutNonceAsync(fx.Token(valid.Replace("https://id.twitch.tv/oauth2", "https://evil.example")), "client"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenWithoutNonceAsync("not-a-jwt", "client"));
+        fx.Time.Advance(TimeSpan.FromMinutes(21));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(valid), "client", "n1"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenWithoutNonceAsync(fx.Token(valid, kid: "rotated"), "client"));
+        Assert.Equal(2, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task IdTokenValidationRequiresTheNonceUnlessSkippedExplicitly()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        await Assert.ThrowsAsync<ArgumentNullException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", null!));
+        await Assert.ThrowsAsync<ArgumentException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", " "));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(fx.Payload(nonce: null)), "client", "n1"));
+        Assert.Equal("713936733", (await oauth.ValidateIdTokenWithoutNonceAsync(fx.Token(fx.Payload(nonce: null)), "client")).Subject);
+        // Argument errors are raised before any key fetch.
+        Assert.Equal(1, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task IdTokenAtHashMustMatchTheAccessTokenIssuedWithIt()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        const string accessToken = "kpvu9i9cr0bbkf5kjcn7a2wgh0x8gl";
+        var atHash = OpenIdFixture.B64(SHA256.HashData(Encoding.ASCII.GetBytes(accessToken)).AsSpan(0, 16));
+        var bound = fx.Token(fx.Payload(claims: ",\"at_hash\":\"" + atHash + "\""));
+
+        Assert.Equal(atHash, (await oauth.ValidateIdTokenAsync(bound, "client", "n1", accessToken)).AccessTokenHash);
+        await oauth.ValidateIdTokenWithoutNonceAsync(bound, "client", accessToken);
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(bound, "client", "n1", accessToken + "x"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenWithoutNonceAsync(bound, "client", "other-token"));
+        // Without an access token, or without the claim, there is nothing to compare.
+        await oauth.ValidateIdTokenAsync(bound, "client", "n1");
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1", accessToken);
+        await Assert.ThrowsAsync<ArgumentException>(() => oauth.ValidateIdTokenAsync(bound, "client", "n1", " "));
+    }
+
+    [Fact]
+    public async Task IdTokenAuthorizedPartyMustBeThisClientWhenPresent()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(fx.Payload(claims: ",\"azp\":\"other\"")), "client", "n1"));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(fx.Payload(audience: "[\"client\",\"other\"]")), "client", "n1"));
+        Assert.Equal("client", (await oauth.ValidateIdTokenAsync(fx.Token(fx.Payload(audience: "[\"client\",\"other\"]", claims: ",\"azp\":\"client\"")), "client", "n1")).AuthorizedParty);
+        Assert.Null((await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1")).AuthorizedParty);
+    }
+
+    [Fact]
+    public async Task OversizedIdTokensAreRejectedBeforeParsingOrFetchingKeys()
+    {
+        using var fx = new OpenIdFixture();
+        var huge = fx.Token(fx.Payload(claims: ",\"pad\":\"" + new string('a', 16 * 1024) + "\""));
+        Assert.Contains("16 KiB", (await Assert.ThrowsAsync<TwitchIdTokenException>(() => fx.Client().ValidateIdTokenAsync(huge, "client", "n1"))).Message);
+        Assert.Equal(0, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task SigningKeysAreFetchedOnceForConcurrentValidationsAcrossClients()
+    {
+        using var fx = new OpenIdFixture();
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        fx.FetchGate = release.Task;
+        var token = fx.Token();
+        // DI creates a TwitchOAuthClient per use; the cache, not the client instance, owns the keys.
+        var validations = Enumerable.Range(0, 8).Select(_ => fx.Client().ValidateIdTokenAsync(token, "client", "n1")).ToArray();
+        await ManualTimeProvider.WaitUntilAsync(() => fx.Fetches == 1);
+        release.SetResult();
+        await Task.WhenAll(validations);
+        Assert.Equal(1, fx.Fetches);
+        await new TwitchOAuthClient(fx.Http, fx.Time, new OpenIdSigningKeyCache(fx.Time)).ValidateIdTokenAsync(token, "client", "n1");
+        Assert.Equal(2, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task SigningKeysExpireAfterAnHourAndUnknownKeysRefetchAtMostEveryFiveMinutes()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(kid: "rotated"), "client", "n1"));
+        Assert.Equal(1, fx.Fetches);
+        fx.Time.Advance(TimeSpan.FromMinutes(5));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(kid: "rotated"), "client", "n1"));
+        Assert.Equal(2, fx.Fetches);
+        fx.Time.Advance(TimeSpan.FromMinutes(59));
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        Assert.Equal(2, fx.Fetches);
+        fx.Time.Advance(TimeSpan.FromMinutes(1));
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        Assert.Equal(3, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task SigningKeyFetchFailuresAreCachedAndExpiredKeysOnlyServeWhileTheRefreshIsHeldBack()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        fx.FailFetches = true;
+        var unavailable = await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1"));
+        Assert.IsType<TwitchApiException>(unavailable.InnerException);
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1"));
+        Assert.Equal(1, fx.Fetches);
+        fx.Time.Advance(TimeSpan.FromSeconds(30));
+        fx.FailFetches = false;
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        Assert.Equal(2, fx.Fetches);
+
+        // The keys expire and their refresh fails: that validation fails, but while the next refresh is held back the
+        // expired keys still verify known key IDs.
+        fx.Time.Advance(TimeSpan.FromHours(1));
+        fx.FailFetches = true;
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1"));
+        Assert.Equal(3, fx.Fetches);
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(kid: "rotated"), "client", "n1"));
+        Assert.Equal(3, fx.Fetches);
+        fx.Time.Advance(TimeSpan.FromSeconds(30));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1"));
+        Assert.Equal(4, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task HungKeyFetchTimesOutAndHoldsBackQueuedValidations()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        fx.FetchGate = new TaskCompletionSource().Task;
+        var hung = oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        await ManualTimeProvider.WaitUntilAsync(() => fx.Fetches == 1);
+        // The fetch is bounded by the cache, and the failure is stamped when it occurred, not when the fetch started.
+        fx.Time.Advance(TimeSpan.FromSeconds(30));
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => hung);
+        await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1"));
+        Assert.Equal(1, fx.Fetches);
+        fx.FetchGate = null;
+        fx.Time.Advance(TimeSpan.FromSeconds(30));
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        Assert.Equal(2, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task AnEmptyKeySetDoesNotReplaceTheCachedKeys()
+    {
+        using var fx = new OpenIdFixture();
+        var oauth = fx.Client();
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        fx.Time.Advance(TimeSpan.FromMinutes(5));
+        fx.EmptyKeys = true;
+        var error = await Assert.ThrowsAsync<TwitchIdTokenException>(() => oauth.ValidateIdTokenAsync(fx.Token(kid: "rotated"), "client", "n1"));
+        Assert.IsType<InvalidDataException>(error.InnerException);
+        await oauth.ValidateIdTokenAsync(fx.Token(), "client", "n1");
+        Assert.Equal(2, fx.Fetches);
+    }
+
+    [Fact]
+    public async Task StalledOAuthResponseBodiesTimeOutLikeHttpClient()
+    {
+        using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StalledContent() })))
+        {
+            Timeout = TimeSpan.FromMilliseconds(200),
+        };
+        // ResponseHeadersRead ends HttpClient.Timeout at the headers; the body read must still be bounded.
+        var error = await Assert.ThrowsAsync<TaskCanceledException>(() => new TwitchOAuthClient(http).ValidateAsync("token").WaitAsync(TimeSpan.FromSeconds(10)));
+        Assert.IsType<TimeoutException>(error.InnerException);
+    }
+
+    [Fact]
+    public void RepeatedCallbackParametersAreRejectedWithoutEchoingThem()
+    {
+        var error = Assert.Throws<TwitchOAuthCallbackException>(() => TwitchOAuthCallbacks.ParseAuthorizationCode(
+            new Uri($"https://app.example/callback?code=a&state={State}&%3Cscript%3Ealert(1)=1&%3Cscript%3Ealert(1)=2"), State));
+        Assert.Equal("The redirect repeats a parameter.", error.Message);
+        Assert.Null(error.Error);
+    }
+
+    [Fact]
+    public void ImplicitGrantWithOnlyAnIdTokenHasNoAccessToken()
+    {
+        var callback = TwitchOAuthCallbacks.ParseImplicitGrant(new Uri($"https://app.example/callback#id_token=jwt&state={State}"), State);
+        Assert.Null(callback.AccessToken);
+        Assert.Equal("jwt", callback.IdToken);
+        Assert.Null(TwitchOAuthCallbacks.ParseImplicitGrant(new Uri($"https://app.example/callback#access_token=tok&state={State}"), State).IdToken);
+    }
+
+    [Fact]
+    public async Task DevicePollingDefaultsAMissingLifetimeAndInterval()
+    {
+        var time = new ManualTimeProvider();
+        var calls = 0;
+        using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(Interlocked.Increment(ref calls) < 3
+            ? TestHttpHandler.Json("""{"status":400,"message":"authorization_pending"}""", HttpStatusCode.BadRequest)
+            : TestHttpHandler.Json("""{"access_token":"user","expires_in":3600,"token_type":"bearer"}"""))));
+        // Twitch always sends both; a response without them must not mean a one-second deadline or one-second polling.
+        var polling = new TwitchOAuthClient(http, time).WaitForDeviceAuthorizationAsync("client", Device(interval: 0, expiresIn: 0), []);
+        for (var expected = 1; expected <= 3; expected++)
+        {
+            await ManualTimeProvider.WaitUntilAsync(() => time.TimerCount == 1);
+            time.Advance(TimeSpan.FromSeconds(4));
+            Assert.Equal(expected - 1, Volatile.Read(ref calls));
+            time.Advance(TimeSpan.FromSeconds(1));
+            await ManualTimeProvider.WaitUntilAsync(() => Volatile.Read(ref calls) == expected);
+        }
+        Assert.Equal("user", (await polling).AccessToken);
+    }
+
+    [Fact]
+    public async Task OAuthResponsesAreLimitedToOneMebibyte()
+    {
+        var big = Encoding.UTF8.GetBytes("{\"access_token\":\"" + new string('a', 1024 * 1024) + "\"}");
+        using var declared = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(big) })));
+        await Assert.ThrowsAsync<InvalidDataException>(() => new TwitchOAuthClient(declared).GetAppTokenAsync("client", "secret"));
+        using var chunked = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new UnknownLengthContent(big) })));
+        await Assert.ThrowsAsync<InvalidDataException>(() => new TwitchOAuthClient(chunked).ValidateAsync("token"));
+        using var failing = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new UnknownLengthContent(big) })));
+        Assert.Equal(HttpStatusCode.BadRequest, (await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(failing).RefreshAsync("client", "refresh"))).StatusCode);
     }
 
     private static DeviceAuthorization Device(int interval, int expiresIn) => new()
     {
         DeviceCode = "device", UserCode = "ABCDEFGH", VerificationUri = "https://www.twitch.tv/activate?device-code=ABCDEFGH", Interval = interval, ExpiresIn = expiresIn,
     };
-
-    private static string B64(byte[] bytes) => Convert.ToBase64String(bytes).TrimEnd('=').Replace('+', '-').Replace('/', '_');
-
-    private static string Sign(RSA rsa, string header, string payload)
-    {
-        var signingInput = B64(Encoding.UTF8.GetBytes(header)) + "." + B64(Encoding.UTF8.GetBytes(payload));
-        return signingInput + "." + B64(rsa.SignData(Encoding.ASCII.GetBytes(signingInput), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
-    }
 }

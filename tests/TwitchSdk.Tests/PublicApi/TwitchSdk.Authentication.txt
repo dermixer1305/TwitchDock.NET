@@ -38,6 +38,9 @@ enum TwitchSdk.Authentication.OpenIdResponseType : System.IComparable, System.IC
     const IdToken: TwitchSdk.Authentication.OpenIdResponseType = 2
     const Token: TwitchSdk.Authentication.OpenIdResponseType = 1
     const TokenIdToken: TwitchSdk.Authentication.OpenIdResponseType = 3
+sealed class TwitchSdk.Authentication.OpenIdSigningKeyCache
+    .ctor(System.TimeProvider timeProvider = null)
+    static Shared: TwitchSdk.Authentication.OpenIdSigningKeyCache { get; }
 sealed class TwitchSdk.Authentication.OpenIdTokenClaims
     .ctor()
     AccessTokenHash: System.String { get; init; }
@@ -83,6 +86,7 @@ static class TwitchSdk.Authentication.TokenValidationLoop
     static RunAsync(TwitchSdk.Authentication.TwitchOAuthClient oauth, TwitchSdk.Core.IAccessTokenProvider provider, System.String expectedClientId, System.Func<TwitchSdk.Authentication.TokenValidation, System.Threading.CancellationToken, System.Threading.Tasks.Task> onValidated, System.TimeProvider timeProvider = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
 sealed class TwitchSdk.Authentication.TwitchIdTokenException : System.Exception, System.Runtime.Serialization.ISerializable
     .ctor(System.String message)
+    .ctor(System.String message, System.Exception innerException)
 sealed class TwitchSdk.Authentication.TwitchOAuthCallbackException : System.Exception, System.Runtime.Serialization.ISerializable
     .ctor(System.String message, System.String error = null, System.String errorDescription = null)
     Error: System.String { get; }
@@ -91,7 +95,7 @@ static class TwitchSdk.Authentication.TwitchOAuthCallbacks
     static ParseAuthorizationCode(System.Uri callbackUri, System.String expectedState): TwitchSdk.Authentication.AuthorizationCodeCallback
     static ParseImplicitGrant(System.Uri callbackUri, System.String expectedState): TwitchSdk.Authentication.ImplicitGrantCallback
 sealed class TwitchSdk.Authentication.TwitchOAuthClient
-    .ctor(System.Net.Http.HttpClient httpClient, System.TimeProvider timeProvider = null)
+    .ctor(System.Net.Http.HttpClient httpClient, System.TimeProvider timeProvider = null, TwitchSdk.Authentication.OpenIdSigningKeyCache signingKeyCache = null)
     ExchangeCodeAsync(System.String clientId, System.String clientSecret, System.String code, System.Uri redirectUri, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OAuthTokenResponse>
     ExchangeDeviceCodeAsync(System.String clientId, System.String deviceCode, System.Collections.Generic.IEnumerable<System.String> scopes, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OAuthTokenResponse>
     GetAppTokenAsync(System.String clientId, System.String clientSecret, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OAuthTokenResponse>
@@ -100,7 +104,8 @@ sealed class TwitchSdk.Authentication.TwitchOAuthClient
     RevokeAsync(System.String clientId, System.String accessToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
     StartDeviceAuthorizationAsync(System.String clientId, System.Collections.Generic.IEnumerable<System.String> scopes, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.DeviceAuthorization>
     ValidateAsync(System.String accessToken, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.TokenValidation>
-    ValidateIdTokenAsync(System.String idToken, System.String clientId, System.String expectedNonce = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OpenIdTokenClaims>
+    ValidateIdTokenAsync(System.String idToken, System.String clientId, System.String expectedNonce, System.String accessToken = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OpenIdTokenClaims>
+    ValidateIdTokenWithoutNonceAsync(System.String idToken, System.String clientId, System.String accessToken = null, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OpenIdTokenClaims>
     WaitForDeviceAuthorizationAsync(System.String clientId, TwitchSdk.Authentication.DeviceAuthorization authorization, System.Collections.Generic.IEnumerable<System.String> scopes, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchSdk.Authentication.OAuthTokenResponse>
     const OpenIdIssuer: System.String = "https://id.twitch.tv/oauth2"
     static CreateAuthorizationUri(System.String clientId, System.Uri redirectUri, System.Collections.Generic.IEnumerable<System.String> scopes, System.String state, System.Boolean forceVerify = false, System.Boolean implicitGrant = false): System.Uri
