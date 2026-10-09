@@ -27,6 +27,16 @@ public sealed class BitsClient(TwitchHttpClient transport)
             new HelixQuery().AddValue("broadcaster_id", broadcasterId), cancellationToken: cancellationToken);
     }
 
+    /// <summary>Requires the broadcaster's user token with bits:read. If none of the requested IDs exist, Twitch returns 404.</summary>
+    public Task<HelixPage<CustomPowerUp>> GetCustomPowerUpsAsync(GetCustomPowerUpsRequest request, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentException.ThrowIfNullOrWhiteSpace(request.BroadcasterId);
+        return _transport.SendAsync(HttpMethod.Get, "bits/custom_power_ups", HelixJsonContext.Default.HelixPageCustomPowerUp,
+            new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId).AddValues("id", request.Ids, 50),
+            authorization: new([TwitchScopes.BitsRead], requiredUserId: request.BroadcasterId), cancellationToken: cancellationToken);
+    }
+
     /// <summary>Requires the extension's app token. Twitch verifies that ExtensionId matches that token's client ID.</summary>
     public Task<HelixPage<ExtensionTransaction>> GetExtensionTransactionsAsync(GetExtensionTransactionsRequest request, CancellationToken cancellationToken = default)
     {

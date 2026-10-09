@@ -38,6 +38,8 @@ public sealed class HelixClient(TwitchHttpClient transport)
     // <group:moderation-b>
     // </group:moderation-b>
     // <group:chat-a>
+    public TagsClient Tags { get; } = new(transport);
+    public ContentClassificationClient ContentClassification { get; } = new(transport);
     // </group:chat-a>
     // <group:chat-b>
     // </group:chat-b>

@@ -77,6 +77,16 @@ namespace TwitchSdk.Helix;
 // <group:moderation-b>
 // </group:moderation-b>
 // <group:chat-a>
+[JsonSerializable(typeof(HelixPage<Chatter>))]
+[JsonSerializable(typeof(ChatEmotesResponse<ChannelEmote>))]
+[JsonSerializable(typeof(ChatEmotesResponse<GlobalEmote>))]
+[JsonSerializable(typeof(ChatEmotesResponse<EmoteSetEmote>))]
+[JsonSerializable(typeof(UserEmotesResponse))]
+[JsonSerializable(typeof(HelixPage<ChatBadgeSet>))]
+[JsonSerializable(typeof(HelixPage<StreamTag>))]
+[JsonSerializable(typeof(HelixPage<ContentClassificationLabel>))]
+[JsonSerializable(typeof(HelixPage<UserAuthorization>))]
+[JsonSerializable(typeof(HelixPage<CustomPowerUp>))]
 // </group:chat-a>
 // <group:chat-b>
 // </group:chat-b>

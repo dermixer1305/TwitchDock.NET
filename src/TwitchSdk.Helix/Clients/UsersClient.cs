@@ -62,6 +62,15 @@ public sealed class UsersClient(TwitchHttpClient transport)
             authorization: new([TwitchScopes.UserManageBlockedUsers]), cancellationToken: cancellationToken);
     }
 
+    /// <summary>Requires an app token. Accepts 1 to 10 user IDs and reports the scopes each user granted to this client ID.</summary>
+    public Task<HelixPage<UserAuthorization>> GetAuthorizationByUserAsync(IReadOnlyList<string> userIds, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(userIds);
+        if (userIds.Count == 0) throw new ArgumentException("At least one user ID is required.", nameof(userIds));
+        return _transport.SendAsync(HttpMethod.Get, "authorization/users", HelixJsonContext.Default.HelixPageUserAuthorization,
+            new HelixQuery().AddValues("user_id", userIds, 10), authorization: new([], allowAppToken: true, allowUserToken: false), cancellationToken: cancellationToken);
+    }
+
     /// <summary>user:read:broadcast or user:edit:broadcast; inactive extensions require the edit scope.</summary>
     public Task<HelixPage<InstalledUserExtension>> GetUserExtensionsAsync(CancellationToken cancellationToken = default)
         => _transport.SendAsync(HttpMethod.Get, "users/extensions/list", HelixJsonContext.Default.HelixPageInstalledUserExtension,
