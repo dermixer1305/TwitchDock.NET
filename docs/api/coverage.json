@@ -6597,14 +6597,19 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "partial",
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
       "evidence": [
         "src/TwitchSdk.Helix/HelixClient.cs",
         "src/TwitchSdk.Helix/Models/EventSub.cs",
+        "src/TwitchSdk.EventSub/EventSubSubscriptionSpec.cs",
+        "src/TwitchSdk.EventSub/HelixEventSubExtensions.cs",
+        "tests/TwitchSdk.Tests/EventSubTypedTests.cs",
         "tests/TwitchSdk.Tests/HelixFoundationTests.cs",
-        "docs/helix-foundation.md"
+        "tests/TwitchSdk.IntegrationTests/WebhookCliTests.cs",
+        "docs/helix-foundation.md",
+        "docs/eventsub-community-system.md"
       ]
     },
     {
@@ -14033,54 +14038,108 @@
       "type": "automod.message.hold",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessagehold",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "automod.message.hold@2",
       "type": "automod.message.hold",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessagehold-v2",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "automod.message.update@1",
       "type": "automod.message.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessageupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "automod.message.update@2",
       "type": "automod.message.update",
       "version": "2",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodmessageupdate-v2",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "automod.settings.update@1",
       "type": "automod.settings.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodsettingsupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "automod.terms.update@1",
       "type": "automod.terms.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#automodtermsupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.bits.use@1",
@@ -14151,30 +14210,53 @@
       "type": "channel.chat.clear",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatclear",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat.clear_user_messages@1",
       "type": "channel.chat.clear_user_messages",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatclear_user_messages",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat.message@1",
       "type": "channel.chat.message",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatmessage",
-      "availabilityReview": "pending",
-      "status": "partial",
+      "availabilityReview": "public",
+      "status": "complete",
       "evidence": [
-        "src/TwitchSdk.Chat/ChatMessage.cs",
-        "tests/TwitchSdk.Tests/EventSubTests.cs",
-        "docs/quickstart.md"
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
       ]
     },
     {
@@ -14182,72 +14264,144 @@
       "type": "channel.chat.message_delete",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatmessage_delete",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat.notification@1",
       "type": "channel.chat.notification",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatnotification",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat_settings.update@1",
       "type": "channel.chat_settings.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchat_settingsupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat.user_message_hold@1",
       "type": "channel.chat.user_message_hold",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatuser_message_hold",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.chat.user_message_update@1",
       "type": "channel.chat.user_message_update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelchatuser_message_update",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.shared_chat.begin@1",
       "type": "channel.shared_chat.begin",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshared_chatbegin",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.shared_chat.update@1",
       "type": "channel.shared_chat.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshared_chatupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.shared_chat.end@1",
       "type": "channel.shared_chat.end",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelshared_chatend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.subscribe@1",
@@ -14786,18 +14940,36 @@
       "type": "channel.suspicious_user.message",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsuspicious_usermessage",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.suspicious_user.update@1",
       "type": "channel.suspicious_user.update",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelsuspicious_userupdate",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.vip.add@1",
@@ -14836,18 +15008,36 @@
       "type": "channel.warning.acknowledge",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelwarningacknowledge",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.warning.send@1",
       "type": "channel.warning.send",
       "version": "1",
       "source": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channelwarningsend",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.EventSub/Events/ChatAutomodEvents.cs",
+        "src/TwitchSdk.EventSub/Events/AutomodHeldMessageV1Converter.cs",
+        "src/TwitchSdk.EventSub/Subscriptions/EventSubSubscriptions.ChatAutomod.cs",
+        "src/TwitchSdk.EventSub/EventSubEvents.ChatAutomod.cs",
+        "src/TwitchSdk.Chat/TwitchChatClient.cs",
+        "tests/TwitchSdk.Tests/EventSubChatAutomodTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/eventsub-chat-automod.json",
+        "docs/eventsub-chat-automod.md"
+      ]
     },
     {
       "id": "channel.charity_campaign.donate@1",
