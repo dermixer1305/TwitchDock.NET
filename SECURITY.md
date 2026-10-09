@@ -8,7 +8,7 @@ Never include access tokens, refresh tokens, client secrets, webhook secrets, ex
 
 ## Supported versions
 
-Only the latest release receives fixes. The current version is the 1.0.0-rc.1 release candidate. Selected authentication, Helix and chat flows have been verified against Twitch; broader live verification remains outstanding ([report](docs/live-verification.md)). No independent security audit has been performed.
+Only the latest release receives fixes. The current version is the 1.0.0-rc.2 release candidate. Selected authentication, Helix and chat flows have been verified against Twitch; broader live verification remains outstanding ([report](docs/live-verification.md)). No independent security audit has been performed.
 
 ## What the SDK does for you
 

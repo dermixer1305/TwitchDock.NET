@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Question or idea / Frage oder Idee
+    url: https://github.com/dermixer1305/TwitchDock.NET/discussions
+    about: Ask how to use TwitchDock or share what you built. / Fragen zur Nutzung stellen oder eigene Projekte zeigen.
   - name: Security issue / Sicherheitslücke
     url: https://github.com/dermixer1305/TwitchDock.NET/security/advisories/new
     about: Report vulnerabilities privately. / Sicherheitslücken bitte privat melden.

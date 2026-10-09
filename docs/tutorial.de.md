@@ -292,7 +292,7 @@ Ein Benutzer-Token läuft nach einigen Stunden ab. Damit der Bot ohne neue Anmel
 | Problem | Prüfen |
 | --- | --- |
 | `Invalid client name` bei der Registrierung | Eigenen, eindeutigen App-Namen wählen. |
-| `dotnet add package` findet keine Version | `--prerelease` ergänzen oder `--version 1.0.0-rc.1` angeben. |
+| `dotnet add package` findet keine Version | `--prerelease` ergänzen oder `--version 1.0.0-rc.2` angeben. |
 | Client-ID fehlt | Client-ID in `Program.cs` eintragen (Bot) bzw. die Variable im selben Terminal setzen, in dem `dotnet run` läuft (API-Beispiel). |
 | `401` oder ungültiges Token | Client-ID und Secret prüfen oder neu anmelden. App- und Benutzer-Tokens sind nicht austauschbar. |
 | `TwitchAuthorizationException` | Dem Token fehlt ein Recht. In `scopes` ergänzen, neu starten und das neue Recht erlauben. |

@@ -1,6 +1,6 @@
 # Implementation progress (2026-10-09)
 
-TwitchDock.NET is at **1.0.0-rc.1**. Every API in the pinned official documentation meets the definition of done. Selected real-credential tests passed and the public GitHub repository is configured. The packages are published on nuget.org. Broader live verification remains before 1.0.0. The original goals are in the [project plan](project-plan.md); next steps are in the [roadmap](roadmap.md).
+TwitchDock.NET is at **1.0.0-rc.2**. Every API in the pinned official documentation meets the definition of done. Selected real-credential tests passed and the public GitHub repository is configured. The packages are published on nuget.org. Broader live verification remains before 1.0.0. The original goals are in the [project plan](project-plan.md); next steps are in the [roadmap](roadmap.md).
 
 ## Coverage
 
@@ -31,7 +31,7 @@ On Windows with .NET SDK 10.0.401 (runtimes 8.0 and 10.0):
 - `dotnet build TwitchDock.slnx -c Release`: 0 warnings, 0 errors (libraries, samples and tests; warnings are errors, AOT analyzers enabled).
 - Unit and contract tests: 878 passed on net8.0 and 878 on net10.0.
 - Integration tests against Twitch CLI 1.1.24: all 4 passed on each framework (mock API, mock EventSub WebSocket with reconnect, signed webhooks for every CLI-supported type, callback verification).
-- `dotnet pack`: six `1.0.0-rc.1` packages. The package smoke test passed on net8.0 and net10.0 with JSON reflection disabled, and as native AOT executables (win-x64) on net8.0 and net10.0.
+- `dotnet pack`: six `1.0.0-rc.2` packages with icon, per-package descriptions and the README. The package smoke test passed on net8.0 and net10.0 with JSON reflection disabled; native AOT smoke runs execute in CI (linux-x64) and passed locally as win-x64 executables for rc.1.
 - The webhook host sample answered the Twitch CLI's `verify-subscription` challenge, routed `stream.online` and `channel.follow` v2, and rejected a delivery signed with another secret (403).
 - The snippets in the README, quickstart, authentication and EventSub docs compile against the current API.
 - `tools/Test-ApiCoverage.ps1 -RequireComplete` passes on Windows PowerShell 5.1.

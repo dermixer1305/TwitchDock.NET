@@ -2,6 +2,16 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
+## 1.0.0-rc.2 (2026-10-10)
+
+Second release candidate. No public API changes; the packages are easier to find, install and learn ([release notes](docs/release-notes/1.0.0-rc.2.md)).
+
+- Packages are published on nuget.org through trusted publishing and to GitHub Packages, in addition to the GitHub release assets.
+- Package icon, a description per package and more NuGet tags. The package README is the new README with runnable bot, event, API and ASP.NET Core examples and a "which package do I need?" guide.
+- English and German tutorials rewritten around the NuGet packages: own project, chat bot, alerts, API calls and a long-running bot.
+- Dependencies: Microsoft.Extensions.Logging.Abstractions 8.0.3, Microsoft.Extensions.Http 8.0.1. Dependabot groups updates and keeps Microsoft.Extensions on the 8.x line.
+- Feature request and pull request templates; questions are directed to GitHub Discussions.
+
 ## 1.0.0-rc.1 (2026-10-09)
 
 First public release candidate under the TwitchDock.NET name. Every Helix endpoint (149) and EventSub type/version (83) in the pinned documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Selected real-credential authentication, API and chat checks passed; broader live verification remains open ([report](docs/live-verification.md), [roadmap](docs/roadmap.md)).

@@ -1,3 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Twitch EventSub for .NET: typed subscriptions and events for all 83 types, WebSocket client, webhook verification, conduits and batching.</Description>
+  </PropertyGroup>
   <ItemGroup><ProjectReference Include="../TwitchDock.Helix/TwitchDock.Helix.csproj" /></ItemGroup>
 </Project>

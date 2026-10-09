@@ -1,3 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Twitch chat bots for .NET: chat over EventSub and Helix, plus an IRC client with reconnects and rate limiting.</Description>
+  </PropertyGroup>
   <ItemGroup><ProjectReference Include="../TwitchDock.EventSub/TwitchDock.EventSub.csproj" /></ItemGroup>
 </Project>

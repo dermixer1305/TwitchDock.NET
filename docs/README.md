@@ -1,6 +1,6 @@
 # TwitchDock documentation
 
-Version 1.0.0-rc.1. Start with the [quickstart](quickstart.md), then pick the reference for the API group you need. Every reference lists the methods, parameters, authorization rules, errors and an example, reviewed against the pinned official Twitch documentation of 2026-10-09.
+Version 1.0.0-rc.2. Start with the [quickstart](quickstart.md), then pick the reference for the API group you need. Every reference lists the methods, parameters, authorization rules, errors and an example, reviewed against the pinned official Twitch documentation of 2026-10-09.
 
 ## Getting started
 

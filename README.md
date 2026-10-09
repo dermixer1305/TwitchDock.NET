@@ -286,7 +286,7 @@ Every operation accepts a `CancellationToken`. JSON serialization is source-gene
 
 ## Release status
 
-**1.0.0-rc.1 is a release candidate.** Every Helix endpoint (149) and EventSub type (83) in the official documentation of 2026-10-09 has typed models, scope checks, tests and documentation ([coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md)). 878 unit and contract tests per framework, Twitch CLI integration tests and native AOT checks run in CI. Sign-in, API reads and chat were verified live against Twitch. IRC, public webhooks, reconnects and token-refresh rotation still need broader live testing ([live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md)). Public APIs may still change before 1.0.0.
+**1.0.0-rc.2 is a release candidate.** Every Helix endpoint (149) and EventSub type (83) in the official documentation of 2026-10-09 has typed models, scope checks, tests and documentation ([coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md)). 878 unit and contract tests per framework, Twitch CLI integration tests and native AOT checks run in CI. Sign-in, API reads and chat were verified live against Twitch. IRC, public webhooks, reconnects and token-refresh rotation still need broader live testing ([live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md)). Public APIs may still change before 1.0.0.
 
 ## Documentation
 

@@ -4,7 +4,7 @@ This page gets you from zero to API calls, chat and EventSub. The [documentation
 
 ## Install
 
-The packages are on [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection). Use `--prerelease` (or `--version 1.0.0-rc.1`) while 1.0.0 is a release candidate:
+The packages are on [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection). Use `--prerelease` (or `--version 1.0.0-rc.2`) while 1.0.0 is a release candidate:
 
 ```sh
 dotnet new console -n MyFirstBot -f net10.0

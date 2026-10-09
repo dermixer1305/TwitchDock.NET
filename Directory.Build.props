@@ -9,15 +9,16 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
     <!-- Release candidate: pinned API coverage is complete; broader live verification remains. -->
-    <Version>1.0.0-rc.1</Version>
+    <Version>1.0.0-rc.2</Version>
     <Authors>TwitchDock contributors</Authors>
     <RepositoryUrl>https://github.com/dermixer1305/TwitchDock.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/dermixer1305/TwitchDock.NET</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Description>Independent, asynchronous Twitch SDK for modern .NET.</Description>
-    <PackageTags>twitch;helix;eventsub;chat;oauth</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <Description>Independent, modern .NET SDK for the Twitch API, EventSub and chat bots.</Description>
+    <PackageTags>twitch;twitch-api;twitch-bot;helix;eventsub;chatbot;chat;irc;oauth;websocket;streaming</PackageTags>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
   <!-- Library projects: enable trimming, single-file and native AOT analyzers (warnings fail the build). -->
@@ -29,5 +30,6 @@
   </PropertyGroup>
   <ItemGroup Condition="'$(IsPackable)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />
+    <None Include="$(MSBuildThisFileDirectory)docs/assets/icon.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 </Project>

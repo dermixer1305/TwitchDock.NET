@@ -286,7 +286,7 @@ Jede Operation akzeptiert ein `CancellationToken`. Die JSON-Verarbeitung ist que
 
 ## Stand der Veröffentlichung
 
-**1.0.0-rc.1 ist eine Vorabversion.** Alle Helix-Endpunkte (149) und EventSub-Typen (83) der offiziellen Dokumentation vom 09.10.2026 haben typisierte Modelle, Rechteprüfungen, Tests und Dokumentation ([Abdeckungsbericht](docs/coverage.md)). In der CI laufen 878 Unit- und Vertragstests pro Zielplattform, Integrationstests mit der Twitch CLI und Native-AOT-Prüfungen. Anmeldung, API-Abfragen und Chat wurden live gegen Twitch getestet. IRC, öffentliche Webhooks, Wiederverbindungen und Token-Erneuerung brauchen noch umfassendere Live-Tests ([Testbericht](docs/live-verification.md)). Öffentliche APIs können sich bis 1.0.0 noch ändern.
+**1.0.0-rc.2 ist eine Vorabversion.** Alle Helix-Endpunkte (149) und EventSub-Typen (83) der offiziellen Dokumentation vom 09.10.2026 haben typisierte Modelle, Rechteprüfungen, Tests und Dokumentation ([Abdeckungsbericht](docs/coverage.md)). In der CI laufen 878 Unit- und Vertragstests pro Zielplattform, Integrationstests mit der Twitch CLI und Native-AOT-Prüfungen. Anmeldung, API-Abfragen und Chat wurden live gegen Twitch getestet. IRC, öffentliche Webhooks, Wiederverbindungen und Token-Erneuerung brauchen noch umfassendere Live-Tests ([Testbericht](docs/live-verification.md)). Öffentliche APIs können sich bis 1.0.0 noch ändern.
 
 ## Weitere Dokumentation
 

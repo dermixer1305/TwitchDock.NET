@@ -2,6 +2,11 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.2
+
+- Packages on nuget.org through trusted publishing (plus GitHub Packages), with icon, per-package descriptions and the example-driven README.
+- Tutorials rewritten around the NuGet packages; "which package do I need?" guide; feature request and pull request templates.
+
 ## Done: 1.0.0-rc.1
 
 - Pinned official documentation inventory (2026-10-09): 149 Helix endpoints, 83 EventSub type/versions, 81 scopes, all reviewed for availability and authorization.

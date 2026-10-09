@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>TwitchDock.NET for ASP.NET Core and the generic host: AddTwitchDock, hourly token validation and all Twitch SDK modules in one package.</Description>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../TwitchDock.Authentication/TwitchDock.Authentication.csproj" />
     <ProjectReference Include="../TwitchDock.Chat/TwitchDock.Chat.csproj" />

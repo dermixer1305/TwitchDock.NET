@@ -1,3 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Twitch OAuth for .NET: device login, authorization code, client credentials, OpenID Connect, token refresh, validation and revocation.</Description>
+  </PropertyGroup>
   <ItemGroup><ProjectReference Include="../TwitchDock.Core/TwitchDock.Core.csproj" /></ItemGroup>
 </Project>

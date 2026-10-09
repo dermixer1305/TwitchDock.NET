@@ -1,3 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>Typed, async Twitch Helix API client for .NET: users, streams, channels, chat, moderation, polls, Channel Points and all 149 endpoints.</Description>
+  </PropertyGroup>
   <ItemGroup><ProjectReference Include="../TwitchDock.Core/TwitchDock.Core.csproj" /></ItemGroup>
 </Project>

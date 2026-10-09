@@ -1,0 +1,41 @@
+name: Feature request / Funktionswunsch
+description: Suggest an improvement or a missing Twitch feature / Eine Verbesserung oder fehlende Twitch-Funktion vorschlagen
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English and German are welcome. For usage questions, please use Discussions instead.
+        Deutsch und Englisch sind willkommen. Für Fragen zur Nutzung bitte die Discussions verwenden.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to build? / Was möchtest du bauen?
+      description: Describe the use case, not only the solution. / Beschreibe den Anwendungsfall, nicht nur die Lösung.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API or behavior / Vorgeschlagene API oder Verhalten
+      description: A short code sketch helps. / Eine kurze Code-Skizze hilft.
+      render: csharp
+  - type: input
+    id: twitch-docs
+    attributes:
+      label: Twitch documentation link / Link zur Twitch-Dokumentation
+      description: If this is about a Twitch endpoint or event. / Falls es um einen Twitch-Endpunkt oder ein Ereignis geht.
+      placeholder: https://dev.twitch.tv/docs/...
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package / Paket
+      options:
+        - TwitchDock.Core
+        - TwitchDock.Authentication
+        - TwitchDock.Helix
+        - TwitchDock.EventSub
+        - TwitchDock.Chat
+        - TwitchDock.DependencyInjection
+        - Documentation / Dokumentation
+        - Not sure / Weiß nicht

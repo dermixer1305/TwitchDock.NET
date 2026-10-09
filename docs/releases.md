@@ -1,6 +1,6 @@
 # Releases and maintenance
 
-Current version: **1.0.0-rc.1**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). Every GitHub release carries the six NuGet packages, a zip bundle of them and SHA-256 checksums for use as a local feed. The same packages are published to [nuget.org](https://www.nuget.org/profiles/DerMixer1305) after maintainer approval ([setup](#nugetorg-publication)) and to GitHub Packages.
+Current version: **1.0.0-rc.2**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). Every GitHub release carries the six NuGet packages, a zip bundle of them and SHA-256 checksums for use as a local feed. The same packages are published to [nuget.org](https://www.nuget.org/profiles/DerMixer1305) after maintainer approval ([setup](#nugetorg-publication)) and to GitHub Packages.
 
 ## Versioning
 
@@ -24,8 +24,8 @@ Twitch deprecations are marked `[Obsolete]` in a minor release and removed only 
 4. Create an annotated version tag on that commit and push it:
 
    ```sh
-   git tag -a v1.0.0-rc.1 -m "TwitchDock.NET 1.0.0-rc.1"
-   git push origin v1.0.0-rc.1
+   git tag -a v1.0.0-rc.2 -m "TwitchDock.NET 1.0.0-rc.2"
+   git push origin v1.0.0-rc.2
    ```
 
 5. The [release workflow](../.github/workflows/release.yml) runs the full reusable CI workflow: Windows/Linux tests on both frameworks, coverage gate, Twitch CLI integration tests, package smoke tests and native AOT. Only after all required jobs succeed does it check the tag/version match, pack the SDK, bundle the six packages into `TwitchDock.NET-<version>-packages.zip`, generate SHA-256 checksums and create the GitHub release. The `github-packages` job then pushes the same packages to [GitHub Packages](#github-packages). If nuget.org publication is enabled, the `nuget` job waits for approval and pushes them to nuget.org.
