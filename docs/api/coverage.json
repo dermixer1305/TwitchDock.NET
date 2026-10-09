@@ -787,10 +787,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
+        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
+        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
+        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "docs/helix-tags-labels-authorization.md"
+      ]
     },
     {
       "id": "get-extension-transactions",
@@ -2753,10 +2762,16 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-channel-emotes",
@@ -2847,10 +2862,16 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-global-emotes",
@@ -2919,10 +2940,16 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-emote-sets",
@@ -3013,10 +3040,16 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-channel-chat-badges",
@@ -3092,10 +3125,16 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-global-chat-badges",
@@ -3164,10 +3203,16 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "get-chat-settings",
@@ -3254,10 +3299,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "get-shared-chat-session",
@@ -3313,10 +3364,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "get-user-emotes",
@@ -3411,10 +3468,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Catalog.cs",
+        "src/TwitchSdk.Helix/Models/ChatCatalog.cs",
+        "tests/TwitchSdk.Tests/ChatCatalogTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-catalog.json",
+        "docs/helix-chat-catalog.md"
+      ]
     },
     {
       "id": "update-chat-settings",
@@ -3549,10 +3612,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "send-chat-announcement",
@@ -3601,10 +3670,16 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "send-a-shoutout",
@@ -3640,10 +3715,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "send-chat-message",
@@ -3919,10 +4000,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "pin-chat-message",
@@ -3964,10 +4051,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "update-pinned-chat-message",
@@ -4009,10 +4102,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "unpin-chat-message",
@@ -4048,10 +4147,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "get-user-chat-color",
@@ -4097,10 +4202,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "update-user-chat-color",
@@ -4128,10 +4239,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ChatClient.Settings.cs",
+        "src/TwitchSdk.Helix/Models/ChatSettings.cs",
+        "tests/TwitchSdk.Tests/ChatSettingsTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-chat-settings.json",
+        "docs/helix-chat-settings.md"
+      ]
     },
     {
       "id": "create-clip",
@@ -4945,10 +5062,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
+        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
+        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
+        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "docs/helix-tags-labels-authorization.md"
+      ]
     },
     {
       "id": "get-drops-entitlements",
@@ -8986,10 +9112,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "get-moderators",
@@ -9061,10 +9193,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "add-channel-moderator",
@@ -9092,10 +9230,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "remove-channel-moderator",
@@ -9123,10 +9267,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "get-vips",
@@ -9198,10 +9348,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "add-channel-vip",
@@ -9229,10 +9385,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "remove-channel-vip",
@@ -9260,10 +9422,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "update-shield-mode-status",
@@ -9329,10 +9497,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "get-shield-mode-status",
@@ -9392,10 +9566,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "warn-chat-user",
@@ -9468,10 +9648,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "add-suspicious-status-to-chat-user",
@@ -9548,10 +9734,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "remove-suspicious-status-from-chat-user",
@@ -9621,10 +9813,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/ModerationClient.Roles.cs",
+        "src/TwitchSdk.Helix/Models/ModerationRoles.cs",
+        "tests/TwitchSdk.Tests/ModerationRolesTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-moderation-roles.json",
+        "docs/helix-moderation-roles.md"
+      ]
     },
     {
       "id": "get-polls",
@@ -12316,10 +12514,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "deprecated",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
+        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
+        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
+        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "docs/helix-tags-labels-authorization.md"
+      ]
     },
     {
       "id": "get-stream-tags",
@@ -12365,10 +12572,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "deprecated",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
+        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
+        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
+        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "docs/helix-tags-labels-authorization.md"
+      ]
     },
     {
       "id": "get-channel-teams",
@@ -12807,10 +13023,19 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/TagsClient.cs",
+        "src/TwitchSdk.Helix/Clients/ContentClassificationClient.cs",
+        "src/TwitchSdk.Helix/Clients/UsersClient.cs",
+        "src/TwitchSdk.Helix/Clients/BitsClient.cs",
+        "src/TwitchSdk.Helix/Models/TagsLabelsAuthorization.cs",
+        "tests/TwitchSdk.Tests/TagsLabelsAuthorizationTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-tags-labels-authorization.json",
+        "docs/helix-tags-labels-authorization.md"
+      ]
     },
     {
       "id": "get-user-block-list",
