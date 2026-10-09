@@ -1,0 +1,176 @@
+{
+  "get-chat-settings": {
+    "data": [
+      {
+        "broadcaster_id": "1234",
+        "moderator_id": "5678",
+        "slow_mode": false,
+        "slow_mode_wait_time": null,
+        "follower_mode": true,
+        "follower_mode_duration": 0,
+        "subscriber_mode": false,
+        "emote_mode": true,
+        "unique_chat_mode": false,
+        "non_moderator_chat_delay": true,
+        "non_moderator_chat_delay_duration": 4
+      }
+    ]
+  },
+  "get-chat-settings-without-moderator": {
+    "data": [
+      {
+        "broadcaster_id": "1234",
+        "slow_mode": true,
+        "slow_mode_wait_time": 30,
+        "follower_mode": false,
+        "follower_mode_duration": null,
+        "subscriber_mode": true,
+        "emote_mode": false,
+        "unique_chat_mode": true
+      }
+    ]
+  },
+  "update-chat-settings": {
+    "data": [
+      {
+        "broadcaster_id": "1234",
+        "moderator_id": "5678",
+        "slow_mode": true,
+        "slow_mode_wait_time": 10,
+        "follower_mode": false,
+        "follower_mode_duration": null,
+        "subscriber_mode": false,
+        "emote_mode": false,
+        "unique_chat_mode": false,
+        "non_moderator_chat_delay": false,
+        "non_moderator_chat_delay_duration": null
+      }
+    ]
+  },
+  "get-pinned-chat-message": {
+    "data": [
+      {
+        "message_id": "abc-def-123-456",
+        "broadcaster_id": "1234",
+        "sender_user_id": "12826",
+        "sender_user_login": "twitch",
+        "sender_user_name": "Twitch",
+        "pinned_by_user_id": "5678",
+        "pinned_by_user_login": "twitchdev",
+        "pinned_by_user_name": "TwitchDev",
+        "message": {
+          "text": "Welcome! bleedPurple Cheer100 @TwitchDev",
+          "fragments": [
+            {
+              "type": "text",
+              "text": "Welcome! ",
+              "cheermote": null,
+              "emote": null,
+              "mention": null
+            },
+            {
+              "type": "emote",
+              "text": "bleedPurple",
+              "cheermote": null,
+              "emote": {
+                "id": "62835",
+                "emote_set_id": "0",
+                "owner_id": "0",
+                "format": ["static", "animated"]
+              },
+              "mention": null
+            },
+            {
+              "type": "cheermote",
+              "text": "Cheer100",
+              "cheermote": {
+                "prefix": "cheer",
+                "bits": 100,
+                "tier": 100
+              },
+              "emote": null,
+              "mention": null
+            },
+            {
+              "type": "mention",
+              "text": "@TwitchDev",
+              "cheermote": null,
+              "emote": null,
+              "mention": {
+                "user_id": "5678",
+                "user_login": "twitchdev",
+                "user_name": "TwitchDev"
+              }
+            }
+          ]
+        },
+        "starts_at": "2026-05-06T12:30:00Z",
+        "ends_at": null,
+        "updated_at": "2026-05-06T12:31:00Z"
+      }
+    ]
+  },
+  "get-pinned-chat-message-timed": {
+    "data": [
+      {
+        "message_id": "abc-def-123-456",
+        "broadcaster_id": "1234",
+        "sender_user_id": "12826",
+        "sender_user_login": "twitch",
+        "sender_user_name": "Twitch",
+        "pinned_by_user_id": "5678",
+        "pinned_by_user_login": "twitchdev",
+        "pinned_by_user_name": "TwitchDev",
+        "message": {
+          "text": "Type !rules",
+          "fragments": [
+            {
+              "type": "text",
+              "text": "Type !rules",
+              "cheermote": null,
+              "emote": null,
+              "mention": null
+            }
+          ]
+        },
+        "starts_at": "2026-05-06T12:30:00Z",
+        "ends_at": "2026-05-06T12:35:00Z",
+        "updated_at": "2026-05-06T12:30:00Z"
+      }
+    ]
+  },
+  "get-user-chat-color": {
+    "data": [
+      {
+        "user_id": "11111",
+        "user_name": "SpeedySpeedster1",
+        "user_login": "speedyspeedster1",
+        "color": "#9146FF"
+      },
+      {
+        "user_id": "44444",
+        "user_name": "SpeedySpeedster2",
+        "user_login": "speedyspeedster2",
+        "color": ""
+      }
+    ]
+  },
+  "get-shared-chat-session": {
+    "data": [
+      {
+        "session_id": "359bce59-fa4e-41a5-bd6f-9bc0c8360485",
+        "host_broadcaster_id": "198704263",
+        "participants": [
+          {
+            "broadcaster_id": "198704263"
+          },
+          {
+            "broadcaster_id": "487263401"
+          }
+        ],
+        "created_at": "2024-09-29T19:45:37Z",
+        "updated_at": "2024-09-29T19:46:12Z"
+      }
+    ]
+  }
+}
