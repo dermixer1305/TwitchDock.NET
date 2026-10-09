@@ -195,16 +195,92 @@ app.Run();
 
 `AddTwitchDock` registers `HelixClient`, `TwitchChatClient`, `EventSubWebSocketClient` and `TwitchOAuthClient`. A ready-made EventSub webhook receiver is in the [webhook sample](https://github.com/dermixer1305/TwitchDock.NET/blob/main/samples/TwitchDock.WebhookHost/Program.cs).
 
-## Packages
+## Which package do I need?
 
-| Package | What it provides |
-| --- | --- |
-| `TwitchDock.DependencyInjection` | `AddTwitchDock`, hosted token validation; brings in all modules below |
-| `TwitchDock.Core` | HTTP transport, rate limits, bounded retries, pagination, tokens and scope checks |
-| `TwitchDock.Authentication` | OAuth flows, device login, OpenID Connect, token refresh, validation and revocation |
-| `TwitchDock.Helix` | Typed REST API: users, streams, channels, moderation, chat, polls, Channel Points and more |
-| `TwitchDock.EventSub` | Typed subscriptions and events, WebSocket client, webhooks, conduits and batching |
-| `TwitchDock.Chat` | Chat over EventSub + Helix, plus IRC with reconnects and rate limiting |
+**Not sure? Install `TwitchDock.DependencyInjection`** – it contains everything. For smaller apps you can pick single packages; each one pulls in what it depends on automatically.
+
+| I want to … | Install | Also brings in |
+| --- | --- | --- |
+| Build a chat bot or react to follows, subs, raids (the examples above) | `TwitchDock.EventSub` + `TwitchDock.Authentication` | Helix, Core |
+| Read or change data: users, streams, clips, polls, bans | `TwitchDock.Helix` + `TwitchDock.Authentication` | Core |
+| Only sign users in or manage tokens ("Log in with Twitch") | `TwitchDock.Authentication` | Core |
+| Use IRC chat, or the simplified chat client | `TwitchDock.Chat` | EventSub, Helix, Core |
+| Use ASP.NET Core, a Worker Service or `IServiceCollection` | `TwitchDock.DependencyInjection` | everything |
+| Build my own layer on top of the HTTP transport | `TwitchDock.Core` | – |
+
+### TwitchDock.Core
+
+HTTP transport, rate limits, bounded retries, pagination, token abstractions and authorization checks. Every other package builds on it, so you rarely install it alone. You meet it through its types: token providers, `TwitchScopes` and the two exceptions:
+
+```csharp
+try
+{
+    await helix.SendChatMessageAsync(request, ct);
+}
+catch (TwitchAuthorizationException ex) // checked locally before sending: nothing reached Twitch
+{
+    Console.WriteLine($"Token is missing: {string.Join(", ", ex.MissingScopes)}");
+}
+catch (TwitchApiException ex) // Twitch answered with an error
+{
+    Console.WriteLine($"{ex.StatusCode}: {ex.Message} (trace {ex.RequestId})");
+}
+```
+
+### TwitchDock.Authentication
+
+OAuth flows, device login, OpenID Connect, token refresh, validation and revocation. Use it whenever someone has to sign in, or your app needs an app token. A bot that runs for days keeps its user token alive like this:
+
+```csharp
+var userTokens = new RefreshingTokenProvider(
+    (refreshToken, ct) => oauth.RefreshAsync(clientId, refreshToken!, clientSecret, ct), // secret only for confidential apps
+    initialToken: grant,                                    // e.g. the result of the device login
+    persist: (rotated, ct) => SaveEncryptedAsync(rotated, ct)); // Twitch rotates refresh tokens: store the new one
+```
+
+All flows (authorization code, implicit, device code, client credentials, OIDC) are in [authentication](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/authentication.md).
+
+### TwitchDock.Helix
+
+Typed REST API groups: users, streams, channels, moderation, chat, polls, Channel Points and more. Use it for everything you *do* on Twitch, as opposed to events you *receive*:
+
+```csharp
+await helix.Channels.ModifyChannelInformationAsync(new() { BroadcasterId = channelId, Title = "Ranked grind!", GameId = "509658" });
+await helix.Polls.CreatePollAsync(new()
+{
+    BroadcasterId = channelId, Title = "Next game?", Duration = 120,
+    Choices = [new() { Title = "Minecraft" }, new() { Title = "Elden Ring" }],
+});
+await helix.Moderation.BanUserAsync(new() { BroadcasterId = channelId, ModeratorId = botId, Data = new() { UserId = spammerId, Duration = 600, Reason = "Spam" } });
+await helix.Chat.SendShoutoutAsync(channelId, raiderId, moderatorId: botId);
+```
+
+These calls need the scopes `channel:manage:broadcast`, `channel:manage:polls`, `moderator:manage:banned_users` and `moderator:manage:shoutouts`. Every group (`helix.Users`, `helix.Clips`, `helix.ChannelPoints`, `helix.Schedule` …) is listed in the [documentation index](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/README.md).
+
+### TwitchDock.EventSub
+
+Typed subscriptions and events, WebSocket client, webhook verification and routing, conduits and batching. Use it to get notified: chat messages, follows, subs, raids, redemptions, stream online. The [chat bot](#your-first-chat-bot) and [event](#react-to-follows-subs-raids-and-more) examples above use it. For servers there is a [webhook receiver](https://github.com/dermixer1305/TwitchDock.NET/blob/main/samples/TwitchDock.WebhookHost/Program.cs); large bots spread load over [conduits](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/helix-conduits.md).
+
+### TwitchDock.Chat
+
+Chat over EventSub + Helix, plus IRC with reconnects and rate limiting. Use `TwitchChatClient` as a shortcut for the EventSub chat bot, or `TwitchIrcClient` to migrate an IRC bot or read many channels over one connection:
+
+```csharp
+var irc = new TwitchIrcClient(userTokens, new TwitchIrcOptions { Login = "mybot" }); // scopes chat:read, chat:edit
+await irc.JoinAsync("somechannel");
+var router = new IrcMessageRouter()
+    .OnChatMessage(async (chat, ct) =>
+    {
+        if (chat.Text == "!ping") await irc.SendMessageAsync(chat.Channel, "pong", chat.MessageId, ct);
+    });
+await irc.RunAsync(router.DispatchAsync);
+```
+
+Twitch recommends EventSub for new bots; [IRC or EventSub?](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/chat-irc.md) compares both.
+
+### TwitchDock.DependencyInjection
+
+`AddTwitchDock`, hosted token validation and registration; brings in all modules. Use it in ASP.NET Core, Worker Services or any app with `IServiceCollection`: one call registers `HelixClient`, `TwitchChatClient`, `EventSubWebSocketClient` and `TwitchOAuthClient`, `AddTwitchTokenValidation` adds the hourly check Twitch requires, and `AddTwitchIrc` registers the IRC client. See the [ASP.NET Core example](#aspnet-core-and-dependency-injection) above.
 
 Every operation accepts a `CancellationToken`. JSON serialization is source-generated. Runtime dependencies are limited to the Microsoft.Extensions packages for logging and hosting.
 
