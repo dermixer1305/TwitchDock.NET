@@ -24,6 +24,7 @@ TwitchSdk follows [Semantic Versioning 2.0](https://semver.org/). All six packag
   - EventSub: WebSocket welcome, subscriptions with preflight, notifications, revocation, keepalive and reconnect; webhooks on a public HTTPS callback (challenge, notifications, revocation, retries); a conduit with a WebSocket shard.
   - Chat: the chat bot sample, and IRC connect, join, send and reconnect.
   - Fix every difference, add a regression test, and update docs and the changelog.
+  - Start with the automated read-only live checks (`TWITCHSDK_LIVE=1`, plus `TWITCH_CLIENT_ID`/`TWITCH_CLIENT_SECRET` for the app-token part); see [testing](testing.md#live-checks-against-twitch). The credential-free part already passes.
 - [ ] **Repository**: create the GitHub repository, push all branches and history, and get every job green (test matrix, integration, pack with package smoke and native AOT, api-drift). Enable private vulnerability reporting and update [SECURITY.md](../SECURITY.md).
 - [ ] **Package metadata**: set `RepositoryUrl`, `PackageProjectUrl` and the repository type in `Directory.Build.props`; make README links absolute so they work on nuget.org; inspect a packed `.nupkg` (license, readme, XML docs, `lib/net8.0` and `lib/net10.0`, dependencies).
 - [ ] **Package IDs**: check that `TwitchSdk.*` is available on nuget.org and reserve the ID prefix for the owning account, or choose other IDs before the first upload.
@@ -32,6 +33,10 @@ TwitchSdk follows [Semantic Versioning 2.0](https://semver.org/). All six packag
 - [ ] **Release**: set `<Version>1.0.0</Version>`, date the changelog section, follow the publishing steps below.
 
 ## Publishing
+
+**Automated (recommended):** `.github/workflows/release.yml` runs on a pushed tag `v<version>` (for example `v1.0.0-rc.1`). It checks that the tag matches `<Version>`, builds, tests, enforces the release gate, packs, pushes to NuGet with the repository secret `NUGET_API_KEY` and creates a GitHub release with the packages (marked prerelease for versions with a suffix). One-time setup: create a NuGet API key scoped to push `TwitchSdk.*`, store it as the `NUGET_API_KEY` secret, and protect the `nuget` environment with required reviewers. Then `git tag v1.0.0-rc.1 && git push origin v1.0.0-rc.1`.
+
+**Manual:**
 
 1. Set `<Version>` in `Directory.Build.props` and move the changelog's unreleased notes into a dated section for that version.
 2. Build, test and pack from a clean tree:

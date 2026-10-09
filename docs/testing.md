@@ -89,6 +89,16 @@ pwsh ./tools/New-CoverageReport.ps1                   # regenerate docs/coverage
 
 On Windows PowerShell 5.1 use `powershell -NoProfile -ExecutionPolicy Bypass -File tools/Test-ApiCoverage.ps1 -RequireComplete` (same for the report). The validator rejects duplicate IDs, unknown statuses, missing official sources and evidence paths outside the repository or missing on disk. A `complete` entry needs reviewed availability (and authorization for Helix) plus `src/`, `tests/` and `docs/` evidence. `-RequireComplete` fails while any entry is neither `complete` nor `excluded`. The unit tests read the same matrix: Helix fixtures must contain every documented response field, and every registered EventSub definition must be inventoried. The weekly `api-drift` workflow refreshes the inventory from the live documentation and fails on any change; see [releases](releases.md#maintenance).
 
+## Live checks against Twitch
+
+`LiveTwitchTests` in the integration project calls the real Twitch services. It is opt-in because it needs network access:
+
+```sh
+TWITCHSDK_LIVE=1 dotnet test tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj -c Release --filter "FullyQualifiedName~LiveTwitchTests"
+```
+
+Without credentials it checks the real EventSub WebSocket welcome, the public iCalendar path without a token, fetching and parsing Twitch's OpenID signing keys, and the error mapping for invalid client credentials and tokens (verified on 2026-10-09). With `TWITCH_CLIENT_ID` and `TWITCH_CLIENT_SECRET` of your own app it also acquires an app token, validates it and reads users, games, search, streams, channels, emotes, badges, cheermotes, content labels, videos, clips, teams, EventSub subscriptions and conduits, then revokes the token. All live checks are read-only.
+
 ## Not automated
 
-No test calls the real Twitch API with credentials yet. Live verification before 1.0.0 is a manual checklist in [releases](releases.md#rc-to-100-checklist).
+Write operations, user-token flows and EventSub notifications against the real Twitch API need a test account and channel; they remain the manual checklist in [releases](releases.md#rc-to-100-checklist).

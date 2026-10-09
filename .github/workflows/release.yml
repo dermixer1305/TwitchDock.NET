@@ -1,0 +1,45 @@
+name: Release
+# Publishes to NuGet and creates a GitHub release when a version tag (for example v1.0.0-rc.1) is pushed.
+# One-time setup: add the repository secret NUGET_API_KEY (scoped to push TwitchSdk.* only) and protect the
+# "nuget" environment with required reviewers. The key is never written to the repository.
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: nuget
+    permissions:
+      contents: write   # create the GitHub release
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Check that the tag matches the package version
+        run: |
+          version="$(dotnet msbuild src/TwitchSdk.Core/TwitchSdk.Core.csproj -getProperty:Version -p:TargetFramework=net10.0)"
+          if [ "v${version}" != "${GITHUB_REF_NAME}" ]; then echo "Tag ${GITHUB_REF_NAME} does not match version ${version}"; exit 1; fi
+      - run: dotnet build TwitchSdk.slnx -c Release
+      - run: dotnet test tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj -c Release --no-build
+      - name: Release gate
+        shell: pwsh
+        run: ./tools/Test-ApiCoverage.ps1 -RequireComplete
+      - run: dotnet pack TwitchSdk.slnx -c Release --no-build -o artifacts/packages
+      - name: Publish to NuGet
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: dotnet nuget push "artifacts/packages/*.nupkg" --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          prerelease=""
+          case "${GITHUB_REF_NAME}" in *-*) prerelease="--prerelease" ;; esac
+          gh release create "${GITHUB_REF_NAME}" artifacts/packages/*.nupkg --title "${GITHUB_REF_NAME}" --notes-file CHANGELOG.md ${prerelease}
