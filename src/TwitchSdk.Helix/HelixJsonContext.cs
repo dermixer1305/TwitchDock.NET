@@ -108,5 +108,9 @@ namespace TwitchSdk.Helix;
 // <group:extensions>
 // </group:extensions>
 // <group:guest-star>
+[JsonSerializable(typeof(HelixPage<GuestStarChannelSettings>))]
+[JsonSerializable(typeof(GuestStarUpdateChannelSettingsRequest))]
+[JsonSerializable(typeof(HelixPage<GuestStarSession>))]
+[JsonSerializable(typeof(HelixPage<GuestStarInvite>))]
 // </group:guest-star>
 public partial class HelixJsonContext : JsonSerializerContext;

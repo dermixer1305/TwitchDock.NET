@@ -46,6 +46,7 @@ public sealed class HelixClient(TwitchHttpClient transport)
     // <group:extensions>
     // </group:extensions>
     // <group:guest-star>
+    public GuestStarClient GuestStar { get; } = new(transport);
     // </group:guest-star>
 
     /// <summary>Uses an app or user token; no filters means the authenticated user. Email requires user:read:email.</summary>

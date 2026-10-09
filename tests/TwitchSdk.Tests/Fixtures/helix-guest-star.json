@@ -1,0 +1,196 @@
+{
+  "get-channel-guest-star-settings": {
+    "data": [
+      {
+        "is_moderator_send_live_enabled": false,
+        "slot_count": 6,
+        "is_browser_source_audio_enabled": true,
+        "group_layout": "SCREENSHARE_LAYOUT",
+        "browser_source_token": "eihq8rew7q3hgierufhi3q"
+      }
+    ]
+  },
+  "get-guest-star-session": {
+    "data": [
+      {
+        "id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
+        "guests": [
+          {
+            "slot_id": "0",
+            "is_live": true,
+            "user_id": "9321049",
+            "user_display_name": "Cool_User",
+            "user_login": "cool_user",
+            "volume": 100,
+            "assigned_at": "2023-01-02T04:16:53.325Z",
+            "audio_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": true,
+              "is_available": true
+            },
+            "video_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": false,
+              "is_available": true
+            }
+          },
+          {
+            "slot_id": "1",
+            "is_live": false,
+            "user_id": "144601104",
+            "user_display_name": "Cool_Guest",
+            "user_login": "cool_guest",
+            "volume": 0,
+            "assigned_at": "2023-01-02T04:20:59.3251234567Z",
+            "audio_settings": {
+              "is_host_enabled": false,
+              "is_guest_enabled": true,
+              "is_available": false
+            },
+            "video_settings": {
+              "is_host_enabled": false,
+              "is_guest_enabled": false,
+              "is_available": false
+            }
+          },
+          {
+            "slot_id": "SCREENSHARE",
+            "is_live": true,
+            "user_id": "9321049",
+            "user_display_name": "Cool_User",
+            "user_login": "cool_user",
+            "volume": 55,
+            "assigned_at": "2023-01-02T04:22:00Z",
+            "audio_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": false,
+              "is_available": true
+            },
+            "video_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": true,
+              "is_available": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "create-guest-star-session": {
+    "data": [
+      {
+        "id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
+        "guests": [
+          {
+            "slot_id": "0",
+            "is_live": true,
+            "user_id": "9321049",
+            "user_display_name": "Cool_User",
+            "user_login": "cool_user",
+            "volume": 100,
+            "assigned_at": "2023-01-02T04:16:53.325Z",
+            "audio_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": true,
+              "is_available": true
+            },
+            "video_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": true,
+              "is_available": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "end-guest-star-session": {
+    "data": [
+      {
+        "id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
+        "guests": [
+          {
+            "slot_id": "0",
+            "is_live": false,
+            "user_id": "9321049",
+            "user_display_name": "Cool_User",
+            "user_login": "cool_user",
+            "volume": 80,
+            "assigned_at": "2023-01-02T04:16:53.325Z",
+            "audio_settings": {
+              "is_host_enabled": false,
+              "is_guest_enabled": true,
+              "is_available": true
+            },
+            "video_settings": {
+              "is_host_enabled": true,
+              "is_guest_enabled": false,
+              "is_available": true
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "get-guest-star-invites": {
+    "data": [
+      {
+        "user_id": "144601104",
+        "invited_at": "2023-01-02T04:16:53.325Z",
+        "status": "INVITED",
+        "is_video_enabled": true,
+        "is_audio_enabled": false,
+        "is_video_available": true,
+        "is_audio_available": true
+      },
+      {
+        "user_id": "144601105",
+        "invited_at": "2023-01-02T04:18:00Z",
+        "status": "READY",
+        "is_video_enabled": false,
+        "is_audio_enabled": true,
+        "is_video_available": false,
+        "is_audio_available": false
+      }
+    ]
+  },
+  "official-example-channel-settings": {
+    "data": [
+      {
+        "is_moderator_send_live_enabled": true,
+        "slot_count": 4,
+        "is_browser_source_audio_enabled": true,
+        "layout": "TILED_LAYOUT",
+        "browser_source_token": "eihq8rew7q3hgierufhi3q"
+      }
+    ]
+  },
+  "official-example-create-session": {
+    "data": [
+      {
+        "id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
+        "guests": [
+          {
+            "id": "0",
+            "user_id": "9321049",
+            "user_display_name": "Cool_User",
+            "user_login": "cool_user",
+            "is_live": true,
+            "volume": 100,
+            "assigned_at": "2023-01-02T04:16:53.325Z",
+            "audio_settings": {
+              "is_available": true,
+              "is_host_enabled": true,
+              "is_guest_enabled": true
+            },
+            "video_settings": {
+              "is_available": true,
+              "is_host_enabled": true,
+              "is_guest_enabled": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
