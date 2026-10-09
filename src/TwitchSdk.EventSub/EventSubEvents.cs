@@ -51,6 +51,27 @@ public static partial class EventSubEvents
         yield return ChannelShoutoutReceiveV1;
         // </group:moderation-channel>
         // <group:monetization-interaction>
+        yield return ChannelBitsUseV1;
+        yield return ChannelSubscribeV1;
+        yield return ChannelSubscriptionEndV1;
+        yield return ChannelSubscriptionGiftV1;
+        yield return ChannelSubscriptionMessageV1;
+        yield return ChannelCheerV1;
+        yield return ChannelPointsAutomaticRewardRedemptionAddV1;
+        yield return ChannelPointsAutomaticRewardRedemptionAddV2;
+        yield return ChannelPointsCustomRewardAddV1;
+        yield return ChannelPointsCustomRewardUpdateV1;
+        yield return ChannelPointsCustomRewardRemoveV1;
+        yield return ChannelPointsCustomRewardRedemptionAddV1;
+        yield return ChannelPointsCustomRewardRedemptionUpdateV1;
+        yield return ChannelCustomPowerUpRedemptionAddV1;
+        yield return ChannelPollBeginV1;
+        yield return ChannelPollProgressV1;
+        yield return ChannelPollEndV1;
+        yield return ChannelPredictionBeginV1;
+        yield return ChannelPredictionProgressV1;
+        yield return ChannelPredictionLockV1;
+        yield return ChannelPredictionEndV1;
         // </group:monetization-interaction>
         // <group:community-system>
         yield return ChannelCharityCampaignDonateV1;
