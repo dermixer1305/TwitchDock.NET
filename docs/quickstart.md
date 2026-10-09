@@ -1,10 +1,18 @@
 # Quickstart (.NET 8 and .NET 10)
 
-For Ads, Analytics, Games, Search, Goals and Raids, see [the group reference and examples](helix-groups.md).
-For Clips, Videos, Charity and Teams, see [the media and community reference](helix-media.md).
-For the current Hype Train and channel records, see [Hype Train status](helix-hype-train.md).
+This page gets you from zero to API calls, chat and EventSub. The [documentation index](README.md) links the reference for every API group.
 
-The package name is provisional and packages are currently local build artifacts. Reference the projects while developing, or add `artifacts/packages` as a local NuGet source after `dotnet pack`.
+## Install
+
+The packages are not on NuGet yet (release candidate). Either reference the projects from a clone, or pack them and use a local feed:
+
+```sh
+dotnet pack TwitchSdk.slnx -c Release -o artifacts/packages
+dotnet nuget add source "$PWD/artifacts/packages" --name twitchsdk-local
+dotnet add package TwitchSdk.DependencyInjection --version 1.0.0-rc.1
+```
+
+`TwitchSdk.DependencyInjection` pulls in the other modules: `TwitchSdk.Core`, `TwitchSdk.Authentication`, `TwitchSdk.Helix`, `TwitchSdk.EventSub` and `TwitchSdk.Chat`. Building from source needs the .NET 10 SDK; consumers can target net8.0 or net10.0.
 
 ## App token and users
 
@@ -30,54 +38,124 @@ services.AddTwitchSdk(new TwitchHttpOptions { ClientId = clientId }, sp =>
 using var provider = services.BuildServiceProvider();
 var helix = provider.GetRequiredService<HelixClient>();
 var page = await helix.GetUsersAsync(new() { Logins = ["twitchdev"] });
-foreach (var user in page.Data) Console.WriteLine(user.DisplayName);
+foreach (var user in page.Data) Console.WriteLine($"{user.Id}: {user.DisplayName}");
 ```
 
-For a persistent OAuth session, run `TokenValidationLoop.RunAsync` alongside your application, starting before serving authenticated work. Pass the same token provider and expected client ID. It validates immediately and hourly while idle. Observe its task: on an invalid token terminate the associated application sessions, and handle transient validation failures with a bounded host policy. This is not silently started by AddTwitchSdk.
-
-## User authorization and rotation
-
-Use `TwitchOAuthClient.CreateState()` and save the value in the initiating browser session. Redirect to `CreateAuthorizationUri(clientId, registeredRedirect, scopes, state)`. On callback, compare state with `ValidateState`, consume it once, handle denial, and only then call `ExchangeCodeAsync`. Register the redirect URI exactly with Twitch. Do not embed client secrets in public clients.
-
-Construct `RefreshingTokenProvider` with the returned token and an acquire delegate calling `oauth.RefreshAsync(clientId, refreshToken, clientSecret, ct)`. Supply a persistence callback to save rotated tokens in an encrypted store. Refreshes are serialized for one provider instance. Coordinate independently across processes; this library does not implement a distributed lock. If durable persistence fails, the request fails but the new token remains in memory to avoid reusing an invalidated refresh token.
+The runnable version is [samples/TwitchSdk.Quickstart](samples.md#quickstart). Every API group hangs off `HelixClient` (`helix.Users`, `helix.Channels`, `helix.Streams`, `helix.Chat`, `helix.Moderation`, `helix.ChannelPoints` and more); see the [index](README.md#helix-rest-api). For user tokens (chat, moderation, channel management) pick a flow in [authentication](authentication.md).
 
 ## Streams and channels
 
 ```csharp
-await foreach (var stream in helix.EnumerateStreamsAsync(
-    new() { Languages = ["de"], First = 100 }, cancellationToken))
+await foreach (var stream in helix.EnumerateStreamsAsync(new() { Languages = ["de"], First = 100 }, cancellationToken))
     Console.WriteLine($"{stream.UserName}: {stream.Title}");
 
 var channels = await helix.GetChannelInformationAsync(["141981764"], cancellationToken);
 ```
 
-The streams list is live and may contain duplicates or omit entries across pages. Pagination protects against cursor cycles but does not turn Twitch's dynamic listing into a snapshot.
+`Enumerate*Async` methods follow pagination cursors with cycle protection. The streams list is live and can repeat or skip entries across pages; it is not a snapshot. More in [streams](helix-streams.md) and [channels](helix-channels.md).
 
-## Chat and EventSub
+## Chat over EventSub
 
-Use a **user token** with `user:read:chat` to subscribe to WebSocket chat. Sending requires `user:write:chat`. App-token bots have additional grants/role requirements described in [Twitch chat authentication](https://dev.twitch.tv/docs/chat/authenticating/).
+Twitch recommends EventSub plus Helix for chat bots. Register `AddTwitchSdk` with the **bot's user token** (scopes `user:read:chat` and `user:write:chat`), for example a `RefreshingTokenProvider` from the [device code flow](authentication.md#device-code).
 
 ```csharp
-var chat = provider.GetRequiredService<TwitchSdk.Chat.TwitchChatClient>();
-var socket = provider.GetRequiredService<TwitchSdk.EventSub.EventSubWebSocketClient>();
+using TwitchSdk.Chat;
+using TwitchSdk.EventSub;
+
+var chat = provider.GetRequiredService<TwitchChatClient>();
+var socket = provider.GetRequiredService<EventSubWebSocketClient>();
 await socket.RunAsync(
     async (session, resubscribe, ct) =>
     {
+        // false means Twitch migrated the session and kept its subscriptions.
         if (resubscribe) await chat.SubscribeAsync(broadcasterId, botUserId, session.Id, ct);
     },
-    (message, ct) =>
+    async (message, ct) =>
     {
-        if (TwitchSdk.Chat.TwitchChatClient.TryReadMessage(message, out var received))
-            Console.WriteLine($"{received!.ChatterUserName}: {received.Message.Text}");
-        // Also handle revocations here; keep this callback brief.
-        return Task.CompletedTask;
-    }, cancellationToken);
+        if (!TwitchChatClient.TryReadMessage(message, out var received)) return; // other events and revocations
+        Console.WriteLine($"{received.ChatterUserName}: {received.Message.Text}");
+        if (received.Message.Text == "!hello")
+        {
+            var results = await chat.SendAsync(new()
+            {
+                BroadcasterId = broadcasterId, SenderId = botUserId, Message = $"Hello {received.ChatterUserName}",
+                ReplyParentMessageId = received.MessageId,
+            }, ct);
+            if (results.Data is [{ IsSent: false, DropReason: { } reason }]) Console.WriteLine($"Dropped: {reason.Code}");
+        }
+    },
+    cancellationToken);
 ```
 
-Send with `chat.SendAsync(new() { BroadcasterId = broadcasterId, SenderId = botUserId, Message = "Hello" }, ct)`. Check each result's `IsSent` and `DropReason`, even after HTTP success. Leave `ForSourceOnly` unset with user tokens. `Pin = true` additionally requires moderator permission and cannot combine with reply or source-only options.
+`TryReadMessage` returns the typed `ChannelChatMessageEvent`. `SubscribeAsync` checks the token's scopes and user before sending and throws `TwitchAuthorizationException` for a wrong token. A successful send can still be dropped by Twitch: check `IsSent` and `DropReason`. Callbacks run sequentially, so keep them short. The complete bot with Ctrl+C handling and hourly validation is [samples/TwitchSdk.ChatBot](samples.md#chat-bot); IRC is covered in [chat over IRC](chat-irc.md).
 
-Subscription management is available through `CreateEventSubSubscriptionAsync`, `GetEventSubSubscriptionsAsync`, `EnumerateEventSubSubscriptionsAsync` and `DeleteEventSubSubscriptionAsync`. Listing supports status, type, user ID, subscription ID, conduit ID (mutually exclusive) and after. Webhooks/conduits require app tokens; WebSockets require user tokens. Generic condition maps do not count as dedicated typed coverage of all subscription types. See [full method examples and authorization rules](helix-foundation.md), including the separate request/response transports and conflict IDs.
+## Typed EventSub events
+
+For more than chat, route typed events:
+
+```csharp
+var router = new EventSubEventRouter()
+    .On(EventSubEvents.StreamOnlineV1, (online, _, _) => { Console.WriteLine($"{online.BroadcasterUserName} is live"); return Task.CompletedTask; })
+    .On(EventSubEvents.ChannelFollowV2, (follow, _, _) => { Console.WriteLine($"{follow.UserName} followed"); return Task.CompletedTask; })
+    .OnRevocation((subscription, _) => { Console.WriteLine($"{subscription.Type} revoked: {subscription.Status}"); return Task.CompletedTask; });
+
+await socket.RunAsync(
+    async (session, resubscribe, ct) =>
+    {
+        if (!resubscribe) return;
+        await helix.SubscribeWebSocketAsync(EventSubSubscriptions.StreamOnlineV1(broadcasterId), session.Id, ct);
+        await helix.SubscribeWebSocketAsync(EventSubSubscriptions.ChannelFollowV2(broadcasterId, moderatorId), session.Id, ct);
+    },
+    (message, ct) => router.DispatchAsync(message, ct),
+    cancellationToken);
+```
+
+Every subscription type has a factory on `EventSubSubscriptions` (condition plus required scopes) and a definition with the same name on `EventSubEvents`. See [EventSub](eventsub.md) for authorization rules, the WebSocket lifecycle, conduits and batching.
 
 ## Webhooks
 
-At an HTTPS callback on port 443, read the original bytes with a 1 MiB limit. Get headers case-insensitively and call `EventSubWebhookVerifier.VerifyAndParse(messageId, timestamp, signature, bytes)`. Reject invalid signatures/timestamps. For callback verification, return `payload.Challenge` as plain text. For notifications/revocations, persist and deduplicate by message ID before acknowledging 2xx, then process asynchronously. Do not deserialize and reserialize before verifying. Multi-instance hosting requires a shared durable inbox.
+Webhook subscriptions use an app token and an HTTPS callback on port 443:
+
+```csharp
+await helix.CreateEventSubSubscriptionAsync(EventSubSubscriptions.StreamOnlineV1(broadcasterId),
+    new() { Method = "webhook", Callback = "https://example.com/eventsub", Secret = webhookSecret }, cancellationToken);
+
+var handler = new EventSubWebhookHandler(new EventSubWebhookVerifier(webhookSecret), router);
+// In the HTTP endpoint: pass the headers and the exact raw body bytes, then write the result back.
+var result = await handler.HandleAsync(EventSubWebhookRequest.FromHeaders(name => headers[name], rawBody), cancellationToken);
+```
+
+The handler verifies the signature, answers the challenge, suppresses duplicates and dispatches to the router. The ASP.NET Core version is [samples/TwitchSdk.WebhookHost](samples.md#webhook-host).
+
+## Dependency injection and hosting
+
+`AddTwitchSdk(options, tokenProviderFactory)` registers one authorization:
+
+| Service | Lifetime | Notes |
+| --- | --- | --- |
+| `TwitchHttpOptions`, `IAccessTokenProvider` | Singleton | The provider comes from your factory and is owned by the container |
+| `TwitchOAuthClient` | Typed `HttpClient` | Redirects disabled, pooled connections recycled every 5 minutes |
+| `TwitchHttpClient`, `HelixClient`, `TwitchChatClient` | Singleton | Share rate-limit state and one refresh gate |
+| `EventSubWebSocketClient` | Transient | One instance per receive loop |
+| `TimeProvider` | Singleton | `TimeProvider.System` unless registered before |
+
+Further registrations:
+
+- `AddTwitchTokenValidation(new TwitchTokenValidationOptions { ExpectedClientId = clientId })` adds a hosted service that validates the token at startup and hourly; details in [authentication](authentication.md#validation-startup-and-hourly).
+- `AddTwitchIrc(new TwitchIrcOptions { Login = "mybot" })` adds a singleton `TwitchIrcClient` that uses the registered token provider; start it with `RunAsync`, for example from a `BackgroundService` ([chat over IRC](chat-irc.md)).
+
+A container holds one authorization. Use separate containers or construct `TwitchHttpClient`/`HelixClient` pairs yourself for independent authorizations, for example an app token for webhooks next to a bot's user token.
+
+## Errors, retries and limits
+
+- `TwitchApiException` carries `StatusCode`, Twitch's `Error` and message, the `RequestId` trace ID and, for duplicate EventSub subscriptions, `ExistingSubscriptionId`.
+- `TwitchAuthorizationException` reports a local preflight failure (missing scope, wrong token kind or user); nothing was sent.
+- HTTP 401 triggers one token refresh and retry. HTTP 429 waits for the rate-limit reset and retries up to `MaxRateLimitRetries` (default 2) when the wait is at most `MaxRetryDelay` (default 2 minutes). Only GET and HEAD retry 500, 502, 503 and 504 (`MaxTransientRetries`, default 2); mutations are never retried after an ambiguous failure.
+- Request lists that are null mean "no filter", like empty lists. Absent response fields keep the model's declared default (for example an empty list) instead of becoming null.
+- `TwitchHttpOptions.BaseAddress` and the EventSub WebSocket endpoint accept plain `http://` and `ws://` only on loopback hosts, which lets you point the SDK at the [Twitch CLI](testing.md#integration-tests-twitch-cli) mock servers.
+
+## Where to go next
+
+- Helix: [foundation](helix-foundation.md), [users and whispers](helix-users-whispers.md), [channels](helix-channels.md), [streams](helix-streams.md), [chat catalog](helix-chat-catalog.md), [chat settings](helix-chat-settings.md), [moderation enforcement](helix-moderation-enforcement.md), [moderation roles](helix-moderation-roles.md), [Channel Points](helix-channel-points.md), [Bits and subscriptions](helix-bits-subscriptions.md), [polls and predictions](helix-polls-predictions.md), [schedule](helix-schedule.md), [Hype Train](helix-hype-train.md), [ads, analytics, games, search, goals, raids](helix-groups.md), [clips, videos, charity, teams](helix-media.md), [extensions](helix-extensions.md), [entitlements](helix-entitlements.md), [Guest Star](helix-guest-star.md), [tags, labels, authorization, Power-ups](helix-tags-labels-authorization.md), [conduits](helix-conduits.md)
+- EventSub: [overview](eventsub.md), [chat and AutoMod](eventsub-chat-automod.md), [channel and moderation](eventsub-moderation-channel.md), [monetization and interaction](eventsub-monetization-interaction.md), [community and system](eventsub-community-system.md)
+- Chat: [IRC](chat-irc.md); authentication: [all flows](authentication.md); [samples](samples.md); [testing](testing.md)

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/TwitchSdk.Authentication/TwitchSdk.Authentication.csproj" />
+    <ProjectReference Include="../../src/TwitchSdk.EventSub/TwitchSdk.EventSub.csproj" />
+  </ItemGroup>
+</Project>

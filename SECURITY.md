@@ -1,9 +1,32 @@
 # Security
 
-Never include access tokens, refresh tokens, webhook secrets or OAuth client secrets in issue reports. Use encrypted storage and a secret manager for deployments. Token ToString methods redact credentials, but explicit serialization of token response models is sensitive and must not be logged.
+## Reporting a vulnerability
 
-Disable automatic redirects on custom HttpClient handlers. The DI setup does this. Use separate clients/providers per authorization and verify the client ID when validating tokens. Protect OAuth state with a single-use browser-session binding; generating a random value alone is insufficient.
+Do not open a public issue for security problems. The public GitHub repository does not exist yet. Before the first publication, private vulnerability reporting will be enabled there and this section will link it: **Reporting channel: to be added before publication.**
 
-Verify webhook signatures on raw bytes before any side effects. Use persistent deduplication for distributed or restart-safe processing. Do not treat an in-memory cache as exactly-once delivery. Observe callback/validation-loop failures and terminate invalid OAuth sessions.
+Never include access tokens, refresh tokens, client secrets, webhook secrets, extension secrets or stream keys in a report. Revoke any credential that was exposed.
 
-The SDK is pre-release. No live Twitch integration, independent security audit, or production-readiness claim has been completed. A private vulnerability reporting channel must be configured with the future GitHub repository before public release.
+## Supported versions
+
+Only the latest release receives fixes. The current version is the 1.0.0-rc.1 release candidate, which has not been verified against the live Twitch API and has not had an independent security audit.
+
+## What the SDK does for you
+
+- **Credential redaction.** `ToString()` of tokens, OAuth responses, device authorizations, OAuth callbacks, transport requests with webhook secrets, extension secrets, stream keys and the IRC `PASS` line returns redacted text. OAuth error bodies are reduced to known machine-readable codes because raw responses can contain credentials. Tokens are sent only in headers, never in URLs.
+- **Origin protection.** Helix calls accept only relative endpoint paths, so a bearer token cannot be sent to another host through a crafted path. The DI registrations disable automatic redirects. EventSub `session_reconnect` URLs are followed only to the configured scheme, host and port.
+- **Loopback-only plain endpoints.** `TwitchHttpOptions.BaseAddress` must use HTTPS and the EventSub WebSocket endpoint `wss://`; `http://` and `ws://` are accepted only on loopback hosts, for local tests against the Twitch CLI.
+- **Webhook verification.** `EventSubWebhookVerifier` checks the HMAC-SHA256 signature over message ID, timestamp and the exact raw body in constant time, rejects timestamps older than ten minutes or more than one minute ahead and bodies over 1 MiB, and parses JSON only after verification. `EventSubWebhookHandler` answers 403 for invalid signatures.
+- **OAuth callbacks.** `TwitchOAuthCallbacks` compares the state in constant time before trusting any other value and rejects repeated parameters.
+- **OpenID Connect.** `ValidateIdTokenAsync` verifies the RS256 signature against Twitch's published keys and checks issuer, audience (and authorized party), expiry, issue time and nonce. Claims of a token that fails validation are never returned.
+- **Authorization preflight.** Known token kind, client ID, user and scopes are checked before a request is sent, which avoids sending tokens to operations they cannot authorize.
+
+## What you must do
+
+- Store tokens and secrets encrypted or in a secret manager; read them from the environment or configuration providers, never from source.
+- Protect OAuth `state` (and the OpenID `nonce`) with a single-use binding to the user's browser session. A random value alone is not enough.
+- Use one `RefreshingTokenProvider` and client set per authorization, and verify the expected client ID during validation. Coordinate refreshes across processes yourself.
+- Validate user tokens at startup and hourly (`AddTwitchTokenValidation` or `TokenValidationLoop`), and end the associated sessions when validation fails.
+- Disable automatic redirects on custom `HttpClient` handlers.
+- For webhooks, verify on the raw bytes before any side effect, limit the request body size, and use a shared durable inbox for deduplication across replicas or restarts. The built-in `MessageDeduplicator` is in memory and is not exactly-once delivery.
+- Do not log request bodies of subscription or conduit calls: webhook secrets are necessarily part of the JSON sent to Twitch.
+- Revoke tokens on sign-out and delete stored refresh tokens.

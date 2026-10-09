@@ -1,6 +1,71 @@
 # Changelog
 
-## 0.1.0-alpha.1 — Unreleased
+All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
+
+## 1.0.0-rc.1 (unreleased)
+
+Release candidate. Every Helix endpoint (149) and EventSub type/version (83) in the pinned official documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Live verification with real credentials and publication are still open ([roadmap](docs/roadmap.md)).
+
+### Breaking changes since 0.1.0-alpha.1
+
+- `TwitchSdk.Chat.ChatMessage` and its companion types (`ChatMessageContent`, `ChatFragment`, `ChatBadge`, `ChatCheer`, `ChatCheermote`, `ChatEmote`, `ChatMention`, `ChatGif`, `ChatReply`, `ChatJsonContext`) were removed. `TwitchChatClient.TryReadMessage` now returns EventSub's `ChannelChatMessageEvent`; property names are unchanged, nested types are now `ChatMessageBody`, `ChatMessageFragment`, `ChatMessageBadge` and so on ([migration notes](docs/eventsub-chat-automod.md#chat-module-0x-breaking-change)).
+- `TwitchChatClient.SubscribeAsync` now subscribes through the typed `channel.chat.message` spec, so a token without `user:read:chat`, an app token or another user's token fails with `TwitchAuthorizationException` before the request.
+- `ScheduleVacation.StartTime` and `EndTime` are nullable; an empty vacation object reads as null timestamps.
+- Null request lists now mean "no filter", the same as empty lists, and response properties with defaults keep them when Twitch omits a field.
+- `TwitchOAuthClient` takes an optional `TimeProvider` constructor parameter (source compatible, binary breaking).
+
+### Core
+
+- Plain `http://` base addresses are accepted on loopback hosts for local mock servers such as the Twitch CLI.
+- `EmptyStringAsNullDateTimeOffsetConverter` reads empty-string timestamps as null.
+- Clearer authorization messages when an operation accepts no OAuth token at all (Extension JWT endpoints).
+
+### Authentication
+
+- Device code flow polling with `WaitForDeviceAuthorizationAsync` (`authorization_pending`, `slow_down`, expiry).
+- Callback parsing with `TwitchOAuthCallbacks.ParseAuthorizationCode` and `ParseImplicitGrant`: constant-time state check, error reporting through `TwitchOAuthCallbackException`, rejection of repeated parameters.
+- OpenID Connect: `CreateOpenIdAuthorizationUri` with claims requests, `ValidateIdTokenAsync` (RS256 signature against Twitch's JWKS, issuer, audience, lifetime, nonce) and `GetUserInfoAsync`.
+- `TokenValidationLoop` tries one refresh when Twitch rejects the token with 401.
+
+### Helix
+
+- Moderation enforcement: AutoMod check, held messages and settings, bans and timeouts, unban requests, blocked terms, chat message deletion.
+- Moderation roles and safety: moderated channels, moderators, VIPs, Shield Mode, warnings, suspicious users.
+- The moderation endpoints validate parameters locally, preflight known token scopes, kind and user, and offer enumerators for paginated lists.
+- Chat catalog: chatters, channel, global, set and user emotes with templates, chat badges.
+- Chat settings, announcements, Shoutouts, pins, chat colors and shared chat sessions.
+- Extensions (12 endpoints) with EBS support through `ExtensionSecret`, `ExtensionJwt` and `ExtensionJwtTokenProvider` (minimum JWT lifetime 30 seconds).
+- Drops entitlements (empty entitlement ID lists are rejected locally), Guest Star (12 endpoints, public beta), Tags (obsolete, deprecated by Twitch), content classification labels, Get Authorization by User and custom Power-ups.
+
+### EventSub
+
+- Typed subscription factories (`EventSubSubscriptions`) and event definitions (`EventSubEvents`) for all 83 type/versions: chat and AutoMod, moderation and channel, monetization and interaction, community and system (including Guest Star beta and batched Drops), with per-type scopes, authorizing user and transports.
+- Typed `CreateEventSubSubscriptionAsync(spec, transport)` and `SubscribeWebSocketAsync(spec, sessionId)` with WebSocket preflight and app-token enforcement for webhooks and conduits.
+- `EventSubEventRouter`, `TryReadEvent` on messages and payloads, and a registry (`EventSubEvents.All`, `TryGetDefinition`).
+- `EventSubWebhookHandler`: framework-independent verification, callback challenge, deduplication and dispatch; handler failures release the message ID so Twitch retries.
+- `EventSubWebSocketClient` accepts a `ws://` endpoint on loopback hosts for the Twitch CLI mock server.
+- Batched payloads (`events`) and `is_batching_enabled` for `drop.entitlement.grant`.
+- Models tolerate documented payload variants (charity `broadcaster_*` and `broadcaster_user_*` fields, missing `stream.offline` and unban request IDs).
+
+### Chat
+
+- IRC transport in `TwitchSdk.Chat.Irc`: `TwitchIrcClient` (login with one refresh, rejoin, keepalive, reconnects, rate limits), `IrcMessage` IRCv3 parser and serializer, typed views, `IrcMessageRouter`, rate limiters, WebSocket and TCP connections.
+
+### DependencyInjection
+
+- `AddTwitchTokenValidation` registers a hosted service that validates at startup and hourly, retries transient failures a bounded number of times and faults on invalid tokens, which stops the host under the default host settings.
+- `AddTwitchIrc` registers `TwitchIrcClient` with the configured token provider.
+
+### Build, tests and documentation
+
+- Trimming and AOT analyzers on all libraries; native AOT smoke runs of the packed SDK on net8.0 and net10.0.
+- XML documentation files ship in the packages.
+- Public API snapshot tests detect breaking changes.
+- Integration tests against the Twitch CLI mock API, mock EventSub WebSocket server and CLI-signed webhooks.
+- CI: test matrix (Ubuntu and Windows, net8.0 and net10.0) with the coverage release gate, integration job, pack with package smoke and native AOT; weekly `api-drift` workflow; Dependabot.
+- Documentation index, authentication and EventSub guides, testing guide, generated coverage report (`tools/New-CoverageReport.ps1`), chat bot and webhook host samples.
+
+## 0.1.0-alpha.1 (not published)
 
 - Create independent .NET 8/.NET 10 modules and a pinned official API inventory.
 - Add HTTP retries, rate-limit coordination, error mapping and pagination.
@@ -24,5 +89,3 @@
 - Add all Schedule endpoints, including vacation settings, recurring segment operations, string-encoded minute durations and a public iCalendar text path that bypasses token acquisition.
 - Add Get Hype Train Status with shared-train participants, nullable records and 64-bit point counters. Contract tests now compare timestamps with more than seven fractional digits by truncation, matching System.Text.Json.
 - Add all six Conduits endpoints with app-only authorization, shard pagination, separate secret-bearing request transports and explicit per-shard errors in HTTP 202 results.
-
-This is a partial foundation. Complete API coverage, live integration validation and stable publication remain open.
