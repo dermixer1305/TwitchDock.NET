@@ -1,0 +1,276 @@
+{
+  "channel.bits.use@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "bits": 3000000000, "type": "power_up",
+    "message": {
+      "text": "cheer1 hi Kappa",
+      "fragments": [
+        { "type": "cheermote", "text": "cheer1", "cheermote": { "prefix": "cheer", "bits": 1, "tier": 1 }, "emote": null },
+        { "type": "text", "text": " hi ", "cheermote": null, "emote": null },
+        { "type": "emote", "text": "Kappa", "cheermote": null, "emote": { "id": "25", "emote_set_id": "0", "owner_id": "0", "format": ["static", "animated"] } }
+      ]
+    },
+    "power_up": { "type": "gigantify_an_emote", "emote": { "id": "emotesv2_dc24652ada1e4c84a5e3ceebae4de709", "name": "MegaLUL" }, "message_effect_id": "cosmic-abyss" },
+    "custom_power_up": { "title": "Hydrate", "reward_id": "92af127c-7326-4483-a52b-b0da0be61c01" }
+  },
+  "channel.bits.use@1#cheer": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "bits": 2, "type": "cheer", "power_up": null, "custom_power_up": null,
+    "message": {
+      "text": "cheer1 hi cheer1",
+      "fragments": [
+        { "type": "cheermote", "text": "cheer1", "cheermote": { "prefix": "cheer", "bits": 1, "tier": 1 }, "emote": null },
+        { "type": "text", "text": " hi ", "cheermote": null, "emote": null },
+        { "type": "cheermote", "text": "cheer1", "cheermote": { "prefix": "cheer", "bits": 1, "tier": 1 }, "emote": null }
+      ]
+    }
+  },
+  "channel.subscribe@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "tier": "1000", "is_gift": false
+  },
+  "channel.subscription.end@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "tier": "3000", "is_gift": true
+  },
+  "channel.subscription.gift@1": {
+    "user_id": null, "user_login": null, "user_name": null,
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "total": 50, "tier": "1000", "cumulative_total": null, "is_anonymous": true
+  },
+  "channel.subscription.gift@1#named": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "total": 2, "tier": "1000", "cumulative_total": 284, "is_anonymous": false
+  },
+  "channel.subscription.message@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "tier": "1000",
+    "message": { "text": "Love the stream! FevziGG", "emotes": [{ "begin": 17, "end": 23, "id": "302976485" }] },
+    "cumulative_months": 15, "streak_months": null, "duration_months": 6
+  },
+  "channel.cheer@1": {
+    "is_anonymous": true, "user_id": null, "user_login": null, "user_name": null,
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "message": "Cheer100000 anonymous hype", "bits": 2500000000
+  },
+  "channel.cheer@1#named": {
+    "is_anonymous": false, "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "message": "pogchamp", "bits": 1000
+  },
+  "channel.channel_points_automatic_reward_redemption.add@1": {
+    "broadcaster_user_id": "12826", "broadcaster_user_name": "Twitch", "broadcaster_user_login": "twitch",
+    "user_id": "141981764", "user_name": "TwitchDev", "user_login": "twitchdev",
+    "id": "f024099a-e0fe-4339-9a0a-a706fb59f353",
+    "reward": { "type": "chosen_sub_emote_unlock", "cost": 100, "unlocked_emote": { "id": "emotesv2_dc24652ada1e4c84a5e3ceebae4de709", "name": "MegaLUL" } },
+    "message": { "text": "Hello world! VoHiYo", "emotes": [{ "id": "81274", "begin": 13, "end": 18 }] },
+    "user_input": "Hello world! VoHiYo ",
+    "redeemed_at": "2024-02-23T21:14:34.260398045Z"
+  },
+  "channel.channel_points_automatic_reward_redemption.add@1#official": {
+    "broadcaster_user_id": "12826", "broadcaster_user_name": "Twitch", "broadcaster_user_login": "twitch",
+    "user_id": "141981764", "user_name": "TwitchDev", "user_login": "twitchdev",
+    "id": "f024099a-e0fe-4339-9a0a-a706fb59f353",
+    "reward": { "type": "send_highlighted_message", "cost": 100, "unlocked_emote": null },
+    "message": { "text": "Hello world! VoHiYo", "emotes": [{ "id": "81274", "begin": 13, "end": 18 }] },
+    "user_input": null,
+    "redeemed_at": "2024-02-23T21:14:34.260398045Z"
+  },
+  "channel.channel_points_automatic_reward_redemption.add@2": {
+    "broadcaster_user_id": "12826", "broadcaster_user_name": "Twitch", "broadcaster_user_login": "twitch",
+    "user_id": "141981764", "user_name": "TwitchDev", "user_login": "twitchdev",
+    "id": "f024099a-e0fe-4339-9a0a-a706fb59f353",
+    "reward": { "type": "chosen_modified_sub_emote_unlock", "channel_points": 2147483648, "emote": { "id": "emotesv2_dc24652ada1e4c84a5e3ceebae4de709_BW", "name": "MegaLUL_BW" } },
+    "message": {
+      "text": "Hello world! VoHiYo",
+      "fragments": [
+        { "type": "text", "text": "Hello world! ", "emote": null },
+        { "type": "emote", "text": "VoHiYo", "emote": { "id": "81274" } }
+      ]
+    },
+    "redeemed_at": "2024-08-12T21:14:34.260398045Z"
+  },
+  "channel.channel_points_automatic_reward_redemption.add@2#no-message": {
+    "broadcaster_user_id": "12826", "broadcaster_user_name": "Twitch", "broadcaster_user_login": "twitch",
+    "user_id": "141981764", "user_name": "TwitchDev", "user_login": "twitchdev",
+    "id": "f024099a-e0fe-4339-9a0a-a706fb59f354",
+    "reward": { "type": "random_sub_emote_unlock", "channel_points": 300, "emote": null },
+    "message": null,
+    "redeemed_at": "2024-08-12T21:15:34.260398045Z"
+  },
+  "channel.channel_points_custom_reward.add@1": {
+    "id": "9001", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "is_enabled": true, "is_paused": false, "is_in_stock": true, "title": "Cool Reward", "cost": 100, "prompt": "reward prompt",
+    "is_user_input_required": true, "should_redemptions_skip_request_queue": false,
+    "cooldown_expires_at": null, "redemptions_redeemed_current_stream": null,
+    "max_per_stream": { "is_enabled": true, "value": 1000 },
+    "max_per_user_per_stream": { "is_enabled": true, "value": 1000 },
+    "global_cooldown": { "is_enabled": true, "seconds": 1000 },
+    "background_color": "#FA1ED2",
+    "image": null,
+    "default_image": { "url_1x": "https://static-cdn.jtvnw.net/default-1.png", "url_2x": "https://static-cdn.jtvnw.net/default-2.png", "url_4x": "https://static-cdn.jtvnw.net/default-4.png" }
+  },
+  "channel.channel_points_custom_reward.update@1": {
+    "id": "9001", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "is_enabled": true, "is_paused": true, "is_in_stock": false, "title": "Cool Reward", "cost": 3000000000, "prompt": "reward prompt",
+    "is_user_input_required": false, "should_redemptions_skip_request_queue": true,
+    "cooldown_expires_at": "2019-11-16T10:11:12.634234626Z", "redemptions_redeemed_current_stream": 123,
+    "max_per_stream": { "is_enabled": true, "value": 1000 },
+    "max_per_user_per_stream": { "is_enabled": false, "value": 0 },
+    "global_cooldown": { "is_enabled": true, "seconds": 1000 },
+    "background_color": "#FA1ED2",
+    "image": { "url_1x": "https://static-cdn.jtvnw.net/image-1.png", "url_2x": "https://static-cdn.jtvnw.net/image-2.png", "url_4x": "https://static-cdn.jtvnw.net/image-4.png" },
+    "default_image": { "url_1x": "https://static-cdn.jtvnw.net/default-1.png", "url_2x": "https://static-cdn.jtvnw.net/default-2.png", "url_4x": "https://static-cdn.jtvnw.net/default-4.png" }
+  },
+  "channel.channel_points_custom_reward.remove@1": {
+    "id": "9001", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "is_enabled": true, "is_paused": false, "is_in_stock": true, "title": "Cool Reward", "cost": 100, "prompt": "reward prompt",
+    "is_user_input_required": true, "should_redemptions_skip_request_queue": false,
+    "cooldown_expires_at": "2019-11-16T10:11:12.123Z", "redemptions_redeemed_current_stream": 123,
+    "max_per_stream": { "is_enabled": true, "value": 1000 },
+    "max_per_user_per_stream": { "is_enabled": true, "value": 1000 },
+    "global_cooldown": { "is_enabled": true, "seconds": 1000 },
+    "background_color": "#FA1ED2",
+    "image": { "url_1x": "https://static-cdn.jtvnw.net/image-1.png", "url_2x": "https://static-cdn.jtvnw.net/image-2.png", "url_4x": "https://static-cdn.jtvnw.net/image-4.png" },
+    "default_image": { "url_1x": "https://static-cdn.jtvnw.net/default-1.png", "url_2x": "https://static-cdn.jtvnw.net/default-2.png", "url_4x": "https://static-cdn.jtvnw.net/default-4.png" }
+  },
+  "channel.channel_points_custom_reward_redemption.add@1": {
+    "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "user_id": "9001", "user_login": "cooler_user", "user_name": "Cooler_User",
+    "user_input": "pogchamp", "status": "unfulfilled",
+    "reward": { "id": "92af127c-7326-4483-a52b-b0da0be61c01", "title": "title", "cost": 100, "prompt": "reward prompt" },
+    "redeemed_at": "2020-07-15T17:16:03.17106713Z"
+  },
+  "channel.channel_points_custom_reward_redemption.update@1": {
+    "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "user_id": "9001", "user_login": "cooler_user", "user_name": "Cooler_User",
+    "user_input": "", "status": "canceled",
+    "reward": { "id": "92af127c-7326-4483-a52b-b0da0be61c01", "title": "title", "cost": 100, "prompt": "" },
+    "redeemed_at": "2020-07-15T17:16:03.17106713Z"
+  },
+  "channel.custom_power_up_redemption.add@1": {
+    "id": "17fa2df1-ad76-4804-bfa5-a40ef63efe63",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "user_id": "9001", "user_login": "cooler_user", "user_name": "Cooler_User",
+    "user_input": "pogchamp", "status": "unfulfilled",
+    "custom_power_up": { "id": "92af127c-7326-4483-a52b-b0da0be61c01", "title": "title", "bits": 100, "prompt": "Power-up prompt" },
+    "redeemed_at": "2026-05-01T17:16:03.17106713Z"
+  },
+  "channel.poll.begin@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "choices": [{ "id": "123", "title": "Yeah!" }, { "id": "124", "title": "No!" }, { "id": "125", "title": "Maybe!" }],
+    "bits_voting": { "is_enabled": false, "amount_per_vote": 0 },
+    "channel_points_voting": { "is_enabled": true, "amount_per_vote": 10 },
+    "started_at": "2020-07-15T17:16:03.17106713Z", "ends_at": "2020-07-15T17:16:08.17106713Z"
+  },
+  "channel.poll.progress@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "choices": [
+      { "id": "123", "title": "Yeah!", "bits_votes": 0, "channel_points_votes": 7, "votes": 12 },
+      { "id": "124", "title": "No!", "bits_votes": 0, "channel_points_votes": 4, "votes": 14 },
+      { "id": "125", "title": "Maybe!", "bits_votes": 0, "channel_points_votes": 7, "votes": 7 }
+    ],
+    "bits_voting": { "is_enabled": false, "amount_per_vote": 0 },
+    "channel_points_voting": { "is_enabled": true, "amount_per_vote": 10 },
+    "started_at": "2020-07-15T17:16:03.17106713Z", "ends_at": "2020-07-15T17:16:08.17106713Z"
+  },
+  "channel.poll.end@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "choices": [
+      { "id": "123", "title": "Blue", "bits_votes": 0, "channel_points_votes": 70, "votes": 3000000120 },
+      { "id": "124", "title": "Yellow", "bits_votes": 0, "channel_points_votes": 40, "votes": 140 },
+      { "id": "125", "title": "Green", "bits_votes": 0, "channel_points_votes": 70, "votes": 80 }
+    ],
+    "bits_voting": { "is_enabled": false, "amount_per_vote": 0 },
+    "channel_points_voting": { "is_enabled": true, "amount_per_vote": 10 },
+    "status": "completed",
+    "started_at": "2020-07-15T17:16:03.17106713Z", "ended_at": "2020-07-15T17:16:11.17106713Z"
+  },
+  "channel.prediction.begin@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "outcomes": [{ "id": "1243456", "title": "Yeah!", "color": "blue" }, { "id": "2243456", "title": "No!", "color": "pink" }],
+    "started_at": "2020-07-15T17:16:03.17106713Z", "locks_at": "2020-07-15T17:21:03.17106713Z"
+  },
+  "channel.prediction.progress@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "outcomes": [
+      {
+        "id": "1243456", "title": "Yeah!", "color": "blue", "users": 10, "channel_points": 2500000000,
+        "top_predictors": [
+          { "user_name": "Cool_User", "user_login": "cool_user", "user_id": "1234", "channel_points_won": null, "channel_points_used": 500 },
+          { "user_name": "Coolest_User", "user_login": "coolest_user", "user_id": "1236", "channel_points_won": null, "channel_points_used": 200 }
+        ]
+      },
+      {
+        "id": "2243456", "title": "No!", "color": "pink", "users": 1, "channel_points": 5000,
+        "top_predictors": [{ "user_name": "Cooler_User", "user_login": "cooler_user", "user_id": "12345", "channel_points_won": null, "channel_points_used": 5000 }]
+      }
+    ],
+    "started_at": "2020-07-15T17:16:03.17106713Z", "locks_at": "2020-07-15T17:21:03.17106713Z"
+  },
+  "channel.prediction.lock@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "outcomes": [
+      {
+        "id": "1243456", "title": "Yeah!", "color": "blue", "users": 10, "channel_points": 15000,
+        "top_predictors": [
+          { "user_name": "Cool_User", "user_login": "cool_user", "user_id": "1234", "channel_points_won": null, "channel_points_used": 500 },
+          { "user_name": "Coolest_User", "user_login": "coolest_user", "user_id": "1236", "channel_points_won": null, "channel_points_used": 200 }
+        ]
+      },
+      {
+        "id": "2243456", "title": "No!", "color": "pink", "users": 1, "channel_points": 5000,
+        "top_predictors": [{ "user_name": "Cooler_User", "user_login": "cooler_user", "user_id": "12345", "channel_points_won": null, "channel_points_used": 5000 }]
+      }
+    ],
+    "started_at": "2020-07-15T17:16:03.17106713Z", "locked_at": "2020-07-15T17:21:03.17106713Z"
+  },
+  "channel.prediction.end@1": {
+    "id": "1243456", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Aren't shoes just really hard socks?",
+    "winning_outcome_id": "12345",
+    "outcomes": [
+      {
+        "id": "12345", "title": "Yeah!", "color": "blue", "users": 2, "channel_points": 15000,
+        "top_predictors": [
+          { "user_name": "Cool_User", "user_login": "cool_user", "user_id": "1234", "channel_points_won": 10000, "channel_points_used": 500 },
+          { "user_name": "Coolest_User", "user_login": "coolest_user", "user_id": "1236", "channel_points_won": 5000, "channel_points_used": 100 }
+        ]
+      },
+      {
+        "id": "22435", "title": "No!", "users": 2, "channel_points": 200, "color": "pink",
+        "top_predictors": [
+          { "user_name": "Cooler_User", "user_login": "cooler_user", "user_id": "12345", "channel_points_won": null, "channel_points_used": 100 },
+          { "user_name": "Elite_User", "user_login": "elite_user", "user_id": "1337", "channel_points_won": 0, "channel_points_used": 100 }
+        ]
+      }
+    ],
+    "status": "resolved",
+    "started_at": "2020-07-15T17:16:03.17106713Z", "ended_at": "2020-07-15T17:16:11.17106713Z"
+  },
+  "channel.prediction.end@1#canceled": {
+    "id": "1243457", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Will it rain?",
+    "winning_outcome_id": null,
+    "outcomes": [
+      { "id": "1", "title": "Yes", "color": "blue", "users": 0, "channel_points": 0, "top_predictors": [] },
+      { "id": "2", "title": "No", "color": "pink", "users": 0, "channel_points": 0, "top_predictors": [] }
+    ],
+    "status": "canceled",
+    "started_at": "2020-07-15T17:16:03.17106713Z", "ended_at": "2020-07-15T17:17:03.17106713Z"
+  }
+}
