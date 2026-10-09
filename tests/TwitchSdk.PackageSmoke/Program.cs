@@ -66,11 +66,30 @@ var message = EventSubMessage.Parse("""
     {"metadata":{"message_id":"m","message_type":"session_keepalive","message_timestamp":"2026-10-09T12:00:00Z"},"payload":{}}
     """u8);
 if (message.Metadata.MessageType != "session_keepalive") throw new InvalidOperationException("EventSub contract failed.");
+// Every registered EventSub definition must have generated metadata (missing metadata throws NotSupportedException, not JsonException).
+foreach (var definition in EventSubEvents.All)
+{
+    using var empty = JsonDocument.Parse(definition.EventType.IsAssignableTo(typeof(System.Collections.IEnumerable)) ? "[]" : "{}");
+    try { definition.Deserialize(empty.RootElement); }
+    catch (JsonException) { /* Required members are missing from the empty payload; the metadata itself resolved. */ }
+}
+if (EventSubEvents.All.Count < 83) throw new InvalidOperationException("EventSub registry is incomplete.");
+const string webhookSecret = "smoke-secret-0123";
+var routed = 0;
+var webhook = new EventSubWebhookHandler(new EventSubWebhookVerifier(webhookSecret), new EventSubEventRouter()
+    .On(EventSubEvents.StreamOnlineV1, (online, _, _) => { routed += online.BroadcasterUserId == "1" ? 1 : 0; return Task.CompletedTask; }));
+var webhookBody = """{"subscription":{"id":"s","status":"enabled","type":"stream.online","version":"1","condition":{"broadcaster_user_id":"1"},"transport":{"method":"webhook","callback":"https://example.org"},"created_at":"2026-10-09T12:00:00Z","cost":0},"event":{"id":"9","broadcaster_user_id":"1","broadcaster_user_login":"a","broadcaster_user_name":"A","type":"live","started_at":"2026-10-09T12:00:00Z"}}"""u8.ToArray();
+var timestamp = DateTimeOffset.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture);
+var signature = "sha256=" + Convert.ToHexString(System.Security.Cryptography.HMACSHA256.HashData(Encoding.ASCII.GetBytes(webhookSecret), Encoding.UTF8.GetBytes("w1" + timestamp).Concat(webhookBody).ToArray())).ToLowerInvariant();
+var webhookResponse = await webhook.HandleAsync(new() { MessageId = "w1", MessageType = "notification", MessageTimestamp = timestamp, MessageSignature = signature, Body = webhookBody });
+if (webhookResponse.StatusCode != 204 || routed != 1) throw new InvalidOperationException("Webhook routing failed.");
+var jwt = TwitchSdk.Helix.Extensions.ExtensionJwt.CreateExternal(TwitchSdk.Helix.Extensions.ExtensionSecret.FromBase64(Convert.ToBase64String(new byte[32])), "1");
+if (jwt.Split('.').Length != 3) throw new InvalidOperationException("Extension JWT failed.");
 var services = new ServiceCollection();
 services.AddTwitchSdk(new() { ClientId = "fake-client" }, _ => new StaticAccessTokenProvider(new("fake-token")));
 using var provider = services.BuildServiceProvider();
 _ = provider.GetRequiredService<TwitchChatClient>();
-Console.WriteLine("Packed SDK smoke test passed with JSON reflection disabled.");
+Console.WriteLine($"Packed SDK smoke test passed with JSON reflection disabled (native AOT: {!System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported}).");
 
 internal sealed class FakeHandler : HttpMessageHandler
 {

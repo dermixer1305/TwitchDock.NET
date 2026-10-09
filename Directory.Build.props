@@ -16,6 +16,10 @@
     <PackageTags>twitch;helix;eventsub;chat;oauth</PackageTags>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+  <!-- Library projects: enable trimming, single-file and native AOT analyzers (warnings fail the build). -->
+  <PropertyGroup Condition="$(MSBuildProjectDirectory.Replace('\', '/').Contains('/src/'))">
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
   <ItemGroup Condition="'$(IsPackable)' != 'false'">
     <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="/" />
   </ItemGroup>
