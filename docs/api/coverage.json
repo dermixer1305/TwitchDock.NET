@@ -6949,10 +6949,16 @@
           "indent": 0
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "update-channel-guest-star-settings",
@@ -7005,10 +7011,16 @@
         }
       ],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "get-guest-star-session",
@@ -7130,10 +7142,16 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "create-guest-star-session",
@@ -7246,10 +7264,16 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "end-guest-star-session",
@@ -7368,10 +7392,16 @@
           "indent": 6
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "get-guest-star-invites",
@@ -7449,10 +7479,16 @@
           "indent": 3
         }
       ],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "send-guest-star-invite",
@@ -7493,10 +7529,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "delete-guest-star-invite",
@@ -7537,10 +7579,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "assign-guest-star-slot",
@@ -7587,10 +7635,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "update-guest-star-slot",
@@ -7637,10 +7691,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "delete-guest-star-slot",
@@ -7693,10 +7753,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "update-guest-star-slot-settings",
@@ -7761,10 +7827,16 @@
       ],
       "requestBody": [],
       "responseBody": [],
-      "authorizationReview": "pending",
-      "availabilityReview": "pending",
-      "status": "inventoried",
-      "evidence": []
+      "authorizationReview": "reviewed",
+      "availabilityReview": "public-beta",
+      "status": "complete",
+      "evidence": [
+        "src/TwitchSdk.Helix/Clients/GuestStarClient.cs",
+        "src/TwitchSdk.Helix/Models/GuestStar.cs",
+        "tests/TwitchSdk.Tests/GuestStarTests.cs",
+        "tests/TwitchSdk.Tests/Fixtures/helix-guest-star.json",
+        "docs/helix-guest-star.md"
+      ]
     },
     {
       "id": "get-hype-train-status",
