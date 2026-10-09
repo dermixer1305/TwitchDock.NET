@@ -1,0 +1,30 @@
+name: Twitch API drift
+# Weekly comparison of the pinned inventory with the live official documentation.
+# A changed endpoint resets its status to needs-review, a new one is added as inventoried and a removed one stops the
+# importer, so any drift fails this job and shows the diff in the run summary.
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Refresh the inventory from dev.twitch.tv
+        shell: pwsh
+        run: ./tools/Update-ApiInventory.ps1 -Download
+      - name: Report drift
+        shell: bash
+        run: |
+          if git diff --quiet -- docs/api/coverage.json src/TwitchSdk.Core/TwitchScopes.cs; then
+            echo "No drift against the pinned Twitch documentation." >> "$GITHUB_STEP_SUMMARY"
+          else
+            { echo '## Twitch API drift detected'; echo '```diff'; git diff --stat -- docs/api/coverage.json src/TwitchSdk.Core/TwitchScopes.cs; git diff -U0 -- docs/api/coverage.json | head -n 400; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - name: Validate the refreshed matrix
+        shell: pwsh
+        run: ./tools/Test-ApiCoverage.ps1 -RequireComplete

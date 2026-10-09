@@ -20,10 +20,28 @@ jobs:
             10.0.x
       - run: dotnet restore TwitchSdk.slnx
       - run: dotnet build TwitchSdk.slnx -c Release --no-restore
+      # Includes contract tests and the public API snapshot (breaking-change check).
       - run: dotnet test tests/TwitchSdk.Tests/TwitchSdk.Tests.csproj -c Release -f ${{ matrix.framework }} --no-build --logger trx
-      - name: Validate coverage evidence
+      - name: Validate coverage evidence and the release gate
         shell: pwsh
-        run: ./tools/Test-ApiCoverage.ps1
+        run: ./tools/Test-ApiCoverage.ps1 -RequireComplete
+  integration:
+    # Exercises the SDK against the Twitch CLI mock API, mock EventSub WebSocket server and signed webhook triggers.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+      - name: Install the Twitch CLI
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/twitch-cli.tar.gz" https://github.com/twitchdev/twitch-cli/releases/download/v1.1.24/twitch-cli_1.1.24_Linux_x86_64.tar.gz
+          mkdir -p "$RUNNER_TEMP/twitch-cli"
+          tar -xzf "$RUNNER_TEMP/twitch-cli.tar.gz" -C "$RUNNER_TEMP/twitch-cli"
+          echo "TWITCH_CLI=$(find "$RUNNER_TEMP/twitch-cli" -type f -name twitch | head -n 1)" >> "$GITHUB_ENV"
+      - run: dotnet test tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj -c Release --logger trx
   pack:
     runs-on: ubuntu-latest
     steps:
@@ -34,9 +52,16 @@ jobs:
             8.0.x
             10.0.x
       - run: dotnet pack TwitchSdk.slnx -c Release -o artifacts/packages
-      - run: dotnet restore tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj --source artifacts/packages --source https://api.nuget.org/v3/index.json
+      # tests/TwitchSdk.PackageSmoke/NuGet.config maps TwitchSdk.* to artifacts/packages only.
+      - run: dotnet restore tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj
       - run: dotnet run --project tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f net8.0 --no-restore
       - run: dotnet run --project tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f net10.0 --no-restore
+      - name: Native AOT smoke test
+        run: |
+          for framework in net8.0 net10.0; do
+            dotnet publish tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f "$framework" -r linux-x64 -p:PublishAot=true -o "artifacts/aot/$framework"
+            "./artifacts/aot/$framework/TwitchSdk.PackageSmoke"
+          done
       - uses: actions/upload-artifact@v7
         with:
           name: nuget-packages
