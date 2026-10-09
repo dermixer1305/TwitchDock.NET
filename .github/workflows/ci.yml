@@ -4,6 +4,7 @@ on:
   pull_request:
 permissions:
   contents: read
+# Actions are pinned to full commit SHAs (tag in the trailing comment); checkouts do not persist the token in .git/config.
 jobs:
   test:
     strategy:
@@ -12,8 +13,10 @@ jobs:
         framework: [net8.0, net10.0]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: |
             8.0.x
@@ -29,24 +32,40 @@ jobs:
     # Exercises the SDK against the Twitch CLI mock API, mock EventSub WebSocket server and signed webhook triggers.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: |
             8.0.x
             10.0.x
       - name: Install the Twitch CLI
+        env:
+          TWITCH_CLI_VERSION: 1.1.24
+          # The Linux x86_64 entry of the release's checksums.txt, pinned so a replaced release asset is also detected.
+          TWITCH_CLI_SHA256: 9cae4e9cd52e66fb4dda6b633b3276a4450a28a83dea7a4651a42a67372eed8f
         run: |
-          curl -fsSL -o "$RUNNER_TEMP/twitch-cli.tar.gz" https://github.com/twitchdev/twitch-cli/releases/download/v1.1.24/twitch-cli_1.1.24_Linux_x86_64.tar.gz
+          set -euo pipefail
+          release="https://github.com/twitchdev/twitch-cli/releases/download/v${TWITCH_CLI_VERSION}"
+          archive="twitch-cli_${TWITCH_CLI_VERSION}_Linux_x86_64.tar.gz"
+          cd "$RUNNER_TEMP"
+          curl -fsSL -o "$archive" "$release/$archive"
+          curl -fsSL -o checksums.txt "$release/checksums.txt"
+          # Fails when the archive is missing from checksums.txt ("no file was verified") or its hash differs.
+          sha256sum -c --ignore-missing checksums.txt
+          echo "${TWITCH_CLI_SHA256}  ${archive}" | sha256sum -c -
           mkdir -p "$RUNNER_TEMP/twitch-cli"
-          tar -xzf "$RUNNER_TEMP/twitch-cli.tar.gz" -C "$RUNNER_TEMP/twitch-cli"
+          tar -xzf "$archive" -C "$RUNNER_TEMP/twitch-cli"
           echo "TWITCH_CLI=$(find "$RUNNER_TEMP/twitch-cli" -type f -name twitch | head -n 1)" >> "$GITHUB_ENV"
       - run: dotnet test tests/TwitchSdk.IntegrationTests/TwitchSdk.IntegrationTests.csproj -c Release --logger trx
   pack:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-dotnet@v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: |
             8.0.x
@@ -62,7 +81,7 @@ jobs:
             dotnet publish tests/TwitchSdk.PackageSmoke/TwitchSdk.PackageSmoke.csproj -c Release -f "$framework" -r linux-x64 -p:PublishAot=true -o "artifacts/aot/$framework"
             "./artifacts/aot/$framework/TwitchSdk.PackageSmoke"
           done
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nuget-packages
           path: artifacts/packages/*.nupkg
