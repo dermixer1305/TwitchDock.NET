@@ -19,7 +19,7 @@ public sealed class TwitchIrcOptions
 
     /// <summary>
     /// The server. Accepts wss:// (default, <see cref="WebSocketIrcConnection"/>) and ircs:// (<see cref="TcpIrcConnection"/>);
-    /// ws:// and irc:// are only accepted on loopback hosts, for example test servers.
+    /// ws:// and irc:// are only accepted on loopback IP addresses and <c>localhost</c>, for example test servers.
     /// </summary>
     public Uri Endpoint { get; init; } = DefaultEndpoint;
 
@@ -38,21 +38,27 @@ public sealed class TwitchIrcOptions
     /// <summary>Idle time after which the client sends PING. <see cref="Timeout.InfiniteTimeSpan"/> disables client keepalive.</summary>
     public TimeSpan KeepaliveInterval { get; init; } = TimeSpan.FromMinutes(1);
 
-    /// <summary>How long the client waits for any data after its PING before reconnecting.</summary>
+    /// <summary>
+    /// How long the client waits for any data after its PING before reconnecting. It also bounds every send: a line that cannot be written
+    /// within this time marks the connection as dead and the client reconnects.
+    /// </summary>
     public TimeSpan KeepaliveTimeout { get; init; } = TimeSpan.FromSeconds(10);
 
     /// <summary>The time allowed to connect and complete the login handshake.</summary>
     public TimeSpan ConnectTimeout { get; init; } = TimeSpan.FromSeconds(30);
 
-    /// <summary>The upper bound for the exponential reconnect backoff, which starts at one second.</summary>
+    /// <summary>
+    /// The upper bound for the exponential reconnect backoff, which starts at one second. The backoff only resets after a connection stayed
+    /// up for 30 seconds, so a server that accepts and then drops connections is retried with growing delays.
+    /// </summary>
     public TimeSpan MaxReconnectDelay { get; init; } = TimeSpan.FromSeconds(30);
 
     internal void Validate()
     {
         TwitchIrcClient.NormalizeLogin(Login);
         if (Endpoint is null || !Endpoint.IsAbsoluteUri || !string.IsNullOrEmpty(Endpoint.UserInfo)
-            || !(Endpoint.Scheme is "wss" or "ircs" || (Endpoint.Scheme is "ws" or "irc" && Endpoint.IsLoopback)))
-            throw new ArgumentException("Endpoint must use wss:// or ircs://, or ws:// or irc:// on a loopback host, without credentials.", nameof(Endpoint));
+            || !(Endpoint.Scheme is "wss" or "ircs" || (Endpoint.Scheme is "ws" or "irc" && IrcEndpoint.IsLoopbackHost(Endpoint))))
+            throw new ArgumentException("Endpoint must use wss:// or ircs://, or ws:// or irc:// on a loopback IP address or localhost, without credentials.", nameof(Endpoint));
         if (Capabilities is null || Capabilities.Any(c => string.IsNullOrWhiteSpace(c) || c.AsSpan().IndexOfAny(" \r\n\0") >= 0 || c[0] == ':'))
             throw new ArgumentException("Capabilities must be nonempty names without spaces, CR, LF or NUL.", nameof(Capabilities));
         if (MessageRateLimit is null || JoinRateLimit is null || AuthenticationRateLimit is null)

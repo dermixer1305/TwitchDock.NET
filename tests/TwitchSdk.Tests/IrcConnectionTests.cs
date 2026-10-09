@@ -117,7 +117,7 @@ public sealed class IrcConnectionTests
         await client.SendMessageAsync("chan", "hi back", received.MessageId, ct);
         Assert.Equal("@reply-parent-msg-id=m1 PRIVMSG #chan :hi back\r\n", await ReceiveTextAsync(server, ct));
         stop.Cancel();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run);
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run.WaitAsync(TimeSpan.FromSeconds(10)));
     }
 
     [Fact]
@@ -139,7 +139,66 @@ public sealed class IrcConnectionTests
         Assert.Equal("PONG :tmi.twitch.tv", await reader.ReadLineAsync(ct));
         Assert.True(client.IsConnected);
         stop.Cancel();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run);
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run.WaitAsync(TimeSpan.FromSeconds(10)));
+    }
+
+    [Fact]
+    public async Task TransportsRejectNulAndPlainTextOutsideLoopbackAddresses()
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var ct = timeout.Token;
+        await using var tcp = new TcpIrcConnection();
+        await Assert.ThrowsAsync<ArgumentException>(() => tcp.SendLineAsync("PRIVMSG #c :a\0b", ct));
+        // Only IP literal loopback addresses and localhost are trusted for plain text, not names a hosts file may map to loopback.
+        await Assert.ThrowsAsync<ArgumentException>(() => tcp.ConnectAsync(new Uri("irc://localhost.localdomain:6667"), ct));
+        await Assert.ThrowsAsync<ArgumentException>(() => tcp.ConnectAsync(new Uri("irc://ip6-localhost:6667"), ct));
+        await using var socket = new WebSocketIrcConnection();
+        await Assert.ThrowsAsync<ArgumentException>(() => socket.SendLineAsync("PRIVMSG #c :a\0b", ct));
+        await Assert.ThrowsAsync<ArgumentException>(() => socket.ConnectAsync(new Uri("ws://localhost.localdomain/"), ct));
+        // The transport enforces this itself, also when used without TwitchIrcOptions.
+        await Assert.ThrowsAsync<ArgumentException>(() => socket.ConnectAsync(new Uri("ws://irc-ws.chat.twitch.tv/"), ct));
+    }
+
+    [Fact]
+    public async Task TlsHandshakeBrokenByTheServerIsReportedAsATransientIOException()
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var ct = timeout.Token;
+        using var listener = StartListener(out var port);
+        var server = CloseAfterClientHelloAsync(listener, ct);
+        await using var connection = new TcpIrcConnection();
+        await Assert.ThrowsAnyAsync<IOException>(() => connection.ConnectAsync(new Uri($"ircs://127.0.0.1:{port}"), ct));
+        await server;
+    }
+
+    [Fact]
+    public async Task ClientWarnsWhenTheTransportDiscardsOversizedLines()
+    {
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var ct = timeout.Token;
+        using var listener = StartListener(out var port);
+        var logger = new CapturingLogger();
+        var tokens = new StaticAccessTokenProvider(new AccessToken("secret-token", scopes: [TwitchScopes.ChatRead], kind: TwitchTokenKind.User));
+        var options = new TwitchIrcOptions { Login = "bot", Endpoint = new Uri($"irc://127.0.0.1:{port}") };
+        var client = new TwitchIrcClient(tokens, options, () => new TcpIrcConnection(maxLineBytes: 512), logger: logger);
+        using var stop = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        var run = client.RunAsync((_, _) => Task.CompletedTask, stop.Token);
+        using var server = await listener.AcceptTcpClientAsync(ct);
+        using var reader = new StreamReader(server.GetStream(), Encoding.UTF8, leaveOpen: true);
+        for (var i = 0; i < 3; i++) Assert.NotNull(await reader.ReadLineAsync(ct));
+        await server.GetStream().WriteAsync(Encoding.UTF8.GetBytes(":tmi.twitch.tv 001 bot :Welcome, GLHF!\r\n" + new string('x', 600) + "\r\nPING :tmi.twitch.tv\r\n"), ct);
+        Assert.Equal("PONG :tmi.twitch.tv", await reader.ReadLineAsync(ct));
+        await ManualTimeProvider.WaitUntilAsync(() => logger.Entries.Any(entry => entry.StartsWith("Warning: Twitch IRC discarded 1 ", StringComparison.Ordinal)));
+        stop.Cancel();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run.WaitAsync(TimeSpan.FromSeconds(10)));
+    }
+
+    private static async Task CloseAfterClientHelloAsync(TcpListener listener, CancellationToken ct)
+    {
+        using var client = await listener.AcceptTcpClientAsync(ct);
+        var buffer = new byte[16 * 1024];
+        // Read the ClientHello, then close without answering it.
+        if (await client.GetStream().ReadAsync(buffer, ct) == 0) return;
     }
 
     private static TcpListener StartListener(out int port)
