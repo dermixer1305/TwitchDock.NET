@@ -87,23 +87,7 @@ Remove previously set optional variables to return to the single-account tutoria
 
 ## 5. Add TwitchDock to your own project
 
-The packages are not on nuget.org yet. From the repository root, build all six packages and register the resulting directory as a local source.
-
-**PowerShell:**
-
-```powershell
-dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$((Get-Location).Path)/artifacts/packages" --name twitchdock-local
-```
-
-**Bash:**
-
-```bash
-dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$PWD/artifacts/packages" --name twitchdock-local
-```
-
-Without building: download `TwitchDock.NET-1.0.0-rc.1-packages.zip` from the [GitHub release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1), extract it into a directory and register that directory's absolute path instead. All six packages use the same version. Keep nuget.org enabled for Microsoft dependencies. If the source name already exists, use `dotnet nuget update source twitchdock-local --source <absolute-folder>`.
+The packages are on [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection), so nothing has to be built or downloaded by hand. `TwitchDock.DependencyInjection` brings in all six modules.
 
 Create a separate application:
 

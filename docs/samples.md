@@ -1,6 +1,6 @@
 # Samples
 
-The samples live in `samples/`, are part of `TwitchDock.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly (packages are not on NuGet yet). Credentials come from environment variables or interactive device authorization; tokens are never printed or saved. Follow the [English tutorial](tutorial.md) or [deutsche Anleitung](tutorial.de.md).
+The samples live in `samples/`, are part of `TwitchDock.slnx`, build for net8.0 and net10.0 with warnings as errors, and reference the SDK projects directly so they always build against the current source. Credentials come from environment variables or interactive device authorization; tokens are never printed or saved. Follow the [English tutorial](tutorial.md) or [deutsche Anleitung](tutorial.de.md).
 
 | Sample | Shows |
 | --- | --- |

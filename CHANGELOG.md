@@ -4,14 +4,14 @@ All notable changes are listed here. The project follows [Semantic Versioning](h
 
 ## 1.0.0-rc.1 (2026-10-09)
 
-First public release candidate under the TwitchDock.NET name. Every Helix endpoint (149) and EventSub type/version (83) in the pinned documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Selected real-credential authentication, API and chat checks passed; broader live verification and nuget.org publication remain open ([report](docs/live-verification.md), [roadmap](docs/roadmap.md)).
+First public release candidate under the TwitchDock.NET name. Every Helix endpoint (149) and EventSub type/version (83) in the pinned documentation of 2026-10-09 meets the definition of done ([coverage](docs/coverage.md)). Selected real-credential authentication, API and chat checks passed; broader live verification remains open ([report](docs/live-verification.md), [roadmap](docs/roadmap.md)).
 
 ### Publication and onboarding
 
 - Renamed packages, namespaces, projects and `AddTwitchSdk` from the unpublished `TwitchSdk` name to `TwitchDock` / `AddTwitchDock`. Live-test and API-snapshot environment variables now use the `TWITCHDOCK_` prefix.
 - English and German READMEs, step-by-step tutorials and release notes; repository metadata and private security reporting links.
 - The chat sample supports interactive device login without a pre-supplied token, defaults to the user's own channel, and accepts `!ping` from that account for a single-account test.
-- GitHub releases attach all six NuGet packages, a zip bundle of them and SHA-256 checksums after the full CI checks succeed. An opt-in release job publishes the same packages to nuget.org through trusted publishing after maintainer approval; it stays disabled until configured.
+- GitHub releases attach all six NuGet packages, a zip bundle of them and SHA-256 checksums after the full CI checks succeed. The same packages are published to nuget.org through trusted publishing after maintainer approval, and to GitHub Packages.
 - CLI webhook integration tests explicitly bind IPv4 loopback so the Linux listener matches the Twitch CLI's IPv4 connection.
 
 ### Breaking changes since 0.1.0-alpha.1

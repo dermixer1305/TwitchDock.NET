@@ -85,23 +85,7 @@ Entferne alte optionale Variablen, wenn du wieder dem Test mit nur einem Konto f
 
 ## 5. In dein eigenes Projekt einbauen
 
-Die Pakete liegen noch nicht auf nuget.org. Erzeuge im Repository-Ordner alle sechs Pakete und registriere den Ausgabeordner als lokale Quelle.
-
-**PowerShell:**
-
-```powershell
-dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$((Get-Location).Path)/artifacts/packages" --name twitchdock-local
-```
-
-**Bash:**
-
-```bash
-dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$PWD/artifacts/packages" --name twitchdock-local
-```
-
-Ohne selbst zu bauen: Lade `TwitchDock.NET-1.0.0-rc.1-packages.zip` aus dem [GitHub-Release](https://github.com/dermixer1305/TwitchDock.NET/releases/tag/v1.0.0-rc.1) herunter, entpacke sie in einen Ordner und registriere dessen absoluten Pfad. Alle Pakete haben dieselbe Version. Lasse nuget.org für die Microsoft-Abhängigkeiten aktiviert. Existiert der Quellenname bereits, verwende `dotnet nuget update source twitchdock-local --source <absoluter-ordner>`.
+Die Pakete liegen auf [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection). Du musst also nichts selbst bauen oder von Hand herunterladen. `TwitchDock.DependencyInjection` bringt alle sechs Module mit.
 
 Erstelle eine eigene Anwendung:
 

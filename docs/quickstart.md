@@ -4,13 +4,11 @@ This page gets you from zero to API calls, chat and EventSub. The [documentation
 
 ## Install
 
-The packages are not on NuGet yet (release candidate). Either reference the projects from a clone, or pack them and use a local feed:
+The packages are on [nuget.org](https://www.nuget.org/packages/TwitchDock.DependencyInjection). Use `--prerelease` (or `--version 1.0.0-rc.1`) while 1.0.0 is a release candidate:
 
 ```sh
-dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
-dotnet nuget add source "$PWD/artifacts/packages" --name twitchdock-local
-dotnet new console -n MyFirstBot -o artifacts/MyFirstBot -f net10.0
-dotnet add artifacts/MyFirstBot/MyFirstBot.csproj package TwitchDock.DependencyInjection --version 1.0.0-rc.1
+dotnet new console -n MyFirstBot -f net10.0
+dotnet add MyFirstBot package TwitchDock.DependencyInjection --prerelease
 ```
 
 `TwitchDock.DependencyInjection` pulls in the other modules: `TwitchDock.Core`, `TwitchDock.Authentication`, `TwitchDock.Helix`, `TwitchDock.EventSub` and `TwitchDock.Chat`. Building from source needs the .NET 10 SDK; consumers can target net8.0 or net10.0.

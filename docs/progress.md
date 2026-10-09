@@ -1,6 +1,6 @@
 # Implementation progress (2026-10-09)
 
-TwitchDock.NET is at **1.0.0-rc.1**. Every API in the pinned official documentation meets the definition of done. Selected real-credential tests passed and the public GitHub repository is configured. Broader live verification and nuget.org publication remain before 1.0.0. The original goals are in the [project plan](project-plan.md); next steps are in the [roadmap](roadmap.md).
+TwitchDock.NET is at **1.0.0-rc.1**. Every API in the pinned official documentation meets the definition of done. Selected real-credential tests passed and the public GitHub repository is configured. The packages are published on nuget.org. Broader live verification remains before 1.0.0. The original goals are in the [project plan](project-plan.md); next steps are in the [roadmap](roadmap.md).
 
 ## Coverage
 
@@ -44,7 +44,7 @@ Selected real Twitch checks passed: 5 automated live tests on each target framew
 
 - **Broader live Twitch API coverage**: restricted APIs, further OAuth/OIDC flows, refresh rotation, IRC, public webhooks, conduits and reconnect/revocation scenarios remain. CLI mocks lag behind some fields, scopes and versions.
 - **Interactive chat sample**: builds; its new end-to-end onboarding has not been separately live tested. The underlying device login and chat operations were verified by a local harness.
-- **NuGet publication**: package IDs are not reserved and packages are not published on nuget.org. The release workflow contains an opt-in trusted-publishing job ([setup](releases.md#nugetorg-publication)); GitHub release assets, including a zip bundle, can be used as a local package feed.
+- **NuGet publication**: all six packages are published on [nuget.org](https://www.nuget.org/profiles/DerMixer1305) through trusted publishing ([setup](releases.md#nugetorg-publication)). The `TwitchDock.*` ID prefix is not reserved yet; request a reservation from nuget.org.
 
 ## Known limitations
 

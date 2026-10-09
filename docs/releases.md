@@ -1,6 +1,6 @@
 # Releases and maintenance
 
-Current version: **1.0.0-rc.1**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). Every GitHub release carries the six NuGet packages, a zip bundle of them and SHA-256 checksums for use as a local feed. Publishing to nuget.org is prepared in the release workflow but **disabled until a maintainer enables it** ([setup](#nugetorg-publication)).
+Current version: **1.0.0-rc.1**, set in `Directory.Build.props`. Repository: [TwitchDock.NET](https://github.com/dermixer1305/TwitchDock.NET). Every GitHub release carries the six NuGet packages, a zip bundle of them and SHA-256 checksums for use as a local feed. The same packages are published to [nuget.org](https://www.nuget.org/profiles/DerMixer1305) after maintainer approval ([setup](#nugetorg-publication)) and to GitHub Packages.
 
 ## Versioning
 
@@ -45,7 +45,8 @@ Do not replace an already published version with different packages. Fix the pro
 - [ ] Collect release-candidate feedback and resolve issues.
 - [ ] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report.
 - [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
-- [ ] Check NuGet package name availability/ownership and complete the [nuget.org setup](#nugetorg-publication) if distribution through nuget.org is desired.
+- [x] Publish the packages on nuget.org through trusted publishing ([setup](#nugetorg-publication)).
+- [ ] Request a reservation of the `TwitchDock.*` ID prefix from nuget.org.
 - [ ] Set `1.0.0`, date the changelog and publish using the same verified release procedure.
 
 ## GitHub Packages
@@ -54,7 +55,7 @@ Every release is also pushed to the repository's NuGet registry on GitHub Packag
 
 ## nuget.org publication
 
-The `nuget` job in the [release workflow](../.github/workflows/release.yml) pushes the packages of a GitHub release to nuget.org. It is skipped until it is configured, so tag releases keep working without it. It downloads the release assets, verifies them against `SHA256SUMS.txt` and pushes exactly those files; it never repacks. It uses [NuGet trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing): GitHub's OIDC token is exchanged for an API key that is valid for about an hour, so no NuGet key is stored in the repository.
+The `nuget` job in the [release workflow](../.github/workflows/release.yml) pushes the packages of a GitHub release to nuget.org. It is configured for this repository; without the setup below it is skipped, so tag releases keep working without it. It downloads the release assets, verifies them against `SHA256SUMS.txt` and pushes exactly those files; it never repacks. It uses [NuGet trusted publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing): GitHub's OIDC token is exchanged for an API key that is valid for about an hour, so no NuGet key is stored in the repository.
 
 One-time setup by the maintainer:
 
