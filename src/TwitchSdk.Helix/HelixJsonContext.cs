@@ -75,6 +75,15 @@ namespace TwitchSdk.Helix;
 // <group:moderation-a>
 // </group:moderation-a>
 // <group:moderation-b>
+[JsonSerializable(typeof(HelixPage<ModeratedChannel>))]
+[JsonSerializable(typeof(HelixPage<ChannelModerator>))]
+[JsonSerializable(typeof(HelixPage<ChannelVip>))]
+[JsonSerializable(typeof(UpdateShieldModeStatusRequest))]
+[JsonSerializable(typeof(HelixPage<ShieldModeStatus>))]
+[JsonSerializable(typeof(WarnChatUserBody))]
+[JsonSerializable(typeof(HelixPage<ChatUserWarning>))]
+[JsonSerializable(typeof(AddSuspiciousStatusRequest))]
+[JsonSerializable(typeof(HelixPage<SuspiciousChatUserStatus>))]
 // </group:moderation-b>
 // <group:chat-a>
 // </group:chat-a>

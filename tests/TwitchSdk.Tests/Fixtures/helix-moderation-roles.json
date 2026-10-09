@@ -1,0 +1,111 @@
+{
+  "get-moderated-channels": {
+    "data": [
+      {
+        "broadcaster_id": "12345",
+        "broadcaster_login": "grateful_broadcaster",
+        "broadcaster_name": "Grateful_Broadcaster"
+      },
+      {
+        "broadcaster_id": "98765",
+        "broadcaster_login": "bashfulgamer",
+        "broadcaster_name": "BashfulGamer"
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "get-moderators": {
+    "data": [
+      {
+        "user_id": "424596340",
+        "user_login": "quotrok",
+        "user_name": "quotrok"
+      },
+      {
+        "user_id": "424596341",
+        "user_login": "second_mod",
+        "user_name": "Second_Mod"
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "get-vips": {
+    "data": [
+      {
+        "user_id": "11111",
+        "user_name": "UserDisplayName",
+        "user_login": "userloginname"
+      }
+    ],
+    "pagination": {
+      "cursor": "next"
+    }
+  },
+  "update-shield-mode-status": {
+    "data": [
+      {
+        "is_active": false,
+        "moderator_id": "98765",
+        "moderator_login": "simplysimple",
+        "moderator_name": "SimplySimple",
+        "last_activated_at": "2022-07-26T17:16:03.123456789Z"
+      }
+    ]
+  },
+  "get-shield-mode-status": {
+    "data": [
+      {
+        "is_active": true,
+        "moderator_id": "98765",
+        "moderator_login": "simplysimple",
+        "moderator_name": "SimplySimple",
+        "last_activated_at": "2022-07-26T17:16:03.987654321Z"
+      }
+    ]
+  },
+  "warn-chat-user": {
+    "data": [
+      {
+        "broadcaster_id": "404040",
+        "user_id": "9876",
+        "moderator_id": "404041",
+        "reason": "stop doing that!"
+      }
+    ]
+  },
+  "add-suspicious-status-to-chat-user": {
+    "data": [
+      {
+        "user_id": "9876",
+        "broadcaster_id": "141981764",
+        "moderator_id": "12826",
+        "updated_at": "2025-12-01T23:08:18.123456789+00:00",
+        "status": "RESTRICTED",
+        "types": [
+          "MANUALLY_ADDED",
+          "DETECTED_BAN_EVADER",
+          "DETECTED_SUS_CHATTER",
+          "BANNED_IN_SHARED_CHANNEL"
+        ]
+      }
+    ]
+  },
+  "remove-suspicious-status-from-chat-user": {
+    "data": [
+      {
+        "user_id": "9876",
+        "broadcaster_id": "141981764",
+        "moderator_id": "12826",
+        "updated_at": "2025-12-01T23:08:18+00:00",
+        "status": "NO_TREATMENT",
+        "types": [
+          "MANUALLY_ADDED"
+        ]
+      }
+    ]
+  }
+}
