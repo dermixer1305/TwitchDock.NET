@@ -1,5 +1,7 @@
 static class TwitchSdk.DependencyInjection.ServiceCollectionExtensions
     static AddTwitchSdk(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchSdk.Core.TwitchHttpOptions options, System.Func<System.IServiceProvider, TwitchSdk.Core.IAccessTokenProvider> tokenProviderFactory): Microsoft.Extensions.DependencyInjection.IServiceCollection
+static class TwitchSdk.DependencyInjection.TwitchIrcServiceCollectionExtensions
+    static AddTwitchIrc(Microsoft.Extensions.DependencyInjection.IServiceCollection services, TwitchSdk.Chat.Irc.TwitchIrcOptions options): Microsoft.Extensions.DependencyInjection.IServiceCollection
 sealed class TwitchSdk.DependencyInjection.TwitchTokenValidationOptions
     .ctor()
     ExpectedClientId: System.String { get; init; }
