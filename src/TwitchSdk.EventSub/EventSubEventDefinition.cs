@@ -33,7 +33,8 @@ public sealed class EventSubEventDefinition<TEvent> : IEventSubEventDefinition w
 
     public TEvent Deserialize(JsonElement element)
     {
-        if (element.ValueKind != JsonValueKind.Object) throw new JsonException($"The {this} event must be a JSON object.");
+        // Most events are objects; batched types such as drop.entitlement.grant deliver an array.
+        if (element.ValueKind is not (JsonValueKind.Object or JsonValueKind.Array)) throw new JsonException($"The {this} event must be a JSON object or array.");
         return element.Deserialize(TypeInfo) ?? throw new JsonException($"Empty {this} event.");
     }
 
