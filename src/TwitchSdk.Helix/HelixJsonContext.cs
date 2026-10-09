@@ -73,6 +73,17 @@ namespace TwitchSdk.Helix;
 [JsonSerializable(typeof(HelixPage<TwitchTeam>))]
 // Each group keeps its own region so parallel additions merge without conflicts.
 // <group:moderation-a>
+[JsonSerializable(typeof(CheckAutoModStatusRequest))]
+[JsonSerializable(typeof(HelixPage<AutoModCheckResult>))]
+[JsonSerializable(typeof(ManageHeldAutoModMessageRequest))]
+[JsonSerializable(typeof(HelixPage<AutoModSettings>))]
+[JsonSerializable(typeof(UpdateAutoModSettingsRequest))]
+[JsonSerializable(typeof(HelixPage<BannedUser>))]
+[JsonSerializable(typeof(BanUserRequest))]
+[JsonSerializable(typeof(HelixPage<BanUserResult>))]
+[JsonSerializable(typeof(HelixPage<UnbanRequest>))]
+[JsonSerializable(typeof(HelixPage<BlockedTerm>))]
+[JsonSerializable(typeof(AddBlockedTermRequest))]
 // </group:moderation-a>
 // <group:moderation-b>
 // </group:moderation-b>
