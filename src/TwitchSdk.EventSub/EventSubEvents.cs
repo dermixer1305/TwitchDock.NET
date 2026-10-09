@@ -31,6 +31,24 @@ public static partial class EventSubEvents
         // <group:chat-automod>
         // </group:chat-automod>
         // <group:moderation-channel>
+        yield return ChannelUpdateV2;
+        yield return ChannelFollowV2;
+        yield return ChannelAdBreakBeginV1;
+        yield return ChannelRaidV1;
+        yield return ChannelBanV1;
+        yield return ChannelUnbanV1;
+        yield return ChannelUnbanRequestCreateV1;
+        yield return ChannelUnbanRequestResolveV1;
+        yield return ChannelModerateV1;
+        yield return ChannelModerateV2;
+        yield return ChannelModeratorAddV1;
+        yield return ChannelModeratorRemoveV1;
+        yield return ChannelVipAddV1;
+        yield return ChannelVipRemoveV1;
+        yield return ChannelShieldModeBeginV1;
+        yield return ChannelShieldModeEndV1;
+        yield return ChannelShoutoutCreateV1;
+        yield return ChannelShoutoutReceiveV1;
         // </group:moderation-channel>
         // <group:monetization-interaction>
         // </group:monetization-interaction>

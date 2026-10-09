@@ -1,0 +1,187 @@
+{
+  "channel.update@2": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "title": "Best Stream Ever", "language": "en", "category_id": "12453", "category_name": "Grand Theft Auto",
+    "content_classification_labels": [ "MatureGame" ]
+  },
+  "channel.follow@2": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "followed_at": "2020-07-15T18:16:11.17106713Z"
+  },
+  "channel.ad_break.begin@1": {
+    "duration_seconds": 60, "started_at": "2019-11-16T10:11:12.634234626Z", "is_automatic": false,
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "requester_user_id": "1337", "requester_user_login": "cool_user", "requester_user_name": "Cool_User"
+  },
+  "channel.raid@1": {
+    "from_broadcaster_user_id": "1234", "from_broadcaster_user_login": "cool_user", "from_broadcaster_user_name": "Cool_User",
+    "to_broadcaster_user_id": "1337", "to_broadcaster_user_login": "cooler_user", "to_broadcaster_user_name": "Cooler_User",
+    "viewers": 9001
+  },
+  "channel.ban@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "moderator_user_id": "1339", "moderator_user_login": "mod_user", "moderator_user_name": "Mod_User",
+    "reason": "Offensive language", "banned_at": "2020-07-15T18:15:11.17106713Z", "ends_at": "2020-07-15T18:16:11.17106713Z", "is_permanent": false
+  },
+  "channel.ban@1#permanent": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "moderator_user_id": "1339", "moderator_user_login": "mod_user", "moderator_user_name": "Mod_User",
+    "reason": "", "banned_at": "2020-07-15T18:15:11.17106713Z", "ends_at": null, "is_permanent": true
+  },
+  "channel.unban@1": {
+    "user_id": "1234", "user_login": "cool_user", "user_name": "Cool_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User",
+    "moderator_user_id": "1339", "moderator_user_login": "mod_user", "moderator_user_name": "Mod_User"
+  },
+  "channel.unban_request.create@1": {
+    "id": "60", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "user_id": "1339", "user_login": "not_cool_user", "user_name": "Not_Cool_User",
+    "text": "unban me", "created_at": "2023-11-16T10:11:12.634234626Z"
+  },
+  "channel.unban_request.resolve@1": {
+    "id": "60", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "moderator_id": null, "moderator_login": null, "moderator_name": null,
+    "moderator_user_id": "1337", "moderator_user_login": "cool_user", "moderator_user_name": "Cool_User",
+    "user_id": "1339", "user_login": "not_cool_user", "user_name": "Not_Cool_User",
+    "resolution_text": "no", "status": "denied"
+  },
+  "channel.unban_request.resolve@1#field-table": {
+    "id": "61", "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "moderator_id": "1338", "moderator_login": "mod_user", "moderator_name": "Mod_User",
+    "user_id": "1339", "user_login": "not_cool_user", "user_name": "Not_Cool_User",
+    "resolution_text": null, "status": "canceled"
+  },
+  "channel.moderate@1": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "source_broadcaster_user_id": null, "source_broadcaster_user_login": null, "source_broadcaster_user_name": null,
+    "moderator_user_id": "424596340", "moderator_user_login": "quotrok", "moderator_user_name": "quotrok",
+    "action": "mod",
+    "followers": null, "slow": null, "vip": null, "unvip": null,
+    "mod": { "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev" },
+    "unmod": null, "ban": null, "unban": null, "timeout": null, "untimeout": null, "raid": null, "unraid": null, "delete": null,
+    "automod_terms": null, "unban_request": null,
+    "shared_chat_ban": null, "shared_chat_unban": null, "shared_chat_timeout": null, "shared_chat_untimeout": null, "shared_chat_delete": null
+  },
+  "channel.moderate@1#shared_chat_timeout": {
+    "broadcaster_user_id": "423374343", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "source_broadcaster_user_id": "41292030", "source_broadcaster_user_login": "adflynn404", "source_broadcaster_user_name": "adflynn404",
+    "moderator_user_id": "424596340", "moderator_user_login": "quotrok", "moderator_user_name": "quotrok",
+    "action": "shared_chat_timeout",
+    "followers": null, "slow": null, "vip": null, "unvip": null, "mod": null, "unmod": null, "ban": null, "unban": null,
+    "timeout": null, "untimeout": null, "raid": null, "unraid": null, "delete": null, "automod_terms": null, "unban_request": null,
+    "shared_chat_ban": null, "shared_chat_unban": null,
+    "shared_chat_timeout": { "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev", "reason": "Does not like pineapple on pizza.", "expires_at": "2022-03-15T02:00:28Z" },
+    "shared_chat_untimeout": null, "shared_chat_delete": null
+  },
+  "channel.moderate@1#every-object": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "source_broadcaster_user_id": "1337", "source_broadcaster_user_login": "cool_user", "source_broadcaster_user_name": "Cool_User",
+    "moderator_user_id": "1338", "moderator_user_login": "mod_user", "moderator_user_name": "Mod_User",
+    "action": "followers",
+    "followers": { "follow_duration_minutes": 10 },
+    "slow": { "wait_time_seconds": 30 },
+    "vip": { "user_id": "2001", "user_login": "vip_user", "user_name": "Vip_User" },
+    "unvip": { "user_id": "2002", "user_login": "unvip_user", "user_name": "Unvip_User" },
+    "mod": { "user_id": "2003", "user_login": "mod_target", "user_name": "Mod_Target" },
+    "unmod": { "user_id": "2004", "user_login": "unmod_target", "user_name": "Unmod_Target" },
+    "ban": { "user_id": "2005", "user_login": "banned", "user_name": "Banned", "reason": "spam" },
+    "unban": { "user_id": "2006", "user_login": "unbanned", "user_name": "Unbanned" },
+    "timeout": { "user_id": "2007", "user_login": "timed_out", "user_name": "Timed_Out", "reason": null, "expires_at": "2024-02-23T21:22:33Z" },
+    "untimeout": { "user_id": "2008", "user_login": "untimed", "user_name": "Untimed" },
+    "raid": { "user_id": "2009", "user_login": "raided", "user_name": "Raided", "viewer_count": 4242 },
+    "unraid": { "user_id": "2010", "user_login": "unraided", "user_name": "Unraided" },
+    "delete": { "user_id": "2011", "user_login": "chatter", "user_name": "Chatter", "message_id": "c2b8f4e1-1b7f-4d1e-9a5c-0b4f2d9e7a11", "message_body": "bad words" },
+    "automod_terms": { "action": "add", "list": "blocked", "terms": [ "foo", "bar" ], "from_automod": true },
+    "unban_request": { "is_approved": true, "user_id": "2012", "user_login": "requester", "user_name": "Requester", "moderator_message": "ok" },
+    "shared_chat_ban": { "user_id": "2013", "user_login": "shared_banned", "user_name": "Shared_Banned", "reason": null },
+    "shared_chat_unban": { "user_id": "2014", "user_login": "shared_unbanned", "user_name": "Shared_Unbanned" },
+    "shared_chat_timeout": { "user_id": "2015", "user_login": "shared_timed_out", "user_name": "Shared_Timed_Out", "reason": "calm down", "expires_at": "2024-02-23T21:32:33Z" },
+    "shared_chat_untimeout": { "user_id": "2016", "user_login": "shared_untimed", "user_name": "Shared_Untimed" },
+    "shared_chat_delete": { "user_id": "2017", "user_login": "shared_chatter", "user_name": "Shared_Chatter", "message_id": "0f6b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d", "message_body": "shared bad words" }
+  },
+  "channel.moderate@2": {
+    "broadcaster_user_id": "423374343", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "source_broadcaster_user_id": "41292030", "source_broadcaster_user_login": "adflynn404", "source_broadcaster_user_name": "adflynn404",
+    "moderator_user_id": "424596340", "moderator_user_login": "quotrok", "moderator_user_name": "quotrok",
+    "action": "warn",
+    "followers": null, "slow": null, "vip": null, "unvip": null,
+    "warn": { "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev", "reason": "cut it out", "chat_rules_cited": null },
+    "mod": null, "unmod": null, "ban": null, "unban": null, "timeout": null, "untimeout": null, "raid": null, "unraid": null, "delete": null,
+    "automod_terms": null, "unban_request": null,
+    "shared_chat_ban": null, "shared_chat_unban": null, "shared_chat_timeout": null, "shared_chat_untimeout": null, "shared_chat_delete": null
+  },
+  "channel.moderate@2#timeout": {
+    "broadcaster_user_id": "423374343", "broadcaster_user_login": "glowillig", "broadcaster_user_name": "glowillig",
+    "moderator_user_id": "424596340", "moderator_user_login": "quotrok", "moderator_user_name": "quotrok",
+    "action": "timeout",
+    "timeout": { "user_id": "141981764", "user_login": "twitchdev", "user_name": "TwitchDev", "reason": "Does not like pineapple on pizza.", "expires_at": "2022-03-15T02:00:28Z" }
+  },
+  "channel.moderate@2#every-object": {
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cool_user", "broadcaster_user_name": "Cool_User",
+    "source_broadcaster_user_id": "1340", "source_broadcaster_user_login": "partner", "source_broadcaster_user_name": "Partner",
+    "moderator_user_id": "1338", "moderator_user_login": "mod_user", "moderator_user_name": "Mod_User",
+    "action": "warn",
+    "followers": { "follow_duration_minutes": 10 },
+    "slow": { "wait_time_seconds": 30 },
+    "vip": { "user_id": "2001", "user_login": "vip_user", "user_name": "Vip_User" },
+    "unvip": { "user_id": "2002", "user_login": "unvip_user", "user_name": "Unvip_User" },
+    "warn": { "user_id": "2018", "user_login": "warned", "user_name": "Warned", "reason": "be nice", "chat_rules_cited": [ "No spam", "Be kind" ] },
+    "mod": { "user_id": "2003", "user_login": "mod_target", "user_name": "Mod_Target" },
+    "unmod": { "user_id": "2004", "user_login": "unmod_target", "user_name": "Unmod_Target" },
+    "ban": { "user_id": "2005", "user_login": "banned", "user_name": "Banned", "reason": "spam" },
+    "unban": { "user_id": "2006", "user_login": "unbanned", "user_name": "Unbanned" },
+    "timeout": { "user_id": "2007", "user_login": "timed_out", "user_name": "Timed_Out", "reason": "cool off", "expires_at": "2024-02-23T21:22:33Z" },
+    "untimeout": { "user_id": "2008", "user_login": "untimed", "user_name": "Untimed" },
+    "raid": { "user_id": "2009", "user_login": "raided", "user_name": "Raided", "viewer_count": 4242 },
+    "unraid": { "user_id": "2010", "user_login": "unraided", "user_name": "Unraided" },
+    "delete": { "user_id": "2011", "user_login": "chatter", "user_name": "Chatter", "message_id": "c2b8f4e1-1b7f-4d1e-9a5c-0b4f2d9e7a11", "message_body": "bad words" },
+    "automod_terms": { "action": "remove", "list": "permitted", "terms": [ "baz" ], "from_automod": false },
+    "unban_request": { "is_approved": false, "user_id": "2012", "user_login": "requester", "user_name": "Requester", "moderator_message": null },
+    "shared_chat_ban": { "user_id": "2013", "user_login": "shared_banned", "user_name": "Shared_Banned", "reason": "spam" },
+    "shared_chat_unban": { "user_id": "2014", "user_login": "shared_unbanned", "user_name": "Shared_Unbanned" },
+    "shared_chat_timeout": { "user_id": "2015", "user_login": "shared_timed_out", "user_name": "Shared_Timed_Out", "reason": null, "expires_at": "2024-02-23T21:32:33Z" },
+    "shared_chat_untimeout": { "user_id": "2016", "user_login": "shared_untimed", "user_name": "Shared_Untimed" },
+    "shared_chat_delete": { "user_id": "2017", "user_login": "shared_chatter", "user_name": "Shared_Chatter", "message_id": "0f6b1c2d-3e4f-5a6b-7c8d-9e0f1a2b3c4d", "message_body": "shared bad words" }
+  },
+  "channel.moderator.add@1": {
+    "user_id": "1234", "user_login": "mod_user", "user_name": "Mod_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User"
+  },
+  "channel.moderator.remove@1": {
+    "user_id": "1234", "user_login": "not_mod_user", "user_name": "Not_Mod_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User"
+  },
+  "channel.vip.add@1": {
+    "user_id": "1234", "user_login": "mod_user", "user_name": "Mod_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User"
+  },
+  "channel.vip.remove@1": {
+    "user_id": "1234", "user_login": "mod_user", "user_name": "Mod_User",
+    "broadcaster_user_id": "1337", "broadcaster_user_login": "cooler_user", "broadcaster_user_name": "Cooler_User"
+  },
+  "channel.shield_mode.begin@1": {
+    "broadcaster_user_id": "12345", "broadcaster_user_name": "SimplySimple", "broadcaster_user_login": "simplysimple",
+    "moderator_user_id": "98765", "moderator_user_name": "ParticularlyParticular123", "moderator_user_login": "particularlyparticular123",
+    "started_at": "2022-07-26T17:00:03.17106713Z"
+  },
+  "channel.shield_mode.end@1": {
+    "broadcaster_user_id": "12345", "broadcaster_user_name": "SimplySimple", "broadcaster_user_login": "simplysimple",
+    "moderator_user_id": "98765", "moderator_user_name": "ParticularlyParticular123", "moderator_user_login": "particularlyparticular123",
+    "ended_at": "2022-07-27T01:30:23.17106713Z"
+  },
+  "channel.shoutout.create@1": {
+    "broadcaster_user_id": "12345", "broadcaster_user_name": "SimplySimple", "broadcaster_user_login": "simplysimple",
+    "moderator_user_id": "98765", "moderator_user_name": "ParticularlyParticular123", "moderator_user_login": "particularlyparticular123",
+    "to_broadcaster_user_id": "626262", "to_broadcaster_user_name": "SandySanderman", "to_broadcaster_user_login": "sandysanderman",
+    "started_at": "2022-07-26T17:00:03.17106713Z", "viewer_count": 860,
+    "cooldown_ends_at": "2022-07-26T17:02:03.17106713Z", "target_cooldown_ends_at": "2022-07-26T18:00:03.17106713Z"
+  },
+  "channel.shoutout.receive@1": {
+    "broadcaster_user_id": "626262", "broadcaster_user_name": "SandySanderman", "broadcaster_user_login": "sandysanderman",
+    "from_broadcaster_user_id": "12345", "from_broadcaster_user_name": "SimplySimple", "from_broadcaster_user_login": "simplysimple",
+    "viewer_count": 860, "started_at": "2022-07-26T17:00:03.17106713Z"
+  }
+}
