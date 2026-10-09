@@ -10,7 +10,15 @@ public sealed class EventSubMessage
 {
     public required EventSubMetadata Metadata { get; init; }
     public required EventSubPayload Payload { get; init; }
-    public T ReadEvent<T>(JsonTypeInfo<T> type) => Payload.Event.Deserialize(type) ?? throw new JsonException("Empty EventSub event.");
+    /// <summary>Reads the event payload (<see cref="EventSubPayload.Event"/>, or <see cref="EventSubPayload.Events"/> for batched types).</summary>
+    /// <exception cref="JsonException">The message carries no event, or the event does not match <paramref name="type"/>.</exception>
+    public T ReadEvent<T>(JsonTypeInfo<T> type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+        var data = Payload.EventData;
+        if (data.ValueKind is JsonValueKind.Undefined or JsonValueKind.Null) throw new JsonException("The EventSub message has no event payload.");
+        return data.Deserialize(type) ?? throw new JsonException("Empty EventSub event.");
+    }
 
     /// <summary>Reads a typed notification event. Returns false for other message types and other subscription types or versions.</summary>
     public bool TryReadEvent<TEvent>(EventSubEventDefinition<TEvent> definition, [NotNullWhen(true)] out TEvent? evt) where TEvent : class
@@ -44,14 +52,17 @@ public sealed class EventSubPayload
     public string? Challenge { get; init; }
 
     /// <summary>The event payload: <see cref="Event"/>, or <see cref="Events"/> for batched types.</summary>
-    internal JsonElement EventData => Event.ValueKind != JsonValueKind.Undefined ? Event : Events;
+    internal JsonElement EventData => Event.ValueKind is not (JsonValueKind.Undefined or JsonValueKind.Null) ? Event : Events;
+
+    /// <summary>True when the payload carries an event object or a batched events array (not absent or JSON null).</summary>
+    internal bool HasEventData => EventData.ValueKind is not (JsonValueKind.Undefined or JsonValueKind.Null);
 
     /// <summary>Reads a typed event when the payload's subscription matches the definition. Returns false when no event is present.</summary>
     public bool TryReadEvent<TEvent>(EventSubEventDefinition<TEvent> definition, [NotNullWhen(true)] out TEvent? evt) where TEvent : class
     {
         ArgumentNullException.ThrowIfNull(definition);
         evt = null;
-        if (Subscription is null || EventData.ValueKind == JsonValueKind.Undefined || !definition.Matches(Subscription.Type, Subscription.Version)) return false;
+        if (Subscription is null || !HasEventData || !definition.Matches(Subscription.Type, Subscription.Version)) return false;
         evt = definition.Deserialize(EventData);
         return true;
     }

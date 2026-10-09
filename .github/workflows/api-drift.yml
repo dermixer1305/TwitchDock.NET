@@ -12,7 +12,10 @@ jobs:
   drift:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      # Pinned to a full commit SHA (tag in the comment); the token is not persisted in .git/config.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
       - name: Refresh the inventory from dev.twitch.tv
         shell: pwsh
         run: ./tools/Update-ApiInventory.ps1 -Download

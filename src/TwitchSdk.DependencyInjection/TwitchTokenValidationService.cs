@@ -59,6 +59,8 @@ public sealed class TwitchTokenValidationService(TwitchOAuthClient oauth, IAcces
     private static bool IsTransient(Exception exception, CancellationToken stoppingToken) => exception switch
     {
         OperationCanceledException => !stoppingToken.IsCancellationRequested,
+        // RefreshingTokenProvider bounds a hung token endpoint with a TimeoutException.
+        TimeoutException => true,
         HttpRequestException { StatusCode: null } => true,
         HttpRequestException { StatusCode: HttpStatusCode.TooManyRequests } => true,
         HttpRequestException { StatusCode: >= HttpStatusCode.InternalServerError } => true,

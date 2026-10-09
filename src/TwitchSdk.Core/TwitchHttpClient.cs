@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using Microsoft.Extensions.Logging;
@@ -35,7 +36,7 @@ public sealed class TwitchHttpClient
         CancellationToken cancellationToken = default)
     {
         using var response = await SendCoreAsync(method, path, query, jsonBody, authorization, cancellationToken).ConfigureAwait(false);
-        await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+        await using var stream = await OpenContentAsync(response, cancellationToken).ConfigureAwait(false);
         return await JsonSerializer.DeserializeAsync(stream, responseType, cancellationToken).ConfigureAwait(false)
             ?? throw new JsonException("Twitch returned an empty JSON response.");
     }
@@ -53,7 +54,24 @@ public sealed class TwitchHttpClient
         IEnumerable<KeyValuePair<string, string?>>? query = null, bool authenticated = true, CancellationToken cancellationToken = default)
     {
         using var response = await SendCoreAsync(method, path, query, null, null, cancellationToken, authenticated).ConfigureAwait(false);
-        return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+        using var reader = new StreamReader(await OpenContentAsync(response, cancellationToken).ConfigureAwait(false), ResponseEncoding(response.Content), detectEncodingFromByteOrderMarks: true);
+        return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>Opens the response body, enforcing <see cref="TwitchHttpOptions.MaxResponseContentBytes"/> for declared and chunked lengths.</summary>
+    private async Task<Stream> OpenContentAsync(HttpResponseMessage response, CancellationToken ct)
+    {
+        var limit = _options.MaxResponseContentBytes;
+        if (response.Content.Headers.ContentLength > limit) throw BoundedReadStream.TooLarge(limit);
+        return new BoundedReadStream(await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false), limit);
+    }
+
+    private static Encoding ResponseEncoding(HttpContent content)
+    {
+        var charset = content.Headers.ContentType?.CharSet?.Trim('"');
+        if (string.IsNullOrEmpty(charset)) return Encoding.UTF8;
+        try { return Encoding.GetEncoding(charset); }
+        catch (ArgumentException) { return Encoding.UTF8; }
     }
 
     private async Task<HttpResponseMessage> SendCoreAsync(HttpMethod method, string path,
@@ -100,7 +118,8 @@ public sealed class TwitchHttpClient
                 request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             }
             var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct).ConfigureAwait(false);
-            var retryDelay = GetRetryDelay(response);
+            var advertisedDelay = GetAdvertisedRetryDelay(response);
+            var retryDelay = advertisedDelay is { } advertised && advertised > TimeSpan.Zero ? advertised : _options.FallbackRetryDelay;
             if (response.Headers.TryGetValues("Ratelimit-Remaining", out var remaining) && remaining.FirstOrDefault() == "0")
                 BlockFor(retryDelay);
             if (response.StatusCode == HttpStatusCode.Unauthorized && !refreshed && token is not null)
@@ -132,7 +151,7 @@ public sealed class TwitchHttpClient
                 var message = $"Twitch API returned HTTP {(int)response.StatusCode}.";
                 try
                 {
-                    await using var stream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
+                    await using var stream = await OpenContentAsync(response, ct).ConfigureAwait(false);
                     using var document = await JsonDocument.ParseAsync(stream, cancellationToken: ct).ConfigureAwait(false);
                     if (document.RootElement.ValueKind == JsonValueKind.Object)
                     {
@@ -143,9 +162,11 @@ public sealed class TwitchHttpClient
                             existingSubscriptionId = id.GetString();
                     }
                 }
-                catch (JsonException) { /* Preserve status for non-JSON upstream errors. */ }
+                catch (Exception ex) when (ex is JsonException or InvalidDataException) { /* Preserve status for non-JSON or oversized upstream errors. */ }
                 var requestId = response.Headers.TryGetValues("Twitch-Trace-Id", out var ids) ? ids.FirstOrDefault() : null;
-                throw new TwitchApiException(response.StatusCode, error, message, requestId, existingSubscriptionId);
+                // A 429 that is not retried tells the caller how long Twitch asked to wait.
+                var retryAfter = response.StatusCode == HttpStatusCode.TooManyRequests ? advertisedDelay : null;
+                throw new TwitchApiException(response.StatusCode, error, message, requestId, existingSubscriptionId, retryAfter);
             }
         }
     }
@@ -163,7 +184,8 @@ public sealed class TwitchHttpClient
         return true;
     }
 
-    private TimeSpan GetRetryDelay(HttpResponseMessage response)
+    /// <summary>The wait Twitch advertised through Retry-After or Ratelimit-Reset (the longer one), never negative; null without either header.</summary>
+    private TimeSpan? GetAdvertisedRetryDelay(HttpResponseMessage response)
     {
         var delay = response.Headers.RetryAfter?.Delta;
         if (response.Headers.RetryAfter?.Date is { } date) delay = date - _time.GetUtcNow();
@@ -172,7 +194,7 @@ public sealed class TwitchHttpClient
             var resetDelay = DateTimeOffset.FromUnixTimeSeconds(seconds) - _time.GetUtcNow();
             if (!delay.HasValue || resetDelay > delay) delay = resetDelay;
         }
-        return delay is { } value && value > TimeSpan.Zero ? value : _options.FallbackRetryDelay;
+        return delay is { } value && value < TimeSpan.Zero ? TimeSpan.Zero : delay;
     }
 
     private void BlockFor(TimeSpan delay)

@@ -10,13 +10,23 @@ namespace TwitchSdk.Authentication;
 public sealed partial class TwitchOAuthClient
 {
     private static readonly Uri Authority = new("https://id.twitch.tv/oauth2/");
+    /// <summary>OAuth responses are small; larger bodies fail with <see cref="InvalidDataException"/>.</summary>
+    private const int MaxResponseBytes = 1024 * 1024;
+    /// <summary>RFC 8628 defaults for a device authorization response without expires_in or interval.</summary>
+    private const int DefaultDeviceCodeLifetimeSeconds = 1800;
+    private const int DefaultDevicePollingIntervalSeconds = 5;
     private readonly HttpClient _http;
     private readonly TimeProvider _time;
+    private readonly OpenIdSigningKeyCache _signingKeys;
 
-    public TwitchOAuthClient(HttpClient httpClient, TimeProvider? timeProvider = null)
+    /// <param name="httpClient">Sends the OAuth requests; it is not disposed.</param>
+    /// <param name="timeProvider">Clock for device polling and ID token lifetimes.</param>
+    /// <param name="signingKeyCache">OpenID signing keys; defaults to <see cref="OpenIdSigningKeyCache.Shared"/>.</param>
+    public TwitchOAuthClient(HttpClient httpClient, TimeProvider? timeProvider = null, OpenIdSigningKeyCache? signingKeyCache = null)
     {
         _http = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         _time = timeProvider ?? TimeProvider.System;
+        _signingKeys = signingKeyCache ?? OpenIdSigningKeyCache.Shared;
     }
 
     public static string CreateState() => Convert.ToHexString(RandomNumberGenerator.GetBytes(32)).ToLowerInvariant();
@@ -96,8 +106,9 @@ public sealed partial class TwitchOAuthClient
         ArgumentNullException.ThrowIfNull(authorization);
         ArgumentNullException.ThrowIfNull(scopes);
         var scopeList = scopes.ToArray();
-        var deadline = _time.GetUtcNow().AddSeconds(Math.Max(1, authorization.ExpiresIn));
-        var interval = TimeSpan.FromSeconds(Math.Max(1, authorization.Interval));
+        // A missing (zero) expires_in or interval must not turn into a one-second deadline or a request storm.
+        var deadline = _time.GetUtcNow().AddSeconds(authorization.ExpiresIn > 0 ? authorization.ExpiresIn : DefaultDeviceCodeLifetimeSeconds);
+        var interval = TimeSpan.FromSeconds(authorization.Interval > 0 ? authorization.Interval : DefaultDevicePollingIntervalSeconds);
         while (true)
         {
             await Task.Delay(interval, _time, cancellationToken).ConfigureAwait(false);
@@ -113,7 +124,7 @@ public sealed partial class TwitchOAuthClient
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
         using var request = new HttpRequestMessage(HttpMethod.Get, new Uri(Authority, "validate"));
         request.Headers.Authorization = new AuthenticationHeaderValue("OAuth", accessToken);
-        using var response = await _http.SendAsync(request, cancellationToken).ConfigureAwait(false);
+        using var response = await SendAsync(request, cancellationToken).ConfigureAwait(false);
         return await ReadAsync(response, OAuthJsonContext.Default.TokenValidation, cancellationToken).ConfigureAwait(false);
     }
 
@@ -121,10 +132,17 @@ public sealed partial class TwitchOAuthClient
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clientId);
         ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
-        using var content = new FormUrlEncodedContent(new Dictionary<string, string> { ["client_id"] = clientId, ["token"] = accessToken });
-        using var response = await _http.PostAsync(new Uri(Authority, "revoke"), content, cancellationToken).ConfigureAwait(false);
+        using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(Authority, "revoke"))
+        {
+            Content = new FormUrlEncodedContent(new Dictionary<string, string> { ["client_id"] = clientId, ["token"] = accessToken }),
+        };
+        using var response = await SendAsync(request, cancellationToken).ConfigureAwait(false);
         await ThrowIfErrorAsync(response, cancellationToken).ConfigureAwait(false);
     }
+
+    /// <summary>Returns after the headers so that <see cref="ReadBodyAsync"/> can bound the body instead of HttpClient buffering it.</summary>
+    private Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        => _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
 
     private async Task<OAuthTokenResponse> TokenAsync(Dictionary<string, string> form, CancellationToken ct)
     {
@@ -136,34 +154,65 @@ public sealed partial class TwitchOAuthClient
 
     private async Task<T> PostAsync<T>(string path, Dictionary<string, string> form, JsonTypeInfo<T> type, CancellationToken ct)
     {
-        using var content = new FormUrlEncodedContent(form);
-        using var response = await _http.PostAsync(new Uri(Authority, path), content, ct).ConfigureAwait(false);
+        using var request = new HttpRequestMessage(HttpMethod.Post, new Uri(Authority, path)) { Content = new FormUrlEncodedContent(form) };
+        using var response = await SendAsync(request, ct).ConfigureAwait(false);
         return await ReadAsync(response, type, ct).ConfigureAwait(false);
     }
 
-    private static async Task<T> ReadAsync<T>(HttpResponseMessage response, JsonTypeInfo<T> type, CancellationToken ct)
+    private async Task<T> ReadAsync<T>(HttpResponseMessage response, JsonTypeInfo<T> type, CancellationToken ct)
     {
         await ThrowIfErrorAsync(response, ct).ConfigureAwait(false);
-        await using var stream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
-        return await JsonSerializer.DeserializeAsync(stream, type, ct).ConfigureAwait(false) ?? throw new JsonException("Empty OAuth response.");
+        var body = await ReadBodyAsync(response.Content, ct).ConfigureAwait(false);
+        return JsonSerializer.Deserialize(body.Span, type) ?? throw new JsonException("Empty OAuth response.");
     }
 
-    private static async Task ThrowIfErrorAsync(HttpResponseMessage response, CancellationToken ct)
+    /// <summary>
+    /// Reads at most 1 MiB, whether or not the response declares its length. HttpClient.Timeout ends when the headers arrive
+    /// (ResponseHeadersRead), so the same timeout is applied to the body and surfaces like HttpClient's own timeout.
+    /// </summary>
+    private async Task<ReadOnlyMemory<byte>> ReadBodyAsync(HttpContent content, CancellationToken ct)
+    {
+        if (content.Headers.ContentLength > MaxResponseBytes) throw ResponseTooLarge();
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        timeout.CancelAfter(_http.Timeout);
+        try
+        {
+            await using var stream = await content.ReadAsStreamAsync(timeout.Token).ConfigureAwait(false);
+            using var buffer = new MemoryStream();
+            var chunk = new byte[16 * 1024];
+            int read;
+            while ((read = await stream.ReadAsync(chunk, timeout.Token).ConfigureAwait(false)) > 0)
+            {
+                if (buffer.Length + read > MaxResponseBytes) throw ResponseTooLarge();
+                buffer.Write(chunk, 0, read);
+            }
+            return buffer.GetBuffer().AsMemory(0, (int)buffer.Length);
+        }
+        catch (OperationCanceledException ex) when (!ct.IsCancellationRequested)
+        {
+            var message = $"The Twitch OAuth response body did not arrive within {_http.Timeout.TotalSeconds} seconds.";
+            throw new TaskCanceledException(message, new TimeoutException(message, ex));
+        }
+    }
+
+    private static InvalidDataException ResponseTooLarge() => new($"The Twitch OAuth response exceeds the {MaxResponseBytes}-byte limit.");
+
+    private async Task ThrowIfErrorAsync(HttpResponseMessage response, CancellationToken ct)
     {
         if (response.IsSuccessStatusCode) return;
         string? error = null;
         // Only machine-readable error codes are retained; raw OAuth responses may contain credentials.
         try
         {
-            await using var stream = await response.Content.ReadAsStreamAsync(ct).ConfigureAwait(false);
-            using var json = await JsonDocument.ParseAsync(stream, cancellationToken: ct).ConfigureAwait(false);
+            var body = await ReadBodyAsync(response.Content, ct).ConfigureAwait(false);
+            using var json = JsonDocument.Parse(body);
             if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e) && e.ValueKind == JsonValueKind.String)
                 error = e.GetString();
             // Twitch reports some protocol states only in "message"; keep just the known machine-readable values.
             if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("message", out var m) && m.ValueKind == JsonValueKind.String)
                 error = KnownOAuthMessage(m.GetString()) ?? error;
         }
-        catch (JsonException) { }
+        catch (Exception ex) when (ex is JsonException or InvalidDataException) { /* Keep the status for non-JSON or oversized errors. */ }
         throw new TwitchApiException(response.StatusCode, error, $"Twitch OAuth request failed with HTTP {(int)response.StatusCode}.");
     }
 

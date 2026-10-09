@@ -99,6 +99,100 @@ public sealed class AuthenticationTests
     }
 
     [Fact]
+    public async Task CallerCancellationNeitherAbortsAcquisitionNorLosesTheRotatedRefreshToken()
+    {
+        var acquiring = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        var release = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+        OAuthTokenResponse? persisted = null;
+        var acquireTokenCancelled = true;
+        var persistTokenCancelled = true;
+        using var caller = new CancellationTokenSource();
+        using var provider = new RefreshingTokenProvider(async (_, ct) =>
+        {
+            acquiring.SetResult();
+            await release.Task;
+            acquireTokenCancelled = ct.IsCancellationRequested;
+            return new() { AccessToken = "rotated", RefreshToken = "rotated-refresh", ExpiresIn = 3600 };
+        }, persist: (response, ct) => { persistTokenCancelled = ct.IsCancellationRequested; persisted = response; return Task.CompletedTask; });
+        var pending = provider.GetTokenAsync(caller.Token).AsTask();
+        await acquiring.Task;
+        caller.Cancel();
+        release.SetResult();
+        Assert.Equal("rotated", (await pending).Value);
+        Assert.Equal("rotated-refresh", persisted!.RefreshToken);
+        Assert.False(acquireTokenCancelled);
+        Assert.False(persistTokenCancelled);
+    }
+
+    [Fact]
+    public async Task CallerCancellationStillStopsWaitingForTheGate()
+    {
+        var release = new TaskCompletionSource<OAuthTokenResponse>(TaskCreationOptions.RunContinuationsAsynchronously);
+        using var provider = new RefreshingTokenProvider((_, _) => release.Task);
+        var first = provider.GetTokenAsync().AsTask();
+        using var caller = new CancellationTokenSource();
+        var queued = provider.GetTokenAsync(caller.Token).AsTask();
+        caller.Cancel();
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => queued);
+        release.SetResult(new() { AccessToken = "token", ExpiresIn = 3600 });
+        Assert.Equal("token", (await first).Value);
+    }
+
+    [Fact]
+    public async Task AcquisitionFailureIsReplayedForFiveSecondsInsteadOfHammeringTheTokenEndpoint()
+    {
+        var time = new ManualTimeProvider();
+        var calls = 0;
+        using var provider = new RefreshingTokenProvider((refresh, _) => ++calls == 1
+            ? throw new TwitchApiException(HttpStatusCode.BadRequest, "invalid_refresh_token", "Twitch OAuth request failed with HTTP 400.")
+            : Task.FromResult(new OAuthTokenResponse { AccessToken = "fresh", RefreshToken = "next", ExpiresIn = 3600 }),
+            new() { AccessToken = "old", RefreshToken = "dead", ExpiresIn = 3600 }, timeProvider: time);
+        var old = await provider.GetTokenAsync();
+        var first = await Assert.ThrowsAsync<TwitchApiException>(() => provider.RefreshTokenAsync(old).AsTask());
+        var queued = await Task.WhenAll(Enumerable.Range(0, 10).Select(_ => Assert.ThrowsAsync<TwitchApiException>(() => provider.RefreshTokenAsync(old).AsTask())));
+        Assert.All(queued, error => Assert.Same(first, error));
+        time.Advance(TimeSpan.FromSeconds(5) - TimeSpan.FromTicks(1));
+        await Assert.ThrowsAsync<TwitchApiException>(() => provider.RefreshTokenAsync(old).AsTask());
+        Assert.Equal(1, calls);
+        time.Advance(TimeSpan.FromTicks(1));
+        Assert.Equal("fresh", (await provider.RefreshTokenAsync(old)).Value);
+        Assert.Equal(2, calls);
+    }
+
+    [Fact]
+    public async Task ReplayedCancellationFromTheTokenEndpointIsReportedAsATimeout()
+    {
+        var time = new ManualTimeProvider();
+        var calls = 0;
+        using var provider = new RefreshingTokenProvider((_, _) =>
+        {
+            calls++;
+            // What HttpClient throws when its own Timeout elapses.
+            return Task.FromException<OAuthTokenResponse>(new TaskCanceledException("The request was canceled due to the configured HttpClient.Timeout.", new TimeoutException()));
+        }, timeProvider: time);
+        var first = await Assert.ThrowsAsync<TimeoutException>(() => provider.GetTokenAsync().AsTask());
+        Assert.IsType<TaskCanceledException>(first.InnerException);
+        // Callers whose tokens were never cancelled must not see an OperationCanceledException that looks like shutdown.
+        Assert.Same(first, await Assert.ThrowsAsync<TimeoutException>(() => provider.GetTokenAsync().AsTask()));
+        Assert.Equal(1, calls);
+    }
+
+    [Fact]
+    public async Task HungAcquisitionTimesOutAfterThirtySeconds()
+    {
+        var time = new ManualTimeProvider();
+        using var provider = new RefreshingTokenProvider(async (_, ct) =>
+        {
+            await Task.Delay(Timeout.Infinite, ct);
+            throw new InvalidOperationException("unreachable");
+        }, timeProvider: time);
+        var pending = provider.GetTokenAsync().AsTask();
+        await ManualTimeProvider.WaitUntilAsync(() => time.TimerCount == 1);
+        time.Advance(TimeSpan.FromSeconds(30));
+        await Assert.ThrowsAsync<TimeoutException>(() => pending);
+    }
+
+    [Fact]
     public async Task RotatedCredentialIsKeptWhenPersistenceFails()
     {
         var calls = 0;

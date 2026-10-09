@@ -9,6 +9,8 @@ internal sealed class ManualTimeProvider : TimeProvider
     public override long GetTimestamp() => GetUtcNow().UtcTicks;
     public override long TimestampFrequency => TimeSpan.TicksPerSecond;
     public int TimerCount { get { lock (_gate) return _timers.Count; } }
+    /// <summary>The time until the earliest pending timer fires; null without timers.</summary>
+    public TimeSpan? NextTimerDueIn { get { lock (_gate) return _timers.Count == 0 ? null : _timers.Min(t => t.Due) - _now; } }
 
     public override ITimer CreateTimer(TimerCallback callback, object? state, TimeSpan dueTime, TimeSpan period)
     {
