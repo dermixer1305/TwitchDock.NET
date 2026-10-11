@@ -65,7 +65,7 @@ If Twitch replies `CAP * NAK`, `RunAsync` throws `TwitchIrcException`. An empty 
 | Command | View | Highlights |
 |---|---|---|
 | `PRIVMSG` | `IrcChatMessage` | `Text` (with `IsAction` for `/me`, wrapper removed), `MessageId`, `UserId`, `UserLogin`, `DisplayName`, `Color`, `Badges`, `BadgeInfo`, `Emotes`, `Bits`, `IsFirstMessage`, `IsModerator`/`IsSubscriber`/`IsVip`/`IsBroadcaster`, `MsgId`, `Reply` (`reply-parent-*`, `reply-thread-parent-*`), `Source` (shared chat `source-*`), `SentAt` |
-| `USERNOTICE` | `IrcUserNotice` | `MsgId` (`sub`, `resub`, `subgift`, `raid`, `announcement`, `sharedchatnotice`, ...), `Parameters` (all `msg-param-*` tags without the prefix), `TryGetInt32Parameter`, `SystemMessage`, optional `Text`, `Source.MsgId` |
+| `USERNOTICE` | `IrcUserNotice` | `Kind` (`IrcUserNoticeKind`: `Sub`, `Resub`, `SubGift`, `Raid`, `Announcement`, `ViewerMilestone`, ..., `Unknown`), `MsgId` (the raw text), `Parameters` (all `msg-param-*` tags without the prefix; names in `IrcUserNoticeParameters`), `TryGetInt32Parameter`, `SystemMessage`, optional `Text`, `Source.MsgId` |
 | `NOTICE` | `IrcNotice` | `MsgId`, `Text`, `Channel` (null for `*`) |
 | `CLEARCHAT` | `IrcClearChat` | `TargetLogin`, `TargetUserId`, `BanDuration`, `IsPermanentBan`, `IsChatCleared` |
 | `CLEARMSG` | `IrcClearMessage` | `TargetMessageId`, `Login`, `Text` |
@@ -78,7 +78,7 @@ Notes:
 
 - **Emote positions** are Unicode code point indices, as Twitch counts them, not UTF-16 indices. Use `IrcEmote.GetText(chat.Text)` to extract an emote safely when emoji precede it.
 - **Badges** stay in wire order (`IReadOnlyList<IrcBadge>`). `BadgeInfo` maps the set ID to its info, for example `subscriber` to the exact number of months.
-- **Lenient reads.** Absent or empty optional tags read as null or false. Malformed numbers, timestamps or emote ranges are ignored rather than thrown. Values such as `MsgId` and `UserType` stay strings, so new Twitch values remain readable.
+- **Lenient reads.** Absent or empty optional tags read as null or false. Malformed numbers, timestamps or emote ranges are ignored rather than thrown. Values such as `MsgId` and `UserType` stay strings, so new Twitch values remain readable. `IrcUserNotice.Kind` maps the documented notice kinds to an enum for `switch` and returns `Unknown` for anything newer, while `MsgId` keeps the text.
 
 `IrcMessageRouter` dispatches to typed handlers (`OnChatMessage`, `OnUserNotice`, `OnNotice`, `OnClearChat`, `OnClearMessage`, `OnRoomState`, `OnUserState`, `OnGlobalUserState`, `OnWhisper`). `OnCommand` covers other commands, such as `JOIN` or `001`, and `OnUnhandled` catches the rest.
 
@@ -140,8 +140,18 @@ var router = new IrcMessageRouter()
     })
     .OnUserNotice((notice, _) =>
     {
-        if (notice.MsgId == "resub" && notice.TryGetInt32Parameter("cumulative-months", out var months))
-            Console.WriteLine($"{notice.DisplayName} resubscribed for {months} months: {notice.Text}");
+        switch (notice.Kind)
+        {
+            case IrcUserNoticeKind.Resub when notice.TryGetInt32Parameter(IrcUserNoticeParameters.CumulativeMonths, out var months):
+                Console.WriteLine($"{notice.DisplayName} resubscribed for {months} months: {notice.Text}");
+                break;
+            case IrcUserNoticeKind.Raid when notice.TryGetInt32Parameter(IrcUserNoticeParameters.ViewerCount, out var viewers):
+                Console.WriteLine($"{notice.DisplayName} raided with {viewers} viewers");
+                break;
+            case IrcUserNoticeKind.Unknown:
+                Console.WriteLine($"New notice kind {notice.MsgId}: {notice.SystemMessage}"); // added by Twitch after this SDK version
+                break;
+        }
         return Task.CompletedTask;
     })
     .OnClearChat((clear, _) =>

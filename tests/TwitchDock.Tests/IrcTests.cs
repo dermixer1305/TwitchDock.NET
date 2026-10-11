@@ -281,8 +281,10 @@ public sealed class IrcTests
         Assert.Equal("Channel Subscription (channel)", notice.Parameters["sub-plan-name"]);
         Assert.Equal("false", notice.Parameters["was-gifted"]);
         Assert.Equal(5, notice.Parameters.Count);
-        Assert.True(notice.TryGetInt32Parameter("cumulative-months", out var months));
+        Assert.Equal(IrcUserNoticeKind.Resub, notice.Kind);
+        Assert.True(notice.TryGetInt32Parameter(IrcUserNoticeParameters.CumulativeMonths, out var months));
         Assert.Equal(5, months);
+        Assert.Equal("1000", notice.Parameters[IrcUserNoticeParameters.SubPlan]);
         Assert.False(notice.TryGetInt32Parameter("was-gifted", out _));
         Assert.Equal("5", notice.BadgeInfo["subscriber"]);
         Assert.Null(notice.UserType);
@@ -290,8 +292,42 @@ public sealed class IrcTests
 
         Assert.True(IrcUserNotice.TryCreate(IrcMessage.Parse("@msg-id=raid;msg-param-viewerCount=15;source-room-id=7;source-msg-id=raid :tmi.twitch.tv USERNOTICE #channel"), out var raid));
         Assert.Null(raid.Text);
-        Assert.Equal("15", raid.Parameters["viewerCount"]);
+        Assert.Equal(IrcUserNoticeKind.Raid, raid.Kind);
+        Assert.True(raid.TryGetInt32Parameter(IrcUserNoticeParameters.ViewerCount, out var viewers));
+        Assert.Equal(15, viewers);
         Assert.Equal(("7", "raid"), (raid.Source!.RoomId, raid.Source.MsgId));
+    }
+
+    [Theory]
+    [InlineData("sub", IrcUserNoticeKind.Sub)]
+    [InlineData("resub", IrcUserNoticeKind.Resub)]
+    [InlineData("subgift", IrcUserNoticeKind.SubGift)]
+    [InlineData("submysterygift", IrcUserNoticeKind.SubMysteryGift)]
+    [InlineData("giftpaidupgrade", IrcUserNoticeKind.GiftPaidUpgrade)]
+    [InlineData("rewardgift", IrcUserNoticeKind.RewardGift)]
+    [InlineData("anongiftpaidupgrade", IrcUserNoticeKind.AnonGiftPaidUpgrade)]
+    [InlineData("raid", IrcUserNoticeKind.Raid)]
+    [InlineData("unraid", IrcUserNoticeKind.Unraid)]
+    [InlineData("bitsbadgetier", IrcUserNoticeKind.BitsBadgeTier)]
+    [InlineData("sharedchatnotice", IrcUserNoticeKind.SharedChatNotice)]
+    [InlineData("announcement", IrcUserNoticeKind.Announcement)]
+    [InlineData("modiversary", IrcUserNoticeKind.Modiversary)]
+    [InlineData("viewermilestone", IrcUserNoticeKind.ViewerMilestone)]
+    [InlineData("futurenotice", IrcUserNoticeKind.Unknown)]
+    [InlineData("RAID", IrcUserNoticeKind.Unknown)]
+    public void UserNoticeKindMapsMsgIdAndKeepsUnknownText(string msgId, IrcUserNoticeKind expected)
+    {
+        Assert.True(IrcUserNotice.TryCreate(IrcMessage.Parse($"@msg-id={msgId} :tmi.twitch.tv USERNOTICE #channel"), out var notice));
+        Assert.Equal(expected, notice.Kind);
+        Assert.Equal(msgId, notice.MsgId);
+    }
+
+    [Fact]
+    public void UserNoticeWithoutMsgIdIsUnknown()
+    {
+        Assert.True(IrcUserNotice.TryCreate(IrcMessage.Parse(":tmi.twitch.tv USERNOTICE #channel"), out var notice));
+        Assert.Null(notice.MsgId);
+        Assert.Equal(IrcUserNoticeKind.Unknown, notice.Kind);
     }
 
     [Fact]

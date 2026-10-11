@@ -6,7 +6,7 @@ namespace TwitchDock.Chat.Irc;
 
 /// <summary>
 /// A typed view of a USERNOTICE: subscriptions, gifts, raids, announcements, milestones and shared chat notices.
-/// <see cref="MsgId"/> stays a string so new notice kinds remain readable.
+/// Switch on <see cref="Kind"/>; <see cref="MsgId"/> stays a string so new notice kinds remain readable.
 /// </summary>
 public sealed class IrcUserNotice
 {
@@ -42,7 +42,26 @@ public sealed class IrcUserNotice
     public string? Text => Raw.GetParameter(1) is { Length: > 0 } text ? text : null;
     /// <summary>The <c>msg-id</c> tag, for example <c>sub</c>, <c>resub</c>, <c>subgift</c>, <c>raid</c>, <c>announcement</c> or <c>sharedchatnotice</c>.</summary>
     public string? MsgId => IrcTagReader.Text(Raw, "msg-id");
-    /// <summary>All <c>msg-param-*</c> tags keyed without the <c>msg-param-</c> prefix, for example <c>cumulative-months</c>.</summary>
+    /// <summary><see cref="MsgId"/> as a known kind; <see cref="IrcUserNoticeKind.Unknown"/> for values this SDK version does not know.</summary>
+    public IrcUserNoticeKind Kind => MsgId switch
+    {
+        "sub" => IrcUserNoticeKind.Sub,
+        "resub" => IrcUserNoticeKind.Resub,
+        "subgift" => IrcUserNoticeKind.SubGift,
+        "submysterygift" => IrcUserNoticeKind.SubMysteryGift,
+        "giftpaidupgrade" => IrcUserNoticeKind.GiftPaidUpgrade,
+        "rewardgift" => IrcUserNoticeKind.RewardGift,
+        "anongiftpaidupgrade" => IrcUserNoticeKind.AnonGiftPaidUpgrade,
+        "raid" => IrcUserNoticeKind.Raid,
+        "unraid" => IrcUserNoticeKind.Unraid,
+        "bitsbadgetier" => IrcUserNoticeKind.BitsBadgeTier,
+        "sharedchatnotice" => IrcUserNoticeKind.SharedChatNotice,
+        "announcement" => IrcUserNoticeKind.Announcement,
+        "modiversary" => IrcUserNoticeKind.Modiversary,
+        "viewermilestone" => IrcUserNoticeKind.ViewerMilestone,
+        _ => IrcUserNoticeKind.Unknown,
+    };
+    /// <summary>All <c>msg-param-*</c> tags keyed without the <c>msg-param-</c> prefix, for example <c>cumulative-months</c>; names are in <see cref="IrcUserNoticeParameters"/>.</summary>
     public IReadOnlyDictionary<string, string> Parameters { get; }
     /// <summary>The unescaped <c>system-msg</c> tag that Twitch displays for the notice.</summary>
     public string? SystemMessage => IrcTagReader.Text(Raw, "system-msg");

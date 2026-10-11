@@ -192,6 +192,7 @@ sealed class TwitchDock.Chat.Irc.IrcUserNotice
     IsModerator: System.Boolean { get; }
     IsSubscriber: System.Boolean { get; }
     IsTurbo: System.Boolean { get; }
+    Kind: TwitchDock.Chat.Irc.IrcUserNoticeKind { get; }
     Login: System.String { get; }
     MessageId: System.String { get; }
     MsgId: System.String { get; }
@@ -206,6 +207,44 @@ sealed class TwitchDock.Chat.Irc.IrcUserNotice
     UserId: System.String { get; }
     UserType: System.String { get; }
     static TryCreate(TwitchDock.Chat.Irc.IrcMessage message, out TwitchDock.Chat.Irc.IrcUserNotice notice): System.Boolean
+enum TwitchDock.Chat.Irc.IrcUserNoticeKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+    const Announcement: TwitchDock.Chat.Irc.IrcUserNoticeKind = 12
+    const AnonGiftPaidUpgrade: TwitchDock.Chat.Irc.IrcUserNoticeKind = 7
+    const BitsBadgeTier: TwitchDock.Chat.Irc.IrcUserNoticeKind = 10
+    const GiftPaidUpgrade: TwitchDock.Chat.Irc.IrcUserNoticeKind = 5
+    const Modiversary: TwitchDock.Chat.Irc.IrcUserNoticeKind = 13
+    const Raid: TwitchDock.Chat.Irc.IrcUserNoticeKind = 8
+    const Resub: TwitchDock.Chat.Irc.IrcUserNoticeKind = 2
+    const RewardGift: TwitchDock.Chat.Irc.IrcUserNoticeKind = 6
+    const SharedChatNotice: TwitchDock.Chat.Irc.IrcUserNoticeKind = 11
+    const Sub: TwitchDock.Chat.Irc.IrcUserNoticeKind = 1
+    const SubGift: TwitchDock.Chat.Irc.IrcUserNoticeKind = 3
+    const SubMysteryGift: TwitchDock.Chat.Irc.IrcUserNoticeKind = 4
+    const Unknown: TwitchDock.Chat.Irc.IrcUserNoticeKind = 0
+    const Unraid: TwitchDock.Chat.Irc.IrcUserNoticeKind = 9
+    const ViewerMilestone: TwitchDock.Chat.Irc.IrcUserNoticeKind = 14
+static class TwitchDock.Chat.Irc.IrcUserNoticeParameters
+    const Category: System.String = "category"
+    const CumulativeMonths: System.String = "cumulative-months"
+    const DisplayName: System.String = "displayName"
+    const GiftMonths: System.String = "gift-months"
+    const Id: System.String = "id"
+    const Login: System.String = "login"
+    const Months: System.String = "months"
+    const PromoGiftTotal: System.String = "promo-gift-total"
+    const PromoName: System.String = "promo-name"
+    const RecipientDisplayName: System.String = "recipient-display-name"
+    const RecipientId: System.String = "recipient-id"
+    const RecipientUserName: System.String = "recipient-user-name"
+    const SenderLogin: System.String = "sender-login"
+    const SenderName: System.String = "sender-name"
+    const ShouldShareStreak: System.String = "should-share-streak"
+    const StreakMonths: System.String = "streak-months"
+    const SubPlan: System.String = "sub-plan"
+    const SubPlanName: System.String = "sub-plan-name"
+    const Threshold: System.String = "threshold"
+    const Value: System.String = "value"
+    const ViewerCount: System.String = "viewerCount"
 sealed class TwitchDock.Chat.Irc.IrcUserState
     BadgeInfo: System.Collections.Generic.IReadOnlyDictionary<System.String, System.String> { get; }
     Badges: System.Collections.Generic.IReadOnlyList<TwitchDock.Chat.Irc.IrcBadge> { get; }

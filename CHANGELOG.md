@@ -2,6 +2,10 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
+## Unreleased
+
+- `IrcUserNotice.Kind` returns the notice kind as `IrcUserNoticeKind` (`Sub`, `Resub`, `SubGift`, `Raid`, `Announcement`, `ViewerMilestone` and the other documented `msg-id` values, `Unknown` for newer ones). `IrcUserNoticeParameters` names the documented `msg-param-*` tags, so `TryGetInt32Parameter(IrcUserNoticeParameters.CumulativeMonths, ...)` replaces hand-typed strings. `MsgId` and `Parameters` are unchanged.
+
 ## 1.0.0-rc.2 (2026-10-10)
 
 Second release candidate. No public API changes; the packages are easier to find, install and learn ([release notes](docs/release-notes/1.0.0-rc.2.md)).
