@@ -39,11 +39,12 @@ Do not replace an already published version with different packages. Fix the pro
 
 - [x] Selected real-credential live checks: app token acquisition/validation/revocation, Helix reads, user device authorization, EventSub chat subscription/reception and Helix chat send. [Exact evidence and limits](live-verification.md).
 - [x] Public repository, English/German onboarding, repository URLs in package metadata and private vulnerability reporting.
-- [ ] Broader live verification with test accounts/channels: authorization code, implicit flow, complete OpenID Connect, token refresh/rotation, extended hourly validation, IRC, public webhook delivery/retries, conduits, WebSocket migration/reconnect and revocation.
+- [x] Live verification of IRC, recovery of EventSub and IRC after a network outage, refresh-token rotation across restarts and public webhook delivery ([details](live-verification.md)).
+- [ ] Remaining live verification: authorization code, implicit flow, complete OpenID Connect, refresh after HTTP 401 in a running session, extended hourly validation, webhook retries, conduits, Twitch-initiated session migration and revocation.
 - [ ] Live reads/writes across the remaining Helix groups, including account-restricted APIs where applicable. Channel Points/Bits, Extensions and Drops require suitable accounts or organizations. Fix discrepancies and add regression coverage.
 - [ ] Run the actual interactive ChatBot sample through its complete onboarding and reply flow; the earlier live chat test used a local harness.
 - [ ] Collect release-candidate feedback and resolve issues.
-- [ ] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report.
+- [x] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report (2026-10-11: no drift, 149/149 Helix and 83/83 EventSub complete). Repeat right before 1.0.0.
 - [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
 - [x] Publish the packages on nuget.org through trusted publishing ([setup](#nugetorg-publication)).
 - [x] Reserve the `TwitchDock.*` ID prefix on nuget.org (packages show as verified).

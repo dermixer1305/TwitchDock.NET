@@ -47,7 +47,19 @@ IRC also logged a full stack trace for every failed attempt during the outage; i
 
 **Confirmation run with the fix** (local source, same program, 10 minutes): EventSub stayed on session 1 and IRC on connection 1 throughout. Chat messages after gaps of 14 seconds to over a minute (several keepalive windows) were all delivered and answered. The shorter IRC retry log was not exercised because there was no outage in this run.
 
-**Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token refresh triggered by HTTP 401 during a running session, hourly validation over an extended session, IRC, public HTTPS webhook delivery/retries, conduit shards, WebSocket migration/reconnection and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
+### 2026-10-12: webhook delivery (1.0.0-rc.4 from nuget.org)
+
+A receiver like [samples/TwitchDock.WebhookHost](../samples/TwitchDock.WebhookHost/Program.cs), reachable through a Cloudflare quick tunnel, with a `channel.update` v2 webhook subscription created with an app token and a random 64-character secret per run.
+
+| Check | Result |
+| --- | --- |
+| Subscription created; Twitch's `webhook_callback_verification` answered by `EventSubWebhookHandler` (HTTP 200); status `enabled` within two seconds | Passed |
+| Stream title change delivered as a signed notification, verified and routed to the typed `ChannelUpdateEvent` handler (HTTP 204) with correct title and category | Passed |
+| Subscription deleted through Helix at the end | Passed |
+
+Retries after failed deliveries, revocation and duplicate redelivery were not exercised.
+
+**Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token refresh triggered by HTTP 401 during a running session, hourly validation over an extended session, webhook retries and revocations, conduit shards, Twitch-initiated WebSocket session migration and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
 
 ## Deutsch
 
@@ -59,4 +71,8 @@ Die interaktiven Tests liefen mit einem lokalen Testprogramm vor der Umbenennung
 
 Am **11.10.2026** lief zusätzlich das Programm aus [Tutorial-Schritt 7](tutorial.de.md#7-den-bot-dauerhaft-laufen-lassen) mit dem veröffentlichten Paket 1.0.0-rc.3 (Windows, .NET 10, vertrauliche App) gegen den eigenen Kanal: Gerätecode-Anmeldung, Speichern mit `FileTokenStore`, EventSub-Abos für Chat, Follows, Abos und Raids, `!ping` mit Antwort `pong` und sauberes Beenden mit Strg+C waren erfolgreich. Ein Neustart ohne Client-Secret scheiterte wie bei vertraulichen Apps erwartet mit HTTP 400 `missing_client_secret`; daraus entstanden die Korrektur im Tutorial und Fehlermeldungen mit dem Grund. Mit Secret wurde das gespeicherte Refresh-Token erneuert, das neue gespeichert und der Bot ging ohne neue Anmeldung online; auch ein zweiter Neustart mit dem erneuerten Token gelang. Die Alerts selbst wurden nicht ausgelöst.
 
-Noch offen sind insbesondere umfassende Tests aller API-Gruppen und Spezialrechte, weiterer Anmeldeverfahren, Token-Erneuerung nach HTTP 401 während des Betriebs, länger laufender Token-Prüfung, IRC, öffentlicher Webhooks, Conduits und Wiederverbindungen. Deshalb wird die Veröffentlichung als **Release Candidate** gekennzeichnet.
+Am **12.10.2026** wurde außerdem die Webhook-Zustellung live geprüft: Über einen Cloudflare-Tunnel beantwortete `EventSubWebhookHandler` die Prüfanfrage von Twitch, das Abo für `channel.update` wurde sofort aktiv, eine Titeländerung kam als signierte Benachrichtigung mit korrektem Titel und Kategorie an, und das Abo wurde am Ende gelöscht. Wiederholte Zustellungen und Widerrufe wurden nicht geprüft.
+
+Ebenfalls am **11.10.2026** liefen EventSub-Chat und IRC parallel: IRC-Anmeldung, Kanal betreten, Empfangen und Senden funktionierten, und nach einem rund 30-sekündigen Netzausfall verbanden sich beide Wege selbst neu und legten ihre Abos wieder an. Dabei fiel ein Fehler auf: Eine Benachrichtigung, die knapp nach dem 10-Sekunden-Keepalive-Fenster ankam, ließ den Client neu verbinden, und sie ging verloren. Seit 1.0.0-rc.4 gibt es 5 Sekunden Puffer; ein 10-minütiger Lauf damit blieb durchgehend stabil.
+
+Noch offen sind insbesondere umfassende Tests aller API-Gruppen und Spezialrechte, weiterer Anmeldeverfahren, Token-Erneuerung nach HTTP 401 während des Betriebs, länger laufender Token-Prüfung, wiederholter Webhook-Zustellungen und Widerrufe, Conduits sowie von Twitch angestoßener Session-Wechsel. Deshalb wird die Veröffentlichung als **Release Candidate** gekennzeichnet.

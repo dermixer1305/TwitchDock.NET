@@ -152,3 +152,13 @@ twitch event trigger stream.online -F http://localhost:5000/eventsub -s <secret>
 ```
 
 The integration tests automate exactly these flows; see [testing](testing.md#integration-tests-twitch-cli).
+
+## Testing webhooks with real Twitch from your PC
+
+Twitch delivers webhooks only to a public HTTPS address on port 443, which a PC behind a router does not have. A tunnel provides one: a [Cloudflare quick tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/) needs no account (`winget install --id Cloudflare.cloudflared` on Windows):
+
+```sh
+cloudflared tunnel --url http://127.0.0.1:5000
+```
+
+It prints a temporary `https://<words>.trycloudflare.com` address that forwards to your local receiver. Use `<address>/eventsub` as the callback when you create the subscription with an app token; Twitch sends the verification challenge right away, and `EventSubWebhookHandler` answers it. `channel.update` v2 needs no scope and is triggered by changing your stream title. Wait about 20 seconds after the address appears before calling it yourself: a lookup before its DNS entry exists makes Windows cache the failure for minutes. Delete the subscription when you are done, because the address stops working when the tunnel closes. Quick tunnels have no uptime guarantee; use a real server or a named tunnel in production.
