@@ -396,7 +396,7 @@ The complete [chat bot sample](../samples/TwitchDock.ChatBot/Program.cs) also re
 | Symptom | Check |
 | --- | --- |
 | `Invalid client name` during registration | Choose a unique app name; do not copy another app's name. |
-| `dotnet add package` finds no version | Add `--prerelease`, or use `--version 1.0.0-rc.4`. |
+| `dotnet add package` finds no version | Add `--prerelease`, or use `--version 1.0.0-rc.5`. |
 | Empty client ID | Put the client ID into `Program.cs` (bot), or set the variable in the same terminal that runs `dotnet run` (API example). |
 | `401` or invalid token | Check the client ID and secret, or sign in again. App tokens and user tokens serve different operations. |
 | `TwitchAuthorizationException` | The token lacks a scope. Add it to `scopes`, restart and approve the new permission. |

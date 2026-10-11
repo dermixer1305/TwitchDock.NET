@@ -9,7 +9,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <Deterministic>true</Deterministic>
     <!-- Release candidate: pinned API coverage is complete; broader live verification remains. -->
-    <Version>1.0.0-rc.4</Version>
+    <Version>1.0.0-rc.5</Version>
     <Authors>TwitchDock contributors</Authors>
     <RepositoryUrl>https://github.com/dermixer1305/TwitchDock.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

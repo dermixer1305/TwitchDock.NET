@@ -2,6 +2,10 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.5
+
+- Security review of `SECURITY.md` against the code; the OAuth `error` field is now reduced to known values. Live webhook delivery verified.
+
 ## Done: 1.0.0-rc.4
 
 - Live-test fixes: EventSub keepalive grace (no more lost notifications on healthy sessions), OAuth error messages with Twitch's reason, one-line IRC retry logs; tutorial step 7 asks for the client secret of Confidential apps.
