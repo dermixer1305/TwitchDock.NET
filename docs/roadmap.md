@@ -2,6 +2,11 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.3
+
+- `FileTokenStore`: bots sign in once and restart without a new login; tutorial step 7 builds such a bot.
+- Enums for notice kinds: `IrcUserNotice.Kind` with `IrcUserNoticeParameters`, and `ChannelChatNotificationEvent.Kind` with `IsSharedChat`.
+
 ## Done: 1.0.0-rc.2
 
 - Packages on nuget.org through trusted publishing (plus GitHub Packages), with icon, per-package descriptions and the example-driven README.

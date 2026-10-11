@@ -2,7 +2,9 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
-## Unreleased
+## 1.0.0-rc.3 (2026-10-11)
+
+Third release candidate: easier long-running bots and typed notice kinds, no breaking changes ([release notes](docs/release-notes/1.0.0-rc.3.md)).
 
 - `ChannelChatNotificationEvent.Kind` returns the notice type as `ChatNotificationKind` (`Sub`, `Resub`, `SubGift`, `Raid`, `Announcement`, `WatchStreak` and the other documented values, `Unknown` for newer ones); `IsSharedChat` tells whether the details are in the `SharedChat*` property. `NoticeType` is unchanged.
 - `FileTokenStore` saves a `RefreshingTokenProvider` authorization to a JSON file (atomic replace, user-only permissions on Linux and macOS) so bots restart without signing in again; `SaveAsync` matches the `persist` callback. Tutorial step 7 now builds a bot that signs in once.
