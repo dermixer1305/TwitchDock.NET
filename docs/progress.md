@@ -44,7 +44,7 @@ Selected real Twitch checks passed: 5 automated live tests on each target framew
 
 - **Broader live Twitch API coverage**: restricted APIs, further OAuth/OIDC flows, refresh rotation, IRC, public webhooks, conduits and reconnect/revocation scenarios remain. CLI mocks lag behind some fields, scopes and versions.
 - **Interactive chat sample**: builds; its new end-to-end onboarding has not been separately live tested. The underlying device login and chat operations were verified by a local harness.
-- **NuGet publication**: all six packages are published on [nuget.org](https://www.nuget.org/profiles/DerMixer1305) through trusted publishing ([setup](releases.md#nugetorg-publication)). The `TwitchDock.*` ID prefix is not reserved yet; request a reservation from nuget.org.
+- **NuGet publication**: all six packages are published on [nuget.org](https://www.nuget.org/profiles/DerMixer1305) through trusted publishing ([setup](releases.md#nugetorg-publication)). The `TwitchDock.*` ID prefix is reserved for the maintainer's account, so the packages show as verified and nobody else can publish under that prefix.
 
 ## Known limitations
 

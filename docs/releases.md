@@ -46,7 +46,7 @@ Do not replace an already published version with different packages. Fix the pro
 - [ ] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report.
 - [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
 - [x] Publish the packages on nuget.org through trusted publishing ([setup](#nugetorg-publication)).
-- [ ] Request a reservation of the `TwitchDock.*` ID prefix from nuget.org.
+- [x] Reserve the `TwitchDock.*` ID prefix on nuget.org (packages show as verified).
 - [ ] Set `1.0.0`, date the changelog and publish using the same verified release procedure.
 
 ## GitHub Packages
