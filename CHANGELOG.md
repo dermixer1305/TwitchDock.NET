@@ -4,6 +4,8 @@ All notable changes are listed here. The project follows [Semantic Versioning](h
 
 ## Unreleased
 
+- **Fix:** `EventSubWebSocketClient` waits `keepalive_timeout_seconds` plus 5 seconds before treating a session as lost. Twitch sends its keepalive when the window ends, so a keepalive or notification arriving a few milliseconds late made the client reconnect and lose the notifications in flight (found in a live test).
+- `TwitchIrcClient` logs each failed connection attempt as one warning line with the reason; the stack trace moved to debug level, so a network outage no longer floods the log.
 - OAuth errors name Twitch's reason in the exception message, for example `Twitch OAuth request failed with HTTP 400 (missing_client_secret).`; previously only `TwitchApiException.Error` carried it.
 - Tutorial step 7: a Confidential app needs its client secret to renew the login. The bot now asks for it up front and stops with a clear message when it is missing, instead of requesting a new login at every start (found in a live test).
 

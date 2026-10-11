@@ -28,11 +28,32 @@ public sealed class EventSubTests
             return Task.CompletedTask;
         }, (_, _) => Task.CompletedTask, stop.Token);
         await ManualTimeProvider.WaitUntilAsync(() => time.TimerCount == 1);
-        time.Advance(TimeSpan.FromSeconds(11));
+        time.Advance(TimeSpan.FromSeconds(16)); // keepalive window 10 s plus 5 s grace for network latency
         await ManualTimeProvider.WaitUntilAsync(() => old.Disposed && time.TimerCount == 1);
         time.Advance(TimeSpan.FromSeconds(1));
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => loop);
         Assert.Equal(new[] { "old", "new" }, sessions);
+    }
+
+    [Fact]
+    public async Task MessageArrivingJustAfterTheKeepaliveWindowKeepsTheSession()
+    {
+        // Live finding: Twitch sends its keepalive when the 10 s window ends, so it (or a notification) arrives slightly later.
+        var time = new ManualTimeProvider();
+        var connection = new FakeConnection();
+        connection.Enqueue(Welcome("only"));
+        var sessions = new List<string>();
+        var received = new List<string>();
+        using var stop = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var loop = new EventSubWebSocketClient(() => connection, timeProvider: time).RunAsync(
+            (session, _, _) => { sessions.Add(session.Id); return Task.CompletedTask; },
+            (message, _) => { received.Add(message.Metadata.MessageId); stop.Cancel(); return Task.CompletedTask; }, stop.Token);
+        await ManualTimeProvider.WaitUntilAsync(() => time.TimerCount == 1);
+        time.Advance(TimeSpan.FromSeconds(10.5));
+        connection.Enqueue(Notification("late"));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => loop);
+        Assert.Equal(["only"], sessions);
+        Assert.Equal(["late"], received);
     }
 
     [Fact]
@@ -235,7 +256,7 @@ public sealed class EventSubTests
         {
             // The migration read on the old socket (keepalive 10 s) and the replacement connect timeout (30 s) are pending.
             await ManualTimeProvider.WaitUntilAsync(() => old.Receives == 3 && time.TimerCount == 2);
-            time.Advance(TimeSpan.FromSeconds(11));
+            time.Advance(TimeSpan.FromSeconds(16));
         }
         await ManualTimeProvider.WaitUntilAsync(() => old.FailureObserved);
         replacement.Enqueue(Welcome("new"));

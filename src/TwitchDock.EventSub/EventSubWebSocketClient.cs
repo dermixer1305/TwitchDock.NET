@@ -9,6 +9,11 @@ public sealed class EventSubWebSocketClient
 {
     public static readonly Uri DefaultEndpoint = new("wss://eventsub.wss.twitch.tv/ws");
     private const double MaxBackoffSeconds = 30;
+    /// <summary>
+    /// Twitch sends a keepalive only when its window ends without a notification, so it arrives after the window by the network
+    /// latency. Waiting exactly keepalive_timeout_seconds would drop healthy sessions (and the notifications in flight).
+    /// </summary>
+    private static readonly TimeSpan KeepaliveGrace = TimeSpan.FromSeconds(5);
     private readonly Uri _endpoint;
     private readonly Func<IEventSubConnection> _factory;
     private readonly MessageDeduplicator _deduplicator;
@@ -194,7 +199,7 @@ public sealed class EventSubWebSocketClient
     {
         var seconds = session.KeepaliveTimeoutSeconds ?? 10;
         if (seconds is < 1 or > 600) throw new JsonException("Invalid keepalive timeout.");
-        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(seconds), _time);
+        using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(seconds) + KeepaliveGrace, _time);
         using var linked = CancellationTokenSource.CreateLinkedTokenSource(ct, timeout.Token);
         return await connection.ReceiveAsync(linked.Token).ConfigureAwait(false);
     }

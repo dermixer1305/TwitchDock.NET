@@ -32,6 +32,19 @@ The program from [tutorial step 7](tutorial.md#7-run-the-bot-permanently), built
 
 Follow, subscription and raid alerts were subscribed but not triggered. Refresh during a running session (after HTTP 401) and a Public app without secret were not exercised.
 
+### 2026-10-11: IRC and recovery after a network outage (1.0.0-rc.3)
+
+A test program ran EventSub chat (`!ping`) and `TwitchIrcClient` (`!irc`) side by side against the maintainer's channel, with a token holding `user:read:chat`, `user:write:chat`, `chat:read` and `chat:edit`.
+
+| Check | Result |
+| --- | --- |
+| IRC login, join, typed `ROOMSTATE`, receiving chat, sending a reply through `SendMessageAsync` | Passed |
+| Network disconnected for about 30 seconds: IRC detected the loss, retried with backoff (1, 2, 4, 8, 16 s), logged in again and rejoined the channel | Passed |
+| Same outage: EventSub opened a new session and re-created its subscription; `!ping` answered afterwards | Passed |
+| Session stability without an outage | **Failed**: a notification arriving just after the 10 s keepalive window made the client reconnect, and that notification was lost. Fixed by a 5 s grace period (unreleased) |
+
+IRC also logged a full stack trace for every failed attempt during the outage; it now logs one line per attempt. Both fixes still need a live rerun.
+
 **Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token refresh triggered by HTTP 401 during a running session, hourly validation over an extended session, IRC, public HTTPS webhook delivery/retries, conduit shards, WebSocket migration/reconnection and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
 
 ## Deutsch

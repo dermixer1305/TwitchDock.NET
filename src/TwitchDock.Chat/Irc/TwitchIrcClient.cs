@@ -114,7 +114,9 @@ public sealed class TwitchIrcClient
                 catch (Exception ex) when (IsConnectionFailure(ex, cancellationToken))
                 {
                     var delay = Backoff(++failures);
-                    _logger.LogWarning(ex, "Twitch IRC connection failed; retrying in {Delay}.", delay);
+                    // An outage is expected to fail several attempts: one line per attempt, the stack trace only at debug level.
+                    _logger.LogWarning("Twitch IRC connection failed ({Reason}); retrying in {Delay}.", ex.GetBaseException().Message, delay);
+                    _logger.LogDebug(ex, "Twitch IRC connection attempt failed.");
                     await Task.Delay(delay, _time, cancellationToken).ConfigureAwait(false);
                     continue;
                 }
