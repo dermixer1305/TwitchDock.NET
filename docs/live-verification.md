@@ -43,7 +43,9 @@ A test program ran EventSub chat (`!ping`) and `TwitchIrcClient` (`!irc`) side b
 | Same outage: EventSub opened a new session and re-created its subscription; `!ping` answered afterwards | Passed |
 | Session stability without an outage | **Failed**: a notification arriving just after the 10 s keepalive window made the client reconnect, and that notification was lost. Fixed by a 5 s grace period (unreleased) |
 
-IRC also logged a full stack trace for every failed attempt during the outage; it now logs one line per attempt. Both fixes still need a live rerun.
+IRC also logged a full stack trace for every failed attempt during the outage; it now logs one line per attempt.
+
+**Confirmation run with the fix** (local source, same program, 10 minutes): EventSub stayed on session 1 and IRC on connection 1 throughout. Chat messages after gaps of 14 seconds to over a minute (several keepalive windows) were all delivered and answered. The shorter IRC retry log was not exercised because there was no outage in this run.
 
 **Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token refresh triggered by HTTP 401 during a running session, hourly validation over an extended session, IRC, public HTTPS webhook delivery/retries, conduit shards, WebSocket migration/reconnection and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
 
