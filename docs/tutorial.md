@@ -262,7 +262,7 @@ using TwitchDock.Helix;
 using TwitchDock.Helix.Models;
 
 const string ClientId = "your-client-id"; // from dev.twitch.tv/console/apps – not a secret
-var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // only needed for some Confidential apps, see below
+var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // renews the login of a Confidential app, see below
 
 using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
 var oauth = new TwitchOAuthClient(http);
@@ -278,7 +278,12 @@ OAuthTokenResponse? grant = null;
 if (await store.LoadAsync() is { RefreshToken: { } savedRefreshToken })
 {
     try { grant = await oauth.RefreshAsync(ClientId, savedRefreshToken, clientSecret); }
-    catch (TwitchApiException ex) { Console.WriteLine($"The saved login cannot be used ({ex.Message}). Please sign in again."); }
+    catch (TwitchApiException ex) when (ex.Error == "missing_client_secret")
+    {
+        Console.WriteLine("Your app is Confidential: set TWITCH_CLIENT_SECRET so the bot can renew its login.");
+        return;
+    }
+    catch (TwitchApiException ex) { Console.WriteLine($"The saved login cannot be used ({ex.Error ?? ex.Message}). Please sign in again."); }
 }
 if (grant is null)
 {
@@ -359,14 +364,30 @@ try { await Task.WhenAll(chatLoop, validationLoop); }
 catch (OperationCanceledException) { Console.WriteLine("Bot stopped."); }
 ```
 
-Start it with `dotnet run` and sign in. Stop it with Ctrl+C and start it again: this time it goes online without a code.
+Your app from step 2 is **Confidential**, so Twitch only renews its login together with the client secret (**Manage → New Secret** in the developer console, if you have not created one in step 6). Enter it at a prompt before starting, never in `Program.cs`. In **PowerShell**:
+
+```powershell
+$secretInput = Read-Host 'Client secret' -AsSecureString
+$env:TWITCH_CLIENT_SECRET = [System.Net.NetworkCredential]::new('', $secretInput).Password
+dotnet run
+```
+
+In **Bash**:
+
+```bash
+read -r -s -p 'Client secret: ' TWITCH_CLIENT_SECRET
+export TWITCH_CLIENT_SECRET
+dotnet run
+```
+
+Sign in once. Stop the bot with Ctrl+C and start it again with `dotnet run` in the same terminal: this time it goes online without a code. A bot registered as a **Public** app needs no secret; then simply run `dotnet run`.
 
 **How it works:** `FileTokenStore` saves the login to `twitch-token.json` in your local application data folder (on Windows `%LOCALAPPDATA%\MyTwitchBot`, on Linux `~/.local/share/MyTwitchBot`). At start the bot exchanges the saved refresh token for fresh tokens. Twitch refresh tokens work **only once**, so `RefreshingTokenProvider` saves every new one through `persist: store.SaveAsync`. `TokenValidationLoop` checks the token every hour and renews it when Twitch rejects it.
 
 - The file is readable only by your user account, but it is not encrypted: whoever can read it can act as your bot. Keep it off shared machines; on servers prefer a secret store and pass its save method as `persist`.
 - A login that is unused for **30 days** expires, and removing the app in your [Twitch connections](https://www.twitch.tv/settings/connections) revokes it. The bot then asks you to sign in again.
 - If you add a scope later, the bot notices the missing permission, deletes the saved login and asks you to restart and sign in.
-- If the bot asks you to sign in at **every** start and prints an error about the client secret, your Confidential app requires it for refreshing: set `TWITCH_CLIENT_SECRET` as in step 6, or register a separate app with the **Public** client type for the bot.
+- Without the secret, a Confidential app cannot renew its login: the bot then says so and stops instead of asking you to sign in again at every start.
 
 The complete [chat bot sample](../samples/TwitchDock.ChatBot/Program.cs) also reports messages that Twitch drops. More on tokens: [token providers and refresh](authentication.md#token-providers-and-refresh).
 

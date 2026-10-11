@@ -262,7 +262,7 @@ using TwitchDock.Helix;
 using TwitchDock.Helix.Models;
 
 const string ClientId = "deine-client-id"; // aus dev.twitch.tv/console/apps – kein Geheimnis
-var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // nur bei manchen vertraulichen Apps nötig, siehe unten
+var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // erneuert die Anmeldung einer vertraulichen App, siehe unten
 
 using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
 var oauth = new TwitchOAuthClient(http);
@@ -278,7 +278,12 @@ OAuthTokenResponse? grant = null;
 if (await store.LoadAsync() is { RefreshToken: { } savedRefreshToken })
 {
     try { grant = await oauth.RefreshAsync(ClientId, savedRefreshToken, clientSecret); }
-    catch (TwitchApiException ex) { Console.WriteLine($"Die gespeicherte Anmeldung ist nicht nutzbar ({ex.Message}). Bitte neu anmelden."); }
+    catch (TwitchApiException ex) when (ex.Error == "missing_client_secret")
+    {
+        Console.WriteLine("Deine App ist vertraulich: Setze TWITCH_CLIENT_SECRET, damit der Bot seine Anmeldung erneuern kann.");
+        return;
+    }
+    catch (TwitchApiException ex) { Console.WriteLine($"Die gespeicherte Anmeldung ist nicht nutzbar ({ex.Error ?? ex.Message}). Bitte neu anmelden."); }
 }
 if (grant is null)
 {
@@ -359,14 +364,30 @@ try { await Task.WhenAll(chatLoop, validationLoop); }
 catch (OperationCanceledException) { Console.WriteLine("Bot beendet."); }
 ```
 
-Starte ihn mit `dotnet run` und melde dich an. Beende ihn mit Strg+C und starte ihn erneut: Diesmal geht er ohne Code online.
+Deine App aus Schritt 2 ist **vertraulich**, deshalb erneuert Twitch ihre Anmeldung nur zusammen mit dem Client-Secret (in der Entwicklerkonsole unter **Verwalten → Neues Geheimnis**, falls du in Schritt 6 noch keins erzeugt hast). Gib es vor dem Start an einer Eingabeaufforderung ein, nie in `Program.cs`. In **PowerShell**:
+
+```powershell
+$secretInput = Read-Host 'Client-Secret' -AsSecureString
+$env:TWITCH_CLIENT_SECRET = [System.Net.NetworkCredential]::new('', $secretInput).Password
+dotnet run
+```
+
+Mit **Bash**:
+
+```bash
+read -r -s -p 'Client-Secret: ' TWITCH_CLIENT_SECRET
+export TWITCH_CLIENT_SECRET
+dotnet run
+```
+
+Melde dich einmal an. Beende den Bot mit Strg+C und starte ihn im selben Terminal erneut mit `dotnet run`: Diesmal geht er ohne Code online. Ein Bot, der als **öffentliche** App registriert ist, braucht kein Secret; dann reicht `dotnet run`.
 
 **So funktioniert es:** `FileTokenStore` speichert die Anmeldung in `twitch-token.json` in deinem lokalen Anwendungsdatenordner (unter Windows `%LOCALAPPDATA%\MyTwitchBot`, unter Linux `~/.local/share/MyTwitchBot`). Beim Start tauscht der Bot das gespeicherte Refresh-Token gegen frische Tokens. Twitch-Refresh-Tokens gelten **nur einmal**, deshalb speichert `RefreshingTokenProvider` jedes neue über `persist: store.SaveAsync`. `TokenValidationLoop` prüft das Token stündlich und erneuert es, wenn Twitch es ablehnt.
 
 - Die Datei kann nur dein Benutzerkonto lesen, sie ist aber nicht verschlüsselt: Wer sie lesen kann, kann als dein Bot handeln. Nutze sie nicht auf gemeinsam genutzten Rechnern; auf Servern ist ein Secret-Store besser, dessen Speichermethode du als `persist` übergibst.
 - Eine Anmeldung, die **30 Tage** nicht benutzt wird, verfällt. Entfernst du die App in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections), wird sie widerrufen. Der Bot fragt dann erneut nach einer Anmeldung.
 - Ergänzt du später ein Recht, bemerkt der Bot das fehlende Recht, löscht die gespeicherte Anmeldung und bittet dich, neu zu starten und dich anzumelden.
-- Fragt der Bot bei **jedem** Start nach einer Anmeldung und zeigt einen Fehler zum Client-Secret, braucht deine vertrauliche App das Secret zum Erneuern: Setze `TWITCH_CLIENT_SECRET` wie in Schritt 6, oder registriere für den Bot eine eigene App mit dem Client-Typ **Öffentlich**.
+- Ohne Secret kann eine vertrauliche App ihre Anmeldung nicht erneuern: Der Bot sagt das dann und beendet sich, statt bei jedem Start eine neue Anmeldung zu verlangen.
 
 Das vollständige [Chatbot-Beispiel](../samples/TwitchDock.ChatBot/Program.cs) meldet außerdem Nachrichten, die Twitch verwirft. Mehr zu Tokens: [Token-Provider und Erneuerung](authentication.md#token-providers-and-refresh).
 

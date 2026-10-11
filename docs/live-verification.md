@@ -18,7 +18,21 @@ Performed on **2026-10-09** against the real Twitch services with maintainer-con
 
 The interactive checks used a local test harness, not the published ChatBot sample. They ran before the project/namespace rename from `TwitchSdk` to `TwitchDock`. The rename and the sample's new interactive onboarding are covered by subsequent build and automated checks; the earlier live runs do not by themselves verify every change in the release commit.
 
-**Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token-refresh rotation, hourly validation over an extended session, IRC, public HTTPS webhook delivery/retries, conduit shards, WebSocket migration/reconnection and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
+### 2026-10-11: tutorial bot with saved login (1.0.0-rc.3 from nuget.org)
+
+The program from [tutorial step 7](tutorial.md#7-run-the-bot-permanently), built against the published `TwitchDock.DependencyInjection` 1.0.0-rc.3 package on Windows with .NET 10, run against the maintainer's channel with a **Confidential** app. Only the client ID and secret input differed from the tutorial (read from the environment and a hidden prompt).
+
+| Check | Result |
+| --- | --- |
+| Device login with `user:read:chat`, `user:write:chat`, `moderator:read:followers`, `channel:read:subscriptions`; `FileTokenStore` saves the login | Passed |
+| EventSub WebSocket subscriptions for chat message, follow, subscribe and raid; `!ping` answered with `pong` in chat; Ctrl+C stops cleanly | Passed |
+| Restart **without** client secret | Failed as expected for a Confidential app: HTTP 400 `missing_client_secret`. This led to the tutorial fix (secret required, clear message) and to OAuth exception messages naming the reason |
+| Restart with client secret: saved refresh token exchanged, rotated refresh token saved, bot online without a new login | Passed |
+| Second restart with the rotated refresh token | Passed |
+
+Follow, subscription and raid alerts were subscribed but not triggered. Refresh during a running session (after HTTP 401) and a Public app without secret were not exercised.
+
+**Not yet live verified:** all endpoint groups, privileged/paid/account-restricted operations, authorization-code and implicit flows, complete OIDC login, token refresh triggered by HTTP 401 during a running session, hourly validation over an extended session, IRC, public HTTPS webhook delivery/retries, conduit shards, WebSocket migration/reconnection and revocation events. Fixture and local CLI coverage do not replace these checks. See the [release checklist](releases.md).
 
 ## Deutsch
 
@@ -28,4 +42,6 @@ Erfolgreich waren App-Token-Erzeugung, -Prüfung und -Widerruf, lesende API-Aufr
 
 Die interaktiven Tests liefen mit einem lokalen Testprogramm vor der Umbenennung in TwitchDock. Sie sind kein Nachweis dafür, dass das später ergänzte Chatbot-Tutorial bereits vollständig live durchlaufen wurde. Der Kalender-Test toleriert einen strukturierten 4xx-Fehler; die Prüfung der OpenID-Schlüssel ersetzt keine vollständige OpenID-Anmeldung.
 
-Noch offen sind insbesondere umfassende Tests aller API-Gruppen und Spezialrechte, weiterer Anmeldeverfahren, Token-Erneuerung, länger laufender Token-Prüfung, IRC, öffentlicher Webhooks, Conduits und Wiederverbindungen. Deshalb wird die Veröffentlichung als **Release Candidate** gekennzeichnet.
+Am **11.10.2026** lief zusätzlich das Programm aus [Tutorial-Schritt 7](tutorial.de.md#7-den-bot-dauerhaft-laufen-lassen) mit dem veröffentlichten Paket 1.0.0-rc.3 (Windows, .NET 10, vertrauliche App) gegen den eigenen Kanal: Gerätecode-Anmeldung, Speichern mit `FileTokenStore`, EventSub-Abos für Chat, Follows, Abos und Raids, `!ping` mit Antwort `pong` und sauberes Beenden mit Strg+C waren erfolgreich. Ein Neustart ohne Client-Secret scheiterte wie bei vertraulichen Apps erwartet mit HTTP 400 `missing_client_secret`; daraus entstanden die Korrektur im Tutorial und Fehlermeldungen mit dem Grund. Mit Secret wurde das gespeicherte Refresh-Token erneuert, das neue gespeichert und der Bot ging ohne neue Anmeldung online; auch ein zweiter Neustart mit dem erneuerten Token gelang. Die Alerts selbst wurden nicht ausgelöst.
+
+Noch offen sind insbesondere umfassende Tests aller API-Gruppen und Spezialrechte, weiterer Anmeldeverfahren, Token-Erneuerung nach HTTP 401 während des Betriebs, länger laufender Token-Prüfung, IRC, öffentlicher Webhooks, Conduits und Wiederverbindungen. Deshalb wird die Veröffentlichung als **Release Candidate** gekennzeichnet.

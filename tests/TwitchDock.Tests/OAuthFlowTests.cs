@@ -103,10 +103,15 @@ public sealed class OAuthFlowTests
         using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json("""{"error":"Bad Request","status":400,"message":"Invalid refresh token"}""", HttpStatusCode.BadRequest))));
         var error = await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(http).RefreshAsync("client", "secret-refresh"));
         Assert.Equal("invalid_refresh_token", error.Error);
+        Assert.Equal("Twitch OAuth request failed with HTTP 400 (invalid_refresh_token).", error.Message);
+        using var confidential = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json("""{"status":400,"message":"missing client secret"}""", HttpStatusCode.BadRequest))));
+        var missingSecret = await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(confidential).RefreshAsync("client", "secret-refresh"));
+        Assert.Equal(("missing_client_secret", "Twitch OAuth request failed with HTTP 400 (missing_client_secret)."), (missingSecret.Error, missingSecret.Message));
         using var leaky = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json("""{"status":400,"message":"token abc123 rejected"}""", HttpStatusCode.BadRequest))));
         var hidden = await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(leaky).RefreshAsync("client", "secret-refresh"));
         Assert.Null(hidden.Error);
         Assert.DoesNotContain("abc123", hidden.Message);
+        Assert.Equal("Twitch OAuth request failed with HTTP 400.", hidden.Message);
     }
 
     [Fact]

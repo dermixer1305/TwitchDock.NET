@@ -213,7 +213,8 @@ public sealed partial class TwitchOAuthClient
                 error = KnownOAuthMessage(m.GetString()) ?? error;
         }
         catch (Exception ex) when (ex is JsonException or InvalidDataException) { /* Keep the status for non-JSON or oversized errors. */ }
-        throw new TwitchApiException(response.StatusCode, error, $"Twitch OAuth request failed with HTTP {(int)response.StatusCode}.");
+        var reason = string.IsNullOrEmpty(error) ? "" : $" ({error})";
+        throw new TwitchApiException(response.StatusCode, error, $"Twitch OAuth request failed with HTTP {(int)response.StatusCode}{reason}.");
     }
 
     private static string? KnownOAuthMessage(string? message) => message?.Trim().ToLowerInvariant() switch
