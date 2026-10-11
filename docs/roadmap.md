@@ -2,6 +2,11 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.4
+
+- Live-test fixes: EventSub keepalive grace (no more lost notifications on healthy sessions), OAuth error messages with Twitch's reason, one-line IRC retry logs; tutorial step 7 asks for the client secret of Confidential apps.
+- Live verified: IRC, recovery of EventSub and IRC after a network outage, refresh-token rotation with `FileTokenStore`.
+
 ## Done: 1.0.0-rc.3
 
 - `FileTokenStore`: bots sign in once and restart without a new login; tutorial step 7 builds such a bot.

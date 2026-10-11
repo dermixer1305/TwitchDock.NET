@@ -2,7 +2,9 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
-## Unreleased
+## 1.0.0-rc.4 (2026-10-12)
+
+Fixes found in live tests against Twitch, no breaking changes ([release notes](docs/release-notes/1.0.0-rc.4.md)).
 
 - **Fix:** `EventSubWebSocketClient` waits `keepalive_timeout_seconds` plus 5 seconds before treating a session as lost. Twitch sends its keepalive when the window ends, so a keepalive or notification arriving a few milliseconds late made the client reconnect and lose the notifications in flight (found in a live test).
 - `TwitchIrcClient` logs each failed connection attempt as one warning line with the reason; the stack trace moved to debug level, so a network outage no longer floods the log.
