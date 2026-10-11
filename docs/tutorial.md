@@ -107,7 +107,7 @@ dotnet run
 
 **What happens here:** the device login returns a user token, and `ValidateAsync` tells the SDK which user and scopes it belongs to, so a wrong token fails with a clear error before anything is sent. `EventSubWebSocketClient` keeps a WebSocket open to Twitch and reconnects on its own. Whenever a session starts, the bot subscribes to `channel.chat.message`, and the router hands each message to your handler as a typed `ChannelChatMessageEvent`. Replies go out through the Helix API.
 
-Tokens stay in memory and are never printed or saved, so you sign in again at every start. You can remove the app's access at any time in your [Twitch connections](https://www.twitch.tv/settings/connections).
+Tokens stay in memory and are never printed or saved, so you sign in again at every start; [step 7](#7-run-the-bot-permanently) changes that. You can remove the app's access at any time in your [Twitch connections](https://www.twitch.tv/settings/connections).
 
 ## 5. Add alerts for follows, subs and raids
 
@@ -250,11 +250,85 @@ unset TWITCH_CLIENT_SECRET
 
 Expected: the `twitchdev` profile and five live German streams. Every Helix group hangs off `helix`: `helix.Channels`, `helix.Moderation`, `helix.Polls`, `helix.Clips`, `helix.ChannelPoints` and more; see the [documentation index](README.md).
 
-## 7. Keep the bot running for hours
+## 7. Run the bot permanently
 
-Twitch requires long-running apps to validate user tokens every hour, and a bot should stop cleanly on Ctrl+C. In the bot from step 5, replace everything from `var socket = new EventSubWebSocketClient();` to the end with:
+So far the bot asks you to sign in at every start, and its token expires after a few hours. This final version signs in **once**, saves the login, renews tokens on its own, validates them every hour as Twitch requires and stops cleanly on Ctrl+C. Replace `Program.cs` one last time:
 
 ```csharp
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.EventSub;
+using TwitchDock.Helix;
+using TwitchDock.Helix.Models;
+
+const string ClientId = "your-client-id"; // from dev.twitch.tv/console/apps – not a secret
+var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // only needed for some Confidential apps, see below
+
+using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
+var oauth = new TwitchOAuthClient(http);
+string[] scopes =
+[
+    TwitchScopes.UserReadChat, TwitchScopes.UserWriteChat,
+    TwitchScopes.ModeratorReadFollowers, TwitchScopes.ChannelReadSubscriptions,
+];
+
+// New: sign in once. Later starts reuse the saved login instead of showing a new code.
+var store = new FileTokenStore(FileTokenStore.GetDefaultPath("MyTwitchBot"));
+OAuthTokenResponse? grant = null;
+if (await store.LoadAsync() is { RefreshToken: { } savedRefreshToken })
+{
+    try { grant = await oauth.RefreshAsync(ClientId, savedRefreshToken, clientSecret); }
+    catch (TwitchApiException ex) { Console.WriteLine($"The saved login cannot be used ({ex.Message}). Please sign in again."); }
+}
+if (grant is null)
+{
+    var device = await oauth.StartDeviceAuthorizationAsync(ClientId, scopes);
+    Console.WriteLine($"Open {device.VerificationUri} and confirm the code {device.UserCode}");
+    grant = await oauth.WaitForDeviceAuthorizationAsync(ClientId, device, scopes);
+}
+await store.SaveAsync(grant);
+
+// New: renews the access token when it expires and saves every new refresh token (each one works only once).
+using var tokens = new RefreshingTokenProvider(
+    (refreshToken, ct) => oauth.RefreshAsync(ClientId, refreshToken!, clientSecret, ct),
+    initialToken: grant,
+    persist: store.SaveAsync);
+
+var me = await oauth.ValidateAsync(grant.AccessToken);
+if (scopes.Except(me.Scopes).Any())
+{
+    store.Delete(); // the saved login is missing a permission added to `scopes` later
+    Console.WriteLine("The bot needs new permissions. Start it again and sign in.");
+    return;
+}
+await tokens.UpdateMetadataAsync(me.ToAccessToken(grant.AccessToken));
+var botId = me.UserId!;
+var channelId = botId;
+var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = ClientId }));
+
+Task Say(string message, CancellationToken ct, string? replyTo = null) =>
+    helix.SendChatMessageAsync(new SendChatMessageRequest
+    {
+        BroadcasterId = channelId, SenderId = botId, Message = message, ReplyParentMessageId = replyTo,
+    }, ct);
+
+var router = new EventSubEventRouter()
+    .On(EventSubEvents.ChannelChatMessageV1, async (chat, _, ct) =>
+    {
+        Console.WriteLine($"{chat.ChatterUserName}: {chat.Message.Text}");
+        var reply = chat.Message.Text.Trim().ToLowerInvariant() switch
+        {
+            "!ping" => "pong",
+            "!hello" => $"Hello @{chat.ChatterUserName}!",
+            "!dice" => $"You rolled a {Random.Shared.Next(1, 7)}",
+            _ => null,
+        };
+        if (reply is not null) await Say(reply, ct, replyTo: chat.MessageId);
+    })
+    .On(EventSubEvents.ChannelFollowV2, (follow, _, ct) => Say($"Thanks for the follow, {follow.UserName}!", ct))
+    .On(EventSubEvents.ChannelSubscribeV1, (sub, _, ct) => Say($"Welcome to the team, {sub.UserName}!", ct))
+    .On(EventSubEvents.ChannelRaidV1, (raid, _, ct) => Say($"{raid.FromBroadcasterUserName} is raiding with {raid.Viewers} viewers!", ct));
+
 using var stop = new CancellationTokenSource();
 Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); }; // New: Ctrl+C stops the bot cleanly
 
@@ -276,7 +350,7 @@ var chatLoop = socket.RunAsync(
     },
     router.DispatchAsync, stop.Token);
 
-// New: validates the token now and every hour; the task fails when Twitch no longer accepts the token.
+// New: validates the token now and every hour, renewing it when needed; fails when the login was revoked.
 var validationLoop = TokenValidationLoop.RunAsync(oauth, tokens, ClientId, (_, _) => Task.CompletedTask, cancellationToken: stop.Token);
 
 await Task.WhenAny(chatLoop, validationLoop); // whichever ends first stops the bot
@@ -285,7 +359,16 @@ try { await Task.WhenAll(chatLoop, validationLoop); }
 catch (OperationCanceledException) { Console.WriteLine("Bot stopped."); }
 ```
 
-A user token expires after a few hours. To keep the bot running without signing in again, use a `RefreshingTokenProvider` with the refresh token and store rotated tokens securely; see [token providers and refresh](authentication.md#token-providers-and-refresh). The complete [chat bot sample](../samples/TwitchDock.ChatBot/Program.cs) also reports messages that Twitch drops.
+Start it with `dotnet run` and sign in. Stop it with Ctrl+C and start it again: this time it goes online without a code.
+
+**How it works:** `FileTokenStore` saves the login to `twitch-token.json` in your local application data folder (on Windows `%LOCALAPPDATA%\MyTwitchBot`, on Linux `~/.local/share/MyTwitchBot`). At start the bot exchanges the saved refresh token for fresh tokens. Twitch refresh tokens work **only once**, so `RefreshingTokenProvider` saves every new one through `persist: store.SaveAsync`. `TokenValidationLoop` checks the token every hour and renews it when Twitch rejects it.
+
+- The file is readable only by your user account, but it is not encrypted: whoever can read it can act as your bot. Keep it off shared machines; on servers prefer a secret store and pass its save method as `persist`.
+- A login that is unused for **30 days** expires, and removing the app in your [Twitch connections](https://www.twitch.tv/settings/connections) revokes it. The bot then asks you to sign in again.
+- If you add a scope later, the bot notices the missing permission, deletes the saved login and asks you to restart and sign in.
+- If the bot asks you to sign in at **every** start and prints an error about the client secret, your Confidential app requires it for refreshing: set `TWITCH_CLIENT_SECRET` as in step 6, or register a separate app with the **Public** client type for the bot.
+
+The complete [chat bot sample](../samples/TwitchDock.ChatBot/Program.cs) also reports messages that Twitch drops. More on tokens: [token providers and refresh](authentication.md#token-providers-and-refresh).
 
 ## Troubleshooting
 

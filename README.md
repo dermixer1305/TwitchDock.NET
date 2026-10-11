@@ -83,7 +83,7 @@ await socket.RunAsync(
 
 Run it with `dotnet run`, open the printed link, confirm the code and type `!ping` in your channel chat. One account is enough: the bot may answer in its own channel.
 
-Twitch requires long-running apps to validate user tokens every hour. The [chat bot sample](https://github.com/dermixer1305/TwitchDock.NET/blob/main/samples/TwitchDock.ChatBot/Program.cs) adds that with `TokenValidationLoop`, plus Ctrl+C handling and drop detection for messages Twitch rejects. Refreshing tokens is covered in [authentication](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/authentication.md).
+This bot signs in at every start, and its token expires after a few hours. [Step 7 of the tutorial](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/tutorial.md#7-run-the-bot-permanently) turns it into a bot that signs in once, saves the login with `FileTokenStore`, renews tokens on its own and runs the hourly validation Twitch requires.
 
 ## React to follows, subs, raids and more
 
@@ -229,13 +229,14 @@ catch (TwitchApiException ex) // Twitch answered with an error
 
 ### TwitchDock.Authentication
 
-OAuth flows, device login, OpenID Connect, token refresh, validation and revocation. Use it whenever someone has to sign in, or your app needs an app token. A bot that runs for days keeps its user token alive like this:
+OAuth flows, device login, OpenID Connect, token refresh, validation and revocation. Use it whenever someone has to sign in, or your app needs an app token. A bot that runs for days keeps its user token alive and survives restarts like this:
 
 ```csharp
+var store = new FileTokenStore(FileTokenStore.GetDefaultPath("MyTwitchBot")); // twitch-token.json in local app data
 var userTokens = new RefreshingTokenProvider(
     (refreshToken, ct) => oauth.RefreshAsync(clientId, refreshToken!, clientSecret, ct), // secret only for confidential apps
-    initialToken: grant,                                    // e.g. the result of the device login
-    persist: (rotated, ct) => SaveEncryptedAsync(rotated, ct)); // Twitch rotates refresh tokens: store the new one
+    initialToken: await store.LoadAsync() ?? grant,         // the saved login, or a new device login
+    persist: store.SaveAsync);                              // Twitch refresh tokens work once: store every new one
 ```
 
 All flows (authorization code, implicit, device code, client credentials, OIDC) are in [authentication](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/authentication.md).

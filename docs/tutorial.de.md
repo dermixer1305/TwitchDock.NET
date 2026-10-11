@@ -107,7 +107,7 @@ dotnet run
 
 **Was hier passiert:** Die Gerätecode-Anmeldung liefert ein Benutzer-Token. `ValidateAsync` teilt dem SDK mit, zu welchem Benutzer es gehört und welche Rechte es hat. Ein falsches Token scheitert so mit einer klaren Fehlermeldung, bevor etwas gesendet wird. `EventSubWebSocketClient` hält eine WebSocket-Verbindung zu Twitch offen und verbindet sich bei Abbrüchen selbst neu. Bei jeder neuen Sitzung abonniert der Bot `channel.chat.message`, und der Router reicht jede Nachricht als typisiertes `ChannelChatMessageEvent` an deinen Handler weiter. Antworten gehen über die Helix-API raus.
 
-Tokens bleiben im Arbeitsspeicher und werden nie ausgegeben oder gespeichert. Du meldest dich deshalb bei jedem Start neu an. Den Zugriff der App kannst du jederzeit in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections) entfernen.
+Tokens bleiben im Arbeitsspeicher und werden nie ausgegeben oder gespeichert. Du meldest dich deshalb bei jedem Start neu an; [Schritt 7](#7-den-bot-dauerhaft-laufen-lassen) ändert das. Den Zugriff der App kannst du jederzeit in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections) entfernen.
 
 ## 5. Alerts für Follows, Subs und Raids
 
@@ -250,11 +250,85 @@ unset TWITCH_CLIENT_SECRET
 
 Erwartet: das Profil von `twitchdev` und fünf laufende deutschsprachige Streams. Alle Helix-Gruppen hängen an `helix`: `helix.Channels`, `helix.Moderation`, `helix.Polls`, `helix.Clips`, `helix.ChannelPoints` und mehr; siehe [Dokumentationsindex](README.md).
 
-## 7. Den Bot stundenlang laufen lassen
+## 7. Den Bot dauerhaft laufen lassen
 
-Twitch verlangt, dass länger laufende Apps Benutzer-Tokens stündlich prüfen, und ein Bot sollte bei Strg+C sauber beenden. Ersetze im Bot aus Schritt 5 alles ab `var socket = new EventSubWebSocketClient();` bis zum Ende durch:
+Bisher fragt der Bot bei jedem Start nach einer Anmeldung, und sein Token läuft nach einigen Stunden ab. Diese letzte Version meldet sich **einmal** an, speichert die Anmeldung, erneuert Tokens selbst, prüft sie stündlich, wie Twitch es verlangt, und beendet sich bei Strg+C sauber. Ersetze `Program.cs` ein letztes Mal:
 
 ```csharp
+using TwitchDock.Authentication;
+using TwitchDock.Core;
+using TwitchDock.EventSub;
+using TwitchDock.Helix;
+using TwitchDock.Helix.Models;
+
+const string ClientId = "deine-client-id"; // aus dev.twitch.tv/console/apps – kein Geheimnis
+var clientSecret = Environment.GetEnvironmentVariable("TWITCH_CLIENT_SECRET"); // nur bei manchen vertraulichen Apps nötig, siehe unten
+
+using var http = new HttpClient(new SocketsHttpHandler { AllowAutoRedirect = false });
+var oauth = new TwitchOAuthClient(http);
+string[] scopes =
+[
+    TwitchScopes.UserReadChat, TwitchScopes.UserWriteChat,
+    TwitchScopes.ModeratorReadFollowers, TwitchScopes.ChannelReadSubscriptions,
+];
+
+// Neu: einmal anmelden. Spätere Starts nutzen die gespeicherte Anmeldung statt eines neuen Codes.
+var store = new FileTokenStore(FileTokenStore.GetDefaultPath("MyTwitchBot"));
+OAuthTokenResponse? grant = null;
+if (await store.LoadAsync() is { RefreshToken: { } savedRefreshToken })
+{
+    try { grant = await oauth.RefreshAsync(ClientId, savedRefreshToken, clientSecret); }
+    catch (TwitchApiException ex) { Console.WriteLine($"Die gespeicherte Anmeldung ist nicht nutzbar ({ex.Message}). Bitte neu anmelden."); }
+}
+if (grant is null)
+{
+    var device = await oauth.StartDeviceAuthorizationAsync(ClientId, scopes);
+    Console.WriteLine($"Öffne {device.VerificationUri} und bestätige den Code {device.UserCode}");
+    grant = await oauth.WaitForDeviceAuthorizationAsync(ClientId, device, scopes);
+}
+await store.SaveAsync(grant);
+
+// Neu: erneuert das Zugriffstoken bei Ablauf und speichert jedes neue Refresh-Token (jedes gilt nur einmal).
+using var tokens = new RefreshingTokenProvider(
+    (refreshToken, ct) => oauth.RefreshAsync(ClientId, refreshToken!, clientSecret, ct),
+    initialToken: grant,
+    persist: store.SaveAsync);
+
+var me = await oauth.ValidateAsync(grant.AccessToken);
+if (scopes.Except(me.Scopes).Any())
+{
+    store.Delete(); // der gespeicherten Anmeldung fehlt ein später zu `scopes` hinzugefügtes Recht
+    Console.WriteLine("Der Bot braucht neue Rechte. Starte ihn erneut und melde dich an.");
+    return;
+}
+await tokens.UpdateMetadataAsync(me.ToAccessToken(grant.AccessToken));
+var botId = me.UserId!;
+var channelId = botId;
+var helix = new HelixClient(new TwitchHttpClient(http, tokens, new TwitchHttpOptions { ClientId = ClientId }));
+
+Task Say(string message, CancellationToken ct, string? replyTo = null) =>
+    helix.SendChatMessageAsync(new SendChatMessageRequest
+    {
+        BroadcasterId = channelId, SenderId = botId, Message = message, ReplyParentMessageId = replyTo,
+    }, ct);
+
+var router = new EventSubEventRouter()
+    .On(EventSubEvents.ChannelChatMessageV1, async (chat, _, ct) =>
+    {
+        Console.WriteLine($"{chat.ChatterUserName}: {chat.Message.Text}");
+        var reply = chat.Message.Text.Trim().ToLowerInvariant() switch
+        {
+            "!ping" => "pong",
+            "!hallo" => $"Hallo @{chat.ChatterUserName}!",
+            "!würfel" => $"Du hast eine {Random.Shared.Next(1, 7)} gewürfelt",
+            _ => null,
+        };
+        if (reply is not null) await Say(reply, ct, replyTo: chat.MessageId);
+    })
+    .On(EventSubEvents.ChannelFollowV2, (follow, _, ct) => Say($"Danke für den Follow, {follow.UserName}!", ct))
+    .On(EventSubEvents.ChannelSubscribeV1, (sub, _, ct) => Say($"Willkommen im Team, {sub.UserName}!", ct))
+    .On(EventSubEvents.ChannelRaidV1, (raid, _, ct) => Say($"{raid.FromBroadcasterUserName} raidet mit {raid.Viewers} Zuschauern!", ct));
+
 using var stop = new CancellationTokenSource();
 Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Cancel(); }; // Neu: Strg+C beendet den Bot sauber
 
@@ -276,7 +350,7 @@ var chatLoop = socket.RunAsync(
     },
     router.DispatchAsync, stop.Token);
 
-// Neu: prüft das Token jetzt und dann stündlich; die Aufgabe schlägt fehl, wenn Twitch es nicht mehr akzeptiert.
+// Neu: prüft das Token jetzt und stündlich, erneuert es bei Bedarf; schlägt fehl, wenn die Anmeldung widerrufen wurde.
 var validationLoop = TokenValidationLoop.RunAsync(oauth, tokens, ClientId, (_, _) => Task.CompletedTask, cancellationToken: stop.Token);
 
 await Task.WhenAny(chatLoop, validationLoop); // was zuerst endet, beendet den Bot
@@ -285,7 +359,16 @@ try { await Task.WhenAll(chatLoop, validationLoop); }
 catch (OperationCanceledException) { Console.WriteLine("Bot beendet."); }
 ```
 
-Ein Benutzer-Token läuft nach einigen Stunden ab. Damit der Bot ohne neue Anmeldung weiterläuft, nutzt du einen `RefreshingTokenProvider` mit dem Refresh-Token und speicherst erneuerte Tokens sicher; siehe [Token-Provider und Erneuerung](authentication.md#token-providers-and-refresh). Das vollständige [Chatbot-Beispiel](../samples/TwitchDock.ChatBot/Program.cs) meldet außerdem Nachrichten, die Twitch verwirft.
+Starte ihn mit `dotnet run` und melde dich an. Beende ihn mit Strg+C und starte ihn erneut: Diesmal geht er ohne Code online.
+
+**So funktioniert es:** `FileTokenStore` speichert die Anmeldung in `twitch-token.json` in deinem lokalen Anwendungsdatenordner (unter Windows `%LOCALAPPDATA%\MyTwitchBot`, unter Linux `~/.local/share/MyTwitchBot`). Beim Start tauscht der Bot das gespeicherte Refresh-Token gegen frische Tokens. Twitch-Refresh-Tokens gelten **nur einmal**, deshalb speichert `RefreshingTokenProvider` jedes neue über `persist: store.SaveAsync`. `TokenValidationLoop` prüft das Token stündlich und erneuert es, wenn Twitch es ablehnt.
+
+- Die Datei kann nur dein Benutzerkonto lesen, sie ist aber nicht verschlüsselt: Wer sie lesen kann, kann als dein Bot handeln. Nutze sie nicht auf gemeinsam genutzten Rechnern; auf Servern ist ein Secret-Store besser, dessen Speichermethode du als `persist` übergibst.
+- Eine Anmeldung, die **30 Tage** nicht benutzt wird, verfällt. Entfernst du die App in deinen [Twitch-Verbindungen](https://www.twitch.tv/settings/connections), wird sie widerrufen. Der Bot fragt dann erneut nach einer Anmeldung.
+- Ergänzt du später ein Recht, bemerkt der Bot das fehlende Recht, löscht die gespeicherte Anmeldung und bittet dich, neu zu starten und dich anzumelden.
+- Fragt der Bot bei **jedem** Start nach einer Anmeldung und zeigt einen Fehler zum Client-Secret, braucht deine vertrauliche App das Secret zum Erneuern: Setze `TWITCH_CLIENT_SECRET` wie in Schritt 6, oder registriere für den Bot eine eigene App mit dem Client-Typ **Öffentlich**.
+
+Das vollständige [Chatbot-Beispiel](../samples/TwitchDock.ChatBot/Program.cs) meldet außerdem Nachrichten, die Twitch verwirft. Mehr zu Tokens: [Token-Provider und Erneuerung](authentication.md#token-providers-and-refresh).
 
 ## Häufige Fehler
 

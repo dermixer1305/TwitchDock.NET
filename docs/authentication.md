@@ -118,6 +118,20 @@ var userTokens = new RefreshingTokenProvider(
     persist: (rotated, ct) => SaveEncryptedAsync(rotated, ct)); // your encrypted store
 ```
 
+### Saving tokens to a file
+
+`FileTokenStore` covers the common case of a bot on your own machine or server. `SaveAsync` matches the `persist` callback, and `LoadAsync` returns the saved token (or null) with `ExpiresIn` reduced by the time since it was saved:
+
+```csharp
+var store = new FileTokenStore(FileTokenStore.GetDefaultPath("MyTwitchBot")); // <local app data>/MyTwitchBot/twitch-token.json
+var userTokens = new RefreshingTokenProvider(
+    (refreshToken, ct) => oauth.RefreshAsync(clientId, refreshToken!, clientSecret, ct),
+    initialToken: await store.LoadAsync() ?? await SignInAsync(),
+    persist: store.SaveAsync);
+```
+
+The store writes a temporary file and moves it over the old one, so a crash never leaves a broken token file. On Linux and macOS the file is created with mode 600 inside a 700 directory; on Windows the default location is protected by the user profile. The token is **not encrypted**: anyone who can read the file can act as the authorized account. Use a secret store on shared or production servers, one file per authorization, and `Delete()` after the user revokes access. Twitch refresh tokens from the device flow work once and expire after 30 days without use. [Tutorial step 7](tutorial.md#7-run-the-bot-permanently) shows a complete bot that signs in once and reuses the saved login.
+
 When Helix answers HTTP 401, `TwitchHttpClient` calls `RefreshTokenAsync` once and retries with the new token. Concurrent rejections share one refresh, and a caller holding an already replaced token receives the current one without another refresh. A rotated refresh token replaces the old one in memory before `persist` runs, so a failing store never causes reuse of an invalidated refresh token; the persistence exception still propagates. Coordinate refreshes across processes yourself; the SDK has no distributed lock. Dispose the provider only after every client using it has stopped.
 
 ## Validation (startup and hourly)

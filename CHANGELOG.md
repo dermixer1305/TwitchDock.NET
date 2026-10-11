@@ -4,6 +4,7 @@ All notable changes are listed here. The project follows [Semantic Versioning](h
 
 ## Unreleased
 
+- `FileTokenStore` saves a `RefreshingTokenProvider` authorization to a JSON file (atomic replace, user-only permissions on Linux and macOS) so bots restart without signing in again; `SaveAsync` matches the `persist` callback. Tutorial step 7 now builds a bot that signs in once.
 - `IrcUserNotice.Kind` returns the notice kind as `IrcUserNoticeKind` (`Sub`, `Resub`, `SubGift`, `Raid`, `Announcement`, `ViewerMilestone` and the other documented `msg-id` values, `Unknown` for newer ones). `IrcUserNoticeParameters` names the documented `msg-param-*` tags, so `TryGetInt32Parameter(IrcUserNoticeParameters.CumulativeMonths, ...)` replaces hand-typed strings. `MsgId` and `Parameters` are unchanged.
 
 ## 1.0.0-rc.2 (2026-10-10)

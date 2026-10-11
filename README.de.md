@@ -83,7 +83,7 @@ await socket.RunAsync(
 
 Starte ihn mit `dotnet run`, öffne den angezeigten Link, bestätige den Code und schreib `!ping` in deinen Kanal-Chat. Ein Konto reicht: Der Bot darf in seinem eigenen Kanal antworten.
 
-Twitch verlangt, dass länger laufende Apps Benutzer-Tokens stündlich prüfen. Das [Chatbot-Beispiel](samples/TwitchDock.ChatBot/Program.cs) ergänzt das mit `TokenValidationLoop` und behandelt außerdem Strg+C und Nachrichten, die Twitch verwirft. Token-Erneuerung erklärt [Authentifizierung](docs/authentication.md).
+Dieser Bot meldet sich bei jedem Start neu an, und sein Token läuft nach einigen Stunden ab. [Schritt 7 im Tutorial](docs/tutorial.de.md#7-den-bot-dauerhaft-laufen-lassen) macht daraus einen Bot, der sich einmal anmeldet, die Anmeldung mit `FileTokenStore` speichert, Tokens selbst erneuert und die stündliche Prüfung erledigt, die Twitch verlangt.
 
 ## Auf Follows, Subs, Raids und mehr reagieren
 
@@ -229,13 +229,14 @@ catch (TwitchApiException ex) // Twitch hat mit einem Fehler geantwortet
 
 ### TwitchDock.Authentication
 
-OAuth-Abläufe, Gerätecode-Anmeldung, OpenID Connect, Token-Erneuerung, -Prüfung und -Widerruf. Du brauchst es, sobald sich jemand anmelden muss oder deine App ein App-Token braucht. Ein Bot, der tagelang läuft, hält sein Benutzer-Token so am Leben:
+OAuth-Abläufe, Gerätecode-Anmeldung, OpenID Connect, Token-Erneuerung, -Prüfung und -Widerruf. Du brauchst es, sobald sich jemand anmelden muss oder deine App ein App-Token braucht. Ein Bot, der tagelang läuft, hält sein Benutzer-Token so am Leben und übersteht Neustarts:
 
 ```csharp
+var store = new FileTokenStore(FileTokenStore.GetDefaultPath("MyTwitchBot")); // twitch-token.json im lokalen App-Datenordner
 var userTokens = new RefreshingTokenProvider(
     (refreshToken, ct) => oauth.RefreshAsync(clientId, refreshToken!, clientSecret, ct), // Secret nur bei vertraulichen Apps
-    initialToken: grant,                                    // z. B. das Ergebnis der Gerätecode-Anmeldung
-    persist: (rotated, ct) => SaveEncryptedAsync(rotated, ct)); // Twitch tauscht Refresh-Tokens aus: das neue speichern
+    initialToken: await store.LoadAsync() ?? grant,         // die gespeicherte Anmeldung oder eine neue Gerätecode-Anmeldung
+    persist: store.SaveAsync);                              // Twitch-Refresh-Tokens gelten einmal: jedes neue speichern
 ```
 
 Alle Abläufe (Authorization Code, Implicit, Gerätecode, Client Credentials, OIDC) stehen in [Authentifizierung](docs/authentication.md).

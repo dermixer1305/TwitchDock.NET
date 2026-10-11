@@ -11,6 +11,14 @@ sealed class TwitchDock.Authentication.DeviceAuthorization
     UserCode: System.String { get; init; }
     VerificationUri: System.String { get; init; }
     virtual ToString(): System.String
+sealed class TwitchDock.Authentication.FileTokenStore
+    .ctor(System.String path, System.TimeProvider timeProvider = null)
+    Delete(): System.Void
+    LoadAsync(System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task<TwitchDock.Authentication.OAuthTokenResponse>
+    Path: System.String { get; }
+    SaveAsync(TwitchDock.Authentication.OAuthTokenResponse token, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
+    static GetDefaultPath(System.String applicationName): System.String
+    virtual ToString(): System.String
 sealed class TwitchDock.Authentication.ImplicitGrantCallback
     .ctor()
     AccessToken: System.String { get; init; }

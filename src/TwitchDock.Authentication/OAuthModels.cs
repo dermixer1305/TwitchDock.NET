@@ -81,6 +81,7 @@ internal sealed class JsonWebKey
 
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.SnakeCaseLower)]
 [JsonSerializable(typeof(OAuthTokenResponse))]
+[JsonSerializable(typeof(StoredToken))]
 [JsonSerializable(typeof(TokenValidation))]
 [JsonSerializable(typeof(DeviceAuthorization))]
 [JsonSerializable(typeof(OpenIdUserInfo))]
