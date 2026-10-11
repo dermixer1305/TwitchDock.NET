@@ -799,7 +799,9 @@ sealed class TwitchDock.EventSub.Events.ChannelChatNotificationEvent
     CommunitySubGift: TwitchDock.EventSub.Events.ChatNotificationCommunitySubGift { get; init; }
     GiftPaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade { get; init; }
     GiftedDropsSummary: TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary { get; init; }
+    IsSharedChat: System.Boolean { get; }
     IsSourceOnly: System.Boolean? { get; init; }
+    Kind: TwitchDock.EventSub.Events.ChatNotificationKind { get; }
     Message: TwitchDock.EventSub.Events.ChatMessageBody { get; init; }
     MessageId: System.String { get; init; }
     Modiversary: TwitchDock.EventSub.Events.ChatNotificationModiversary { get; init; }
@@ -1664,6 +1666,23 @@ sealed class TwitchDock.EventSub.Events.ChatNotificationGiftPaidUpgrade
 sealed class TwitchDock.EventSub.Events.ChatNotificationGiftedDropsSummary
     .ctor()
     RecipientCount: System.Int32 { get; init; }
+enum TwitchDock.EventSub.Events.ChatNotificationKind : System.IComparable, System.IConvertible, System.IFormattable, System.ISpanFormattable
+    const Announcement: TwitchDock.EventSub.Events.ChatNotificationKind = 10
+    const BitsBadgeTier: TwitchDock.EventSub.Events.ChatNotificationKind = 11
+    const CharityDonation: TwitchDock.EventSub.Events.ChatNotificationKind = 12
+    const CommunitySubGift: TwitchDock.EventSub.Events.ChatNotificationKind = 4
+    const GiftPaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationKind = 5
+    const GiftedDropsSummary: TwitchDock.EventSub.Events.ChatNotificationKind = 15
+    const Modiversary: TwitchDock.EventSub.Events.ChatNotificationKind = 14
+    const PayItForward: TwitchDock.EventSub.Events.ChatNotificationKind = 9
+    const PrimePaidUpgrade: TwitchDock.EventSub.Events.ChatNotificationKind = 6
+    const Raid: TwitchDock.EventSub.Events.ChatNotificationKind = 7
+    const Resub: TwitchDock.EventSub.Events.ChatNotificationKind = 2
+    const Sub: TwitchDock.EventSub.Events.ChatNotificationKind = 1
+    const SubGift: TwitchDock.EventSub.Events.ChatNotificationKind = 3
+    const Unknown: TwitchDock.EventSub.Events.ChatNotificationKind = 0
+    const Unraid: TwitchDock.EventSub.Events.ChatNotificationKind = 8
+    const WatchStreak: TwitchDock.EventSub.Events.ChatNotificationKind = 13
 sealed class TwitchDock.EventSub.Events.ChatNotificationModiversary
     .ctor()
     Months: System.Int32 { get; init; }

@@ -57,7 +57,29 @@ Webhook and conduit subscriptions use an app token, so the user's grant to your 
   `PrimePaidUpgrade`, `PayItForward`, `Raid`, `Unraid` (an empty object), `Announcement`, `BitsBadgeTier`, `CharityDonation`, `WatchStreak`,
   `Modiversary` or `GiftedDropsSummary`. `shared_chat_*` notice types populate the matching `SharedChat*` property instead and fill the
   `Source*` fields. `unknown` populates no variant. Discriminators and status values stay strings, so new Twitch values never fail
-  deserialization.
+  deserialization. For a `switch`, use `Kind` (`ChatNotificationKind`): `shared_chat_*` types map to the same kind with `IsSharedChat`
+  set, and values newer than this SDK version map to `Unknown` while `NoticeType` keeps the text.
+
+```csharp
+router.On(EventSubEvents.ChannelChatNotificationV1, (notice, _, _) =>
+{
+    var resub = notice.IsSharedChat ? notice.SharedChatResub : notice.Resub;
+    var raid = notice.IsSharedChat ? notice.SharedChatRaid : notice.Raid;
+    switch (notice.Kind)
+    {
+        case ChatNotificationKind.Resub when resub is not null:
+            Console.WriteLine($"{notice.ChatterUserName} resubscribed for {resub.CumulativeMonths} months");
+            break;
+        case ChatNotificationKind.Raid when raid is not null:
+            Console.WriteLine($"{raid.UserName} raided with {raid.ViewerCount} viewers");
+            break;
+        case ChatNotificationKind.Unknown:
+            Console.WriteLine($"New notice type {notice.NoticeType}: {notice.SystemMessage}");
+            break;
+    }
+    return Task.CompletedTask;
+});
+```
 - **Shared chat sessions.** `begin` and `update` include all `Participants`; `end` has no participant list.
 
 ## Example

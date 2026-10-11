@@ -147,6 +147,7 @@ public sealed class EventSubChatAutomodTests
     {
         var notice = EventSubContractAssertions.Verify(FixtureFile, EventSubEvents.ChannelChatNotificationV1);
         Assert.Equal("resub", notice.NoticeType);
+        Assert.Equal((ChatNotificationKind.Resub, false), (notice.Kind, notice.IsSharedChat));
         Assert.Null(notice.Resub!.StreakMonths);
         Assert.Equal(("1000", true), (notice.Resub.SubTier, notice.Resub.IsGift));
         Assert.Null(notice.SubGift!.CumulativeTotal);
@@ -164,11 +165,47 @@ public sealed class EventSubChatAutomodTests
         Assert.True(notice.IsSourceOnly);
     }
 
+    [Theory]
+    [InlineData("sub", ChatNotificationKind.Sub, false)]
+    [InlineData("resub", ChatNotificationKind.Resub, false)]
+    [InlineData("sub_gift", ChatNotificationKind.SubGift, false)]
+    [InlineData("community_sub_gift", ChatNotificationKind.CommunitySubGift, false)]
+    [InlineData("gift_paid_upgrade", ChatNotificationKind.GiftPaidUpgrade, false)]
+    [InlineData("prime_paid_upgrade", ChatNotificationKind.PrimePaidUpgrade, false)]
+    [InlineData("raid", ChatNotificationKind.Raid, false)]
+    [InlineData("unraid", ChatNotificationKind.Unraid, false)]
+    [InlineData("pay_it_forward", ChatNotificationKind.PayItForward, false)]
+    [InlineData("announcement", ChatNotificationKind.Announcement, false)]
+    [InlineData("bits_badge_tier", ChatNotificationKind.BitsBadgeTier, false)]
+    [InlineData("charity_donation", ChatNotificationKind.CharityDonation, false)]
+    [InlineData("watch_streak", ChatNotificationKind.WatchStreak, false)]
+    [InlineData("modiversary", ChatNotificationKind.Modiversary, false)]
+    [InlineData("gifted_drops_summary", ChatNotificationKind.GiftedDropsSummary, false)]
+    [InlineData("shared_chat_sub", ChatNotificationKind.Sub, true)]
+    [InlineData("shared_chat_raid", ChatNotificationKind.Raid, true)]
+    [InlineData("shared_chat_gifted_drops_summary", ChatNotificationKind.GiftedDropsSummary, true)]
+    [InlineData("unknown", ChatNotificationKind.Unknown, false)]
+    [InlineData("future_notice", ChatNotificationKind.Unknown, false)]
+    [InlineData("shared_chat_future_notice", ChatNotificationKind.Unknown, true)]
+    [InlineData("shared_chat_", ChatNotificationKind.Unknown, true)]
+    [InlineData("RAID", ChatNotificationKind.Unknown, false)]
+    public void ChatNotificationKindMapsNoticeTypeAndSharedChatPrefix(string noticeType, ChatNotificationKind kind, bool sharedChat)
+    {
+        var notice = new ChannelChatNotificationEvent
+        {
+            BroadcasterUserId = "1", BroadcasterUserName = "b", BroadcasterUserLogin = "b", ChatterUserId = "2", ChatterUserName = "c",
+            SystemMessage = "", MessageId = "m", Message = new() { Text = "" }, NoticeType = noticeType,
+        };
+        Assert.Equal((kind, sharedChat), (notice.Kind, notice.IsSharedChat));
+        Assert.Equal(noticeType, notice.NoticeType);
+    }
+
     [Fact]
     public void SharedChatResubNotificationPopulatesOnlyItsVariant()
     {
         var notice = RoundTrip("channel.chat.notification@1 shared_chat_resub", EventSubEvents.ChannelChatNotificationV1);
         Assert.Equal("shared_chat_resub", notice.NoticeType);
+        Assert.Equal((ChatNotificationKind.Resub, true), (notice.Kind, notice.IsSharedChat));
         Assert.Null(notice.Resub);
         Assert.Equal(10, notice.SharedChatResub!.CumulativeMonths);
         Assert.Null(notice.SharedChatResub.IsPrime);

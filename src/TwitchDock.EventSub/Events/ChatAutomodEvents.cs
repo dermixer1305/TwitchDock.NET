@@ -528,6 +528,13 @@ public sealed class ChannelChatNotificationEvent
     /// bits_badge_tier, charity_donation, watch_streak, modiversary, gifted_drops_summary, their shared_chat_* counterparts, or unknown.
     /// </summary>
     public required string NoticeType { get; init; }
+    /// <summary>
+    /// <see cref="NoticeType"/> as a known kind for <c>switch</c>; shared_chat_* types map to the same kind with <see cref="IsSharedChat"/> set,
+    /// and values this SDK version does not know map to <see cref="ChatNotificationKind.Unknown"/>.
+    /// </summary>
+    [JsonIgnore] public ChatNotificationKind Kind => ChatNotificationKinds.Parse(NoticeType);
+    /// <summary>True for shared_chat_* notice types: the details are in the matching SharedChat* property instead of the plain one.</summary>
+    [JsonIgnore] public bool IsSharedChat => NoticeType?.StartsWith(ChatNotificationKinds.SharedChatPrefix, StringComparison.Ordinal) == true;
     public ChatNotificationSub? Sub { get; init; }
     public ChatNotificationResub? Resub { get; init; }
     public ChatNotificationSubGift? SubGift { get; init; }
