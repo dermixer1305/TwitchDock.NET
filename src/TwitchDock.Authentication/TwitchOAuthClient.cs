@@ -207,7 +207,7 @@ public sealed partial class TwitchOAuthClient
             var body = await ReadBodyAsync(response.Content, ct).ConfigureAwait(false);
             using var json = JsonDocument.Parse(body);
             if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("error", out var e) && e.ValueKind == JsonValueKind.String)
-                error = e.GetString();
+                error = KnownOAuthError(e.GetString());
             // Twitch reports some protocol states only in "message"; keep just the known machine-readable values.
             if (json.RootElement.ValueKind == JsonValueKind.Object && json.RootElement.TryGetProperty("message", out var m) && m.ValueKind == JsonValueKind.String)
                 error = KnownOAuthMessage(m.GetString()) ?? error;
@@ -216,6 +216,20 @@ public sealed partial class TwitchOAuthClient
         var reason = string.IsNullOrEmpty(error) ? "" : $" ({error})";
         throw new TwitchApiException(response.StatusCode, error, $"Twitch OAuth request failed with HTTP {(int)response.StatusCode}{reason}.");
     }
+
+    /// <summary>
+    /// Twitch's "error" field holds an HTTP status phrase or an RFC 6749 error code. Only those known values are kept, so a
+    /// response that echoes request data can never place it in <see cref="TwitchApiException.Error"/> or the exception message.
+    /// </summary>
+    private static string? KnownOAuthError(string? error) => error is not null && KnownOAuthErrors.Contains(error.Trim()) ? error.Trim() : null;
+
+    private static readonly HashSet<string> KnownOAuthErrors = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Bad Request", "Unauthorized", "Forbidden", "Not Found", "Method Not Allowed", "Conflict", "Gone", "Too Many Requests",
+        "Internal Server Error", "Bad Gateway", "Service Unavailable", "Gateway Timeout",
+        "invalid_request", "invalid_client", "invalid_grant", "unauthorized_client", "unsupported_grant_type", "invalid_scope",
+        "access_denied", "unsupported_response_type", "server_error", "temporarily_unavailable",
+    };
 
     private static string? KnownOAuthMessage(string? message) => message?.Trim().ToLowerInvariant() switch
     {

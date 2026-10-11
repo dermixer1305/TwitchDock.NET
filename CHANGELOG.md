@@ -2,6 +2,11 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
+## Unreleased
+
+- Security: the `error` field of OAuth error responses is reduced to known HTTP status phrases and RFC 6749 codes before it reaches `TwitchApiException.Error` and the exception message, as the `message` field already was; unknown text is dropped.
+- `SECURITY.md` documents `FileTokenStore`, logging and release integrity.
+
 ## 1.0.0-rc.4 (2026-10-12)
 
 Fixes found in live tests against Twitch, no breaking changes ([release notes](docs/release-notes/1.0.0-rc.4.md)).

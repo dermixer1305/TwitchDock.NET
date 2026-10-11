@@ -112,6 +112,14 @@ public sealed class OAuthFlowTests
         Assert.Null(hidden.Error);
         Assert.DoesNotContain("abc123", hidden.Message);
         Assert.Equal("Twitch OAuth request failed with HTTP 400.", hidden.Message);
+        // The "error" field is reduced to known status phrases and OAuth codes as well.
+        using var echoing = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json("""{"error":"refresh token abc123 rejected","status":400}""", HttpStatusCode.BadRequest))));
+        var echoed = await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(echoing).RefreshAsync("client", "secret-refresh"));
+        Assert.Null(echoed.Error);
+        Assert.DoesNotContain("abc123", echoed.Message);
+        using var standard = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json("""{"error":"invalid_grant","status":400}""", HttpStatusCode.BadRequest))));
+        var known = await Assert.ThrowsAsync<TwitchApiException>(() => new TwitchOAuthClient(standard).RefreshAsync("client", "secret-refresh"));
+        Assert.Equal(("invalid_grant", "Twitch OAuth request failed with HTTP 400 (invalid_grant)."), (known.Error, known.Message));
     }
 
     [Fact]

@@ -12,7 +12,7 @@ Only the latest release receives fixes. The current version is the 1.0.0-rc.4 re
 
 ## What the SDK does for you
 
-- **Credential redaction.** `ToString()` of tokens, OAuth responses, device authorizations, OAuth callbacks, transport requests with webhook secrets, extension secrets, stream keys and the IRC `PASS` line returns redacted text. OAuth error bodies are reduced to known machine-readable codes because raw responses can contain credentials. Tokens are sent only in headers, never in URLs.
+- **Credential redaction.** `ToString()` of tokens, OAuth responses, device authorizations, OAuth callbacks, transport requests with webhook secrets, extension secrets, stream keys and the IRC `PASS` line returns redacted text. OAuth error bodies are reduced to known values (HTTP status phrases, RFC 6749 error codes and documented Twitch messages) before they reach `TwitchApiException.Error` or the exception message, because raw responses can contain credentials. Tokens are sent only in headers, never in URLs.
 - **Origin protection.** Helix calls accept only relative endpoint paths, so a bearer token cannot be sent to another host through a crafted path. The DI registrations disable automatic redirects. EventSub `session_reconnect` URLs are followed only to the configured scheme, host and port.
 - **Loopback-only plain endpoints.** `TwitchHttpOptions.BaseAddress` must use HTTPS and the EventSub WebSocket endpoint `wss://`; `http://` and `ws://` are accepted only on loopback hosts, for local tests against the Twitch CLI.
 - **Webhook verification.** `EventSubWebhookVerifier` checks the HMAC-SHA256 signature over message ID, timestamp and the exact raw body in constant time, rejects timestamps older than ten minutes or more than one minute ahead and bodies over 1 MiB, and parses JSON only after verification. `EventSubWebhookHandler` answers 403 for invalid signatures.
@@ -22,10 +22,13 @@ Only the latest release receives fixes. The current version is the 1.0.0-rc.4 re
 - **Resource limits.** Helix responses are capped (`MaxResponseContentBytes`, 32 MiB by default), OAuth responses at 1 MiB, EventSub WebSocket messages and webhook bodies at 1 MiB, IRC lines at 64 KiB, and ID tokens at 16 KiB.
 - **Webhook replay and header confusion.** Deduplication covers the freshness window, and the unsigned message-type header must agree with the signed body.
 - **Authorization preflight.** Known token kind, client ID, user and scopes are checked before a request is sent, which avoids sending tokens to operations they cannot authorize.
+- **Token file.** `FileTokenStore` replaces its file atomically, creates it readable and writable only by the current user on Linux and macOS (inside a user-only directory), bounds its size to 64 KiB and never includes token values in `ToString()`. It does **not** encrypt the file.
+- **Logging.** The SDK logs no request or response bodies and no credentials; IRC connection failures are logged with their reason only.
+- **Release integrity.** Packages are built and published only by the tag-triggered release workflow after the full test matrix. nuget.org publication uses trusted publishing (short-lived OIDC keys, no stored API key) behind a protected environment, the `TwitchDock.*` prefix is reserved and verified on nuget.org, GitHub Actions are pinned to commit SHAs, and every GitHub release lists SHA-256 checksums. The libraries have no third-party runtime dependencies besides Microsoft.Extensions packages.
 
 ## What you must do
 
-- Store tokens and secrets encrypted or in a secret manager; read them from the environment or configuration providers, never from source.
+- Store tokens and secrets encrypted or in a secret manager; read them from the environment or configuration providers, never from source. `FileTokenStore` is meant for a bot on your own machine: anyone who can read its file can act as the authorized account, so use a secret store on shared or production servers.
 - Protect OAuth `state` (and the OpenID `nonce`) with a single-use binding to the user's browser session. A random value alone is not enough.
 - Use one `RefreshingTokenProvider` and client set per authorization, and verify the expected client ID during validation. Coordinate refreshes across processes yourself.
 - Validate user tokens at startup and hourly (`AddTwitchTokenValidation` or `TokenValidationLoop`), and end the associated sessions when validation fails.

@@ -45,7 +45,7 @@ Do not replace an already published version with different packages. Fix the pro
 - [ ] Run the actual interactive ChatBot sample through its complete onboarding and reply flow; the earlier live chat test used a local harness.
 - [ ] Collect release-candidate feedback and resolve issues.
 - [x] Refresh the API inventory, resolve drift, pass `tools/Test-ApiCoverage.ps1 -RequireComplete`, and regenerate the coverage report (2026-10-11: no drift, 149/149 Helix and 83/83 EventSub complete). Repeat right before 1.0.0.
-- [ ] Review the security checklist in [SECURITY.md](../SECURITY.md). Do not claim an independent security audit without one.
+- [x] Review the security checklist in [SECURITY.md](../SECURITY.md) against the code (2026-10-12: all claims verified; the OAuth `error` field filter added; `FileTokenStore`, logging and release integrity documented). Do not claim an independent security audit without one.
 - [x] Publish the packages on nuget.org through trusted publishing ([setup](#nugetorg-publication)).
 - [x] Reserve the `TwitchDock.*` ID prefix on nuget.org (packages show as verified).
 - [ ] Set `1.0.0`, date the changelog and publish using the same verified release procedure.
