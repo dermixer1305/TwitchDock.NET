@@ -22,7 +22,9 @@ jobs:
       - name: Report drift
         shell: bash
         run: |
-          if git diff --quiet -- docs/api/coverage.json src/TwitchDock.Core/TwitchScopes.cs; then
+          # The importer stamps today's date into retrievedOn on every run; only other changed lines are drift.
+          changes="$(git diff -U0 -- docs/api/coverage.json src/TwitchDock.Core/TwitchScopes.cs | grep -E '^[+-]' | grep -vE '^(\+\+\+|---) ' | grep -v '"retrievedOn":' || true)"
+          if [ -z "$changes" ]; then
             echo "No drift against the pinned Twitch documentation." >> "$GITHUB_STEP_SUMMARY"
           else
             { echo '## Twitch API drift detected'; echo '```diff'; git diff --stat -- docs/api/coverage.json src/TwitchDock.Core/TwitchScopes.cs; git diff -U0 -- docs/api/coverage.json | head -n 400; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
