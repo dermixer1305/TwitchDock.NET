@@ -2,6 +2,14 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
+## 1.0.0-rc.6 (2026-10-15)
+
+Fixes EventSub WebSocket clients going offline on `session_reconnect` ([release notes](docs/release-notes/1.0.0-rc.6.md)).
+
+- **Fix:** `EventSubWebSocketClient.RunAsync` no longer ends with `JsonException` when Twitch sends a `session_reconnect` URL outside the configured origin, which happened several times a week in production and left the host offline until it restarted the client. With the default endpoint the client now follows any `wss://` host under `twitch.tv` on port 443 (exact host or a `.twitch.tv` suffix, so `eviltwitch.tv` and `eventsub.wss.twitch.tv.evil.com` are rejected). A custom endpoint, such as the Twitch CLI mock server, keeps the exact scheme, host and port comparison. URLs with user info are never followed.
+- A reconnect URL that is not allowed is handled like a lost connection: the client closes the old socket, backs off, opens a fresh session on the configured endpoint and calls `onSession` with `resubscribe: true`. It logs a warning with scheme, host and path only; the query, which can carry a challenge token, is left out.
+- `EventSubWebSocketClient` accepts an optional `ILogger<EventSubWebSocketClient>` as its last constructor parameter, like `TwitchIrcClient`; `AddTwitchDock` passes the container's logger. Source compatible; code compiled against rc.5 must be rebuilt.
+
 ## 1.0.0-rc.5 (2026-10-12)
 
 Security hardening after a review of `SECURITY.md` against the code, no breaking changes ([release notes](docs/release-notes/1.0.0-rc.5.md)).

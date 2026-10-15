@@ -30,7 +30,7 @@ internal static class IrcTestSupport
 }
 
 /// <summary>Records log entries as "Level: message exception".</summary>
-internal sealed class CapturingLogger : ILogger<TwitchIrcClient>
+internal sealed class CapturingLogger : ILogger<TwitchIrcClient>, ILogger<TwitchDock.EventSub.EventSubWebSocketClient>
 {
     private readonly ConcurrentQueue<string> _entries = new();
     public IReadOnlyCollection<string> Entries => _entries.ToArray();

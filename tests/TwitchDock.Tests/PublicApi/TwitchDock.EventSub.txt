@@ -448,7 +448,7 @@ enum TwitchDock.EventSub.EventSubTransports : System.IComparable, System.IConver
     const WebSocket: TwitchDock.EventSub.EventSubTransports = 1
     const Webhook: TwitchDock.EventSub.EventSubTransports = 2
 sealed class TwitchDock.EventSub.EventSubWebSocketClient
-    .ctor(System.Func<TwitchDock.EventSub.IEventSubConnection> connectionFactory = null, TwitchDock.EventSub.MessageDeduplicator deduplicator = null, System.TimeProvider timeProvider = null, System.Uri endpoint = null)
+    .ctor(System.Func<TwitchDock.EventSub.IEventSubConnection> connectionFactory = null, TwitchDock.EventSub.MessageDeduplicator deduplicator = null, System.TimeProvider timeProvider = null, System.Uri endpoint = null, Microsoft.Extensions.Logging.ILogger<TwitchDock.EventSub.EventSubWebSocketClient> logger = null)
     RunAsync(System.Func<TwitchDock.EventSub.EventSubSession, System.Boolean, System.Threading.CancellationToken, System.Threading.Tasks.Task> onSession, System.Func<TwitchDock.EventSub.EventSubMessage, System.Threading.CancellationToken, System.Threading.Tasks.Task> onMessage, System.Threading.CancellationToken cancellationToken = null): System.Threading.Tasks.Task
     static readonly DefaultEndpoint: System.Uri
 sealed class TwitchDock.EventSub.EventSubWebhookHandler

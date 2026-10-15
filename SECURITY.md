@@ -8,12 +8,12 @@ Never include access tokens, refresh tokens, client secrets, webhook secrets, ex
 
 ## Supported versions
 
-Only the latest release receives fixes. The current version is the 1.0.0-rc.5 release candidate. Selected authentication, Helix and chat flows have been verified against Twitch; broader live verification remains outstanding ([report](docs/live-verification.md)). No independent security audit has been performed.
+Only the latest release receives fixes. The current version is the 1.0.0-rc.6 release candidate. Selected authentication, Helix and chat flows have been verified against Twitch; broader live verification remains outstanding ([report](docs/live-verification.md)). No independent security audit has been performed.
 
 ## What the SDK does for you
 
 - **Credential redaction.** `ToString()` of tokens, OAuth responses, device authorizations, OAuth callbacks, transport requests with webhook secrets, extension secrets, stream keys and the IRC `PASS` line returns redacted text. OAuth error bodies are reduced to known values (HTTP status phrases, RFC 6749 error codes and documented Twitch messages) before they reach `TwitchApiException.Error` or the exception message, because raw responses can contain credentials. Tokens are sent only in headers, never in URLs.
-- **Origin protection.** Helix calls accept only relative endpoint paths, so a bearer token cannot be sent to another host through a crafted path. The DI registrations disable automatic redirects. EventSub `session_reconnect` URLs are followed only to the configured scheme, host and port.
+- **Origin protection.** Helix calls accept only relative endpoint paths, so a bearer token cannot be sent to another host through a crafted path. The DI registrations disable automatic redirects. EventSub `session_reconnect` URLs are followed only to `wss://` hosts under `twitch.tv` on port 443 (default endpoint) or to the configured scheme, host and port (custom endpoint), never with user info; other URLs are logged without their query and replaced by a fresh session on the configured endpoint.
 - **Loopback-only plain endpoints.** `TwitchHttpOptions.BaseAddress` must use HTTPS and the EventSub WebSocket endpoint `wss://`; `http://` and `ws://` are accepted only on loopback hosts, for local tests against the Twitch CLI.
 - **Webhook verification.** `EventSubWebhookVerifier` checks the HMAC-SHA256 signature over message ID, timestamp and the exact raw body in constant time, rejects timestamps older than ten minutes or more than one minute ahead and bodies over 1 MiB, and parses JSON only after verification. `EventSubWebhookHandler` answers 403 for invalid signatures.
 - **OAuth callbacks.** `TwitchOAuthCallbacks` compares the state in constant time before trusting any other value and rejects repeated parameters.

@@ -36,7 +36,8 @@ public static class ServiceCollectionExtensions
             sp.GetRequiredService<IAccessTokenProvider>(), options, sp.GetRequiredService<TimeProvider>(), sp.GetService<ILogger<TwitchHttpClient>>()));
         services.AddSingleton<HelixClient>();
         services.AddSingleton<TwitchChatClient>();
-        services.AddTransient(sp => new EventSubWebSocketClient(timeProvider: sp.GetRequiredService<TimeProvider>()));
+        services.AddTransient(sp => new EventSubWebSocketClient(timeProvider: sp.GetRequiredService<TimeProvider>(),
+            logger: sp.GetService<ILogger<EventSubWebSocketClient>>()));
         return services;
     }
 }

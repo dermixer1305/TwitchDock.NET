@@ -92,11 +92,11 @@ await socket.RunAsync(
 Lifecycle of `RunAsync`:
 
 - **Welcome.** It connects to `wss://eventsub.wss.twitch.tv/ws`, waits up to 30 seconds for `session_welcome` and calls `onSession(session, resubscribe: true)`. Create the subscriptions promptly there; Twitch closes sessions that stay without subscriptions.
-- **Keepalive.** Every receive waits at most the session's `keepalive_timeout_seconds`. Silence beyond that counts as a lost connection.
-- **Migration.** On `session_reconnect` the client opens the reconnect URL (only on the configured scheme, host and port), keeps reading the old connection until the new welcome arrives, delivers messages from both, and then calls `onSession(newSession, resubscribe: false)`.
+- **Keepalive.** Every receive waits the session's `keepalive_timeout_seconds` plus 5 seconds for network latency, because Twitch sends its keepalive only when the window ends. Longer silence counts as a lost connection.
+- **Migration.** On `session_reconnect` the client opens the reconnect URL, keeps reading the old connection until the new welcome arrives, delivers messages from both, and then calls `onSession(newSession, resubscribe: false)`. With the default endpoint it follows any `wss://` host under `twitch.tv` on port 443; with a custom endpoint, such as the Twitch CLI mock server, only that endpoint's scheme, host and port; never a URL with user info. Any other URL is not followed: the client logs a warning through the optional `ILogger<EventSubWebSocketClient>` (scheme, host and path only, without the query) and handles it like a lost connection, so a fresh session on the configured endpoint follows with `onSession(..., resubscribe: true)`. `AddTwitchDock` passes the container's logger.
 - **Reconnect.** A closed or silent connection is replaced by a fresh session after a backoff of 1, 2, 4, 8, 16 and then 30 seconds, followed by `onSession(..., resubscribe: true)`. Twitch does not replay events missed while disconnected.
 - **Messages.** `onMessage` receives notifications and revocations; keepalives are consumed internally. Callbacks run sequentially, so hand slow work to a bounded queue.
-- **Errors.** An exception from a callback stops `RunAsync` and propagates (the message ID is released first). Protocol violations, such as an unexpected first message or a forged reconnect URL, end it with `JsonException`. Cancellation ends it with `OperationCanceledException`.
+- **Errors.** An exception from a callback stops `RunAsync` and propagates (the message ID is released first). Protocol violations, such as an unexpected first message, end it with `JsonException`; a disallowed reconnect URL does not (see Migration). Cancellation ends it with `OperationCanceledException`.
 
 One instance runs one loop at a time; `AddTwitchDock` registers the client as transient. The `endpoint` constructor parameter accepts `wss://` URIs, and `ws://` only on loopback hosts for the Twitch CLI mock server.
 

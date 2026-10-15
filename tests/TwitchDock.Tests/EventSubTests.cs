@@ -471,14 +471,84 @@ public sealed class EventSubTests
     }
 
     [Fact]
-    public async Task RejectsReconnectToAnotherOrigin()
+    public async Task DisallowedReconnectUrlStartsAFreshSessionOnTheDefaultEndpoint()
     {
-        var connection = new FakeConnection();
-        connection.Enqueue(Welcome("s"));
-        connection.Enqueue(Message("session_reconnect", "bad", new() { Session = new() { Id = "s", Status = "reconnecting", ReconnectUrl = "wss://example.org/" } }));
-        await Assert.ThrowsAsync<JsonException>(() => new EventSubWebSocketClient(() => connection).RunAsync((_, _, _) => Task.CompletedTask, (_, _) => Task.CompletedTask));
-        Assert.True(connection.Disposed);
+        // Production finding: Twitch occasionally names a reconnect host the client does not follow. That must not stop RunAsync.
+        var time = new ManualTimeProvider();
+        var logger = new CapturingLogger();
+        var old = new FakeConnection();
+        var replacement = new FakeConnection();
+        old.Enqueue(Welcome("old"));
+        old.Enqueue(Message("session_reconnect", "bad", new() { Session = new() { Id = "old", Status = "reconnecting", ReconnectUrl = "wss://eviltwitch.tv/ws?challenge=secret-challenge" } }));
+        replacement.Enqueue(Welcome("new"));
+        var connections = new Queue<FakeConnection>([old, replacement]);
+        var sessions = new List<(string Id, bool Resubscribe)>();
+        using var stop = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        var run = new EventSubWebSocketClient(() => connections.Dequeue(), timeProvider: time, logger: logger).RunAsync((session, resubscribe, _) =>
+        {
+            sessions.Add((session.Id, resubscribe));
+            if (session.Id == "new") stop.Cancel();
+            return Task.CompletedTask;
+        }, (_, _) => Task.CompletedTask, stop.Token);
+        // The rejected URL is treated like a lost connection: the old socket is closed, then the backoff timer runs.
+        await ManualTimeProvider.WaitUntilAsync(() => old.Disposed && time.TimerCount == 1);
+        time.Advance(TimeSpan.FromSeconds(1));
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => run);
+        Assert.Equal([("old", true), ("new", true)], sessions);
+        Assert.Equal(EventSubWebSocketClient.DefaultEndpoint, replacement.Uri);
+        var warning = Assert.Single(logger.Entries, entry => entry.StartsWith("Warning:", StringComparison.Ordinal));
+        Assert.Contains("wss://eviltwitch.tv/ws", warning);
+        Assert.DoesNotContain("secret-challenge", warning);
     }
+
+    [Theory]
+    [InlineData("wss://eventsub.wss.twitch.tv/ws?challenge=abc")]
+    [InlineData("wss://eventsub-beta.wss.twitch.tv/ws?challenge=abc")]
+    [InlineData("wss://twitch.tv/ws")]
+    [InlineData("wss://eventsub.wss.twitch.tv:443/ws")]
+    [InlineData("WSS://EventSub.WSS.Twitch.TV/ws")]
+    public void DefaultEndpointFollowsWssReconnectUrlsUnderTwitchTv(string url)
+    {
+        Assert.True(EventSubWebSocketClient.IsAllowedReconnectUrl(EventSubWebSocketClient.DefaultEndpoint, url, out var result));
+        Assert.Equal(new Uri(url), result);
+    }
+
+    [Theory]
+    [InlineData("ws://eventsub.wss.twitch.tv/ws")]
+    [InlineData("wss://eventsub.wss.twitch.tv:8443/ws")]
+    [InlineData("wss://user:pass@eventsub.wss.twitch.tv/ws")]
+    [InlineData("wss://eviltwitch.tv/ws")]
+    [InlineData("wss://eventsub.wss.twitch.tv.evil.com/ws")]
+    [InlineData("wss://twitch.tv.evil.com/ws")]
+    [InlineData("https://eventsub.wss.twitch.tv/ws")]
+    [InlineData("/ws?challenge=abc")]
+    [InlineData("not a url")]
+    [InlineData("")]
+    [InlineData(null)]
+    public void DefaultEndpointRejectsOtherReconnectUrls(string? url)
+    {
+        Assert.False(EventSubWebSocketClient.IsAllowedReconnectUrl(EventSubWebSocketClient.DefaultEndpoint, url, out var result));
+        Assert.Null(result);
+    }
+
+    [Theory]
+    [InlineData("ws://127.0.0.1:8080/ws?challenge=abc", true)]
+    [InlineData("ws://127.0.0.1:8080/other", true)]
+    [InlineData("ws://127.0.0.1:9090/ws", false)]
+    [InlineData("ws://localhost:8080/ws", false)]
+    [InlineData("wss://127.0.0.1:8080/ws", false)]
+    [InlineData("wss://eventsub.wss.twitch.tv/ws", false)]
+    [InlineData("ws://user@127.0.0.1:8080/ws", false)]
+    public void CustomEndpointKeepsTheExactOriginComparison(string url, bool allowed)
+        => Assert.Equal(allowed, EventSubWebSocketClient.IsAllowedReconnectUrl(new Uri("ws://127.0.0.1:8080/ws"), url, out _));
+
+    [Theory]
+    [InlineData("wss://user:pass@eventsub.wss.twitch.tv/ws?challenge=secret", "wss://eventsub.wss.twitch.tv/ws")]
+    [InlineData("wss://example.org:8443/path?token=secret#frag", "wss://example.org:8443/path")]
+    [InlineData("not a url?secret", "not an absolute URL, 16 characters")]
+    [InlineData(null, "no URL")]
+    public void ReconnectUrlDiagnosticsOmitUserInfoAndQuery(string? url, string expected)
+        => Assert.Equal(expected, EventSubWebSocketClient.DescribeReconnectUrl(url));
 
     [Fact]
     public void ChatReadsSharedChatMetadataAndPreservesUnknownMessageKinds()

@@ -1,6 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.WebSockets;
 using System.Runtime.ExceptionServices;
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace TwitchDock.EventSub;
 
@@ -18,14 +21,16 @@ public sealed class EventSubWebSocketClient
     private readonly Func<IEventSubConnection> _factory;
     private readonly MessageDeduplicator _deduplicator;
     private readonly TimeProvider _time;
+    private readonly ILogger _logger;
     private int _running;
 
     /// <param name="connectionFactory">Creates a connection per session; defaults to <see cref="ClientWebSocketConnection"/>.</param>
     /// <param name="deduplicator">Suppresses redelivered message IDs.</param>
     /// <param name="timeProvider">Clock for keepalive and backoff timing.</param>
     /// <param name="endpoint">Defaults to Twitch. A ws:// endpoint is only accepted on a loopback IP address or localhost, for example the Twitch CLI mock server.</param>
+    /// <param name="logger">Receives diagnostics, for example a session_reconnect URL that was not followed.</param>
     public EventSubWebSocketClient(Func<IEventSubConnection>? connectionFactory = null, MessageDeduplicator? deduplicator = null, TimeProvider? timeProvider = null,
-        Uri? endpoint = null)
+        Uri? endpoint = null, ILogger<EventSubWebSocketClient>? logger = null)
     {
         _endpoint = endpoint ?? DefaultEndpoint;
         if (!ClientWebSocketConnection.IsAllowedEndpoint(_endpoint))
@@ -33,15 +38,19 @@ public sealed class EventSubWebSocketClient
         _factory = connectionFactory ?? (() => new ClientWebSocketConnection());
         _time = timeProvider ?? TimeProvider.System;
         _deduplicator = deduplicator ?? new(timeProvider: _time);
+        _logger = logger ?? NullLogger<EventSubWebSocketClient>.Instance;
     }
 
     /// <param name="onSession">Create subscriptions promptly when resubscribe is true. False indicates a Twitch session migration.</param>
     /// <param name="onMessage">Handle notifications and revocations. Exceptions stop the client and propagate to its host.</param>
     /// <param name="cancellationToken">Stops the client and closes the connection.</param>
     /// <remarks>
-    /// Connection failures reconnect with jittered exponential backoff. Besides callback exceptions, the loop ends with
-    /// <see cref="EventSubDeduplicationException"/> when a fail-closed deduplicator is full and with <see cref="JsonException"/>
-    /// for protocol violations such as a reconnect URL outside the configured origin.
+    /// Connection failures reconnect with jittered exponential backoff. A session_reconnect URL is followed only to an allowed
+    /// host: for <see cref="DefaultEndpoint"/> any wss:// host under twitch.tv on port 443, for a custom endpoint its exact scheme,
+    /// host and port, never with user info. Any other URL is logged (without its query) and handled like a lost connection: the
+    /// client starts a fresh session on the configured endpoint and calls <paramref name="onSession"/> with resubscribe = true.
+    /// Besides callback exceptions, the loop ends with <see cref="EventSubDeduplicationException"/> when a fail-closed
+    /// deduplicator is full and with <see cref="JsonException"/> for protocol violations such as an unexpected first message.
     /// </remarks>
     public async Task RunAsync(Func<EventSubSession, bool, CancellationToken, Task> onSession,
         Func<EventSubMessage, CancellationToken, Task> onMessage, CancellationToken cancellationToken = default)
@@ -75,11 +84,14 @@ public sealed class EventSubWebSocketClient
                     if (message.Metadata.MessageType == "session_reconnect")
                     {
                         var reconnect = message.Payload.Session?.ReconnectUrl;
-                        // Only follow reconnects to the configured origin so a forged URL cannot redirect the session.
-                        // JsonException is kept (rather than InvalidDataException) because callers already handle it as a protocol violation.
-                        if (!Uri.TryCreate(reconnect, UriKind.Absolute, out var uri) || uri.Scheme != _endpoint.Scheme || !string.Equals(uri.Host, _endpoint.Host, StringComparison.OrdinalIgnoreCase)
-                            || uri.Port != _endpoint.Port || !string.IsNullOrEmpty(uri.UserInfo))
-                            throw new JsonException("Invalid Twitch reconnect URL.");
+                        // A URL outside the allowed hosts is never followed, so a forged message cannot redirect the session. It must
+                        // not stop the client either: drop the session like a lost connection and start a fresh one on the endpoint.
+                        if (!IsAllowedReconnectUrl(_endpoint, reconnect, out var uri))
+                        {
+                            _logger.LogWarning("Twitch sent an EventSub reconnect URL outside the allowed hosts ({ReconnectUrl}); starting a new session on {Endpoint} instead.",
+                                DescribeReconnectUrl(reconnect), _endpoint);
+                            break;
+                        }
                         try
                         {
                             var migrated = await MigrateAsync(connection, session, uri, onMessage, cancellationToken).ConfigureAwait(false);
@@ -113,6 +125,38 @@ public sealed class EventSubWebSocketClient
             if (connection is not null) await DisposeQuietlyAsync(connection).ConfigureAwait(false);
             Volatile.Write(ref _running, 0);
         }
+    }
+
+    /// <summary>
+    /// Whether a session_reconnect URL may be followed. For <see cref="DefaultEndpoint"/>: wss://, port 443, no user info, and a host
+    /// that is twitch.tv or ends in ".twitch.tv" (so "eviltwitch.tv" and "eventsub.wss.twitch.tv.evil.com" fail). For a custom
+    /// endpoint, such as the Twitch CLI mock server: the exact scheme, host and port of that endpoint, without user info.
+    /// </summary>
+    internal static bool IsAllowedReconnectUrl(Uri endpoint, string? url, [NotNullWhen(true)] out Uri? result)
+    {
+        result = null;
+        if (!Uri.TryCreate(url, UriKind.Absolute, out var uri) || !string.IsNullOrEmpty(uri.UserInfo)) return false;
+        var allowed = IsDefaultEndpoint(endpoint)
+            ? uri.Scheme == "wss" && uri.Port == 443 && IsTwitchHost(uri.IdnHost)
+            : uri.Scheme == endpoint.Scheme && string.Equals(uri.Host, endpoint.Host, StringComparison.OrdinalIgnoreCase) && uri.Port == endpoint.Port;
+        if (allowed) result = uri;
+        return allowed;
+    }
+
+    private static bool IsDefaultEndpoint(Uri endpoint)
+        => Uri.Compare(endpoint, DefaultEndpoint, UriComponents.SchemeAndServer, UriFormat.Unescaped, StringComparison.OrdinalIgnoreCase) == 0;
+
+    /// <summary>IdnHost is the ASCII (punycode) form, so look-alike Unicode host names cannot end in ".twitch.tv".</summary>
+    private static bool IsTwitchHost(string host)
+        => host.Equals("twitch.tv", StringComparison.OrdinalIgnoreCase) || host.EndsWith(".twitch.tv", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>Scheme, host, port and path for diagnostics; user info and the query, which can carry a challenge token, are left out.</summary>
+    internal static string DescribeReconnectUrl(string? url)
+    {
+        if (url is null) return "no URL";
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+            ? uri.GetComponents(UriComponents.SchemeAndServer | UriComponents.Path, UriFormat.UriEscaped)
+            : $"not an absolute URL, {url.Length} characters";
     }
 
     /// <summary>Disposes a connection that is being abandoned; a failing (custom) DisposeAsync must not replace the outcome.</summary>

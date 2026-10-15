@@ -2,6 +2,10 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.6
+
+- EventSub `session_reconnect` to other Twitch hosts is followed, and a disallowed reconnect URL no longer stops `RunAsync`.
+
 ## Done: 1.0.0-rc.5
 
 - Security review of `SECURITY.md` against the code; the OAuth `error` field is now reduced to known values. Live webhook delivery verified.

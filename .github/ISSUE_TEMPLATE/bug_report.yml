@@ -12,7 +12,7 @@ body:
     id: version
     attributes:
       label: SDK version / SDK-Version
-      placeholder: 1.0.0-rc.5
+      placeholder: 1.0.0-rc.6
     validations:
       required: true
   - type: input

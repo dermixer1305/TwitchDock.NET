@@ -3,4 +3,8 @@
     <Description>Twitch EventSub for .NET: typed subscriptions and events for all 83 types, WebSocket client, webhook verification, conduits and batching.</Description>
   </PropertyGroup>
   <ItemGroup><ProjectReference Include="../TwitchDock.Helix/TwitchDock.Helix.csproj" /></ItemGroup>
+  <ItemGroup>
+    <!-- Unit tests for internal validation helpers such as EventSubWebSocketClient.IsAllowedReconnectUrl. -->
+    <InternalsVisibleTo Include="TwitchDock.Tests" />
+  </ItemGroup>
 </Project>
