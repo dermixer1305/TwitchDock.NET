@@ -1,23 +1,23 @@
 {
   "schemaVersion": 1,
-  "retrievedOn": "2026-10-09",
+  "retrievedOn": "2026-10-26",
   "scope": "Official documentation snapshot; availability and authorization require individual review.",
   "sources": [
     {
       "url": "https://dev.twitch.tv/docs/api/reference/",
-      "sha256": "f0a122a8a2afc0d4856048e749d60410484780d25703df6e70d550d9828b77aa"
+      "sha256": "03ed122ec1655684b2bca20208c53f616e65da7899c54fe2bfc8054aba19a07c"
     },
     {
       "url": "https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/",
-      "sha256": "36fc7c304a8bad7e54d26c245bfc72d2227deaf70f591f615f8769a5bf7e0ad2"
+      "sha256": "1b91c72c701b2e4b1e9e3e2194711cce3a7727b0c2af6d5794d534fd3a808966"
     },
     {
       "url": "https://dev.twitch.tv/docs/eventsub/eventsub-reference/",
-      "sha256": "2d965f949a5b81e85635946f2aa9fdff797c4845f9963272e25022d82064ea52"
+      "sha256": "6196eae2775560b8b035a6a4d564db8d456afa71134d0bc0335962c91428de04"
     },
     {
       "url": "https://dev.twitch.tv/docs/authentication/scopes/",
-      "sha256": "8da00bb5456dcbf56f7572210568b5bea600e214f6e57e2f72dddd558205bcdf"
+      "sha256": "fe54320f61d2af3551ccce45caa1a02548e57150235f8c0c49d196881ef660e0"
     }
   ],
   "helix": [

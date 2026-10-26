@@ -12,6 +12,13 @@ $sources = [ordered]@{
 function Plain([string]$html) {
     return [System.Net.WebUtility]::HtmlDecode([regex]::Replace($html, '<[^>]+>', '')).Trim()
 }
+function PageHash([string]$path) {
+    # Every site rebuild restamps the publish dates in the page head; drop them so only content changes alter the hash.
+    $html = Get-Content -LiteralPath $path -Raw
+    $html = [regex]::Replace($html, '<meta property="article:[a-z_]+_time" content="[^"]*">', '')
+    $html = [regex]::Replace($html, '"date(?:Modified|Published)":"[^"]*"', '')
+    return [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($html))).ToLowerInvariant()
+}
 function Fields([string]$section, [string]$heading) {
     $headingPattern = switch ($heading) {
         'Request Query Parameters' { 'Request Query (?:Parameters?|Paramters)' }
@@ -130,7 +137,7 @@ $manifest = [ordered]@{
     schemaVersion = 1
     retrievedOn = [DateTime]::UtcNow.ToString('yyyy-MM-dd')
     scope = 'Official documentation snapshot; availability and authorization require individual review.'
-    sources = @($sources.Keys | ForEach-Object { [ordered]@{ url = $sources[$_]; sha256 = (Get-FileHash (Join-Path $directory "$_-reference.html") -Algorithm SHA256).Hash.ToLowerInvariant() } })
+    sources = @($sources.Keys | ForEach-Object { [ordered]@{ url = $sources[$_]; sha256 = PageHash (Join-Path $directory "$_-reference.html") } })
     helix = $endpoints
     eventsub = $events
     scopes = $scopeNames
