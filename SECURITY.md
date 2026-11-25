@@ -24,7 +24,7 @@ Only the latest release receives fixes. The current version is the 1.0.0-rc.6 re
 - **Authorization preflight.** Known token kind, client ID, user and scopes are checked before a request is sent, which avoids sending tokens to operations they cannot authorize.
 - **Token file.** `FileTokenStore` replaces its file atomically, creates it readable and writable only by the current user on Linux and macOS (inside a user-only directory), bounds its size to 64 KiB and never includes token values in `ToString()`. It does **not** encrypt the file.
 - **Logging.** The SDK logs no request or response bodies and no credentials; IRC connection failures are logged with their reason only.
-- **Release integrity.** Packages are built and published only by the tag-triggered release workflow after the full test matrix. nuget.org publication uses trusted publishing (short-lived OIDC keys, no stored API key) behind a protected environment, the `TwitchDock.*` prefix is reserved and verified on nuget.org, GitHub Actions are pinned to commit SHAs, and every GitHub release lists SHA-256 checksums. The libraries have no third-party runtime dependencies besides Microsoft.Extensions packages.
+- **Release integrity.** Packages are built and published only by the release workflow (version tags and package changes merged into `main`) after the full test matrix. nuget.org publication uses trusted publishing (short-lived OIDC keys, no stored API key) behind a protected environment, the `TwitchDock.*` prefix is reserved and verified on nuget.org, GitHub Actions are pinned to commit SHAs, and every GitHub release lists SHA-256 checksums. The libraries have no third-party runtime dependencies besides Microsoft.Extensions packages.
 
 ## What you must do
 

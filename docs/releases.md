@@ -16,7 +16,19 @@ Prereleases use `-rc.N` or `-preview.N`. The public API can still change before 
 
 Twitch deprecations are marked `[Obsolete]` in a minor release and removed only in a major release. Public API changes require a reviewed [snapshot update](testing.md#public-api-snapshots).
 
+## Automatic releases from main
+
+Every push to `main` that changes `src/**` or `Directory.Build.props` (normally a merged pull request) starts the [release workflow](../.github/workflows/release.yml). No version input is needed:
+
+- If the version in `Directory.Build.props` has no `v<version>` tag yet, that version is released. Raise it there to start a new minor, major or `1.0.0`.
+- Otherwise the workflow raises the last number above the highest existing tag: `1.0.0-rc.6` becomes `1.0.0-rc.7`, `1.0.0` becomes `1.0.1`. `Directory.Build.props` is not changed, so it holds the base version, not always the latest release.
+- If `docs/release-notes/<version>.md` exists, it becomes the release text. Otherwise GitHub generates the notes from the merged pull requests.
+
+The workflow runs the full CI first, then packs with the computed version, creates the tag and GitHub release on the tested commit and pushes to GitHub Packages and nuget.org like a tag release. Changes outside these paths (docs, tests, workflows) create no release. To release without a package change, run the **Release** workflow manually under **Actions** and leave the tag empty. A rerun for a commit that already has a tag publishes that release again instead of a new version. Use either a merge or a manual tag for a version, not both.
+
 ## GitHub release procedure
+
+Use this procedure for a version with hand-written notes, for example `1.0.0`.
 
 1. Update the version and dated changelog. Add **English and German** notes at `docs/release-notes/<version>.md`.
 2. Build, test and validate coverage. Test packed dependencies and inspect the resulting package metadata and contents as described in [testing](testing.md).
@@ -65,7 +77,7 @@ One-time setup by the maintainer:
 3. In the GitHub repository open **Settings → Environments**, create `nuget`, add yourself as a required reviewer and limit deployments to tags matching `v*` plus the `main` branch (manual runs for an existing tag start from `main`).
 4. Under **Settings → Secrets and variables → Actions → Variables** add `NUGET_USER` (your nuget.org user name, not your e-mail address) and `NUGET_PUBLISH` with the value `true`.
 
-From then on each version tag creates the GitHub release first; the `nuget` job then waits for your approval in the workflow run and pushes the packages. To publish an earlier GitHub release (for example `v1.0.0-rc.1`), run the **Release** workflow manually under **Actions** and enter the tag. Reruns are safe because versions that already exist are skipped.
+From then on each release (version tag or automatic release from `main`) creates the GitHub release first; the `nuget` job then waits for your approval in the workflow run and pushes the packages. To publish an earlier GitHub release (for example `v1.0.0-rc.1`), run the **Release** workflow manually under **Actions** and enter the tag. Reruns are safe because versions that already exist are skipped.
 
 Before the first push, review package contents, metadata, dependency versions and README links (`dotnet pack` output or the release assets). A version on nuget.org can be unlisted but never replaced; publish fixes as a new version. Set `NUGET_PUBLISH` to anything other than `true` to stop publishing.
 
