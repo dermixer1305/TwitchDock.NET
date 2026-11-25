@@ -36,7 +36,7 @@ On Windows with .NET SDK 10.0.401 (runtimes 8.0 and 10.0):
 - The snippets in the README, quickstart, authentication and EventSub docs compile against the current API.
 - `tools/Test-ApiCoverage.ps1 -RequireComplete` passes on Windows PowerShell 5.1.
 
-CI defines these checks on Ubuntu and Windows (`.github/workflows/ci.yml`), plus native AOT on linux-x64 and a weekly `api-drift` workflow. The tag-triggered GitHub release requires the complete CI workflow to pass. Check [GitHub Actions](https://github.com/dermixer1305/TwitchDock.NET/actions) for the status of a particular commit.
+CI defines these checks on Ubuntu and Windows (`.github/workflows/ci.yml`), plus native AOT on linux-x64 and a weekly `api-drift` workflow. The GitHub release (from a version tag or a package change merged into `main`) requires the complete CI workflow to pass. Check [GitHub Actions](https://github.com/dermixer1305/TwitchDock.NET/actions) for the status of a particular commit.
 
 Selected real Twitch checks passed: 5 automated live tests on each target framework, user authorization through the device flow, user-token validation and profile lookup, an enabled chat subscription, typed chat reception and a Helix chat send with `IsSent = true`. See [live verification](live-verification.md) for the scope and the distinction between the local harness and the sample.
 

@@ -1,78 +1,141 @@
 name: Release
-# A version tag creates the GitHub release with all packages (single .nupkg files, a zip bundle and checksums) and
-# pushes the same packages to GitHub Packages, shown in the repository's Packages sidebar.
-# nuget.org publication is opt-in: it runs only when the repository variable NUGET_PUBLISH is 'true', waits for the
-# protected 'nuget' environment and uses NuGet trusted publishing (OIDC), so no long-lived API key is stored.
-# workflow_dispatch publishes the assets of an existing GitHub release (for example a release made before a registry
-# was set up); versions that already exist in a registry are skipped.
+# Every push to main that changes the packages (a merged pull request) creates the next version automatically:
+#   - the version in Directory.Build.props is used when it has no tag yet (raise it there for a new minor/major),
+#   - otherwise the last number is raised: 1.0.0-rc.6 -> 1.0.0-rc.7, 1.0.0 -> 1.0.1 (the highest existing tag + 1).
+# A version tag (v*) still creates exactly that version; it must match Directory.Build.props.
+# Each release creates the GitHub release with all packages (single .nupkg files, a zip bundle and checksums) and
+# pushes the same packages to GitHub Packages.
+# nuget.org publication runs only when the repository variable NUGET_PUBLISH is 'true', uses the 'nuget' environment
+# and NuGet trusted publishing (OIDC), so no long-lived API key is stored. The trusted publishing policy names this
+# file, so publishing must stay in release.yml.
+# workflow_dispatch without a tag creates the next version from main; with a tag it publishes the assets of that
+# existing GitHub release to the registries. Versions that already exist in a registry are skipped.
 on:
   push:
+    branches: [main]
+    # Path filters apply to branch pushes only; tag pushes always run.
+    paths:
+      - 'src/**'
+      - 'Directory.Build.props'
     tags: ['v*']
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Existing release tag whose packages are published to the registries, e.g. v1.0.0-rc.1'
-        required: true
+        description: 'Leave empty to release the next version from main. Or enter an existing release tag to publish its packages again, e.g. v1.0.0-rc.1'
+        required: false
         type: string
+        default: ''
 permissions:
   contents: read
+# One release at a time per ref: queued main pushes run in order, so each sees the tags of the previous run.
 concurrency:
   group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 jobs:
   checks:
-    if: github.event_name == 'push'
+    if: ${{ !inputs.tag }}
     uses: ./.github/workflows/ci.yml
   release:
-    if: github.event_name == 'push'
+    if: ${{ !inputs.tag }}
     needs: checks
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+          # All history and tags, to find the next free version.
+          fetch-depth: 0
       - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           dotnet-version: |
             8.0.x
             10.0.x
-      - name: Check version and bilingual release notes
-        env:
-          RELEASE_TAG: ${{ github.ref_name }}
+      - name: Determine the version
+        id: version
         run: |
           set -euo pipefail
-          version="$(dotnet msbuild src/TwitchDock.Core/TwitchDock.Core.csproj -getProperty:Version -p:TargetFramework=net10.0)"
-          if [ "v${version}" != "$RELEASE_TAG" ]; then echo "Tag does not match package version $version"; exit 1; fi
-          test -s "docs/release-notes/${version}.md"
-      - run: dotnet pack TwitchDock.slnx -c Release -o artifacts/packages
+          base="$(dotnet msbuild src/TwitchDock.Core/TwitchDock.Core.csproj -getProperty:Version -p:TargetFramework=net10.0)"
+          created=true
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            version="${GITHUB_REF_NAME#v}"
+            if [ "$version" != "$base" ]; then echo "::error::Tag $GITHUB_REF_NAME does not match package version $base"; exit 1; fi
+            test -s "docs/release-notes/${version}.md" || { echo "::error::Missing docs/release-notes/${version}.md"; exit 1; }
+          elif [ "$GITHUB_REF" != refs/heads/main ]; then
+            echo "::error::Automatic releases run only from main, not $GITHUB_REF"; exit 1
+          elif existing="$(git tag --points-at HEAD -l 'v*' | head -n 1)" && [ -n "$existing" ]; then
+            # A rerun for an already released commit publishes that release again instead of a new version.
+            version="${existing#v}"
+            created=false
+          else
+            tags="$(git tag -l 'v*' | sed 's/^v//')"
+            if ! grep -qxF "$base" <<<"$tags"; then
+              version="$base"
+            elif [[ "$base" =~ ^([0-9]+\.[0-9]+\.[0-9]+)-([0-9A-Za-z-]+)\.([0-9]+)$ ]]; then
+              core="${BASH_REMATCH[1]}"; label="${BASH_REMATCH[2]}"
+              if grep -qxF "$core" <<<"$tags"; then
+                echo "::error::$core is already released; raise the version in Directory.Build.props"; exit 1
+              fi
+              last="$(grep -E "^${core//./\\.}-${label}\.[0-9]+$" <<<"$tags" | sed 's/.*\.//' | sort -n | tail -n 1 || true)"
+              version="${core}-${label}.$(( ${last:-0} + 1 ))"
+            elif [[ "$base" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              major="${BASH_REMATCH[1]}"; minor="${BASH_REMATCH[2]}"
+              last="$(grep -E "^${major}\.${minor}\.[0-9]+$" <<<"$tags" | cut -d. -f3 | sort -n | tail -n 1 || true)"
+              version="${major}.${minor}.$(( ${last:-0} + 1 ))"
+            else
+              echo "::error::Cannot raise version $base automatically; use X.Y.Z or X.Y.Z-label.N"; exit 1
+            fi
+          fi
+          echo "Version: $version (Directory.Build.props: $base, new release: $created)"
+          {
+            echo "version=$version"
+            echo "tag=v$version"
+            echo "created=$created"
+          } >> "$GITHUB_OUTPUT"
+      - if: steps.version.outputs.created == 'true'
+        run: dotnet pack TwitchDock.slnx -c Release -o artifacts/packages -p:Version=${{ steps.version.outputs.version }}
       - name: Bundle packages and generate checksums
+        if: steps.version.outputs.created == 'true'
         working-directory: artifacts/packages
         env:
-          RELEASE_TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
-          count="$(find . -maxdepth 1 -name '*.nupkg' | wc -l)"
-          if [ "$count" -ne 6 ]; then echo "Expected 6 packages, found $count"; exit 1; fi
+          count="$(find . -maxdepth 1 -name "*.${VERSION}.nupkg" | wc -l)"
+          if [ "$count" -ne 6 ]; then echo "Expected 6 packages with version $VERSION, found $count"; exit 1; fi
           # One download for users: unzip into a folder and register it as a local NuGet source.
-          zip -j "TwitchDock.NET-${RELEASE_TAG#v}-packages.zip" *.nupkg
+          zip -j "TwitchDock.NET-${VERSION}-packages.zip" *.nupkg
           sha256sum *.nupkg *.zip > SHA256SUMS.txt
       - name: Publish GitHub release
+        if: steps.version.outputs.created == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
           flags=()
-          case "$RELEASE_TAG" in *-*) flags+=(--prerelease --latest=false) ;; esac
-          gh release create "$RELEASE_TAG" artifacts/packages/*.nupkg artifacts/packages/*.zip artifacts/packages/SHA256SUMS.txt \
-            --verify-tag --title "TwitchDock.NET ${RELEASE_TAG#v}" \
-            --notes-file "docs/release-notes/${RELEASE_TAG#v}.md" "${flags[@]}"
+          case "$VERSION" in *-*) flags+=(--prerelease --latest=false) ;; esac
+          # Hand-written bilingual notes when present, otherwise GitHub's notes from the merged pull requests.
+          if [ -s "docs/release-notes/${VERSION}.md" ]; then
+            flags+=(--notes-file "docs/release-notes/${VERSION}.md")
+          else
+            flags+=(--generate-notes)
+          fi
+          if [ "$GITHUB_REF_TYPE" = tag ]; then
+            flags+=(--verify-tag)
+          else
+            # Creates the tag on the tested commit. A tag made with the run token starts no further workflow run.
+            flags+=(--target "$GITHUB_SHA")
+          fi
+          gh release create "v${VERSION}" artifacts/packages/*.nupkg artifacts/packages/*.zip artifacts/packages/SHA256SUMS.txt \
+            --title "TwitchDock.NET ${VERSION}" "${flags[@]}"
   github-packages:
-    # Runs after a successful tag release, or alone for workflow_dispatch.
+    # Runs after a successful release, or alone for workflow_dispatch with a tag.
     needs: release
-    if: ${{ !cancelled() && (needs.release.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ !cancelled() && (needs.release.result == 'success' || inputs.tag) }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -84,7 +147,7 @@ jobs:
       - name: Download and verify release packages
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          RELEASE_TAG: ${{ inputs.tag || needs.release.outputs.tag }}
         run: |
           set -euo pipefail
           mkdir -p packages
@@ -102,11 +165,12 @@ jobs:
           dotnet nuget push "packages/*.nupkg" --api-key "$GITHUB_TOKEN" \
             --source "https://nuget.pkg.github.com/${GITHUB_REPOSITORY_OWNER}/index.json" --skip-duplicate
   nuget:
-    # Runs after a successful tag release, or alone for workflow_dispatch; skipped unless NUGET_PUBLISH is 'true'.
+    # Runs after a successful release, or alone for workflow_dispatch with a tag; skipped unless NUGET_PUBLISH is 'true'.
     needs: release
-    if: ${{ !cancelled() && vars.NUGET_PUBLISH == 'true' && (needs.release.result == 'success' || github.event_name == 'workflow_dispatch') }}
+    if: ${{ !cancelled() && vars.NUGET_PUBLISH == 'true' && (needs.release.result == 'success' || inputs.tag) }}
     runs-on: ubuntu-latest
-    # Protect this environment with required reviewers so every nuget.org push needs a maintainer's approval.
+    # Required reviewers on this environment make every nuget.org push wait for a maintainer's approval.
+    # Remove them under Settings -> Environments -> nuget for fully automatic publishing.
     environment: nuget
     permissions:
       contents: read
@@ -119,7 +183,7 @@ jobs:
       - name: Download and verify release packages
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          RELEASE_TAG: ${{ inputs.tag || needs.release.outputs.tag }}
         run: |
           set -euo pipefail
           mkdir -p packages
