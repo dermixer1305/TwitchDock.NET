@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TwitchDock.Helix.Models;
 
 /// <summary>Guest Star channel configuration (public beta). Discriminators remain strings to tolerate values added during the beta.</summary>
@@ -9,11 +11,11 @@ public sealed class GuestStarChannelSettings
     public int SlotCount { get; init; }
     /// <summary>Whether browser sources subscribed to this channel's sessions output audio.</summary>
     public bool IsBrowserSourceAudioEnabled { get; init; }
-    /// <summary>Browser-source layout, for example <c>TILED_LAYOUT</c> or <c>SCREENSHARE_LAYOUT</c>.
-    /// Nullable because the official example response names this field <c>layout</c> while the field table names it <c>group_layout</c>.</summary>
+    /// <summary>Browser-source layout: <c>TILED</c> or <c>SCREENSHARE</c>; Twitch reports other layouts as <c>TILED</c>.
+    /// Nullable because older Twitch documentation named the field <c>layout</c> in its example.</summary>
     public string? GroupLayout { get; init; }
-    /// <summary>View-only token for generating browser source URLs. Treat it as a secret.</summary>
-    public required string BrowserSourceToken { get; init; }
+    /// <summary>View-only token for generating browser source URLs; null unless the moderator ID is the broadcaster. Treat it as a secret.</summary>
+    public string? BrowserSourceToken { get; init; }
 }
 
 /// <summary>Settings for Update Channel Guest Star Settings. Null omits a field; false and zero are serialized explicitly.</summary>
@@ -23,7 +25,7 @@ public sealed class GuestStarUpdateChannelSettingsRequest
     /// <summary>Between 1 and 6.</summary>
     public int? SlotCount { get; init; }
     public bool? IsBrowserSourceAudioEnabled { get; init; }
-    /// <summary><c>TILED_LAYOUT</c>, <c>SCREENSHARE_LAYOUT</c>, <c>HORIZONTAL_LAYOUT</c> or <c>VERTICAL_LAYOUT</c>.</summary>
+    /// <summary><c>TILED</c> or <c>SCREENSHARE</c>.</summary>
     public string? GroupLayout { get; init; }
     /// <summary>True immediately invalidates every previously configured browser source by regenerating its token.</summary>
     public bool? RegenerateBrowserSources { get; init; }
@@ -33,26 +35,44 @@ public sealed class GuestStarUpdateChannelSettingsRequest
 public sealed class GuestStarSession
 {
     public required string Id { get; init; }
-    /// <summary>Guests currently interacting with the session; on creation it contains only the broadcaster.</summary>
+    /// <summary>Guests currently interacting with the session; on creation it contains only the broadcaster.
+    /// Slot IDs are seen from the requesting user: when the moderator ID holds a guest slot, that guest is slot <c>"0"</c>.</summary>
     public IReadOnlyList<GuestStarGuest> Guests { get; init => field = value ?? []; } = [];
 }
 
 /// <summary>A guest's slot assignment within a Guest Star session.</summary>
 public sealed class GuestStarGuest
 {
-    /// <summary>The host is always slot <c>"0"</c>, guests use consecutive IDs and screen share uses <c>"SCREENSHARE"</c>.
-    /// Nullable because the official Create/End examples show the slot as <c>id</c> while every field table names it <c>slot_id</c>.</summary>
+    /// <summary>The host is slot <c>"0"</c>, guests use consecutive IDs and screen share uses <c>"SCREENSHARE"</c>.
+    /// Nullable because older Twitch documentation showed the slot as <c>id</c> in the Create/End examples.</summary>
     public string? SlotId { get; init; }
     /// <summary>Whether the guest is visible in the browser source in the host's streaming software.</summary>
     public bool IsLive { get; init; }
     public required string UserId { get; init; }
-    public required string UserDisplayName { get; init; }
-    public required string UserLogin { get; init; }
-    /// <summary>The host's volume setting for this guest, 0–100.</summary>
+    /// <summary>No longer documented by Twitch; empty unless Twitch sends it. Look the user up with Get Users instead.</summary>
+    [Obsolete("Twitch removed user_display_name from the Guest Star session (November 2026). Look the user up by UserId with Get Users.")]
+    public string UserDisplayName { get; init => field = value ?? ""; } = "";
+    /// <summary>No longer documented by Twitch; empty unless Twitch sends it. Look the user up with Get Users instead.</summary>
+    [Obsolete("Twitch removed user_login from the Guest Star session (November 2026). Look the user up by UserId with Get Users.")]
+    public string UserLogin { get; init => field = value ?? ""; } = "";
+    /// <summary>The host's volume setting for this guest, 0–200 (default 100).</summary>
     public int Volume { get; init; }
     public DateTimeOffset AssignedAt { get; init; }
-    public required GuestStarMediaSettings AudioSettings { get; init; }
-    public required GuestStarMediaSettings VideoSettings { get; init; }
+    /// <summary>The guest's audio state. Also read from <c>audio_settings</c>, the name in older Twitch documentation.</summary>
+    // Null keeps the current value: the source-generated deserializer may assign an absent alias as null after the other name.
+    public GuestStarMediaSettings Audio { get; init => field = value ?? field; } = new();
+    /// <summary>The guest's video state. Also read from <c>video_settings</c>, the name in older Twitch documentation.</summary>
+    public GuestStarMediaSettings Video { get; init => field = value ?? field; } = new();
+
+    /// <summary>Same object as <see cref="Audio"/>.</summary>
+    [Obsolete("Twitch renamed audio_settings to audio (November 2026). Use Audio.")]
+    [JsonPropertyName("audio_settings")]
+    public GuestStarMediaSettings AudioSettings { get => Audio; init { if (value is not null) Audio = value; } }
+
+    /// <summary>Same object as <see cref="Video"/>.</summary>
+    [Obsolete("Twitch renamed video_settings to video (November 2026). Use Video.")]
+    [JsonPropertyName("video_settings")]
+    public GuestStarMediaSettings VideoSettings { get => Video; init { if (value is not null) Video = value; } }
 }
 
 /// <summary>Audio or video state of a Guest Star guest.</summary>
@@ -141,8 +161,10 @@ public sealed class GuestStarUpdateSlotSettingsRequest
     public bool? IsAudioEnabled { get; init; }
     /// <summary>False hides the slot's video in every view.</summary>
     public bool? IsVideoEnabled { get; init; }
-    /// <summary>Whether the slot is visible/audible in public subscriptions such as broadcasting software.</summary>
+    /// <summary>Whether the slot is visible/audible in public subscriptions such as broadcasting software.
+    /// A moderator can't set true while the broadcaster's IsModeratorSendLiveEnabled setting is false.</summary>
     public bool? IsLive { get; init; }
-    /// <summary>Audio volume for shared views, 0–100.</summary>
+    /// <summary>Audio volume for shared views, 0–100. Twitch no longer documents this parameter.</summary>
+    [Obsolete("Twitch removed the volume parameter from Update Guest Star Slot Settings (November 2026). The SDK still forwards a value.")]
     public int? Volume { get; init; }
 }

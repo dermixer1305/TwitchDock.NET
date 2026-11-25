@@ -93,6 +93,31 @@ public sealed class UsersAndWhispersTests
     }
 
     [Theory]
+    [InlineData(TwitchScopes.UserReadBlockedUsers)]
+    [InlineData(TwitchScopes.UserManageBlockedUsers)]
+    public async Task BlockListAcceptsEitherScopeAndFiltersByUserIds(string scope)
+    {
+        using var http = new HttpClient(new TestHttpHandler((request, _) =>
+        {
+            Assert.Equal("?broadcaster_id=1&user_id=2&user_id=3", request.RequestUri!.Query);
+            return Task.FromResult(TestHttpHandler.Json(Fixture("get-user-block-list")));
+        }));
+        var page = await Client(http, new("user", scopes: [scope], kind: TwitchTokenKind.User, userId: "1")).Users.GetUserBlockListAsync(new() { BroadcasterId = "1", UserIds = ["2", "3"] });
+        Assert.Equal("Blocked", Assert.Single(page.Data).DisplayName);
+        await Assert.ThrowsAsync<ArgumentException>(() => Client(http).Users.GetUserBlockListAsync(new() { BroadcasterId = "1", UserIds = Enumerable.Range(0, 101).Select(i => i.ToString()).ToArray() }));
+    }
+
+    [Fact]
+    public async Task UpdateUserExtensionsAcceptsChannelManageExtensions()
+    {
+        var calls = 0;
+        using var http = new HttpClient(new TestHttpHandler((_, _) => { calls++; return Task.FromResult(TestHttpHandler.Json(Fixture("update-user-extensions"))); }));
+        await Client(http, new("user", scopes: [TwitchScopes.ChannelManageExtensions], kind: TwitchTokenKind.User, userId: "1")).Users
+            .UpdateUserExtensionsAsync(new() { Data = new() { Panel = new Dictionary<string, UserExtensionActivation> { ["1"] = new() { Active = false } } } });
+        Assert.Equal(1, calls);
+    }
+
+    [Theory]
     [InlineData(TwitchScopes.UserReadBroadcast)]
     [InlineData(TwitchScopes.UserEditBroadcast)]
     public async Task InstalledExtensionsAcceptEitherUserScope(string scope)

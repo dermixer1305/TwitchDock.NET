@@ -115,7 +115,7 @@ public sealed partial class ModerationClient
             authorization: new([TwitchScopes.ModeratorManageWarnings], allowAppToken: true, requiredUserId: moderatorId), cancellationToken: cancellationToken);
     }
 
-    /// <summary>Accepts a user or app token with moderator:manage:suspicious_users. Status must be ACTIVE_MONITORING or RESTRICTED.</summary>
+    /// <summary>Accepts the moderator's user token, or an app token they granted, with moderator:manage:suspicious_users. Status must be ACTIVE_MONITORING or RESTRICTED.</summary>
     public Task<HelixPage<SuspiciousChatUserStatus>> AddSuspiciousStatusToChatUserAsync(string broadcasterId, string moderatorId, AddSuspiciousStatusRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -126,10 +126,10 @@ public sealed partial class ModerationClient
         if (request.Status is not "ACTIVE_MONITORING" and not "RESTRICTED") throw new ArgumentException("Status must be ACTIVE_MONITORING or RESTRICTED.", nameof(request));
         return _transport.SendAsync(HttpMethod.Post, RoleEndpoints.SuspiciousUsers, HelixJsonContext.Default.HelixPageSuspiciousChatUserStatus, RoleEndpoints.ModeratorQuery(broadcasterId, moderatorId),
             JsonSerializer.SerializeToUtf8Bytes(request, HelixJsonContext.Default.AddSuspiciousStatusRequest),
-            authorization: RoleEndpoints.ManageSuspiciousUsers, cancellationToken: cancellationToken);
+            authorization: RoleEndpoints.ManageSuspiciousUsers(moderatorId), cancellationToken: cancellationToken);
     }
 
-    /// <summary>Accepts a user or app token with moderator:manage:suspicious_users. The returned status is NO_TREATMENT.</summary>
+    /// <summary>Accepts the moderator's user token, or an app token they granted, with moderator:manage:suspicious_users. The returned status is NO_TREATMENT.</summary>
     public Task<HelixPage<SuspiciousChatUserStatus>> RemoveSuspiciousStatusFromChatUserAsync(string broadcasterId, string moderatorId, string userId,
         CancellationToken cancellationToken = default)
     {
@@ -137,7 +137,7 @@ public sealed partial class ModerationClient
         ArgumentException.ThrowIfNullOrWhiteSpace(moderatorId);
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
         return _transport.SendAsync(HttpMethod.Delete, RoleEndpoints.SuspiciousUsers, HelixJsonContext.Default.HelixPageSuspiciousChatUserStatus,
-            RoleEndpoints.ModeratorQuery(broadcasterId, moderatorId).AddValue("user_id", userId), authorization: RoleEndpoints.ManageSuspiciousUsers, cancellationToken: cancellationToken);
+            RoleEndpoints.ModeratorQuery(broadcasterId, moderatorId).AddValue("user_id", userId), authorization: RoleEndpoints.ManageSuspiciousUsers(moderatorId), cancellationToken: cancellationToken);
     }
 
     // Private helpers live in a nested type so they cannot collide with members of other ModerationClient partial files.
@@ -148,8 +148,8 @@ public sealed partial class ModerationClient
         public const string ShieldMode = "moderation/shield_mode";
         public const string SuspiciousUsers = "moderation/suspicious_users";
 
-        // The reference does not require moderator_id to match the token user here, so identity is left to Twitch.
-        public static readonly TwitchAuthorizationRequirement ManageSuspiciousUsers = new([TwitchScopes.ModeratorManageSuspiciousUsers], allowAppToken: true);
+        // moderator_id must match the user token; an app token needs the moderator's prior grant, which Twitch checks.
+        public static TwitchAuthorizationRequirement ManageSuspiciousUsers(string moderatorId) => new([TwitchScopes.ModeratorManageSuspiciousUsers], allowAppToken: true, requiredUserId: moderatorId);
 
         public static TwitchAuthorizationRequirement ManageModerators(string broadcasterId) => new([TwitchScopes.ChannelManageModerators], requiredUserId: broadcasterId);
 

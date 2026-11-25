@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace TwitchDock.Helix.Models;
 
 /// <summary>A streaming credential; do not log or publish StreamKey.</summary>
@@ -33,6 +35,7 @@ public sealed record GetStreamMarkersRequest
     public string? UserId { get; init; }
     public string? VideoId { get; init; }
     public int? First { get; init; }
+    [Obsolete("Twitch no longer documents the before cursor for Get Stream Markers (removed from the reference in November 2026). Page forward with After. The SDK still forwards a value.")]
     public string? Before { get; init; }
     public string? After { get; init; }
 }
@@ -57,7 +60,8 @@ public sealed class StreamMarker
     public DateTimeOffset CreatedAt { get; init; }
     public string Description { get; init => field = value ?? ""; } = "";
     public int PositionSeconds { get; init; }
-    public required string Url { get; init; }
+    /// <summary>Opens the video in Twitch Highlighter. Twitch sends this field as <c>URL</c>.</summary>
+    [JsonPropertyName("URL")] public required string Url { get; init; }
 }
 
 public sealed record GetStreamsRequest

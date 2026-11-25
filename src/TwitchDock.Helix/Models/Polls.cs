@@ -39,8 +39,10 @@ public sealed class TwitchPoll
     public required string Title { get; init; }
     public IReadOnlyList<PollChoice> Choices { get; init => field = value ?? []; } = [];
     /// <summary>Unused by Twitch; always false.</summary>
+    [Obsolete("Twitch removed bits_voting_enabled from the poll reference (November 2026); it was always false.")]
     public bool BitsVotingEnabled { get; init; }
     /// <summary>Unused by Twitch; always zero.</summary>
+    [Obsolete("Twitch removed bits_per_vote from the poll reference (November 2026); it was always zero.")]
     public int BitsPerVote { get; init; }
     public bool ChannelPointsVotingEnabled { get; init; }
     public int ChannelPointsPerVote { get; init; }
@@ -57,5 +59,6 @@ public sealed class PollChoice
     public long Votes { get; init; }
     public long ChannelPointsVotes { get; init; }
     /// <summary>Unused by Twitch; always zero.</summary>
+    [Obsolete("Twitch removed bits_votes from the poll reference (November 2026); it was always zero.")]
     public long BitsVotes { get; init; }
 }

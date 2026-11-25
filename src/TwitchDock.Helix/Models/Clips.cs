@@ -32,6 +32,7 @@ public sealed record GetClipsRequest
     public DateTimeOffset? StartedAt { get; init; }
     public DateTimeOffset? EndedAt { get; init; }
     public int? First { get; init; }
+    [Obsolete("Twitch no longer documents the before cursor for Get Clips (removed from the reference in November 2026). Page forward with After. The SDK still forwards a value.")]
     public string? Before { get; init; }
     public string? After { get; init; }
     public bool? IsFeatured { get; init; }

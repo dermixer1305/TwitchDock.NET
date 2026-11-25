@@ -46,7 +46,7 @@ public sealed class GuestStarTests
         Assert.False(settings.IsModeratorSendLiveEnabled);
         Assert.Equal(6, settings.SlotCount);
         Assert.True(settings.IsBrowserSourceAudioEnabled);
-        Assert.Equal("SCREENSHARE_LAYOUT", settings.GroupLayout);
+        Assert.Equal("SCREENSHARE", settings.GroupLayout);
         Assert.Equal("eihq8rew7q3hgierufhi3q", settings.BrowserSourceToken);
     }
 
@@ -56,7 +56,7 @@ public sealed class GuestStarTests
         var bodies = new List<string>();
         using var http = new HttpClient(new TestHttpHandler(async (request, ct) =>
         {
-            Assert.Equal(HttpMethod.Put, request.Method);
+            Assert.Equal(HttpMethod.Patch, request.Method);
             Assert.Equal("/helix/guest_star/channel_settings", request.RequestUri!.AbsolutePath);
             Assert.Equal("?broadcaster_id=1", request.RequestUri.Query);
             Assert.Equal("application/json", request.Content!.Headers.ContentType!.MediaType);
@@ -66,10 +66,10 @@ public sealed class GuestStarTests
         var client = Client(http, User("1", TwitchScopes.ChannelManageGuestStar));
         await client.UpdateChannelGuestStarSettingsAsync("1", new()
         {
-            IsModeratorSendLiveEnabled = false, SlotCount = 1, IsBrowserSourceAudioEnabled = false, GroupLayout = "VERTICAL_LAYOUT", RegenerateBrowserSources = false
+            IsModeratorSendLiveEnabled = false, SlotCount = 1, IsBrowserSourceAudioEnabled = false, GroupLayout = "SCREENSHARE", RegenerateBrowserSources = false
         });
         await client.UpdateChannelGuestStarSettingsAsync("1", new() { RegenerateBrowserSources = true });
-        await client.UpdateChannelGuestStarSettingsAsync("1", new());
+        await client.UpdateChannelGuestStarSettingsAsync("1", new() { IsModeratorSendLiveEnabled = true });
         using (var json = JsonDocument.Parse(bodies[0]))
         {
             var body = json.RootElement;
@@ -77,11 +77,11 @@ public sealed class GuestStarTests
             Assert.False(body.GetProperty("is_moderator_send_live_enabled").GetBoolean());
             Assert.Equal(1, body.GetProperty("slot_count").GetInt32());
             Assert.False(body.GetProperty("is_browser_source_audio_enabled").GetBoolean());
-            Assert.Equal("VERTICAL_LAYOUT", body.GetProperty("group_layout").GetString());
+            Assert.Equal("SCREENSHARE", body.GetProperty("group_layout").GetString());
             Assert.False(body.GetProperty("regenerate_browser_sources").GetBoolean());
         }
         Assert.Equal("{\"regenerate_browser_sources\":true}", bodies[1]);
-        Assert.Equal("{}", bodies[2]);
+        Assert.Equal("{\"is_moderator_send_live_enabled\":true}", bodies[2]);
     }
 
     [Fact]
@@ -101,16 +101,15 @@ public sealed class GuestStarTests
         var guest = session.Guests[1];
         Assert.False(guest.IsLive);
         Assert.Equal("144601104", guest.UserId);
-        Assert.Equal("Cool_Guest", guest.UserDisplayName);
-        Assert.Equal("cool_guest", guest.UserLogin);
         Assert.Equal(0, guest.Volume);
+        Assert.Equal(200, session.Guests[2].Volume);
         Assert.Equal(new DateTimeOffset(2023, 1, 2, 4, 20, 59, TimeSpan.Zero).AddTicks(3251234), guest.AssignedAt);
-        Assert.False(guest.AudioSettings.IsHostEnabled);
-        Assert.True(guest.AudioSettings.IsGuestEnabled);
-        Assert.False(guest.AudioSettings.IsAvailable);
-        Assert.False(guest.VideoSettings.IsGuestEnabled);
-        Assert.False(session.Guests[0].VideoSettings.IsGuestEnabled);
-        Assert.True(session.Guests[0].VideoSettings.IsHostEnabled);
+        Assert.False(guest.Audio.IsHostEnabled);
+        Assert.True(guest.Audio.IsGuestEnabled);
+        Assert.False(guest.Audio.IsAvailable);
+        Assert.False(guest.Video.IsGuestEnabled);
+        Assert.False(session.Guests[0].Video.IsGuestEnabled);
+        Assert.True(session.Guests[0].Video.IsHostEnabled);
     }
 
     [Fact]
@@ -135,7 +134,7 @@ public sealed class GuestStarTests
         var created = (await client.CreateGuestStarSessionAsync("1")).Data.Single();
         var host = Assert.Single(created.Guests);
         Assert.Equal("0", host.SlotId);
-        Assert.False(host.VideoSettings.IsAvailable);
+        Assert.False(host.Video.IsAvailable);
         var ended = (await client.EndGuestStarSessionAsync("1", created.Id)).Data.Single();
         Assert.Equal(80, ended.Guests.Single().Volume);
         Assert.Equal(2, step);
@@ -201,7 +200,7 @@ public sealed class GuestStarTests
             Assert.Null(request.Content);
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent));
         }));
-        var client = Client(http, User("2", TwitchScopes.ChannelManageGuestStar));
+        var client = Client(http, User("2", TwitchScopes.ModeratorManageGuestStar));
         await client.AssignGuestStarSlotAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", GuestId = "g1", SlotId = "1" });
         await client.UpdateGuestStarSlotAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SourceSlotId = "1", DestinationSlotId = "2" });
         await client.UpdateGuestStarSlotAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SourceSlotId = "2" });
@@ -218,8 +217,7 @@ public sealed class GuestStarTests
         [
             "?broadcaster_id=1&moderator_id=2&session_id=s1&slot_id=1&is_audio_enabled=false&is_video_enabled=false&is_live=false&volume=0",
             "?broadcaster_id=1&moderator_id=2&session_id=s1&slot_id=SCREENSHARE&is_audio_enabled=true&is_video_enabled=true&is_live=true&volume=100",
-            "?broadcaster_id=1&moderator_id=2&session_id=s1&slot_id=1&is_live=true",
-            "?broadcaster_id=1&moderator_id=2&session_id=s1&slot_id=1&volume=0"
+            "?broadcaster_id=1&moderator_id=2&session_id=s1&slot_id=1&is_live=true"
         ]);
         using var http = new HttpClient(new TestHttpHandler((request, _) =>
         {
@@ -230,23 +228,41 @@ public sealed class GuestStarTests
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent));
         }));
         var client = Client(http, User("2", TwitchScopes.ModeratorManageGuestStar));
+#pragma warning disable CS0618 // Volume is obsolete; the SDK still forwards it.
         await client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "1", IsAudioEnabled = false, IsVideoEnabled = false, IsLive = false, Volume = 0 });
         await client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "SCREENSHARE", IsAudioEnabled = true, IsVideoEnabled = true, IsLive = true, Volume = 100 });
         await client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "1", IsLive = true });
-        await client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "1", Volume = 0 });
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "1", Volume = 0 }));
+#pragma warning restore CS0618
         await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateGuestStarSlotSettingsAsync(new() { BroadcasterId = "1", ModeratorId = "2", SessionId = "s1", SlotId = "1" }));
         Assert.Empty(expected);
     }
 
     [Fact]
-    public void OfficialExampleShapesWithConflictingFieldNamesStillDeserialize()
+    public void ShapesFromOlderTwitchDocumentationStillDeserialize()
     {
-        var settings = JsonSerializer.Deserialize(Fixture("official-example-channel-settings"), HelixJsonContext.Default.HelixPageGuestStarChannelSettings)!.Data.Single();
+        var settings = JsonSerializer.Deserialize(Fixture("legacy-example-channel-settings"), HelixJsonContext.Default.HelixPageGuestStarChannelSettings)!.Data.Single();
         Assert.Null(settings.GroupLayout);
         Assert.Equal(4, settings.SlotCount);
-        var guest = JsonSerializer.Deserialize(Fixture("official-example-create-session"), HelixJsonContext.Default.HelixPageGuestStarSession)!.Data.Single().Guests.Single();
+        var guest = JsonSerializer.Deserialize(Fixture("legacy-example-create-session"), HelixJsonContext.Default.HelixPageGuestStarSession)!.Data.Single().Guests.Single();
         Assert.Null(guest.SlotId);
+        Assert.False(guest.Audio.IsGuestEnabled);
+        Assert.False(guest.Video.IsAvailable);
+#pragma warning disable CS0618 // The renamed and removed members stay readable.
         Assert.Equal("cool_user", guest.UserLogin);
+        Assert.Equal("Cool_User", guest.UserDisplayName);
+        Assert.Same(guest.Audio, guest.AudioSettings);
+        Assert.Same(guest.Video, guest.VideoSettings);
+#pragma warning restore CS0618
+    }
+
+    [Fact]
+    public void BrowserSourceTokenIsNullForModerators()
+    {
+        var settings = JsonSerializer.Deserialize("""{"data":[{"is_moderator_send_live_enabled":true,"slot_count":4,"is_browser_source_audio_enabled":true,"group_layout":"TILED","browser_source_token":null}]}""",
+            HelixJsonContext.Default.HelixPageGuestStarChannelSettings)!.Data.Single();
+        Assert.Null(settings.BrowserSourceToken);
+        Assert.Equal("TILED", settings.GroupLayout);
     }
 
     [Fact]
@@ -286,29 +302,43 @@ public sealed class GuestStarTests
     }
 
     [Theory]
-    [InlineData(TwitchScopes.ChannelReadGuestStar)]
-    [InlineData(TwitchScopes.ChannelManageGuestStar)]
-    [InlineData(TwitchScopes.ModeratorReadGuestStar)]
-    [InlineData(TwitchScopes.ModeratorManageGuestStar)]
-    public async Task ReadOperationsAcceptAnyDocumentedScopeForBroadcasterOrModerator(string scope)
+    [InlineData("1", TwitchScopes.ChannelReadGuestStar)]
+    [InlineData("1", TwitchScopes.ChannelManageGuestStar)]
+    [InlineData("2", TwitchScopes.ModeratorReadGuestStar)]
+    [InlineData("2", TwitchScopes.ModeratorManageGuestStar)]
+    public async Task ReadOperationsAcceptChannelScopesForBroadcasterAndModeratorScopesForModerator(string userId, string scope)
     {
         var calls = 0;
         using var http = new HttpClient(new TestHttpHandler((_, _) => { calls++; return Task.FromResult(TestHttpHandler.Json("{\"data\":[]}")); }));
-        foreach (var userId in new[] { "1", "2" })
-            foreach (var call in ReadOperations(Client(http, User(userId, scope)), userId)) await call();
-        Assert.Equal(6, calls);
+        foreach (var call in ReadOperations(Client(http, User(userId, scope)), userId)) await call();
+        Assert.Equal(3, calls);
     }
 
     [Theory]
-    [InlineData(TwitchScopes.ChannelManageGuestStar)]
-    [InlineData(TwitchScopes.ModeratorManageGuestStar)]
-    public async Task ManageOperationsAcceptEitherManageScopeForBroadcasterOrModerator(string scope)
+    [InlineData("1", TwitchScopes.ChannelManageGuestStar)]
+    [InlineData("2", TwitchScopes.ModeratorManageGuestStar)]
+    public async Task ManageOperationsAcceptChannelScopeForBroadcasterAndModeratorScopeForModerator(string userId, string scope)
     {
         var calls = 0;
         using var http = new HttpClient(new TestHttpHandler((_, _) => { calls++; return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent)); }));
-        foreach (var userId in new[] { "1", "2" })
-            foreach (var call in ManageOperations(Client(http, User(userId, scope)), userId)) await call();
-        Assert.Equal(12, calls);
+        foreach (var call in ManageOperations(Client(http, User(userId, scope)), userId)) await call();
+        Assert.Equal(6, calls);
+    }
+
+    [Fact]
+    public async Task ScopesOfTheOtherRoleAreRejected()
+    {
+        using var http = NoHttp();
+        var broadcaster = Client(http, User("1", TwitchScopes.ModeratorReadGuestStar, TwitchScopes.ModeratorManageGuestStar));
+        foreach (var call in ReadOperations(broadcaster, "1"))
+            Assert.Equal(new[] { TwitchScopes.ChannelReadGuestStar, TwitchScopes.ChannelManageGuestStar }, (await Assert.ThrowsAsync<TwitchAuthorizationException>(call)).RequiredAnyOfScopes);
+        foreach (var call in ManageOperations(broadcaster, "1"))
+            Assert.Equal(new[] { TwitchScopes.ChannelManageGuestStar }, (await Assert.ThrowsAsync<TwitchAuthorizationException>(call)).RequiredAnyOfScopes);
+        var moderator = Client(http, User("2", TwitchScopes.ChannelReadGuestStar, TwitchScopes.ChannelManageGuestStar));
+        foreach (var call in ReadOperations(moderator, "2"))
+            Assert.Equal(new[] { TwitchScopes.ModeratorReadGuestStar, TwitchScopes.ModeratorManageGuestStar }, (await Assert.ThrowsAsync<TwitchAuthorizationException>(call)).RequiredAnyOfScopes);
+        foreach (var call in ManageOperations(moderator, "2"))
+            Assert.Equal(new[] { TwitchScopes.ModeratorManageGuestStar }, (await Assert.ThrowsAsync<TwitchAuthorizationException>(call)).RequiredAnyOfScopes);
     }
 
     [Fact]
@@ -319,13 +349,13 @@ public sealed class GuestStarTests
         foreach (var call in ManageOperations(client, "2"))
         {
             var error = await Assert.ThrowsAsync<TwitchAuthorizationException>(call);
-            Assert.Equal(new[] { TwitchScopes.ChannelManageGuestStar, TwitchScopes.ModeratorManageGuestStar }, error.RequiredAnyOfScopes);
+            Assert.Equal(new[] { TwitchScopes.ModeratorManageGuestStar }, error.RequiredAnyOfScopes);
         }
         var none = Client(http, User("2"));
         foreach (var call in ReadOperations(none, "2"))
         {
             var error = await Assert.ThrowsAsync<TwitchAuthorizationException>(call);
-            Assert.Equal(4, error.RequiredAnyOfScopes.Count);
+            Assert.Equal(2, error.RequiredAnyOfScopes.Count);
         }
     }
 
@@ -337,8 +367,11 @@ public sealed class GuestStarTests
         var client = Client(http);
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 0 }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 7 }));
-        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "tiled_layout" }));
-        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "GRID_LAYOUT" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "tiled" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "TILED_LAYOUT" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "VERTICAL_LAYOUT" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new()));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.UpdateChannelGuestStarSettingsAsync("1", new() { RegenerateBrowserSources = false }));
         await Assert.ThrowsAsync<ArgumentNullException>(() => client.UpdateChannelGuestStarSettingsAsync("1", null!));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.UpdateGuestStarSlotSettingsAsync(SlotSettings(-1)));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.UpdateGuestStarSlotSettingsAsync(SlotSettings(101)));
@@ -357,9 +390,9 @@ public sealed class GuestStarTests
         await Assert.ThrowsAsync<ArgumentNullException>(() => client.AssignGuestStarSlotAsync(null!));
         Assert.Equal(0, calls);
 
-        await client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 1, GroupLayout = "TILED_LAYOUT" });
-        await client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 6, GroupLayout = "HORIZONTAL_LAYOUT" });
-        await client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "SCREENSHARE_LAYOUT" });
+        await client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 1, GroupLayout = "TILED" });
+        await client.UpdateChannelGuestStarSettingsAsync("1", new() { SlotCount = 6 });
+        await client.UpdateChannelGuestStarSettingsAsync("1", new() { GroupLayout = "SCREENSHARE" });
         await client.UpdateGuestStarSlotSettingsAsync(SlotSettings(0));
         await client.UpdateGuestStarSlotSettingsAsync(SlotSettings(100));
         foreach (var slot in new[] { "1", "6", "10" })
@@ -406,8 +439,10 @@ public sealed class GuestStarTests
         Assert.Equal(1, calls);
     }
 
+#pragma warning disable CS0618 // Volume is obsolete; the SDK still validates and forwards it.
     private static GuestStarUpdateSlotSettingsRequest SlotSettings(int volume)
-        => new() { BroadcasterId = "1", ModeratorId = "1", SessionId = "s1", SlotId = "1", Volume = volume };
+        => new() { BroadcasterId = "1", ModeratorId = "1", SessionId = "s1", SlotId = "1", IsAudioEnabled = true, Volume = volume };
+#pragma warning restore CS0618
 
     private static Func<Task>[] BroadcasterOperations(GuestStarClient client) =>
     [

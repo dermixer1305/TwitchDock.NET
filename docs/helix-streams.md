@@ -34,14 +34,14 @@ var marker = created.Data.Single();
 Console.WriteLine($"{marker.Id} at {marker.PositionSeconds}s");
 ```
 
-Requires a user token with `channel:manage:broadcast`. The token owner must be the broadcaster or one of the broadcaster's editors; the SDK allows different user IDs and lets Twitch verify the editor role. The broadcaster must be live with VOD enabled, and the stream cannot be a rerun. `Description` is optional and limited to 140 characters. Null omits it; an explicit empty string is preserved. The response contains the marker ID, timestamp, position in seconds from stream start and description. HTTP 404 can represent a non-live stream, unavailable user or disabled VOD.
+Requires a user token with `channel:manage:broadcast` or `user:edit:broadcast`. The token owner must be the broadcaster or one of the broadcaster's editors; the SDK allows different user IDs and lets Twitch verify the editor role. The broadcaster must be live with VOD enabled, and the stream cannot be a rerun or a premiere. Markers aren't available during the first few seconds of a stream (HTTP 404); wait and retry. `Description` is optional and limited to 140 characters. Null omits it; an explicit empty string is preserved. The response contains the marker ID, timestamp, position in seconds from stream start and description. HTTP 404 can represent a non-live stream, unavailable user or disabled VOD.
 
 ## Read markers
 
 ```csharp
 var recent = await helix.Streams.GetStreamMarkersAsync(new()
 {
-    UserId = "123", First = 20, Before = "previous-cursor"
+    UserId = "123", First = 20
 }, cancellationToken);
 var video = await helix.Streams.GetStreamMarkersAsync(new()
 {
@@ -56,9 +56,9 @@ await foreach (var group in helix.Streams.EnumerateStreamMarkersAsync(new()
             Console.WriteLine($"{group.UserName}: {marker.Description} — {marker.Url}");
 ```
 
-Requires a user token with **either** `user:read:broadcast` **or** `channel:manage:broadcast`. Twitch verifies video ownership or broadcaster editor status. Specify exactly one of `UserId` (most recent video) and `VideoId` (a specific VOD). Pages accept `First` 1–100 and either `Before` or `After`. Forward enumeration disallows `Before` and preserves an initial `After` cursor.
+Requires a user token with **either** `user:read:broadcast` **or** `channel:manage:broadcast`. Twitch verifies video ownership or broadcaster editor status. Specify exactly one of `UserId` (the user's most recent past broadcast; highlights and uploads aren't considered) and `VideoId` (a specific VOD). Pages accept `First` 1–100 and `After`. Twitch no longer documents the `before` cursor; `Before` is obsolete, still forwarded, and can't be combined with `After`. Forward enumeration disallows `Before` and preserves an initial `After` cursor.
 
-Responses are grouped by the user who created the markers, then by video. Each marker includes its ID, creation timestamp, possibly empty description, stream-relative position and Highlighter URL. Enumeration yields the original groups from each page; it does not merge repeated creator/video groups across pages. Markers within a video are ordered by creation time ascending.
+Responses are grouped by the user who created the markers, then by video. Each marker includes its ID, creation timestamp, possibly empty description, stream-relative position and Highlighter URL. Enumeration yields the original groups from each page; it does not merge repeated creator/video groups across pages. Markers within a video are ordered by their position in the video. Twitch sends the Highlighter link as `URL` (upper case); `Url` maps it.
 
 `StreamsTests` and `helix-streams.json` check every documented response field, both selectors, query/body encoding, boundaries, alternative scopes, editor access, key redaction, pagination and errors. Non-success responses remain `TwitchApiException`; shared transport retry/cancellation rules apply. Tests use simulated responses; live integration remains required before a stable release.
 

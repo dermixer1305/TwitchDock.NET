@@ -4,15 +4,15 @@ TwitchDock.NET is at **1.0.0-rc.6**. Every API in the pinned official documentat
 
 ## Coverage
 
-The [coverage matrix](api/coverage.json) inventories the official documentation snapshot of 2026-10-09 with source URLs and hashes. Rendered report: [coverage.md](coverage.md).
+The [coverage matrix](api/coverage.json) inventories the official documentation snapshot of 2026-11-25 with source URLs and hashes. Rendered report: [coverage.md](coverage.md).
 
 | Inventory | Entries | Complete | Availability notes |
 | --- | ---: | ---: | --- |
 | Helix endpoints | 147 | 147 | 113 public, 12 public beta (Guest Star), 11 extension owner, 6 affiliate/partner channel points, 2 game or organization owner (Drops), 2 schedule segments with non-recurring restrictions, 1 verified-phone sender (whispers) |
 | EventSub type/versions | 83 | 83 | 77 public, 4 public beta (Guest Star), 1 extension owner, 1 game or organization owner |
-| Scopes | 81 | n/a | Generated into `TwitchScopes` from the official scope table |
+| Scopes | 80 | n/a | Generated into `TwitchScopes` from the official scope table; the retired `whispers:read` stays as an obsolete constant |
 
-In November 2026 Twitch removed the two deprecated Tags endpoints (Get All Stream Tags, Get Stream Tags) from the reference, so they left the inventory; the obsolete SDK methods remain.
+In November 2026 Twitch removed the two deprecated Tags endpoints (Get All Stream Tags, Get Stream Tags) from the reference, so they left the inventory; the obsolete SDK methods remain. The same refresh changed 38 Helix sections and removed the `whispers:read` scope; all 38 were reviewed and updated (see the [changelog](../CHANGELOG.md)).
 
 "Complete" means: public SDK method or event, every documented parameter and response field, authorization handling, errors, passing tests and user documentation, with linked evidence. `tools/Test-ApiCoverage.ps1 -RequireComplete` passes.
 

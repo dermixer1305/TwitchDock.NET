@@ -211,6 +211,32 @@ public sealed class HelixFoundationTests
     }
 
     [Fact]
+    public async Task BatchingIsRequiredForDropEntitlementGrantAndRejectedForOtherTypes()
+    {
+        string? body = null;
+        using var http = new HttpClient(new TestHttpHandler(async (request, ct) =>
+        {
+            body = await request.Content!.ReadAsStringAsync(ct);
+            return TestHttpHandler.Json(Fixture("create-eventsub-subscription"), HttpStatusCode.Accepted);
+        }));
+        var client = Client(http, new("app", kind: TwitchTokenKind.App));
+        var conduit = new EventSubTransportRequest { Method = "conduit", ConduitId = "c" };
+        CreateEventSubSubscriptionRequest Drop(bool? batching) => new()
+        {
+            Type = "drop.entitlement.grant", Version = "1", Condition = new Dictionary<string, string> { ["organization_id"] = "org1" }, Transport = conduit, IsBatchingEnabled = batching
+        };
+        await Assert.ThrowsAsync<ArgumentException>(() => client.CreateEventSubSubscriptionAsync(Drop(null)));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.CreateEventSubSubscriptionAsync(Drop(false)));
+        var other = Subscription(conduit);
+        await Assert.ThrowsAsync<ArgumentException>(() => client.CreateEventSubSubscriptionAsync(new() { Type = other.Type, Version = other.Version, Condition = other.Condition, Transport = conduit, IsBatchingEnabled = true }));
+        Assert.Null(body);
+        await client.CreateEventSubSubscriptionAsync(Drop(true));
+        Assert.Contains("\"is_batching_enabled\":true", body);
+        await client.CreateEventSubSubscriptionAsync(new() { Type = other.Type, Version = other.Version, Condition = other.Condition, Transport = conduit, IsBatchingEnabled = false });
+        Assert.Contains("\"is_batching_enabled\":false", body);
+    }
+
+    [Fact]
     public async Task SubscriptionListingSupportsEveryExclusiveFilterAndCursor()
     {
         GetEventSubSubscriptionsRequest[] requests = [new() { Status = "future-status" }, new() { Type = "stream.online" }, new() { UserId = "1" }, new() { SubscriptionId = "sub1" }, new() { ConduitId = "c1" }];
@@ -224,7 +250,13 @@ public sealed class HelixFoundationTests
             return Task.FromResult(TestHttpHandler.Json(Fixture("get-eventsub-subscriptions")));
         }));
         var client = Client(http);
-        foreach (var request in requests) Assert.Equal(3, (await client.GetEventSubSubscriptionsAsync(request with { After = "a+b" })).Data.Count);
+        foreach (var request in requests)
+        {
+            var page = await client.GetEventSubSubscriptionsAsync(request with { After = "a+b" });
+            Assert.Equal(3, page.Data.Count);
+            Assert.Equal([false, false, true], page.Data.Select(s => s.IsBatchingEnabled));
+            Assert.Equal("conduit1", page.Data[2].Transport.ConduitId);
+        }
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetEventSubSubscriptionsAsync(new() { Type = "stream.online", UserId = "1" }));
         Assert.Equal(5, step);
     }

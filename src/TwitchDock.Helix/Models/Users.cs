@@ -8,6 +8,8 @@ public sealed class UpdateUserRequest
 public sealed record GetUserBlockListRequest
 {
     public required string BroadcasterId { get; init; }
+    /// <summary>Up to 100 user IDs to check. When set, Twitch ignores First and After, returns no cursor and only the listed users that are blocked.</summary>
+    public IReadOnlyList<string> UserIds { get; init => field = value ?? []; } = [];
     public int? First { get; init; }
     public string? After { get; init; }
 }

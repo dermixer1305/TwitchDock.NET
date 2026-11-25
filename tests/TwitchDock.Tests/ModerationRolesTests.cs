@@ -425,7 +425,7 @@ public sealed class ModerationRolesTests
     }
 
     [Fact]
-    public async Task SuspiciousStatusValidatesStatusAndChecksOnlyTheDocumentedScope()
+    public async Task SuspiciousStatusValidatesStatusScopeAndModeratorIdentity()
     {
         var calls = 0;
         using var http = new HttpClient(new TestHttpHandler((request, _) =>
@@ -433,13 +433,17 @@ public sealed class ModerationRolesTests
             calls++;
             return Task.FromResult(TestHttpHandler.Json(Fixture(request.Method == HttpMethod.Post ? "add-suspicious-status-to-chat-user" : "remove-suspicious-status-from-chat-user")));
         }));
-        // The reference allows app tokens and does not require moderator_id to match the user token, so Twitch decides identity.
-        foreach (var token in new[] { App, User("2", TwitchScopes.ModeratorManageSuspiciousUsers), User("9", TwitchScopes.ModeratorManageSuspiciousUsers) })
+        // App tokens rely on the moderator's prior grant (checked by Twitch); a user token must belong to moderator_id.
+        foreach (var token in new[] { App, User("2", TwitchScopes.ModeratorManageSuspiciousUsers) })
         {
             await Client(http, token).AddSuspiciousStatusToChatUserAsync("1", "2", new() { UserId = "3", Status = "RESTRICTED" });
             await Client(http, token).RemoveSuspiciousStatusFromChatUserAsync("1", "2", "3");
         }
-        Assert.Equal(6, calls);
+        Assert.Equal(4, calls);
+        var otherUser = Client(http, User("9", TwitchScopes.ModeratorManageSuspiciousUsers));
+        await Assert.ThrowsAsync<TwitchAuthorizationException>(() => otherUser.AddSuspiciousStatusToChatUserAsync("1", "2", new() { UserId = "3", Status = "RESTRICTED" }));
+        await Assert.ThrowsAsync<TwitchAuthorizationException>(() => otherUser.RemoveSuspiciousStatusFromChatUserAsync("1", "2", "3"));
+        Assert.Equal(4, calls);
         var reader = Client(http, User("2", TwitchScopes.ModeratorReadSuspiciousUsers));
         var missing = await Assert.ThrowsAsync<TwitchAuthorizationException>(() => reader.AddSuspiciousStatusToChatUserAsync("1", "2", new() { UserId = "3", Status = "RESTRICTED" }));
         Assert.Equal([TwitchScopes.ModeratorManageSuspiciousUsers], missing.MissingScopes);
@@ -452,7 +456,7 @@ public sealed class ModerationRolesTests
         await Assert.ThrowsAsync<ArgumentNullException>(() => client.AddSuspiciousStatusToChatUserAsync("1", "2", null!));
         await Assert.ThrowsAsync<ArgumentException>(() => client.RemoveSuspiciousStatusFromChatUserAsync("1", "2", ""));
         await Assert.ThrowsAsync<ArgumentException>(() => client.RemoveSuspiciousStatusFromChatUserAsync(" ", "2", "3"));
-        Assert.Equal(6, calls);
+        Assert.Equal(4, calls);
     }
 
     [Theory]

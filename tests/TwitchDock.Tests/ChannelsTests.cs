@@ -77,7 +77,9 @@ public sealed class ChannelsTests
         [
             new() { BroadcasterId = "1" }, new() { BroadcasterId = "1", Title = "" }, new() { BroadcasterId = "1", Title = new('x', 141) },
             new() { BroadcasterId = "1", Tags = Enumerable.Repeat("Tag", 11).ToArray() },
-            new() { BroadcasterId = "1", Tags = [new('x', 26)] }, new() { BroadcasterId = "1", Tags = [""] }, new() { BroadcasterId = "1", Tags = ["two words"] }
+            new() { BroadcasterId = "1", Tags = [new('x', 26)] }, new() { BroadcasterId = "1", Tags = [""] }, new() { BroadcasterId = "1", Tags = ["two words"] },
+            new() { BroadcasterId = "1", ContentClassificationLabels = Enumerable.Range(0, 7).Select(_ => new ChannelContentClassificationLabel { Id = "Gambling", IsEnabled = true }).ToArray() },
+            new() { BroadcasterId = "1", ContentClassificationLabels = [new() { Id = "MatureGame", IsEnabled = true }] }
         ];
         foreach (var request in invalid) await Assert.ThrowsAsync<ArgumentException>(() => client.ModifyChannelInformationAsync(request));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.ModifyChannelInformationAsync(new() { BroadcasterId = "1", Delay = -1 }));
@@ -137,6 +139,16 @@ public sealed class ChannelsTests
         await Assert.ThrowsAsync<TwitchAuthorizationException>(() => wrongOwner.GetChannelEditorsAsync("1"));
         await Assert.ThrowsAsync<TwitchAuthorizationException>(() => wrongOwner.GetFollowedChannelsAsync(new() { UserId = "1" }));
         await Assert.ThrowsAsync<TwitchAuthorizationException>(() => wrongOwner.ModifyChannelInformationAsync(new() { BroadcasterId = "1", Title = "Title" }));
+    }
+
+    [Fact]
+    public async Task ChannelPatchAcceptsUserEditBroadcastInsteadOfChannelManageBroadcast()
+    {
+        var calls = 0;
+        using var http = new HttpClient(new TestHttpHandler((_, _) => { calls++; return Task.FromResult(new HttpResponseMessage(HttpStatusCode.NoContent)); }));
+        await Client(http, new("token", scopes: [TwitchScopes.UserEditBroadcast], kind: TwitchTokenKind.User, userId: "1"))
+            .ModifyChannelInformationAsync(new() { BroadcasterId = "1", Title = "Title" });
+        Assert.Equal(1, calls);
     }
 
     [Theory]

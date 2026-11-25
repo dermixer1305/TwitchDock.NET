@@ -61,9 +61,22 @@ public sealed class HelixGroupsTests
         var ads = Client(http).Ads;
         Assert.Equal(480, (await ads.StartCommercialAsync(new() { BroadcasterId = "channel-1", Length = 60 })).Data.Single().RetryAfter);
         var schedule = (await ads.GetAdScheduleAsync("channel-1")).Data.Single();
-        Assert.Equal("", schedule.NextAdAt);
-        Assert.Equal("", schedule.LastAdAt);
-        Assert.Equal(1, (await ads.SnoozeNextAdAsync("channel-1")).Data.Single().SnoozeCount);
+        Assert.Equal(DateTimeOffset.Parse("2026-10-09T12:00:00Z"), schedule.SnoozeRefreshAt);
+        Assert.Null(schedule.NextAdAt);
+        Assert.Null(schedule.LastAdAt);
+        var snooze = (await ads.SnoozeNextAdAsync("channel-1")).Data.Single();
+        Assert.Equal(1, snooze.SnoozeCount);
+        Assert.Equal(DateTimeOffset.Parse("2026-10-09T12:05:00Z"), snooze.NextAdAt);
+    }
+
+    [Fact]
+    public void AdScheduleStillReadsTheFormerlyDocumentedRfc3339Strings()
+    {
+        var schedule = JsonSerializer.Deserialize("""{"snooze_count":1,"snooze_refresh_at":"2026-10-09T12:00:00Z","next_ad_at":"","duration":90,"last_ad_at":"","preroll_free_time":0}""",
+            HelixJsonContext.Default.AdSchedule)!;
+        Assert.Equal(DateTimeOffset.Parse("2026-10-09T12:00:00Z"), schedule.SnoozeRefreshAt);
+        Assert.Null(schedule.NextAdAt);
+        Assert.Null(schedule.LastAdAt);
     }
 
     [Theory]
@@ -126,7 +139,9 @@ public sealed class HelixGroupsTests
             return Task.FromResult(TestHttpHandler.Json(calls < 3 ? Fixture("get-top-games") : "{\"data\":[],\"pagination\":{}}"));
         }));
         var games = Client(http).Games;
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         await games.GetTopGamesAsync(new() { First = 1, Before = "previous" });
+#pragma warning restore CS0618
         var rows = new List<TwitchGame>();
         await foreach (var game in games.EnumerateTopGamesAsync(new() { First = 1, After = "start" })) rows.Add(game);
         Assert.Single(rows);
@@ -179,7 +194,9 @@ public sealed class HelixGroupsTests
         await Assert.ThrowsAsync<ArgumentException>(() => client.Games.GetGamesAsync(new()));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Games.GetGamesAsync(new() { Ids = Enumerable.Repeat("1", 100).ToArray(), IgdbIds = ["2"] }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Games.GetTopGamesAsync(new() { First = 101 }));
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         await Assert.ThrowsAsync<ArgumentException>(() => client.Games.GetTopGamesAsync(new() { Before = "b", After = "a" }));
+#pragma warning restore CS0618
         await Assert.ThrowsAsync<ArgumentException>(() => client.Analytics.GetGameAnalyticsAsync(new() { StartedAt = new(2026, 10, 1) }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Analytics.GetExtensionAnalyticsAsync(new() { StartedAt = new(2026, 10, 5), EndedAt = new(2026, 10, 1) }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Search.SearchChannelsAsync(new() { Query = " " }));

@@ -45,14 +45,18 @@ public sealed class ClipsClient(TwitchHttpClient transport)
         if (request.StartedAt > request.EndedAt) throw new ArgumentException("The end date must not precede the start date.", nameof(request));
         return _transport.SendAsync(HttpMethod.Get, "clips", HelixJsonContext.Default.HelixPageTwitchClip,
             new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId).AddValue("game_id", request.GameId).AddValues("id", request.Ids)
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
                 .AddValue("started_at", request.StartedAt).AddValue("ended_at", request.EndedAt).AddPage(request.First, request.After, request.Before)
+#pragma warning restore CS0618
                 .AddValue("is_featured", request.IsFeatured), cancellationToken: cancellationToken);
     }
 
     public IAsyncEnumerable<TwitchClip> EnumerateClipsAsync(GetClipsRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
         if (request.Before is not null) throw new ArgumentException("Forward enumeration cannot use before.", nameof(request));
+#pragma warning restore CS0618
         var snapshot = request with { Ids = request.Ids.ToArray() };
         return HelixPagination.EnumerateAsync((cursor, ct) => GetClipsAsync(snapshot with { After = cursor ?? snapshot.After }, ct), cancellationToken);
     }

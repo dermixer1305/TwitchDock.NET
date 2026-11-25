@@ -95,6 +95,9 @@ public sealed class HelixClient(TwitchHttpClient transport)
         ArgumentException.ThrowIfNullOrWhiteSpace(request.Version);
         ArgumentNullException.ThrowIfNull(request.Condition);
         ArgumentNullException.ThrowIfNull(request.Transport);
+        // Twitch documents batching as required for drop.entitlement.grant and not allowed for every other type.
+        if ((request.Type == "drop.entitlement.grant") != (request.IsBatchingEnabled == true))
+            throw new ArgumentException("is_batching_enabled must be true for drop.entitlement.grant and false or omitted for all other subscription types.", nameof(request));
         switch (request.Transport.Method)
         {
             case "websocket":

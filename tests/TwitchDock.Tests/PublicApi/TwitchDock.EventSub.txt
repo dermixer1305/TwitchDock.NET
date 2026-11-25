@@ -299,6 +299,7 @@ class TwitchDock.EventSub.EventSubEventsJsonContext : System.Text.Json.Serializa
 class TwitchDock.EventSub.EventSubJsonContext : System.Text.Json.Serialization.JsonSerializerContext, System.Text.Json.Serialization.Metadata.IBuiltInJsonTypeInfoResolver, System.Text.Json.Serialization.Metadata.IJsonTypeInfoResolver
     .ctor()
     .ctor(System.Text.Json.JsonSerializerOptions options)
+    Boolean: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.Boolean> { get; }
     DateTimeOffset: System.Text.Json.Serialization.Metadata.JsonTypeInfo<System.DateTimeOffset> { get; }
     EventSubMessage: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubMessage> { get; }
     EventSubMetadata: System.Text.Json.Serialization.Metadata.JsonTypeInfo<TwitchDock.EventSub.EventSubMetadata> { get; }

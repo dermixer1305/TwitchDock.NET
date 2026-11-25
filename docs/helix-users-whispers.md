@@ -35,7 +35,7 @@ await helix.Users.BlockUserAsync(new()
 await helix.Users.UnblockUserAsync("456", cancellationToken);
 ```
 
-Reading requires `user:read:blocked_users` and the broadcaster's own user token. Pages accept `First` 1–100 and `After`, and return blocked user IDs, logins and display names in newest-block-first order. The forward enumerator follows cursors and honors cancellation.
+Reading requires `user:read:blocked_users` or `user:manage:blocked_users` and the broadcaster's own user token. Pages accept `First` 1–100 and `After`, and return blocked user IDs, logins and display names in newest-block-first order. `UserIds` (up to 100) checks specific users: the response then holds only those that are blocked, in no particular order, without a cursor, and Twitch ignores `First` and `After`. The forward enumerator follows cursors and honors cancellation.
 
 Blocking/unblocking requires `user:manage:blocked_users`; Twitch gets the acting user from the token. Source context is optional (`chat` or `whisper`), as is reason (`harassment`, `spam`, `other`). Blocking oneself is rejected by Twitch. Repeating an already satisfied block/unblock is ignored by Twitch. Both calls send query parameters without a body and complete on HTTP 204. The unblocking implementation follows the documented authorization section's manage scope, not the inconsistent read-scope wording in its error table.
 
@@ -81,7 +81,7 @@ var extensions = await helix.Users.UpdateUserExtensionsAsync(new()
 }, cancellationToken);
 ```
 
-Requires `user:edit:broadcast` on a user token; the token identifies the channel. Request types are separate from responses, so display names cannot accidentally enter a request. Supply only the extension-type dictionaries being updated; null dictionaries are omitted. Numbered slot keys must be positive integers. Activating a slot requires ID/version, plus X/Y for a component. Deactivation can contain just `Active = false`. Twitch verifies installation, configuration, slot availability and extension/version existence. Activating the same extension under multiple types has undefined write order and last-write-wins behavior; configure its intended type explicitly. HTTP 404 means the specified extension/version was not found.
+Requires `user:edit:broadcast` or `channel:manage:extensions` on a user token; the token identifies the channel. Request types are separate from responses, so display names cannot accidentally enter a request. Supply only the extension-type dictionaries being updated; null dictionaries are omitted. Numbered slot keys must be positive integers. Activating a slot requires ID/version, plus X/Y for a component. Deactivation can contain just `Active = false`. Twitch verifies installation, configuration, slot availability and extension/version existence. Activating the same extension under multiple types has undefined write order and last-write-wins behavior; configure its intended type explicitly. HTTP 404 means the specified extension/version was not found, 409 that the extension isn't installed on the channel, and 422 that it can't be activated as the requested type.
 
 ## Whispers
 

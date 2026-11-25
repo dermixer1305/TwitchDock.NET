@@ -34,14 +34,16 @@ public sealed class UsersClient(TwitchHttpClient transport)
         ArgumentNullException.ThrowIfNull(request);
         ArgumentException.ThrowIfNullOrWhiteSpace(request.BroadcasterId);
         return _transport.SendAsync(HttpMethod.Get, "users/blocks", HelixJsonContext.Default.HelixPageBlockedUser,
-            new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId).AddPage(request.First, request.After),
-            authorization: new([TwitchScopes.UserReadBlockedUsers], requiredUserId: request.BroadcasterId), cancellationToken: cancellationToken);
+            new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId).AddValues("user_id", request.UserIds, 100).AddPage(request.First, request.After),
+            authorization: new([], requiredUserId: request.BroadcasterId, anyUserScopes: [TwitchScopes.UserReadBlockedUsers, TwitchScopes.UserManageBlockedUsers]), cancellationToken: cancellationToken);
     }
 
     public IAsyncEnumerable<BlockedUser> EnumerateUserBlockListAsync(GetUserBlockListRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
-        return HelixPagination.EnumerateAsync((cursor, ct) => GetUserBlockListAsync(request with { After = cursor ?? request.After }, ct), cancellationToken);
+        ArgumentNullException.ThrowIfNull(request.UserIds);
+        var snapshot = request with { UserIds = request.UserIds.ToArray() };
+        return HelixPagination.EnumerateAsync((cursor, ct) => GetUserBlockListAsync(snapshot with { After = cursor ?? snapshot.After }, ct), cancellationToken);
     }
 
     public Task BlockUserAsync(BlockUserRequest request, CancellationToken cancellationToken = default)
@@ -92,7 +94,7 @@ public sealed class UsersClient(TwitchHttpClient transport)
         ValidateSlots(request.Data.Component);
         return _transport.SendAsync(HttpMethod.Put, "users/extensions", HelixJsonContext.Default.UserActiveExtensionsResponse,
             jsonBody: JsonSerializer.SerializeToUtf8Bytes(request, HelixJsonContext.Default.UpdateUserExtensionsRequest),
-            authorization: new([TwitchScopes.UserEditBroadcast]), cancellationToken: cancellationToken);
+            authorization: new([], anyUserScopes: [TwitchScopes.UserEditBroadcast, TwitchScopes.ChannelManageExtensions]), cancellationToken: cancellationToken);
     }
 
     private static void ValidateSlots<T>(IReadOnlyDictionary<string, T>? slots) where T : UserExtensionActivation

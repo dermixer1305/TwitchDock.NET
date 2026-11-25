@@ -21,7 +21,7 @@ var snooze = await helix.Ads.SnoozeNextAdAsync(broadcasterId, ct);
 
 `StartCommercialAsync` supports broadcaster_id and length in JSON. It requires `channel:edit:commercial`, authorization from that broadcaster, a live stream and partner/affiliate eligibility. Editors and moderators cannot run commercials on the broadcaster's behalf. Results include Length, Message and RetryAfter; observe the cooldown. Twitch caps requested lengths above 180 seconds. [Start Commercial](https://dev.twitch.tv/docs/api/reference/#start-commercial).
 
-`GetAdScheduleAsync` uses broadcaster_id and requires `channel:read:ads`. Results retain every schedule field: SnoozeCount, SnoozeRefreshAt, NextAdAt, Duration, LastAdAt and PrerollFreeTime. NextAdAt and LastAdAt can be empty strings, so they remain wire-format strings. [Get Ad Schedule](https://dev.twitch.tv/docs/api/reference/#get-ad-schedule).
+`GetAdScheduleAsync` uses broadcaster_id and requires `channel:read:ads`. Results retain every schedule field: SnoozeCount, SnoozeRefreshAt, NextAdAt, Duration, LastAdAt and PrerollFreeTime. Twitch sends SnoozeRefreshAt, NextAdAt and LastAdAt as Unix timestamps in seconds; the SDK exposes them as `DateTimeOffset?` and maps 0 (no snooze refresh, no scheduled ad, no ad yet or channel offline) to null. [Get Ad Schedule](https://dev.twitch.tv/docs/api/reference/#get-ad-schedule).
 
 `SnoozeNextAdAsync` sends broadcaster_id as a query parameter and requires `channel:manage:ads`. Its result contains SnoozeCount, SnoozeRefreshAt and NextAdAt. Availability depends on the broadcaster's available snoozes and schedule. All three endpoints support either an appropriately scoped user token or an app token with the documented prior grant for the broadcaster. [Snooze Next Ad](https://dev.twitch.tv/docs/api/reference/#snooze-next-ad).
 
@@ -53,12 +53,12 @@ var games = await helix.Games.GetGamesAsync(new()
 {
     Ids = [gameId], Names = ["Just Chatting"], IgdbIds = [igdbId]
 }, ct);
-var top = await helix.Games.GetTopGamesAsync(new() { First = 50, Before = cursor }, ct);
+var top = await helix.Games.GetTopGamesAsync(new() { First = 50, After = cursor }, ct);
 await foreach (var game in helix.Games.EnumerateTopGamesAsync(new() { First = 100 }, ct))
     Console.WriteLine(game.Name);
 ```
 
-App and user tokens are accepted without additional scopes. GetGames supports repeated id, name and igdb_id parameters; their combined count must be 1–100. TwitchGame exposes Id, Name, BoxArtUrl and IgdbId, which may be empty. GetTopGames supports first, after and before; enumeration pages forward and rejects Before. [Get Games](https://dev.twitch.tv/docs/api/reference/#get-games), [Get Top Games](https://dev.twitch.tv/docs/api/reference/#get-top-games).
+App and user tokens are accepted without additional scopes. GetGames supports repeated id, name and igdb_id parameters; their combined count must be 1–100. TwitchGame exposes Id, Name, BoxArtUrl and IgdbId, which may be empty. GetTopGames supports first and after; a page may hold fewer than First items although more pages follow. Twitch no longer documents the `before` cursor; `Before` is obsolete and still forwarded, and enumeration rejects it. [Get Games](https://dev.twitch.tv/docs/api/reference/#get-games), [Get Top Games](https://dev.twitch.tv/docs/api/reference/#get-top-games).
 
 ## Search
 

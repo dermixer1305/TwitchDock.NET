@@ -24,13 +24,17 @@ public sealed class GamesClient(TwitchHttpClient transport)
     {
         request ??= new();
         return _transport.SendAsync(HttpMethod.Get, "games/top", HelixJsonContext.Default.HelixPageTwitchGame,
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
             new HelixQuery().AddPage(request.First, request.After, request.Before), cancellationToken: cancellationToken);
+#pragma warning restore CS0618
     }
 
     public IAsyncEnumerable<TwitchGame> EnumerateTopGamesAsync(GetTopGamesRequest? request = null, CancellationToken cancellationToken = default)
     {
         request ??= new();
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
         if (request.Before is not null) throw new ArgumentException("Forward enumeration cannot use before.", nameof(request));
+#pragma warning restore CS0618
         return HelixPagination.EnumerateAsync((cursor, ct) => GetTopGamesAsync(request with { After = cursor ?? request.After }, ct), cancellationToken);
     }
 }

@@ -2,6 +2,26 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
+## Unreleased
+
+Brings the SDK in line with the rebuilt Twitch reference (snapshot 2026-11-25). Twitch changed 38 Helix sections; each was reviewed. Some response types change, so code that reads them must be updated.
+
+**Breaking (response types that did not match what Twitch sends):**
+
+- `AdSchedule.SnoozeRefreshAt`, `NextAdAt`, `LastAdAt` and `AdSnoozeResult.SnoozeRefreshAt`, `NextAdAt` are `DateTimeOffset?` instead of `string`. Twitch sends Unix timestamps in seconds, which the old string properties could not read; 0 becomes null. RFC3339 strings are still accepted. Migration: replace string checks such as `NextAdAt == ""` with `NextAdAt is null`.
+- `StreamMarker.Url` reads the field `URL`, which Twitch sends (the old reference table said `url`; its example already showed `URL`).
+- `ScheduleSegment.EndTime` is `DateTimeOffset?` (null when a segment has no duration) and `TwitchVideo.PublishedAt` is `DateTimeOffset?` (null for unpublished videos).
+- Schedule segment `Duration` is sent as a JSON number instead of a string, as the reference now documents.
+- Guest Star (beta): Update Channel Guest Star Settings uses PATCH instead of PUT; `GroupLayout` accepts only `TILED` and `SCREENSHARE`; an update must set a field or `RegenerateBrowserSources = true`. Read operations need `channel:read:guest_star`/`channel:manage:guest_star` when `moderator_id` is the broadcaster and `moderator:read:guest_star`/`moderator:manage:guest_star` otherwise; management operations need `channel:manage:guest_star` or `moderator:manage:guest_star` the same way. `GuestStarChannelSettings.BrowserSourceToken` is nullable (null for moderators).
+- `AddSuspiciousStatusToChatUserAsync` and `RemoveSuspiciousStatusFromChatUserAsync` check that a user token belongs to `moderator_id`.
+- `GetUnbanRequestsAsync` rejects `First` above 100. `ModifyChannelInformationAsync` rejects more than 6 content classification labels and `MatureGame`. `CreateEventSubSubscriptionAsync` requires `IsBatchingEnabled = true` for drop.entitlement.grant and rejects it for other types.
+
+**Obsolete (removed by Twitch, kept until a major release):** `TwitchScopes.WhispersRead` (use `UserReadWhispers` or `UserManageWhispers`); `Before` on `GetClipsRequest`, `GetTopGamesRequest`, `GetBannedUsersRequest` and `GetStreamMarkersRequest` (still forwarded); `TwitchPoll.BitsVotingEnabled`, `BitsPerVote` and `PollChoice.BitsVotes`; `GuestStarUpdateSlotSettingsRequest.Volume` (still forwarded, no longer a setting on its own); `GuestStarGuest.AudioSettings`/`VideoSettings` (same objects as the new `Audio`/`Video`, both JSON names are read) and `UserDisplayName`/`UserLogin` (empty unless Twitch sends them).
+
+**Added:** `EventSubSubscription.IsBatchingEnabled`; `ExtensionViews.LiveConfig` and the deprecated component fields `AspectWidth`, `AspectHeight`, `Size`, `Zoom`, `ZoomPixels`; `GetUserBlockListRequest.UserIds`; `user:edit:broadcast` as an alternative scope for Modify Channel Information and Create Stream Marker, `channel:manage:extensions` for Update User Extensions and `user:manage:blocked_users` for Get User Block List; video `Language` with several comma-separated codes and with `UserId`, and cursors and enumeration for game listings.
+
+`tools/Update-ScopeConstants.ps1` keeps retired scopes as `[Obsolete]` constants. Documentation for the affected groups follows the new reference.
+
 ## 1.0.0-rc.6 (2026-10-15)
 
 Fixes EventSub WebSocket clients going offline on `session_reconnect` ([release notes](docs/release-notes/1.0.0-rc.6.md)).

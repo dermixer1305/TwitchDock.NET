@@ -84,5 +84,6 @@ public static class TwitchScopes
     public const string UserReadSubscriptions = "user:read:subscriptions";
     public const string UserReadWhispers = "user:read:whispers";
     public const string UserWriteChat = "user:write:chat";
+    [Obsolete("Twitch removed whispers:read from the scope reference in November 2026. Use user:read:whispers or user:manage:whispers.")]
     public const string WhispersRead = "whispers:read";
 }

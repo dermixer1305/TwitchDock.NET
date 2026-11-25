@@ -174,7 +174,9 @@ public sealed class ModerationEnforcementTests
         using var http = Recording(requests);
         var client = Client(http);
         await client.GetBannedUsersAsync(new() { BroadcasterId = "1", UserIds = ["3", "4"], First = 100, After = "a+b" });
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         await client.GetBannedUsersAsync(new() { BroadcasterId = "1", Before = "prev" });
+#pragma warning restore CS0618
         Assert.All(requests, r => Assert.Equal(HttpMethod.Get, r.Method));
         Assert.All(requests, r => Assert.Equal("/helix/moderation/banned", r.RequestUri!.AbsolutePath));
         Assert.Equal("?broadcaster_id=1&user_id=3&user_id=4&first=100&after=a%2Bb", requests[0].RequestUri!.Query);
@@ -218,7 +220,9 @@ public sealed class ModerationEnforcementTests
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetBannedUsersAsync(new() { BroadcasterId = "1", UserIds = [" "] }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetBannedUsersAsync(new() { BroadcasterId = "1", First = 0 }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetBannedUsersAsync(new() { BroadcasterId = "1", First = 101 }));
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetBannedUsersAsync(new() { BroadcasterId = "1", After = "a", Before = "b" }));
+#pragma warning restore CS0618
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetBannedUsersAsync(new() { BroadcasterId = "" }));
         Assert.Equal(1, calls);
     }
@@ -240,7 +244,9 @@ public sealed class ModerationEnforcementTests
         await foreach (var _ in users) count++;
         Assert.Equal(2, count);
         Assert.Equal(2, step);
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         Assert.Throws<ArgumentException>(() => client.EnumerateBannedUsersAsync(new() { BroadcasterId = "1", Before = "prev" }));
+#pragma warning restore CS0618
     }
 
     [Fact]
@@ -347,8 +353,8 @@ public sealed class ModerationEnforcementTests
         var client = Client(http);
         foreach (var status in new[] { "pending", "approved", "denied", "acknowledged", "canceled" })
             await client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = status });
-        // Twitch documents no upper page-size bound for this endpoint.
-        await client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "pending", First = 1000 });
+        await client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "pending", First = 100 });
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "pending", First = 101 }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "Pending" }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "pending", UserId = " " }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetUnbanRequestsAsync(new() { BroadcasterId = "1", ModeratorId = "2", Status = "pending", First = 0 }));

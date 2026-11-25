@@ -43,6 +43,7 @@ public sealed class ScheduleTests
         Assert.Equal(page.Data.Segments[0].EndTime, page.Data.Segments[0].CanceledUntil);
         Assert.Null(page.Data.Segments[1].Category);
         Assert.Null(page.Data.Segments[1].CanceledUntil);
+        Assert.Null(page.Data.Segments[1].EndTime);
         Assert.NotNull(page.Data.Vacation);
     }
 
@@ -147,7 +148,7 @@ public sealed class ScheduleTests
             Assert.Equal(6, body.EnumerateObject().Count());
             Assert.Equal(Start, body.GetProperty("start_time").GetDateTimeOffset());
             Assert.Equal("Europe/Berlin", body.GetProperty("timezone").GetString());
-            Assert.Equal("60", body.GetProperty("duration").GetString());
+            Assert.Equal(60, body.GetProperty("duration").GetInt32());
             Assert.Equal("category1", body.GetProperty("category_id").GetString());
             Assert.Equal("Stream", body.GetProperty("title").GetString());
             Assert.False(body.GetProperty(step == 1 ? "is_recurring" : "is_canceled").GetBoolean());
