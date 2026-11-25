@@ -27,8 +27,7 @@ public sealed class TagsLabelsAuthorizationTests
 
     public static IEnumerable<object[]> Contracts()
     {
-        yield return ["get-all-stream-tags", HelixJsonContext.Default.HelixPageStreamTag];
-        yield return ["get-stream-tags", HelixJsonContext.Default.HelixPageStreamTag];
+        // Get All Stream Tags and Get Stream Tags left the official reference and the inventory; their fixture-based tests stay.
         yield return ["get-content-classification-labels", HelixJsonContext.Default.HelixPageContentClassificationLabel];
         yield return ["get-authorization-by-user", HelixJsonContext.Default.HelixPageUserAuthorization];
         yield return ["get-custom-power-up", HelixJsonContext.Default.HelixPageCustomPowerUp];
