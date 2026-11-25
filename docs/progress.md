@@ -8,9 +8,11 @@ The [coverage matrix](api/coverage.json) inventories the official documentation 
 
 | Inventory | Entries | Complete | Availability notes |
 | --- | ---: | ---: | --- |
-| Helix endpoints | 149 | 149 | 113 public, 12 public beta (Guest Star), 11 extension owner, 6 affiliate/partner channel points, 2 game or organization owner (Drops), 2 schedule segments with non-recurring restrictions, 2 deprecated (Tags), 1 verified-phone sender (whispers) |
+| Helix endpoints | 147 | 147 | 113 public, 12 public beta (Guest Star), 11 extension owner, 6 affiliate/partner channel points, 2 game or organization owner (Drops), 2 schedule segments with non-recurring restrictions, 1 verified-phone sender (whispers) |
 | EventSub type/versions | 83 | 83 | 77 public, 4 public beta (Guest Star), 1 extension owner, 1 game or organization owner |
 | Scopes | 81 | n/a | Generated into `TwitchScopes` from the official scope table |
+
+In November 2026 Twitch removed the two deprecated Tags endpoints (Get All Stream Tags, Get Stream Tags) from the reference, so they left the inventory; the obsolete SDK methods remain.
 
 "Complete" means: public SDK method or event, every documented parameter and response field, authorization handling, errors, passing tests and user documentation, with linked evidence. `tools/Test-ApiCoverage.ps1 -RequireComplete` passes.
 
