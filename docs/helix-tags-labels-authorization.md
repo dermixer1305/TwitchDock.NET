@@ -47,7 +47,7 @@ var channelTags = await helix.Tags.GetStreamTagsAsync("527115020", cancellationT
 #pragma warning restore CS0618
 ```
 
-Twitch replaced Twitch-defined tags with channel-defined tags. According to the reference, both endpoints return an empty list since February 28, 2023 and are documented to return HTTP 410 from July 13, 2023; a 410 is raised as `TwitchApiException` with `StatusCode == HttpStatusCode.Gone`. The methods are therefore marked `[Obsolete]` and kept only for completeness. Use the `Tags` of Get Channel Information, Get Streams or Search Channels instead.
+Twitch replaced Twitch-defined tags with channel-defined tags. According to the reference, both endpoints return an empty list since February 28, 2023 and are documented to return HTTP 410 from July 13, 2023; a 410 is raised as `TwitchApiException` with `StatusCode == HttpStatusCode.Gone`. The methods are therefore marked `[Obsolete]` and kept only for completeness. In November 2026 Twitch removed both endpoints from the official reference, so they are no longer part of the API inventory (`docs/api/coverage.json`). Use the `Tags` of Get Channel Information, Get Streams or Search Channels instead.
 
 Get All Stream Tags accepts up to 100 `TagIds` (Twitch ignores invalid IDs but not duplicates, so the SDK sends duplicates unchanged), `First` 1 to 100 (Twitch default 20) and `After`; the enumerator snapshots the IDs. Get Stream Tags requires a broadcaster ID. Both accept app or user tokens and return `StreamTag` with `TagId`, `IsAuto` and the `LocalizationNames`/`LocalizationDescriptions` dictionaries keyed by locales such as `en-us`.
 
@@ -55,4 +55,4 @@ Get All Stream Tags accepts up to 100 `TagIds` (Twitch ignores invalid IDs but n
 
 `TagsLabelsAuthorizationTests` covers all documented response fields, exact queries, token kinds and identity checks, limits, the enumerator, deprecation attributes and Twitch errors with synthetic fixtures. Live integration remains required before stable publication.
 
-Sources: pinned official [Get All Stream Tags](https://dev.twitch.tv/docs/api/reference/#get-all-stream-tags), [Get Stream Tags](https://dev.twitch.tv/docs/api/reference/#get-stream-tags), [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference/#get-content-classification-labels), [Get Authorization By User](https://dev.twitch.tv/docs/api/reference/#get-authorization-by-user), [Get Custom Power-up](https://dev.twitch.tv/docs/api/reference/#get-custom-power-up).
+Sources: pinned official Get All Stream Tags and Get Stream Tags (removed from the reference in November 2026), [Get Content Classification Labels](https://dev.twitch.tv/docs/api/reference/#get-content-classification-labels), [Get Authorization By User](https://dev.twitch.tv/docs/api/reference/#get-authorization-by-user), [Get Custom Power-up](https://dev.twitch.tv/docs/api/reference/#get-custom-power-up).

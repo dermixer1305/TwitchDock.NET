@@ -77,7 +77,9 @@ public sealed partial class ModerationClient
         ArgumentNullException.ThrowIfNull(request);
         ArgumentException.ThrowIfNullOrWhiteSpace(request.BroadcasterId);
         return _transport.SendAsync(HttpMethod.Get, "moderation/banned", HelixJsonContext.Default.HelixPageBannedUser,
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
             new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId).AddValues("user_id", request.UserIds).AddPage(request.First, request.After, request.Before),
+#pragma warning restore CS0618
             authorization: new([], allowAppToken: true, requiredUserId: request.BroadcasterId,
                 anyUserScopes: [TwitchScopes.ModerationRead, TwitchScopes.ModeratorManageBannedUsers]), cancellationToken: cancellationToken);
     }
@@ -86,7 +88,9 @@ public sealed partial class ModerationClient
     {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(request.UserIds);
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
         if (request.Before is not null) throw new ArgumentException("Forward enumeration cannot use before.", nameof(request));
+#pragma warning restore CS0618
         var snapshot = request with { UserIds = request.UserIds.ToArray() };
         return HelixPagination.EnumerateAsync((cursor, ct) => GetBannedUsersAsync(snapshot with { After = cursor ?? snapshot.After }, ct), cancellationToken);
     }
@@ -121,7 +125,7 @@ public sealed partial class ModerationClient
             authorization: Moderator(moderatorId, TwitchScopes.ModeratorManageBannedUsers), cancellationToken: cancellationToken);
     }
 
-    /// <summary>User token only, with moderator:read:unban_requests or moderator:manage:unban_requests.</summary>
+    /// <summary>User token only, with moderator:read:unban_requests or moderator:manage:unban_requests. To list your own requests, set ModeratorId and UserId to your user ID.</summary>
     public Task<HelixPage<UnbanRequest>> GetUnbanRequestsAsync(GetUnbanRequestsRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -130,8 +134,7 @@ public sealed partial class ModerationClient
         if (request.Status is not "pending" and not "approved" and not "denied" and not "acknowledged" and not "canceled")
             throw new ArgumentException("Status must be pending, approved, denied, acknowledged or canceled.", nameof(request));
         if (request.UserId is not null) ArgumentException.ThrowIfNullOrWhiteSpace(request.UserId, nameof(request));
-        // Twitch documents no maximum page size for this endpoint, so only non-positive values are rejected locally.
-        if (request.First is < 1) throw new ArgumentOutOfRangeException(nameof(request), "Page size must be at least 1.");
+        if (request.First is < 1 or > 100) throw new ArgumentOutOfRangeException(nameof(request), "Page size must be between 1 and 100.");
         return _transport.SendAsync(HttpMethod.Get, UnbanRequestsPath, HelixJsonContext.Default.HelixPageUnbanRequest,
             ModeratorQuery(request.BroadcasterId, request.ModeratorId).AddValue("status", request.Status).AddValue("user_id", request.UserId)
                 .AddValue("after", request.After).AddValue("first", request.First),

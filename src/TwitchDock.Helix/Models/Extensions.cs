@@ -167,6 +167,8 @@ public sealed class ExtensionViews
     public ExtensionVideoOverlayView? VideoOverlay { get; init; }
     public ExtensionComponentView? Component { get; init; }
     public ExtensionConfigView? Config { get; init; }
+    /// <summary>The view shown to broadcasters in the Live module of the dashboard, for actions taken while the extension is active.</summary>
+    public ExtensionConfigView? LiveConfig { get; init; }
 }
 
 public sealed class ExtensionMobileView
@@ -190,6 +192,10 @@ public sealed class ExtensionVideoOverlayView
 public sealed class ExtensionComponentView
 {
     public string ViewerUrl { get; init => field = value ?? ""; } = "";
+    /// <summary>Deprecated by Twitch; use <see cref="AspectRatioX"/>. Null when Twitch omits it.</summary>
+    public int? AspectWidth { get; init; }
+    /// <summary>Deprecated by Twitch; use <see cref="AspectRatioY"/>. Null when Twitch omits it.</summary>
+    public int? AspectHeight { get; init; }
     public int AspectRatioX { get; init; }
     public int AspectRatioY { get; init; }
     public bool Autoscale { get; init; }
@@ -197,6 +203,12 @@ public sealed class ExtensionComponentView
     public int ScalePixels { get; init; }
     /// <summary>Percent (1–100) of the maximum video component height.</summary>
     public int TargetHeight { get; init; }
+    /// <summary>Deprecated by Twitch; use <see cref="TargetHeight"/>. Null when Twitch omits it.</summary>
+    public decimal? Size { get; init; }
+    /// <summary>Deprecated by Twitch; use <see cref="Autoscale"/>. Null when Twitch omits it.</summary>
+    public bool? Zoom { get; init; }
+    /// <summary>Deprecated by Twitch; use <see cref="ScalePixels"/>. Null when Twitch omits it.</summary>
+    public int? ZoomPixels { get; init; }
     public bool CanLinkExternalContent { get; init; }
 }
 

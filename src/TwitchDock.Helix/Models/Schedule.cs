@@ -31,7 +31,8 @@ public sealed class ScheduleSegment
 {
     public required string Id { get; init; }
     public DateTimeOffset StartTime { get; init; }
-    public DateTimeOffset EndTime { get; init; }
+    /// <summary>Null when the segment has no duration.</summary>
+    public DateTimeOffset? EndTime { get; init; }
     public string Title { get; init => field = value ?? ""; } = "";
     public DateTimeOffset? CanceledUntil { get; init; }
     public ScheduleCategory? Category { get; init; }
@@ -66,8 +67,7 @@ public sealed class CreateScheduleSegmentRequest
 {
     public required DateTimeOffset StartTime { get; init; }
     public required string Timezone { get; init; }
-    /// <summary>Minutes, serialized as a JSON string as documented by Twitch.</summary>
-    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    /// <summary>Minutes (30–1380), sent as a JSON number.</summary>
     public required int Duration { get; init; }
     public bool? IsRecurring { get; init; }
     public string? CategoryId { get; init; }
@@ -77,8 +77,9 @@ public sealed class CreateScheduleSegmentRequest
 public sealed class UpdateScheduleSegmentRequest
 {
     public DateTimeOffset? StartTime { get; init; }
-    [JsonNumberHandling(JsonNumberHandling.WriteAsString)]
+    /// <summary>Minutes (30–1380), sent as a JSON number.</summary>
     public int? Duration { get; init; }
+    /// <summary>An empty string removes the segment's category.</summary>
     public string? CategoryId { get; init; }
     public string? Title { get; init; }
     public bool? IsCanceled { get; init; }

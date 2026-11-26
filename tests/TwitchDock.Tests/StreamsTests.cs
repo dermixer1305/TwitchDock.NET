@@ -48,6 +48,15 @@ public sealed class StreamsTests
         Assert.Equal(2, step);
     }
 
+    [Fact]
+    public async Task MarkerCreationAcceptsUserEditBroadcastInsteadOfChannelManageBroadcast()
+    {
+        using var http = new HttpClient(new TestHttpHandler((_, _) => Task.FromResult(TestHttpHandler.Json(Fixture("create-stream-marker")))));
+        var marker = (await Client(http, new("token", scopes: [TwitchScopes.UserEditBroadcast], kind: TwitchTokenKind.User, userId: "broadcaster"))
+            .CreateStreamMarkerAsync(new() { UserId = "broadcaster" })).Data.Single();
+        Assert.Equal("m1", marker.Id);
+    }
+
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -85,12 +94,16 @@ public sealed class StreamsTests
             return Task.FromResult(TestHttpHandler.Json(Fixture("get-stream-markers")));
         }));
         var client = Client(http, new("token", scopes: [scope], kind: TwitchTokenKind.User, userId: "editor"));
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         var page = await client.GetStreamMarkersAsync(new() { UserId = "broadcaster", First = 1, Before = "previous" });
+#pragma warning restore CS0618
         var group = Assert.Single(page.Data);
         Assert.Equal("editor", group.UserId);
         var video = Assert.Single(group.Videos);
         Assert.Equal("v1", video.VideoId);
-        Assert.Equal("", Assert.Single(video.Markers).Description);
+        var marker = Assert.Single(video.Markers);
+        Assert.Equal("", marker.Description);
+        Assert.Equal("https://example.org/highlighter/v1?marker=m1", marker.Url);
         await client.GetStreamMarkersAsync(new() { VideoId = "v1", First = 100, After = "next" });
         Assert.Equal(2, step);
     }
@@ -120,7 +133,9 @@ public sealed class StreamsTests
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamMarkersAsync(new()));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamMarkersAsync(new() { UserId = "1", VideoId = "v1" }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamMarkersAsync(new() { VideoId = " " }));
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         await Assert.ThrowsAsync<ArgumentException>(() => client.GetStreamMarkersAsync(new() { UserId = "1", Before = "p", After = "n" }));
+#pragma warning restore CS0618
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetStreamMarkersAsync(new() { UserId = "1", First = 0 }));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.GetFollowedStreamsAsync(new() { UserId = "1", First = 101 }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.CreateStreamMarkerAsync(new() { UserId = "1", Description = new('x', 141) }));
@@ -146,7 +161,9 @@ public sealed class StreamsTests
         else await foreach (var _ in client.EnumerateFollowedStreamsAsync(new() { UserId = "1", First = 5, After = "initial" })) count++;
         Assert.Equal(1, count);
         Assert.Equal(2, step);
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         Assert.Throws<ArgumentException>(() => client.EnumerateStreamMarkersAsync(new() { UserId = "1", Before = "previous" }));
+#pragma warning restore CS0618
     }
 
     [Fact]

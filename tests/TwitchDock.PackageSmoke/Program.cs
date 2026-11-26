@@ -117,7 +117,7 @@ internal sealed class FakeHandler : HttpMessageHandler
             "/helix/channel_points/custom_rewards/redemptions" => """{"data":[]}""",
             "/helix/polls" => """{"data":[{"id":"p1","broadcaster_id":"1","broadcaster_login":"channel","broadcaster_name":"Channel","title":"Poll","status":"ACTIVE","ended_at":null}]}""",
             "/helix/predictions" => """{"data":[{"id":"p1","broadcaster_id":"1","broadcaster_login":"channel","broadcaster_name":"Channel","title":"Prediction","status":"ACTIVE","winning_outcome_id":null}]}""",
-            "/helix/streams/markers" => """{"data":[{"user_id":"1","user_name":"Creator","user_login":"creator","videos":[{"video_id":"video1","markers":[{"id":"m1","position_seconds":60,"url":"https://example.org/marker"}]}]}]}""",
+            "/helix/streams/markers" => """{"data":[{"user_id":"1","user_name":"Creator","user_login":"creator","videos":[{"video_id":"video1","markers":[{"id":"m1","position_seconds":60,"URL":"https://example.org/marker"}]}]}]}""",
             "/helix/subscriptions" => """{"data":[],"points":null,"total":null}""",
             "/helix/extensions/transactions" => """{"data":[{"id":"t1","broadcaster_id":"1","broadcaster_login":"channel","broadcaster_name":"Channel","user_id":"2","user_login":"buyer","user_name":"Buyer","product_type":"BITS_IN_EXTENSION","product_data":{"sku":"sku1","domain":"twitch.ext.fake-client","cost":{"amount":1,"type":"bits"},"inDevelopment":true,"displayName":"Test"}}]}""",
             "/helix/eventsub/subscriptions" => """{"data":[{"id":"sub1","status":"enabled","type":"stream.online","version":"1","condition":{"broadcaster_user_id":"1"},"transport":{"method":"websocket","session_id":"session1"}}]}""",

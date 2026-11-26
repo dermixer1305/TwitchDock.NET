@@ -14,8 +14,8 @@ public sealed class VideosClient(TwitchHttpClient transport)
             throw new ArgumentException("Specify exactly one of video IDs, user ID or game ID.", nameof(request));
         if (request.UserId is not null) ArgumentException.ThrowIfNullOrWhiteSpace(request.UserId);
         if (request.GameId is not null) ArgumentException.ThrowIfNullOrWhiteSpace(request.GameId);
-        if (request.Language is not null && request.GameId is null) throw new ArgumentException("Language filtering requires game_id.", nameof(request));
-        if ((request.Before is not null || request.After is not null) && request.UserId is null) throw new ArgumentException("Video cursors require user_id.", nameof(request));
+        if (request.Language is not null && request.GameId is null && request.UserId is null) throw new ArgumentException("Language filtering requires game_id or user_id.", nameof(request));
+        if ((request.Before is not null || request.After is not null) && request.Ids.Count > 0) throw new ArgumentException("Video cursors require game_id or user_id.", nameof(request));
         if (request.Ids.Count > 0 && (request.Period is not null || request.Sort is not null || request.Type is not null || request.First.HasValue))
             throw new ArgumentException("Video ID queries cannot include list filters or page size.", nameof(request));
         if (request.Period is not null and not "all" and not "day" and not "month" and not "week") throw new ArgumentException("Invalid video period.", nameof(request));
@@ -35,7 +35,8 @@ public sealed class VideosClient(TwitchHttpClient transport)
         return HelixPagination.EnumerateAsync(async (cursor, ct) =>
         {
             var page = await GetVideosAsync(snapshot with { After = cursor ?? snapshot.After }, ct).ConfigureAwait(false);
-            return snapshot.UserId is not null ? page : new HelixPage<TwitchVideo> { Data = page.Data };
+            // ID queries return no cursor; user and game listings page forward (Twitch stops game listings at 500 videos).
+            return snapshot.Ids.Count == 0 ? page : new HelixPage<TwitchVideo> { Data = page.Data };
         }, cancellationToken);
     }
 

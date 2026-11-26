@@ -2,6 +2,10 @@
 
 The [project plan](project-plan.md) targets a complete, stable SDK. The current state is documented in [progress](progress.md).
 
+## Done: 1.0.0-rc.7
+
+- SDK aligned with the rebuilt Twitch reference (snapshot 2026-11-25): 38 changed Helix sections reviewed, the two removed Tags endpoints left the inventory, `whispers:read` is obsolete. Ad schedule times, schedule segment end times and video publish times are now typed and nullable.
+
 ## Done: 1.0.0-rc.6
 
 - EventSub `session_reconnect` to other Twitch hosts is followed, and a disallowed reconnect URL no longer stops `RunAsync`.

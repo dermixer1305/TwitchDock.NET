@@ -27,7 +27,8 @@ public sealed class ExtensionsClient(TwitchHttpClient transport)
 
     private readonly TwitchHttpClient _transport = transport ?? throw new ArgumentNullException(nameof(transport));
 
-    /// <summary>EBS JWT. Gets one or more configuration segments in request order. Twitch allows 20 reads per segment per minute.</summary>
+    /// <summary>EBS JWT. Gets one or more configuration segments; segments that were never set are left out.
+    /// Twitch allows 20 requests per minute per extension and broadcaster, whatever segments they read.</summary>
     public Task<HelixPage<ExtensionConfigurationSegment>> GetExtensionConfigurationSegmentsAsync(GetExtensionConfigurationSegmentsRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -143,11 +144,12 @@ public sealed class ExtensionsClient(TwitchHttpClient transport)
                 authorization: ExtensionJwtOnly, cancellationToken: cancellationToken));
     }
 
-    /// <summary>EBS JWT. Gets an extension; without a version, the latest released version (empty if never released).</summary>
+    /// <summary>EBS JWT with role, user_id and exp. Gets an extension; without a version, the released version (HTTP 404 if never released).
+    /// An unreleased version requires the JWT user to own the extension or be on the version's testing allowlist.</summary>
     public Task<HelixPage<TwitchExtension>> GetExtensionsAsync(string extensionId, string? extensionVersion = null, CancellationToken cancellationToken = default)
         => GetExtensionAsync("extensions", extensionId, extensionVersion, ExtensionJwtOnly, cancellationToken);
 
-    /// <summary>App or user token. Gets a released extension; without a version, the latest version.</summary>
+    /// <summary>App or user token. Gets a released extension; without a version, the released version (HTTP 404 if none).</summary>
     public Task<HelixPage<TwitchExtension>> GetReleasedExtensionsAsync(string extensionId, string? extensionVersion = null, CancellationToken cancellationToken = default)
         => GetExtensionAsync("extensions/released", extensionId, extensionVersion, AppOrUserToken, cancellationToken);
 

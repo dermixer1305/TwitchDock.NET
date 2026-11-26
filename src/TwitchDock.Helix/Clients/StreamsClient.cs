@@ -62,7 +62,7 @@ public sealed class StreamsClient(TwitchHttpClient transport)
         // Editors may create markers for another broadcaster; Twitch checks that role.
         return _transport.SendAsync(HttpMethod.Post, "streams/markers", HelixJsonContext.Default.HelixPageCreatedStreamMarker,
             jsonBody: JsonSerializer.SerializeToUtf8Bytes(request, HelixJsonContext.Default.CreateStreamMarkerRequest),
-            authorization: new([TwitchScopes.ChannelManageBroadcast]), cancellationToken: cancellationToken);
+            authorization: new([], anyUserScopes: [TwitchScopes.ChannelManageBroadcast, TwitchScopes.UserEditBroadcast]), cancellationToken: cancellationToken);
     }
 
     public Task<HelixPage<StreamMarkerGroup>> GetStreamMarkersAsync(GetStreamMarkersRequest request, CancellationToken cancellationToken = default)
@@ -72,7 +72,9 @@ public sealed class StreamsClient(TwitchHttpClient transport)
         if (request.UserId is not null) ArgumentException.ThrowIfNullOrWhiteSpace(request.UserId);
         if (request.VideoId is not null) ArgumentException.ThrowIfNullOrWhiteSpace(request.VideoId);
         return _transport.SendAsync(HttpMethod.Get, "streams/markers", HelixJsonContext.Default.HelixPageStreamMarkerGroup,
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
             new HelixQuery().AddValue("user_id", request.UserId).AddValue("video_id", request.VideoId).AddPage(request.First, request.After, request.Before),
+#pragma warning restore CS0618
             authorization: new([], anyUserScopes: [TwitchScopes.UserReadBroadcast, TwitchScopes.ChannelManageBroadcast]), cancellationToken: cancellationToken);
     }
 
@@ -80,7 +82,9 @@ public sealed class StreamsClient(TwitchHttpClient transport)
     public IAsyncEnumerable<StreamMarkerGroup> EnumerateStreamMarkersAsync(GetStreamMarkersRequest request, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(request);
+#pragma warning disable CS0618 // Before is obsolete; it is still forwarded and checked.
         if (request.Before is not null) throw new ArgumentException("Forward enumeration cannot use before.", nameof(request));
+#pragma warning restore CS0618
         return HelixPagination.EnumerateAsync((cursor, ct) => GetStreamMarkersAsync(request with { After = cursor ?? request.After }, ct), cancellationToken);
     }
 }

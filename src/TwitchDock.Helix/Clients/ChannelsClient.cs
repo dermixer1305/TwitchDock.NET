@@ -37,10 +37,18 @@ public sealed class ChannelsClient(TwitchHttpClient transport)
             }
         }
         if (request.ContentClassificationLabels is { } labels)
-            foreach (var label in labels) { ArgumentNullException.ThrowIfNull(label); ArgumentException.ThrowIfNullOrWhiteSpace(label.Id); }
+        {
+            if (labels.Count > 6) throw new ArgumentException("At most 6 content classification labels are allowed.", nameof(request));
+            foreach (var label in labels)
+            {
+                ArgumentNullException.ThrowIfNull(label);
+                ArgumentException.ThrowIfNullOrWhiteSpace(label.Id);
+                if (label.Id == "MatureGame") throw new ArgumentException("MatureGame is set by Twitch from the category and cannot be set.", nameof(request));
+            }
+        }
         return _transport.SendAsync(HttpMethod.Patch, "channels", new HelixQuery().AddValue("broadcaster_id", request.BroadcasterId),
             jsonBody: JsonSerializer.SerializeToUtf8Bytes(request, HelixJsonContext.Default.ModifyChannelInformationRequest),
-            authorization: new([TwitchScopes.ChannelManageBroadcast], requiredUserId: request.BroadcasterId), cancellationToken: cancellationToken);
+            authorization: new([], requiredUserId: request.BroadcasterId, anyUserScopes: [TwitchScopes.ChannelManageBroadcast, TwitchScopes.UserEditBroadcast]), cancellationToken: cancellationToken);
     }
 
     public Task<HelixPage<ChannelEditor>> GetChannelEditorsAsync(string broadcasterId, CancellationToken cancellationToken = default)

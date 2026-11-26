@@ -111,16 +111,25 @@
           },
           "component": {
             "viewer_url": "https://example.org/component.html",
+            "aspect_width": 1600,
+            "aspect_height": 900,
             "aspect_ratio_x": 16,
             "aspect_ratio_y": 9,
             "autoscale": true,
             "scale_pixels": 1024,
             "target_height": 100,
+            "size": 1,
+            "zoom": true,
+            "zoom_pixels": 1024,
             "can_link_external_content": true
           },
           "config": {
             "viewer_url": "https://example.org/config.html",
             "can_link_external_content": false
+          },
+          "live_config": {
+            "viewer_url": "https://example.org/live-config.html",
+            "can_link_external_content": true
           }
         },
         "allowlisted_config_urls": [
@@ -173,16 +182,25 @@
           },
           "component": {
             "viewer_url": "https://example.org/component.html",
+            "aspect_width": 400,
+            "aspect_height": 300,
             "aspect_ratio_x": 4,
             "aspect_ratio_y": 3,
             "autoscale": false,
             "scale_pixels": 0,
             "target_height": 50,
+            "size": 0.5,
+            "zoom": false,
+            "zoom_pixels": 0,
             "can_link_external_content": false
           },
           "config": {
             "viewer_url": "https://example.org/config.html",
             "can_link_external_content": true
+          },
+          "live_config": {
+            "viewer_url": "https://example.org/live-config.html",
+            "can_link_external_content": false
           }
         },
         "allowlisted_config_urls": [],

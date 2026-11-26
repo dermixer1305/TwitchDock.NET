@@ -9,6 +9,9 @@ TestResults/
 
 # Generated API documentation snapshots (downloaded by tools/Update-ApiInventory.ps1)
 docs/api/*-reference.html
+docs/api/*-reference.md
+docs/api/helix/
+docs/api/eventsub/
 docs/api/*.txt
 
 # IDEs and editors

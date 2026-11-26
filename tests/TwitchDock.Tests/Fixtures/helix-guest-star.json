@@ -5,7 +5,7 @@
         "is_moderator_send_live_enabled": false,
         "slot_count": 6,
         "is_browser_source_audio_enabled": true,
-        "group_layout": "SCREENSHARE_LAYOUT",
+        "group_layout": "SCREENSHARE",
         "browser_source_token": "eihq8rew7q3hgierufhi3q"
       }
     ]
@@ -19,16 +19,14 @@
             "slot_id": "0",
             "is_live": true,
             "user_id": "9321049",
-            "user_display_name": "Cool_User",
-            "user_login": "cool_user",
             "volume": 100,
             "assigned_at": "2023-01-02T04:16:53.325Z",
-            "audio_settings": {
+            "audio": {
               "is_host_enabled": true,
               "is_guest_enabled": true,
               "is_available": true
             },
-            "video_settings": {
+            "video": {
               "is_host_enabled": true,
               "is_guest_enabled": false,
               "is_available": true
@@ -38,16 +36,14 @@
             "slot_id": "1",
             "is_live": false,
             "user_id": "144601104",
-            "user_display_name": "Cool_Guest",
-            "user_login": "cool_guest",
             "volume": 0,
             "assigned_at": "2023-01-02T04:20:59.3251234567Z",
-            "audio_settings": {
+            "audio": {
               "is_host_enabled": false,
               "is_guest_enabled": true,
               "is_available": false
             },
-            "video_settings": {
+            "video": {
               "is_host_enabled": false,
               "is_guest_enabled": false,
               "is_available": false
@@ -57,16 +53,14 @@
             "slot_id": "SCREENSHARE",
             "is_live": true,
             "user_id": "9321049",
-            "user_display_name": "Cool_User",
-            "user_login": "cool_user",
-            "volume": 55,
+            "volume": 200,
             "assigned_at": "2023-01-02T04:22:00Z",
-            "audio_settings": {
+            "audio": {
               "is_host_enabled": true,
               "is_guest_enabled": false,
               "is_available": true
             },
-            "video_settings": {
+            "video": {
               "is_host_enabled": true,
               "is_guest_enabled": true,
               "is_available": true
@@ -85,16 +79,14 @@
             "slot_id": "0",
             "is_live": true,
             "user_id": "9321049",
-            "user_display_name": "Cool_User",
-            "user_login": "cool_user",
             "volume": 100,
             "assigned_at": "2023-01-02T04:16:53.325Z",
-            "audio_settings": {
+            "audio": {
               "is_host_enabled": true,
               "is_guest_enabled": true,
               "is_available": true
             },
-            "video_settings": {
+            "video": {
               "is_host_enabled": true,
               "is_guest_enabled": true,
               "is_available": false
@@ -113,16 +105,14 @@
             "slot_id": "0",
             "is_live": false,
             "user_id": "9321049",
-            "user_display_name": "Cool_User",
-            "user_login": "cool_user",
             "volume": 80,
             "assigned_at": "2023-01-02T04:16:53.325Z",
-            "audio_settings": {
+            "audio": {
               "is_host_enabled": false,
               "is_guest_enabled": true,
               "is_available": true
             },
-            "video_settings": {
+            "video": {
               "is_host_enabled": true,
               "is_guest_enabled": false,
               "is_available": true
@@ -154,7 +144,7 @@
       }
     ]
   },
-  "official-example-channel-settings": {
+  "legacy-example-channel-settings": {
     "data": [
       {
         "is_moderator_send_live_enabled": true,
@@ -165,7 +155,7 @@
       }
     ]
   },
-  "official-example-create-session": {
+  "legacy-example-create-session": {
     "data": [
       {
         "id": "2KFRQbFtpmfyD3IevNRnCzOPRJI",
@@ -181,10 +171,10 @@
             "audio_settings": {
               "is_available": true,
               "is_host_enabled": true,
-              "is_guest_enabled": true
+              "is_guest_enabled": false
             },
             "video_settings": {
-              "is_available": true,
+              "is_available": false,
               "is_host_enabled": true,
               "is_guest_enabled": true
             }

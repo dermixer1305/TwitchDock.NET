@@ -142,14 +142,32 @@ public sealed class HelixMediaTests
     }
 
     [Fact]
-    public async Task VideoGameEnumerationDoesNotFollowUnsupportedCursor()
+    public async Task VideoGameEnumerationFollowsCursorAndIdQueriesStopAfterOnePage()
     {
-        var calls = 0;
-        using var http = new HttpClient(new TestHttpHandler((request, _) => { calls++; Assert.Equal("?game_id=game-1", request.RequestUri!.Query); return Task.FromResult(TestHttpHandler.Json(Fixture("get-videos"))); }));
+        var queries = new List<string>();
+        using var http = new HttpClient(new TestHttpHandler((request, _) =>
+        {
+            queries.Add(request.RequestUri!.Query);
+            return Task.FromResult(TestHttpHandler.Json(queries.Count == 2 ? "{\"data\":[],\"pagination\":{}}" : Fixture("get-videos")));
+        }));
+        var client = Client(http);
         var count = 0;
-        await foreach (var _ in Client(http).Videos.EnumerateVideosAsync(new() { GameId = "game-1" })) count++;
-        Assert.Equal(1, count);
-        Assert.Equal(1, calls);
+        await foreach (var _ in client.Videos.EnumerateVideosAsync(new() { GameId = "game-1", Language = "de,en" })) count++;
+        await foreach (var _ in client.Videos.EnumerateVideosAsync(new() { Ids = ["video-1"] })) count++;
+        Assert.Equal(["?game_id=game-1&language=de%2Cen", "?game_id=game-1&language=de%2Cen&after=next", "?id=video-1"], queries);
+        Assert.Equal(2, count);
+    }
+
+    [Fact]
+    public async Task VideoLanguageFilterWorksWithUserIdAndUnpublishedVideosHaveNoPublishedAt()
+    {
+        using var http = new HttpClient(new TestHttpHandler((request, _) =>
+        {
+            Assert.Equal("?user_id=1&language=de", request.RequestUri!.Query);
+            return Task.FromResult(TestHttpHandler.Json(Fixture("get-videos").Replace("\"published_at\":\"2026-10-02T12:00:00Z\"", "\"published_at\":null")));
+        }));
+        var video = (await Client(http).Videos.GetVideosAsync(new() { UserId = "1", Language = "de" })).Data[0];
+        Assert.Null(video.PublishedAt);
     }
 
     [Fact]
@@ -162,7 +180,8 @@ public sealed class HelixMediaTests
         await Assert.ThrowsAsync<ArgumentException>(() => client.Clips.GetClipsAsync(new() { GameId = "g", BroadcasterId = "b" }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Clips.GetClipsDownloadAsync(new() { EditorId = "2", BroadcasterId = "1", ClipIds = Enumerable.Repeat("c", 11).ToArray() }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Videos.GetVideosAsync(new() { UserId = "1", GameId = "g" }));
-        await Assert.ThrowsAsync<ArgumentException>(() => client.Videos.GetVideosAsync(new() { GameId = "g", After = "cursor" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Videos.GetVideosAsync(new() { Ids = ["v"], After = "cursor" }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Videos.GetVideosAsync(new() { Ids = ["v"], Language = "de" }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Videos.DeleteVideosAsync(Enumerable.Repeat("v", 6).ToArray()));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Teams.GetTeamsAsync(new() { Name = "team", Id = "t" }));
         await Assert.ThrowsAsync<TwitchAuthorizationException>(() => Client(http, new("token", kind: TwitchTokenKind.App)).Charity.GetCharityCampaignAsync("1"));
@@ -172,7 +191,9 @@ public sealed class HelixMediaTests
     {
         "create-clip" => client.Clips.CreateClipAsync(new() { BroadcasterId = "1", Title = "Test & clip", Duration = 5.1m }),
         "create-clip-from-vod" => client.Clips.CreateClipFromVodAsync(new() { EditorId = "2", BroadcasterId = "1", VodId = "video-1", VodOffset = 100, Duration = 5.1m, Title = "Test & clip" }),
+#pragma warning disable CS0618 // Before is obsolete; the SDK still forwards it.
         "get-clips" => client.Clips.GetClipsAsync(new() { BroadcasterId = "1", StartedAt = new(2026, 10, 1, 0, 0, 0, TimeSpan.Zero), EndedAt = new(2026, 10, 2, 0, 0, 0, TimeSpan.Zero), First = 5, Before = "previous", IsFeatured = false }),
+#pragma warning restore CS0618
         "get-clips-download" => client.Clips.GetClipsDownloadAsync(new() { EditorId = "2", BroadcasterId = "1", ClipIds = ["clip-1", "clip-2"] }),
         "get-videos" => client.Videos.GetVideosAsync(new() { UserId = "1", Period = "week", Sort = "views", Type = "archive", First = 5, After = "next" }),
         "delete-videos" => client.Videos.DeleteVideosAsync(["video-1", "video-2"]),

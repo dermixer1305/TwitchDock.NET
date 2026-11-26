@@ -35,7 +35,7 @@ var downloads = await helix.Clips.GetClipsDownloadAsync(new()
 }, ct);
 ```
 
-GetClips accepts exactly one of BroadcasterId, GameId, or repeated Ids (up to 100), plus StartedAt, EndedAt, First, Before, After and IsFeatured. App/user tokens need no additional scopes. Omitting IsFeatured means all clips; false means only unfeatured clips. VideoId may be empty and VodOffset may be null while a VOD is unavailable or pending; this returned offset describes the clip's **start**. `EnumerateClipsAsync` follows forward cursors. Twitch limits a query to approximately 1,000 clips, so split date windows when necessary. [Get Clips](https://dev.twitch.tv/docs/api/reference/#get-clips).
+GetClips accepts exactly one of BroadcasterId, GameId, or repeated Ids (up to 100), plus StartedAt, EndedAt, First, After and IsFeatured. With Ids, Twitch ignores the other filters, returns no cursor and doesn't guarantee the input order; EndedAt is ignored without StartedAt, and Twitch truncates both to the minute. Twitch no longer documents the `before` cursor; `Before` is obsolete and still forwarded. App/user tokens need no additional scopes. Omitting IsFeatured means all clips; false means only unfeatured clips. VideoId may be empty and VodOffset may be null while a VOD is unavailable or pending; this returned offset describes the clip's **start**. `EnumerateClipsAsync` follows forward cursors. Twitch limits a query to approximately 1,000 clips, so split date windows when necessary. [Get Clips](https://dev.twitch.tv/docs/api/reference/#get-clips).
 
 GetClipsDownload supports EditorId, BroadcasterId and 1–10 ClipIds, with the same alternative management scopes as VOD creation. It returns ClipId and nullable LandscapeDownloadUrl/PortraitDownloadUrl. These are temporary URLs; the SDK neither downloads them nor forwards authorization headers to their hosts. [Get Clips Download](https://dev.twitch.tv/docs/api/reference/#get-clips-download).
 
@@ -54,9 +54,9 @@ var byGame = await helix.Videos.GetVideosAsync(new()
 }, ct);
 ```
 
-GetVideos accepts app/user tokens without extra scopes. Supply exactly one of Ids (up to 100), UserId, or GameId. Language applies only with GameId; Period, Sort, Type and First apply with UserId/GameId; After/Before are documented only with UserId. `EnumerateVideosAsync` pages user listings and yields a single result page for ID/game queries. Twitch caps category queries at 500 videos. [Get Videos](https://dev.twitch.tv/docs/api/reference/#get-videos).
+GetVideos accepts app/user tokens without extra scopes. Supply exactly one of Ids (up to 100), UserId, or GameId. Language (one code or several separated by commas, such as `de,en`) applies with GameId or UserId; with GameId and no Language, Twitch filters by the first language of the request's `Accept-Language` header, if any. Period (by creation time; default `all`), Sort (default `time`) and Type (default `all`) filter user and game listings; First, After and Before apply with UserId/GameId. `EnumerateVideosAsync` pages user and game listings and yields a single result page for ID queries. Twitch caps category queries at 500 videos; the last page may still carry a cursor whose next page is empty. [Get Videos](https://dev.twitch.tv/docs/api/reference/#get-videos).
 
-TwitchVideo includes nullable StreamId and MutedSegments; each muted segment preserves Duration and Offset in seconds. Video Duration remains Twitch's text (for example `1h2m3s`) instead of assuming TimeSpan syntax. Thumbnail placeholders are retained for the application to substitute.
+TwitchVideo includes nullable StreamId, PublishedAt (null for unpublished videos) and MutedSegments (always null with an app token); each muted segment preserves Duration and Offset in seconds. ID queries can return the types `past_premiere` and `premiere_upload`. In regions where videos aren't available the list is empty. Video Duration remains Twitch's text (for example `1h2m3s`) instead of assuming TimeSpan syntax. Thumbnail placeholders are retained for the application to substitute.
 
 ```csharp
 var deletedIds = await helix.Videos.DeleteVideosAsync([videoId], ct);

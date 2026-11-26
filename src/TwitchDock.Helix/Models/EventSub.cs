@@ -44,6 +44,8 @@ public sealed class EventSubSubscription
     public DateTimeOffset CreatedAt { get; init; }
     public required EventSubTransport Transport { get; init; }
     public int Cost { get; init; }
+    /// <summary>True when notifications are batched (drop.entitlement.grant); Twitch includes the field only when it is true.</summary>
+    public bool IsBatchingEnabled { get; init; }
 }
 
 public sealed class EventSubSubscriptionsResponse
