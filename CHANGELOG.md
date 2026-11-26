@@ -2,9 +2,9 @@
 
 All notable changes are listed here. The project follows [Semantic Versioning](https://semver.org/); see [releases](docs/releases.md#versioning).
 
-## Unreleased
+## 1.0.0-rc.7 (2026-11-26)
 
-Brings the SDK in line with the rebuilt Twitch reference (snapshot 2026-11-25). Twitch changed 38 Helix sections; each was reviewed. Some response types change, so code that reads them must be updated.
+Brings the SDK in line with the rebuilt Twitch reference (snapshot 2026-11-25). Twitch changed 38 Helix sections; each was reviewed. Some response types change, so code that reads them must be updated ([release notes](docs/release-notes/1.0.0-rc.7.md)).
 
 **Breaking (response types that did not match what Twitch sends):**
 

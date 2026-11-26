@@ -158,7 +158,7 @@ foreach (var stream in streams.Data)
     Console.WriteLine($"{stream.UserName} plays {stream.GameName} for {stream.ViewerCount} viewers");
 ```
 
-`HelixClient` covers all 149 Helix endpoints: channels, moderation, polls, predictions, Channel Points, clips, schedules and more. Rate limits, retries and pagination (`Enumerate*Async`) are built in. See the [documentation index](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/README.md).
+`HelixClient` covers all 147 Helix endpoints: channels, moderation, polls, predictions, Channel Points, clips, schedules and more. Rate limits, retries and pagination (`Enumerate*Async`) are built in. See the [documentation index](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/README.md).
 
 ## ASP.NET Core and dependency injection
 
@@ -287,7 +287,7 @@ Every operation accepts a `CancellationToken`. JSON serialization is source-gene
 
 ## Release status
 
-**1.0.0-rc.6 is a release candidate.** Every Helix endpoint (149) and EventSub type (83) in the official documentation of 2026-10-09 has typed models, scope checks, tests and documentation ([coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md)). 959 unit and contract tests per framework, Twitch CLI integration tests and native AOT checks run in CI. Sign-in, API reads and chat were verified live against Twitch. IRC, public webhooks, reconnects and token-refresh rotation still need broader live testing ([live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md)). Public APIs may still change before 1.0.0.
+**1.0.0-rc.7 is a release candidate.** Every Helix endpoint (147) and EventSub type (83) in the official documentation of 2026-11-25 has typed models, scope checks, tests and documentation ([coverage report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/coverage.md)). 967 unit and contract tests per framework, Twitch CLI integration tests and native AOT checks run in CI. Sign-in, API reads and chat were verified live against Twitch. IRC, public webhooks, reconnects and token-refresh rotation still need broader live testing ([live-test report](https://github.com/dermixer1305/TwitchDock.NET/blob/main/docs/live-verification.md)). Public APIs may still change before 1.0.0.
 
 ## Documentation
 

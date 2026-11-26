@@ -158,7 +158,7 @@ foreach (var stream in streams.Data)
     Console.WriteLine($"{stream.UserName} spielt {stream.GameName} vor {stream.ViewerCount} Zuschauern");
 ```
 
-`HelixClient` deckt alle 149 Helix-Endpunkte ab: Kanäle, Moderation, Umfragen, Vorhersagen, Kanalpunkte, Clips, Streampläne und mehr. Ratenbegrenzung, Wiederholungen und Seitennavigation (`Enumerate*Async`) sind eingebaut. Siehe [Dokumentationsindex](docs/README.md).
+`HelixClient` deckt alle 147 Helix-Endpunkte ab: Kanäle, Moderation, Umfragen, Vorhersagen, Kanalpunkte, Clips, Streampläne und mehr. Ratenbegrenzung, Wiederholungen und Seitennavigation (`Enumerate*Async`) sind eingebaut. Siehe [Dokumentationsindex](docs/README.md).
 
 ## ASP.NET Core und Dependency Injection
 
@@ -287,7 +287,7 @@ Jede Operation akzeptiert ein `CancellationToken`. Die JSON-Verarbeitung ist que
 
 ## Stand der Veröffentlichung
 
-**1.0.0-rc.6 ist eine Vorabversion.** Alle Helix-Endpunkte (149) und EventSub-Typen (83) der offiziellen Dokumentation vom 09.10.2026 haben typisierte Modelle, Rechteprüfungen, Tests und Dokumentation ([Abdeckungsbericht](docs/coverage.md)). In der CI laufen 959 Unit- und Vertragstests pro Zielplattform, Integrationstests mit der Twitch CLI und Native-AOT-Prüfungen. Anmeldung, API-Abfragen und Chat wurden live gegen Twitch getestet. IRC, öffentliche Webhooks, Wiederverbindungen und Token-Erneuerung brauchen noch umfassendere Live-Tests ([Testbericht](docs/live-verification.md)). Öffentliche APIs können sich bis 1.0.0 noch ändern.
+**1.0.0-rc.7 ist eine Vorabversion.** Alle Helix-Endpunkte (147) und EventSub-Typen (83) der offiziellen Dokumentation vom 25.11.2026 haben typisierte Modelle, Rechteprüfungen, Tests und Dokumentation ([Abdeckungsbericht](docs/coverage.md)). In der CI laufen 967 Unit- und Vertragstests pro Zielplattform, Integrationstests mit der Twitch CLI und Native-AOT-Prüfungen. Anmeldung, API-Abfragen und Chat wurden live gegen Twitch getestet. IRC, öffentliche Webhooks, Wiederverbindungen und Token-Erneuerung brauchen noch umfassendere Live-Tests ([Testbericht](docs/live-verification.md)). Öffentliche APIs können sich bis 1.0.0 noch ändern.
 
 ## Weitere Dokumentation
 
